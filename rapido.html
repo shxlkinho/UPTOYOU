@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orientamento Rapido - Up to You</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Stili specifici per la griglia materie */
+        .grid-section {
+            padding: 120px 20px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 40px;
+        }
+        .materia-btn {
+            background: #161616;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            color: white;
+            transition: 0.4s;
+            display: flex;
+            flex-direction: column;
+        }
+        .materia-btn:hover {
+            transform: translateY(-10px);
+            border-color: #4facfe;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.2);
+        }
+        .materia-btn img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .materia-btn span {
+            padding: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        /* Il decimo bottone al centro */
+        .materia-btn.last {
+            grid-column: 2;
+        }
+        @media (max-width: 900px) {
+            .grid-container { grid-template-columns: repeat(2, 1fr); }
+            .materia-btn.last { grid-column: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo"><a href="index.html" style="text-decoration:none; color:inherit;">MY<span>WEB</span></a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Lezioni ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Elementari</a></li>
+                        <li><a href="#">Medie</a></li>
+                        <li><a href="#">Superiori</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Orientati ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="rapido.html">Orientamento Rapido</a></li>
+                        <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    </ul>
+                </li>
+                <li><a href="index.html#contact">Contatti</a></li>
+            </ul>
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </nav>
+    </header>
+
+    <section class="grid-section">
+        <h1>Orientamento Rapido</h1>
+        <p>Scegli una materia per scoprire il tuo percorso alle medie.</p>
+        
+        <div class="grid-container">
+            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/1/400/250"><span>Italiano</span></a>
+            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/2/400/250"><span>Matematica</span></a>
+            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/3/400/250"><span>Inglese</span></a>
+            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/4/400/250"><span>Storia</span></a>
+            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/5/400/250"><span>Geografia</span></a>
+            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/6/400/250"><span>Scienze</span></a>
+            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/7/400/250"><span>Arte</span></a>
+            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/8/400/250"><span>Musica</span></a>
+            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/9/400/250"><span>Tecnologia</span></a>
+            <a href="#" class="materia-btn last"><img src="https://picsum.photos/id/11/400/250"><span>Ed. Fisica</span></a>
+        </div>
+    </section>
+
+    <footer>
+        <p>Up to You 2026. Tutti i diritti riservati. ❤️</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

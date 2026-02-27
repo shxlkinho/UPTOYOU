@@ -1,0 +1,460 @@
+/* --- VARIABILI E SETUP --- */
+:root {
+    --bg-dark: #0e0e0e;
+    --bg-card: #161616;
+    --accent: #4facfe;
+    --accent-sec: #00c6ff;
+    --text-main: white;
+    --text-dim: #ccc;
+    --transition-smooth: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: "Poppins", sans-serif; 
+}
+
+body { 
+    background: var(--bg-dark); 
+    color: var(--text-main); 
+    overflow-x: hidden; 
+}
+
+/* --- NAVBAR --- */
+header { 
+    width: 100%; 
+    position: fixed; 
+    top: 0; 
+    background: rgba(14, 14, 14, 0.8); 
+    backdrop-filter: blur(10px); 
+    z-index: 1000; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+}
+
+.navbar { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 60px; 
+    max-width: 1300px; 
+    margin: 0 auto; 
+}
+
+.logo { font-size: 28px; font-weight: 600; cursor: default; }
+.logo span { color: var(--accent); }
+
+.nav-links { 
+    list-style: none; /* Rimuove pallini navbar */
+    display: flex; 
+    gap: 30px; 
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li { position: relative; }
+.nav-links li a { 
+    color: white; 
+    text-decoration: none; 
+    transition: 0.3s; 
+    display: block; 
+}
+.nav-links li a:hover { color: var(--accent); }
+
+/* --- DROPDOWN (SOTTOMENU CORRETTO) --- */
+.dropdown-menu {
+    position: absolute; 
+    top: 100%; 
+    left: 50%;
+    transform: translateX(-50%); /* Centra il sottomenu rispetto alla voce principale */
+    background: #1a1a1a; 
+    display: none; 
+    flex-direction: column; 
+    min-width: 220px; 
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6); 
+    z-index: 1001; 
+    opacity: 0; 
+    transition: opacity 0.3s ease;
+    list-style: none; /* RIMUOVE I PALLINI DECENTRATI */
+    margin: 0; 
+    padding: 10px 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dropdown:hover .dropdown-menu { 
+    display: flex; 
+    opacity: 1; 
+}
+
+.dropdown-menu li {
+    width: 100%;
+}
+
+.dropdown-menu li a {
+    padding: 12px 25px;
+    font-size: 0.95rem;
+    border-left: 4px solid transparent; /* Linea invisibile */
+    transition: all 0.3s ease;
+}
+
+.dropdown-menu li a:hover {
+    background: rgba(79, 172, 254, 0.1);
+    border-left: 4px solid var(--accent); /* La barretta blu */
+    padding-left: 30px; /* Effetto spostamento */
+    color: var(--accent);
+}
+
+/* --- HERO SECTION --- */
+.hero {
+    height: 100vh;
+    position: relative; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.slider-container { 
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    z-index: 1; 
+    background: #000; 
+}
+
+.slider-track { 
+    display: flex; 
+    width: 300%; 
+    height: 100%;
+    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1); 
+}
+
+.slide { 
+    width: 100vw; 
+    height: 100%;
+}
+
+.slide img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    filter: brightness(0.4) contrast(1.1); 
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10; 
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.hero-text-top {
+    margin-bottom: 40px; 
+}
+
+.hero h1 {
+    font-size: clamp(45px, 10vw, 80px);
+    background: linear-gradient(to right, var(--accent), var(--accent-sec));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    line-height: 1.1;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--text-dim);
+    margin-top: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* --- LOGICA ESPANSIONE ANIMATA --- */
+.expand-container {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    width: 100%;
+    max-width: 1100px;
+    transition: var(--transition-smooth);
+}
+
+.expand-text {
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+    text-align: left;
+    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+    color: var(--text-main);
+    line-height: 1.6;
+    white-space: nowrap; 
+}
+
+.expand-container.active {
+    gap: 40px;
+}
+
+.expand-container.active .expand-text {
+    width: 600px; 
+    opacity: 1;
+    padding-left: 30px;
+    border-left: 3px solid var(--accent);
+    white-space: normal;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.btn {
+    flex-shrink: 0; 
+    min-width: 200px;
+    padding: 15px 40px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(to right, var(--accent), var(--accent-sec));
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 198, 255, 0.2);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 198, 255, 0.4);
+}
+
+/* --- CARDS SECTION --- */
+.cards { 
+    display: flex; 
+    justify-content: center; 
+    gap: 30px; 
+    padding: 100px 20px; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    position: relative;
+    z-index: 10;
+}
+
+.card { 
+    flex: 1; 
+    background: var(--bg-card); 
+    padding: 40px; 
+    border-radius: 20px; 
+    text-align: center; 
+    transition: 0.4s; 
+    border: 1px solid rgba(255,255,255,0.05); 
+}
+
+.card:hover { 
+    transform: translateY(-15px); 
+    border-color: var(--accent); 
+}
+
+/* --- FOOTER --- */
+footer { 
+    padding: 60px; 
+    text-align: center; 
+    background: #080808; 
+    color: #777; 
+}
+
+/* --- RESPONSIVE --- */
+.hamburger { display: none; cursor: pointer; }
+.hamburger span { display: block; width: 25px; height: 3px; background: white; margin: 5px; }
+
+@media (max-width: 900px) {
+    .navbar { padding: 15px 30px; }
+    .hamburger { display: block; }
+    .nav-links {
+        display: none; 
+        position: absolute; 
+        top: 70px; 
+        right: 0; 
+        background: #111; 
+        width: 100%; 
+        flex-direction: column; 
+        align-items: center; 
+        padding: 30px;
+    }
+    .nav-links.show { display: flex; }
+    .cards { flex-direction: column; }
+    
+    .expand-container.active { flex-direction: column; text-align: center; gap: 20px; }
+    .expand-container.active .expand-text { 
+        width: 100%; 
+        border-left: none; 
+        border-top: 2px solid var(--accent); 
+        padding-top: 20px; 
+        padding-left: 0; 
+    }
+}
+/* BARRA AZZURRA INFERIORE */
+.bottom-bridge {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px; /* La linea sottile azzurra */
+    background: linear-gradient(to right, var(--accent), var(--accent-sec));
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+}
+
+.who-we-are-btn {
+    position: absolute;
+    bottom: 0; /* Parte dalla linea */
+    background: linear-gradient(to top, var(--accent), var(--accent-sec));
+    border: none;
+    padding: 12px 30px;
+    border-radius: 20px 20px 0 0; /* Arrotondato solo sopra */
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 -5px 15px rgba(79, 172, 254, 0.4);
+}
+
+.who-we-are-btn:hover {
+    transform: translateY(-5px); /* Si alza quando ci passi sopra */
+}
+
+.arrow-up {
+    font-size: 1.2rem;
+    animation: bounceUp 1.5s infinite;
+}
+
+@keyframes bounceUp {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* MODALE VIDEO (PLAYER INTERNO) */
+.video-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    display: none; /* Nascosto di base */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.video-modal {
+    width: 90%;
+    max-width: 800px;
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.video-modal h3 {
+    margin-top: 15px;
+    background: linear-gradient(to right, var(--accent), var(--accent-sec));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.video-responsive {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.video-responsive iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+}
+
+.close-video {
+    position: absolute;
+    top: -50px; right: 0;
+    background: none; border: none;
+    color: white; font-size: 40px;
+    cursor: pointer;
+}
+.info-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.info-card {
+    background: #161616;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column; /* Mette i contenuti in verticale */
+    justify-content: space-between; /* Spinge il bottone in fondo */
+    transition: var(--transition-smooth);
+    cursor: pointer;
+    overflow: hidden; /* Fondamentale per far aderire il bottone ai bordi */
+}
+
+.card-content {
+    padding: 30px;
+    text-align: left;
+}
+
+.emoji-header {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.info-card h3 {
+    color: var(--accent);
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+}
+
+.info-card p {
+    color: #ccc;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.info-card ul li {
+    list-style: none;
+    font-size: 0.9rem;
+    color: #eee;
+    margin-bottom: 8px;
+}
+
+/* IL BOTTONE INTEGRATO */
+.card-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    background: rgba(255, 255, 255, 0.03); /* Quasi trasparente di base */
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    transition: 0.3s;
+}
+

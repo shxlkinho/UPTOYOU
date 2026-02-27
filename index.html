@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Up to You - Orientamento</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Lezioni ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Elementari</a></li>
+                        <li><a href="#">Medie</a></li>
+                        <li><a href="#">Superiori</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Orientati ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="rapido.html">Orientamento Rapido</a></li>
+                        <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    </ul>
+                </li>
+                <li><a href="#contact">Contatti</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="slider-container">
+            <div class="slider-track">
+                <div class="slide"><img src="https://picsum.photos/id/10/1200/800" alt="Orientamento"></div>
+                <div class="slide"><img src="https://picsum.photos/id/20/1200/800" alt="Studio"></div>
+                <div class="slide"><img src="https://picsum.photos/id/30/1200/800" alt="Futuro"></div>
+            </div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-text-top">
+                <h1>Up to You</h1>
+                <p class="subtitle">Clear choices, bright Future.</p>
+            </div>
+            
+            <div class="expand-container" id="expandContainer">
+                <button class="btn" id="discoverBtn">Scopri di più</button>
+                <div class="expand-text" id="expandText">
+                    <p>
+                        <strong>UpToYou</strong> è un ecosistema di orientamento per tutti: dalle medie alle superiori, fino al lavoro. 
+                        Offriamo lezioni e recensioni delle scuole per capire se la qualità didattica è valida. <br>
+                        Esplora l'<strong>Orientamento Rapido</strong> o l'<strong>Orientamento Guidato</strong> tramite la sezione <strong>"Orientati"</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<div class="bottom-bridge">
+    <button class="who-we-are-btn" id="openVideo">
+        Chi Siamo <span class="arrow-up">↑</span>
+    </button>
+</div>
+
+<div class="video-overlay" id="videoOverlay">
+    <div class="video-modal">
+        <button class="close-video" id="closeVideo">&times;</button>
+        <div class="video-responsive">
+           <iframe id="ytPlayer" 
+    src="https://www.youtube-nocookie.com/embed/moaY0MqJ0_M?rel=0&enablejsapi=1" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+</iframe>
+        </div>
+        <h3>Benvenuti in UpToYou!!</h3>
+    </div>
+</div>
+
+    <section class="cards">
+        <div class="card">
+            <div class="card-icon">🧭</div>
+            <h2>Orientati</h2>
+            <p>Trova la tua rotta con i nostri test rapidi e guidati per scegliere la scuola giusta.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">📚</div>
+            <h2>Impara</h2>
+            <p>Lezioni mirate e materiali di supporto per non restare mai indietro nello studio.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🚀</div>
+            <h2>Formati</h2>
+            <p>Leggi recensioni reali e scopri gli sbocchi lavorativi per costruire il tuo futuro.</p>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <p>Up to You 2026. Tutti i diritti riservati. ❤️</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
