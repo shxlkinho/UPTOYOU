@@ -37,8 +37,13 @@
         }
         .materia-btn img {
             width: 100%;
-            height: 150px;
+            height: 180px; /* Leggermente più alto per un look migliore */
             object-fit: cover;
+            filter: brightness(0.8); /* Immagini leggermente più scure per far risaltare il testo */
+            transition: 0.4s;
+        }
+        .materia-btn:hover img {
+            filter: brightness(1);
         }
         .materia-btn span {
             padding: 20px;
@@ -59,14 +64,14 @@
 
     <header>
         <nav class="navbar">
-            <div class="logo"><a href="index.html" style="text-decoration:none; color:inherit;">MY<span>WEB</span></a></div>
+            <div class="logo"><a href="index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li class="dropdown">
                     <a href="#">Lezioni ▾</a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Elementari</a></li>
-                        <li><a href="#">Medie</a></li>
+                        <li><a href="elementari.html">Elementari</a></li>
+                        <li><a href="medie.html">Medie</a></li>
                         <li><a href="#">Superiori</a></li>
                     </ul>
                 </li>
@@ -79,25 +84,63 @@
                 </li>
                 <li><a href="index.html#contact">Contatti</a></li>
             </ul>
-            <div class="hamburger"><span></span><span></span><span></span></div>
         </nav>
     </header>
 
     <section class="grid-section">
         <h1>Orientamento Rapido</h1>
-        <p>Scegli una materia per scoprire il tuo percorso alle medie.</p>
+       <p class="intro-p"> Scegli una materia per scoprire il tuo percorso alle medie.</p>
         
         <div class="grid-container">
-            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/1/400/250"><span>Italiano</span></a>
-            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/2/400/250"><span>Matematica</span></a>
-            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/3/400/250"><span>Inglese</span></a>
-            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/4/400/250"><span>Storia</span></a>
-            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/5/400/250"><span>Geografia</span></a>
-            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/6/400/250"><span>Scienze</span></a>
-            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/7/400/250"><span>Arte</span></a>
-            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/8/400/250"><span>Musica</span></a>
-            <a href="#" class="materia-btn"><img src="https://picsum.photos/id/9/400/250"><span>Tecnologia</span></a>
-            <a href="#" class="materia-btn last"><img src="https://picsum.photos/id/11/400/250"><span>Ed. Fisica</span></a>
+            <a href="#" class="materia-btn">
+                <img src="https://images.unsplash.com/photo-1491845339675-d22610ff1619?q=80&w=400&h=250&fit=crop">
+                <span>Italiano</span>
+            </a>
+            
+            <a href="#" class="materia-btn">
+                <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?q=80&w=400&h=250&fit=crop">
+                <span>Matematica</span>
+            </a>
+            
+            <a href="#" class="materia-btn">
+                <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=400&h=250&fit=crop">
+                <span>Inglese</span>
+            </a>
+            
+            <a href="#" class="materia-btn">
+                <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=400&h=250&fit=crop">
+                <span>Storia</span>
+            </a>
+            
+            <a href="#" class="materia-btn">
+                <img src="https://images.unsplash.com/photo-1521295121783-8a321d551ad2?q=80&w=400&h=250&fit=crop">
+                <span>Geografia</span>
+            </a>
+            
+            <a href="#" class="materia-btn">
+                <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=400&h=250&fit=crop">
+                <span>Scienze</span>
+            </a>
+            
+            <a href="#" class="materia-btn">
+                <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=400&h=250&fit=crop">
+                <span>Arte</span>
+            </a>
+            
+            <a href="#" class="materia-btn">
+                <img src="https://images.unsplash.com/photo-1507838596758-08b17813c0ef?q=80&w=400&h=250&fit=crop">
+                <span>Musica</span>
+            </a>
+            
+            <a href="#" class="materia-btn">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=400&h=250&fit=crop">
+                <span>Tecnologia</span>
+            </a>
+            
+            <a href="#" class="materia-btn last">
+                <img src="https://images.unsplash.com/photo-1461891213817-54740f975440?q=80&w=400&h=250&fit=crop">
+                <span>Ed. Fisica</span>
+            </a>
         </div>
     </section>
 
