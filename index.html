@@ -6,6 +6,84 @@
     <title>Up to You - Orientamento</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* Stile per il pulsante test arancione */
+        .btn-test {
+            display: inline-block;
+            background-color: #ff6600; 
+            color: white;
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse-orange 2s infinite;
+        }
+
+        .btn-test:hover {
+            background-color: #ff8533;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.6);
+        }
+
+        @keyframes pulse-orange {
+            0% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 102, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0); }
+        }
+
+        /* Modifica richiesta: riquadro espandibile con 6px extra sopra e sotto */
+        .expand-text {
+            padding-top: 6px;    /* 6px extra in alto */
+            padding-bottom: 6px; /* 6px extra in basso */
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        /* Sezione del test */
+        #test-section {
+            display: none;
+            position: relative;
+            padding: 80px 0 50px 0;
+            background: #0d0d0d;
+            animation: fadeIn 0.8s ease;
+        }
+
+        /* Tasto X per chiudere */
+        .close-test-btn {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            z-index: 10;
+        }
+
+        .close-test-btn:hover {
+            background: #ff6600;
+            transform: rotate(90deg);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
@@ -60,31 +138,34 @@
                         Offriamo lezioni, recensioni autentiche delle scuole e percorsi pensati per valorizzare il tuo potenziale. <br>
                         Esplora i nostri percorsi di Orientamento nella sezione <strong>"Orientati"</strong> e scegli quello che preferisci:<br>⚡ <strong>Orientamento Rapido</strong> <br>🎯 <strong>Orientamento Guidato</strong> 
                     </p>
+                    
+                    <p style="margin-top: 20px; font-weight: 600; color: #ff6600;">Non sai che indirizzo scegliere?</p>
+                    <button class="btn-test" onclick="showTest()">Fai il nostro test</button>
                 </div>
             </div>
         </div>
     </section>
 
-<div class="bottom-bridge">
-    <button class="who-we-are-btn" id="openVideo">
-        Chi Siamo <span class="arrow-up">↑</span>
-    </button>
-</div>
+    <section id="test-section">
+        <button class="close-test-btn" onclick="closeTest()">&times;</button>
+        <iframe src="test.html" id="testIframe" width="100%" height="750px" frameborder="0"></iframe>
+    </section>
 
-<div class="video-overlay" id="videoOverlay">
-    <div class="video-modal">
-        <button class="close-video" id="closeVideo">&times;</button>
-        <div class="video-responsive">
-           <iframe id="ytPlayer" 
-    src="https://www.youtube-nocookie.com/embed/moaY0MqJ0_M?rel=0&enablejsapi=1" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-    allowfullscreen>
-</iframe>
-        </div>
-        <h3>Benvenuti in UpToYou!!</h3>
+    <div class="bottom-bridge">
+        <button class="who-we-are-btn" id="openVideo">
+            Chi Siamo <span class="arrow-up">↑</span>
+        </button>
     </div>
-</div>
+
+    <div class="video-overlay" id="videoOverlay">
+        <div class="video-modal">
+            <button class="close-video" id="closeVideo">&times;</button>
+            <div class="video-responsive">
+               <iframe id="ytPlayer" src="https://www.youtube-nocookie.com/embed/moaY0MqJ0_M?rel=0&enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <h3>Benvenuti in UpToYou!!</h3>
+        </div>
+    </div>
 
     <section class="cards">
         <div class="card">
@@ -108,6 +189,25 @@
         <p>Up to You 2026. Tutti i diritti riservati. ❤️</p>
     </footer>
 
+    <script>
+        function showTest() {
+            const testSection = document.getElementById('test-section');
+            testSection.style.display = 'block';
+            testSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeTest() {
+            const testSection = document.getElementById('test-section');
+            testSection.style.display = 'none';
+            document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.addEventListener('message', function(event) {
+            if (event.data === 'closeQuiz') {
+                closeTest();
+            }
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
