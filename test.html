@@ -94,8 +94,9 @@
             q: "Pensando al tuo futuro dopo la scuola superiore...", 
             type: "uni_check",
             a: [
-                {t:"Voglio assolutamente andare all'Università.", val: true},
-                {t:"Voglio imparare un mestiere e lavorare subito.", val: false}
+                {t:"Voglio assolutamente andare all'Università.", val: "yes"},
+                {t:"Voglio imparare un mestiere e lavorare subito.", val: "no"},
+                {t:"Non lo so ancora / Forse.", val: "maybe"}
             ] 
         },
         { 
@@ -137,13 +138,93 @@
                 {t:"Controllare ogni tecnologia col pensiero.", p:{T:3, S:1}}, 
                 {t:"Risolvere istantaneamente conflitti tra persone.", p:{H:3, E:2}}
             ] 
+        },
+        { 
+            q: "Come preferisci informarti sulle notizie del mondo?", 
+            a: [
+                {t:"Leggo editoriali di approfondimento e politica.", p:{U:2, E:2}}, 
+                {t:"Guardo video tecnici o scientifici su YouTube.", p:{T:2, S:2}}, 
+                {t:"Seguo blog di tendenze, arte e costume.", p:{A:3}}
+            ] 
+        },
+        { 
+            q: "Ti appassiona di più capire...", 
+            a: [
+                {t:"Come si evolve il DNA e la vita sulla Terra.", p:{S:3}}, 
+                {t:"Come si convince una folla o si vende un'idea.", p:{E:3, H:1}}, 
+                {t:"Come funzionano i circuiti e l'intelligenza artificiale.", p:{T:3}}
+            ] 
+        },
+        { 
+            q: "Sei in un museo della scienza. Cosa ti cattura?", 
+            a: [
+                {t:"I reperti fossili e le antiche civiltà.", p:{U:3, S:1}}, 
+                {t:"I prototipi di motori e i simulatori di volo.", p:{T:3}}, 
+                {t:"Le installazioni visive e il design della mostra.", p:{A:3}}
+            ] 
+        },
+        { 
+            q: "Dovendo pianificare un viaggio avventuroso:", 
+            a: [
+                {t:"Studio la lingua e la storia locale per mesi.", p:{U:3}}, 
+                {t:"Ottimizzo i costi e trovo i voli più convenienti.", p:{E:3}}, 
+                {t:"Preparo l'attrezzatura tecnica e le mappe digitali.", p:{T:3, S:1}}
+            ] 
+        },
+        { 
+            q: "Quale sfida ti stimola di più in un pomeriggio libero?", 
+            a: [
+                {t:"Imparare a suonare uno strumento o disegnare.", p:{A:3, U:1}}, 
+                {t:"Smontare e capire come funziona un vecchio apparecchio.", p:{T:3}}, 
+                {t:"Organizzare un evento o una partita con molti amici.", p:{H:2, E:2}}
+            ] 
+        },
+        { 
+            q: "Cosa pensi della matematica?", 
+            a: [
+                {t:"È la lingua universale che spiega la natura.", p:{S:3, T:1}}, 
+                {t:"È uno strumento utile per gestire soldi e affari.", p:{E:3}}, 
+                {t:"È un esercizio logico, ma preferisco la creatività.", p:{A:2, U:2}}
+            ] 
+        },
+        { 
+            q: "Ti piacerebbe di più lavorare per...", 
+            a: [
+                {t:"Un'organizzazione che protegge i diritti umani.", p:{H:3, U:1}}, 
+                {t:"Un'azienda spaziale o un laboratorio di ricerca.", p:{S:3, T:1}}, 
+                {t:"Una banca d'investimento o una multinazionale.", p:{E:3}}
+            ] 
+        },
+        { 
+            q: "Cosa trovi più affascinante dell'essere umano?", 
+            a: [
+                {t:"La sua capacità di creare bellezza e arte.", p:{A:3}}, 
+                {t:"Il funzionamento chimico e biologico del corpo.", p:{S:3}}, 
+                {t:"Il modo in cui comunica e vive in società.", p:{H:3, U:1}}
+            ] 
+        },
+        { 
+            q: "Se dovessi risolvere un'emergenza in città:", 
+            a: [
+                {t:"Mi occuperei di calmare e aiutare le persone.", p:{H:3}}, 
+                {t:"Analizzerei i dati per capire la causa tecnica.", p:{T:2, S:2}}, 
+                {t:"Coordinerei le risorse finanziarie per i soccorsi.", p:{E:3}}
+            ] 
+        },
+        { 
+            q: "Quale materia extra vorresti venisse insegnata a scuola?", 
+            a: [
+                {t:"Psicologia e gestione delle emozioni.", p:{H:3, U:1}}, 
+                {t:"Coding e robotica avanzata.", p:{T:3}}, 
+                {t:"Finanza personale e gestione aziendale.", p:{E:3}}
+            ] 
         }
     ];
 
     let currentQ = 0;
     let scores = { S:0, U:0, E:0, A:0, T:0, H:0 };
     let scoreHistory = [];
-    let wantsUni = true;
+    let wantsUni = "maybe";
 
     function loadQuestion() {
         const q = questions[currentQ];
@@ -212,14 +293,20 @@
         let indirizzo = "";
         let desc = "";
 
-        if (wantsUni) {
+        // Se l'utente è indeciso (maybe) o vuole l'università, mostriamo i Licei (percorso più sicuro per non chiudere porte)
+        if (wantsUni === "yes" || wantsUni === "maybe") {
             if(winner === 'S') { indirizzo = "Liceo Scientifico"; desc = "Ideale per chi vuole scoprire le leggi del mondo e puntare a carriere mediche o ingegneristiche."; }
             else if(winner === 'U') { indirizzo = "Liceo Classico o Linguistico"; desc = "Perfetto per chi ama la storia, le parole e vuole capire le radici della nostra cultura."; }
             else if(winner === 'E') { indirizzo = "Liceo Economico Sociale (LES)"; desc = "Un mix moderno tra diritto, economia e scienze umane per capire la società attuale."; }
             else if(winner === 'A') { indirizzo = "Liceo Artistico"; desc = "Per chi ha bisogno di esprimersi visivamente e vuole studiare la storia della bellezza."; }
             else if(winner === 'T') { indirizzo = "Liceo Scientifico (Scienze Applicate)"; desc = "Tanta scienza e informatica, perfetto per chi punta a Informatica o Ingegneria pura."; }
             else if(winner === 'H') { indirizzo = "Liceo delle Scienze Umane"; desc = "Per chi vuole studiare la psicologia e la mente umana a livello teorico."; }
+            
+            if (wantsUni === "maybe") {
+                desc += " Abbiamo scelto un Liceo perché sei indeciso: questo percorso ti garantisce una preparazione solida per ogni scelta futura.";
+            }
         } else {
+            // Percorsi Tecnici / Professionali
             if(winner === 'S') { indirizzo = "IT Chimica o Biotecnologie"; desc = "Laboratorio puro. Impari subito ad analizzare sostanze e processi biologici."; }
             else if(winner === 'U') { indirizzo = "Tecnico per il Turismo"; desc = "Lingue applicate al lavoro e alla gestione del territorio."; }
             else if(winner === 'E') { indirizzo = "Tecnico Economico (AFM)"; desc = "Ragioneria, marketing e gestione aziendale. Impari a far quadrare i conti."; }
