@@ -3,20 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Up To You - Test Orientamento</title>
+    <title>Up To You - Test Orientamento Avanzato</title>
     <style>
-        :root { --primary: #4facfe; --bg: #0d0d0d; --card: #161616; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .quiz-container { max-width: 600px; width: 90%; background: var(--card); padding: 40px; border-radius: 24px; border: 1px solid #333; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .progress-bar { width: 100%; height: 6px; background: #222; border-radius: 10px; margin-bottom: 30px; overflow: hidden; }
-        #progress-fill { width: 0%; height: 100%; background: var(--primary); transition: 0.4s; }
-        .question { font-size: 1.5rem; font-weight: bold; margin-bottom: 25px; line-height: 1.4; color: #fff; }
-        .options button { display: block; width: 100%; padding: 18px; margin: 12px 0; background: #1e1e1e; border: 1px solid #333; color: #ccc; border-radius: 12px; cursor: pointer; transition: 0.2s; text-align: left; font-size: 1rem; }
+        :root { --primary: #ff6600; --bg: #0d0d0d; --card: #161616; --secondary: #4facfe; }
+        body { background: var(--bg); color: white; font-family: 'Poppins', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+        .quiz-container { max-width: 650px; width: 95%; background: var(--card); padding: 30px; border-radius: 24px; border: 1px solid #333; box-shadow: 0 20px 50px rgba(0,0,0,0.5); position: relative; }
+        
+        .progress-bar { width: 100%; height: 6px; background: #222; border-radius: 10px; margin-bottom: 25px; overflow: hidden; }
+        #progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--secondary), var(--primary)); transition: 0.4s; }
+        
+        .question { font-size: 1.4rem; font-weight: 600; margin-bottom: 20px; line-height: 1.4; color: #fff; min-height: 80px; }
+        .options button { display: block; width: 100%; padding: 16px; margin: 10px 0; background: #1e1e1e; border: 1px solid #333; color: #ccc; border-radius: 12px; cursor: pointer; transition: 0.2s; text-align: left; font-size: 1rem; }
         .options button:hover { border-color: var(--primary); background: #252525; color: white; transform: translateX(5px); }
-        #result { display: none; animation: fadeIn 0.5s; }
-        .materia-tag { display: inline-block; background: rgba(79, 172, 254, 0.1); color: var(--primary); padding: 8px 20px; border-radius: 50px; margin: 8px; font-weight: bold; border: 1px solid var(--primary); }
-        .conclusion { font-size: 1.2rem; margin-top: 20px; color: #aaa; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .nav-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-back { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: 0.3s; }
+        .btn-back:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-back:hover:not(:disabled) { background: #444; }
+
+        #result { display: none; animation: fadeIn 0.6s ease-out; text-align: center; }
+        .materia-tag { display: inline-block; background: rgba(255, 102, 0, 0.1); color: var(--primary); padding: 8px 18px; border-radius: 50px; margin: 5px; font-weight: bold; border: 1px solid var(--primary); font-size: 0.9rem; }
+        .conclusion { font-size: 1.1rem; margin-top: 20px; color: #aaa; line-height: 1.5; }
+        
+        .close-final { background: var(--primary); border: none; color: white; padding: 15px 30px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%; font-size: 1.1rem; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -24,70 +35,123 @@
 <div class="quiz-container">
     <div id="quiz">
         <div class="progress-bar"><div id="progress-fill"></div></div>
-        <div class="question" id="q-text">Prepariamo il tuo futuro...</div>
+        <div class="question" id="q-text">Caricamento...</div>
         <div class="options" id="q-options"></div>
+        <div class="nav-buttons">
+            <button class="btn-back" id="back-btn" onclick="goBack()" disabled>← Indietro</button>
+        </div>
     </div>
 
     <div id="result">
-        <h2 style="font-size: 2rem;">Il tuo DNA Up To You</h2>
-        <p style="color: #888;">Ecco le 3 aree dove hai più potenziale:</p>
+        <h2 style="font-size: 1.8rem; margin-bottom: 10px;">Analisi Completata 🎯</h2>
+        <p style="color: #888;">Le tue aree di forza sono:</p>
         <div id="top-materie"></div>
-        <div style="margin: 30px 0; height: 1px; background: #333;"></div>
-        <h3 id="indirizzo-consigliato" style="color: var(--primary); font-size: 1.8rem;"></h3>
-        <p class="conclusion">Questo profilo indica che ami unire la teoria alla pratica. Non sprecarla.</p>
-        <button onclick="location.reload()" style="background: var(--primary); border: none; color: black; padding: 15px 30px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%;">Ricomincia il test</button>
+        <div style="margin: 25px 0; height: 1px; background: #333;"></div>
+        <p style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; color: var(--secondary); margin-bottom: 5px;">Percorso Consigliato</p>
+        <h3 id="indirizzo-consigliato" style="color: white; font-size: 2rem; margin-top: 0;"></h3>
+        <p class="conclusion" id="descrizione-indirizzo"></p>
+        
+        <button class="close-final" onclick="parent.postMessage('closeQuiz', '*')">Chiudi e torna alla Home</button>
+        <p onclick="location.reload()" style="color: #555; cursor: pointer; margin-top: 15px; font-size: 0.9rem;">Rifai il test</p>
     </div>
 </div>
 
 <script>
     const questions = [
-        // 1-5: Personalità e Approccio
-        { q: "Ti regalano un set LEGO complesso. Cosa fai?", a: [{t:"Seguo le istruzioni al millimetro.", p:{S:2, T:1}}, {t:"Butto le istruzioni e creo qualcosa di mio.", p:{A:3}}, {t:"Cerco di capire come motorizzarlo.", p:{T:3, S:1}}] },
-        { q: "Un tuo amico è triste. Come intervieni?", a: [{t:"Lo ascolto per ore e cerco di capirlo.", p:{H:3}}, {t:"Gli offro una soluzione pratica al problema.", p:{E:2, T:1}}, {t:"Lo porto a fare qualcosa di creativo per distrarlo.", p:{A:2, U:1}}] },
-        { q: "Serie TV preferita: quale genere vince?", a: [{t:"Documentari scientifici o Crime (indagini).", p:{S:3, H:1}}, {t:"Drammi storici o serie d'autore.", p:{U:3, A:1}}, {t:"Business, soldi e potere.", p:{E:3}}] },
-        { q: "In un videogioco, chi sei?", a: [{t:"Il leader che decide la strategia della squadra.", p:{E:3, H:1}}, {t:"Quello che builda l'attrezzatura e le armi.", p:{T:3, S:1}}, {t:"Quello che esplora la storia e il mondo.", p:{U:2, A:2}}] },
-        { q: "Sei bloccato su un problema difficile. Come reagisci?", a: [{t:"Non dormo finché non trovo la logica dietro.", p:{S:3, T:1}}, {t:"Chiedo agli altri per confrontarmi.", p:{H:3, E:1}}, {t:"Provo strade assurde che nessuno ha pensato.", p:{A:3}}] },
-        
-        // 6-15: Interessi Pratici
-        { q: "Cosa ti attira di più di uno smartphone?", a: [{t:"La potenza del processore e il codice.", p:{T:3, S:1}}, {t:"Il design e la qualità della fotocamera.", p:{A:3}}, {t:"Quanto è utile per gestire impegni e contatti.", p:{E:3}}] },
-        { q: "Ti dicono di scrivere un articolo. Di cosa parli?", a: [{t:"Di un evento storico o un libro.", p:{U:3}}, {t:"Di come fare soldi o risparmiare.", p:{E:3}}, {t:"Di una nuova scoperta medica o spaziale.", p:{S:3}}] },
-        { q: "Laboratorio scolastico: cosa vorresti fare?", a: [{t:"Analizzare il DNA o fare reazioni chimiche.", p:{S:3, H:1}}, {t:"Montare un motore o saldare circuiti.", p:{T:3}}, {t:"Analizzare come le persone reagiscono a degli stimoli.", p:{H:3, U:1}}] },
-        { q: "Hai 500€ da investire. Cosa compri?", a: [{t:"Attrezzatura per un'attività o un piccolo business.", p:{E:3}}, {t:"Un corso di disegno digitale o uno strumento.", p:{A:3}}, {t:"Componenti per un PC o un drone.", p:{T:3}}] },
-        { q: "Ti piace viaggiare per...", a: [{t:"Vedere musei e monumenti antichi.", p:{U:3, A:1}}, {t:"Conoscere nuove persone e le loro storie.", p:{H:3, U:1}}, {t:"Vedere le metropoli moderne e la tecnologia.", p:{T:2, E:2}}] },
-        
-        // 16-30: Attitudini Mentali (Mix veloce)
-        { q: "Pensi che le regole siano...", a: [{t:"Necessarie per far funzionare il sistema.", p:{E:3, U:1}}, {t:"Limiti che la creatività deve superare.", p:{A:3}}, {t:"Leggi di natura che vanno scoperte.", p:{S:3}}] },
-        { q: "Come te la cavi con le lingue straniere?", a: [{t:"Mi piace come suonano e la loro letteratura.", p:{U:3, A:1}}, {t:"Mi servono per comunicare e fare carriera.", p:{E:3, H:1}}, {t:"Preferisco i linguaggi di programmazione.", p:{T:3, S:1}}] },
-        { q: "Cosa faresti se trovassi un bug in un sito?", a: [{t:"Cercherei di capire come correggerlo.", p:{T:3, S:1}}, {t:"Manderei una mail formale per segnalarlo.", p:{E:2, U:1}}, {t:"Penserei a quanto è brutto il sito graficamente.", p:{A:3}}] },
-        { q: "La politica ti interessa?", a: [{t:"Sì, per capire come gestire la società.", p:{E:2, U:2}}, {t:"Solo se si parla di diritti e psicologia umana.", p:{H:3}}, {t:"No, preferisco i fatti concreti.", p:{T:2, S:1}}] },
-        { q: "Se potessi parlare con un personaggio famoso:", a: [{t:"Elon Musk o Steve Jobs.", p:{E:2, T:2}}, {t:"Dante o Alessandro Magno.", p:{U:3}}, {t:"Einstein o Marie Curie.", p:{S:3}}] },
-        { q: "In cucina sei quello che...", a: [{t:"Segue la ricetta scientificamente.", p:{S:2, T:1}}, {t:"Improvvisa in base all'ispirazione.", p:{A:3}}, {t:"Organizza la cena per tutti gli amici.", p:{H:3, E:1}}] },
-        { q: "Ti senti più a tuo agio tra...", a: [{t:"Libri e polvere di biblioteca.", p:{U:3}}, {t:"Computer e cavi elettrici.", p:{T:3}}, {t:"Gente che discute e progetta.", p:{E:3, H:1}}] },
-        { q: "Un'app deve essere prima di tutto...", a: [{t:"Veloce e senza errori.", p:{S:2, T:2}}, {t:"Facile da usare e bella.", p:{A:3}}, {t:"Utile per fare qualcosa di concreto.", p:{E:3}}] },
-        { q: "Il corpo umano è...", a: [{t:"Una macchina biologica perfetta.", p:{S:3, H:1}}, {t:"Un tempio di emozioni e pensieri.", p:{H:3, U:1}}, {t:"Uno strumento per fare sport e azione.", p:{T:1, H:1}}] },
-        { q: "Ti piace il dibattito?", a: [{t:"Sì, mi piace convincere gli altri con la logica.", p:{E:2, U:2}}, {t:"Sì, ma solo per capire il punto di vista altrui.", p:{H:3}}, {t:"No, le chiacchiere non servono a nulla.", p:{T:3}}] },
-        { q: "Ti dicono 'Immagina il futuro tra 100 anni'. Cosa vedi?", a: [{t:"Città verdi e scoperte spaziali.", p:{S:3, A:1}}, {t:"Una società governata da IA e robot.", p:{T:3, E:1}}, {t:"Una nuova forma di filosofia e arte.", p:{U:2, A:2}}] },
-        { q: "Sei bravo a gestire i tuoi soldi?", a: [{t:"Sì, tengo traccia di ogni centesimo.", p:{E:3}}, {t:"No, li spendo per le mie passioni.", p:{A:2, H:1}}, {t:"Li metto via per comprare strumenti tecnici.", p:{T:3}}] },
-        { q: "Preferiresti salvare...", a: [{t:"Un'opera d'arte unica al mondo.", p:{A:3, U:1}}, {t:"Una foresta in fiamme.", p:{S:3, H:1}}, {t:"Un'azienda che dà lavoro a migliaia di persone.", p:{E:3}}] },
-        { q: "Cosa ti rilassa di più?", a: [{t:"Disegnare o ascoltare musica.", p:{A:3}}, {t:"Risolvere un puzzle o giocare a scacchi.", p:{S:3, T:1}}, {t:"Uscire e parlare con le persone.", p:{H:3}}] },
-        { q: "Ti senti più portato per...", a: [{t:"Le materie dove c'è una risposta esatta.", p:{S:3, T:1}}, {t:"Le materie dove si può interpretare.", p:{U:3, A:2}}, {t:"Le materie che insegnano a gestire cose.", p:{E:3}}] },
-        { q: "L'inquinamento si combatte con...", a: [{t:"Nuove invenzioni e tecnologie.", p:{T:3, S:1}}, {t:"Nuove leggi e tasse economiche.", p:{E:3}}, {t:"Educazione e sensibilizzazione delle persone.", p:{H:3, U:1}}] },
-        { q: "Cosa pensi della matematica?", a: [{t:"È la lingua dell'universo.", p:{S:3}}, {t:"È noiosa se non serve a costruire qualcosa.", p:{T:3}}, {t:"È un male necessario per gli affari.", p:{E:2}}] },
-        { q: "Ti piacerebbe avere un lavoro dove...", a: [{t:"Stai in laboratorio o davanti al PC.", p:{S:2, T:2}}, {t:"Viaggi e incontri clienti/persone.", p:{E:2, H:2}}, {t:"Crei contenuti o scrivi.", p:{A:2, U:2}}] },
-        { q: "Preferiresti scoprire...", a: [{t:"La cura per una malattia.", p:{S:2, H:2}}, {t:"Un nuovo pianeta abitabile.", p:{S:3, T:1}}, {t:"Un modo per eliminare la povertà.", p:{E:3, U:1}}] },
-        { q: "Ultima domanda: scegli d'istinto.", a: [{t:"Mente.", p:{S:3, T:2}}, {t:"Cuore.", p:{H:3, A:2}}, {t:"Azione.", p:{E:3, T:1}}] }
+        { 
+            q: "Ti viene affidato un progetto di gruppo. Quale ruolo scegli d'istinto?", 
+            a: [
+                {t:"Il coordinatore: gestisco scadenze e persone.", p:{E:3, H:1}}, 
+                {t:"Il tecnico: mi occupo della realizzazione pratica o digitale.", p:{T:3, S:1}}, 
+                {t:"L'ideatore: curo la parte creativa e estetica.", p:{A:3, U:1}}
+            ] 
+        },
+        { 
+            q: "Davanti a un problema tecnico (es. un'app che non va), come ti comporti?", 
+            a: [
+                {t:"Analizzo i dati e la logica per trovare l'errore.", p:{S:3, T:2}}, 
+                {t:"Cerco un tutorial o smonto pezzi finché non funziona.", p:{T:3}}, 
+                {t:"Chiedo a qualcuno spiegando il problema chiaramente.", p:{H:2, E:1}}
+            ] 
+        },
+        { 
+            q: "Quale di queste attività ti darebbe più soddisfazione?", 
+            a: [
+                {t:"Scrivere un racconto o analizzare un testo antico.", p:{U:3, A:1}}, 
+                {t:"Progettare un piano per far guadagnare un'azienda.", p:{E:3}}, 
+                {t:"Svolgere una ricerca di laboratorio su virus o stelle.", p:{S:3}}
+            ] 
+        },
+        { 
+            q: "In una discussione su temi sociali (es. ambiente o diritti):", 
+            a: [
+                {t:"Cerco di capire l'impatto psicologico sulle persone.", p:{H:3, U:1}}, 
+                {t:"Cerco soluzioni economiche o politiche concrete.", p:{E:3, U:1}}, 
+                {t:"Cerco dati scientifici che provino i fatti.", p:{S:3, T:1}}
+            ] 
+        },
+        { 
+            q: "Pensando al tuo futuro dopo la scuola superiore...", 
+            type: "uni_check",
+            a: [
+                {t:"Voglio assolutamente andare all'Università.", val: true},
+                {t:"Voglio imparare un mestiere e lavorare subito.", val: false}
+            ] 
+        },
+        { 
+            q: "Cosa trovi più stimolante studiare?", 
+            a: [
+                {t:"Come funzionano i mercati e il diritto.", p:{E:3}}, 
+                {t:"L'evoluzione del pensiero umano e dell'arte.", p:{U:3, A:2}}, 
+                {t:"L'anatomia umana o la fisica delle particelle.", p:{S:3, H:1}}
+            ] 
+        },
+        { 
+            q: "Se dovessi creare una tua Startup, di cosa si occuperebbe?", 
+            a: [
+                {t:"Sviluppo di software o hardware innovativo.", p:{T:3, S:1}}, 
+                {t:"Consulenza d'immagine, moda o design.", p:{A:3, E:1}}, 
+                {t:"Servizi di assistenza e benessere per la comunità.", p:{H:3, E:1}}
+            ] 
+        },
+        { 
+            q: "Immagina di dover riparare un oggetto rotto:", 
+            a: [
+                {t:"Leggo tutto il manuale teorico prima di toccarlo.", p:{S:2, U:1}}, 
+                {t:"Inizio subito a provare combinazioni diverse.", p:{T:3, A:1}}, 
+                {t:"Chiamo un amico esperto e collaboriamo.", p:{H:3, E:1}}
+            ] 
+        },
+        { 
+            q: "Cosa ti spaventa di più in un lavoro futuro?", 
+            a: [
+                {t:"Stare chiuso in un ufficio senza contatti umani.", p:{H:3, E:2}}, 
+                {t:"Dover fare calcoli o compiti ripetitivi.", p:{A:2, U:2}}, 
+                {t:"Non avere una logica chiara in quello che faccio.", p:{S:3, T:2}}
+            ] 
+        },
+        { 
+            q: "Scegli un superpotere:", 
+            a: [
+                {t:"Viaggiare nel tempo per vedere la storia.", p:{U:3, A:1}}, 
+                {t:"Controllare ogni tecnologia col pensiero.", p:{T:3, S:1}}, 
+                {t:"Risolvere istantaneamente conflitti tra persone.", p:{H:3, E:2}}
+            ] 
+        }
     ];
 
     let currentQ = 0;
     let scores = { S:0, U:0, E:0, A:0, T:0, H:0 };
+    let scoreHistory = [];
+    let wantsUni = true;
 
     function loadQuestion() {
-        if (currentQ >= questions.length) return showResult();
+        const q = questions[currentQ];
+        document.getElementById("back-btn").disabled = currentQ === 0;
         
         const progress = (currentQ / questions.length) * 100;
         document.getElementById("progress-fill").style.width = `${progress}%`;
         
-        const q = questions[currentQ];
         document.getElementById("q-text").innerText = q.q;
         const optionsDiv = document.getElementById("q-options");
         optionsDiv.innerHTML = "";
@@ -96,12 +160,30 @@
             const btn = document.createElement("button");
             btn.innerText = ans.t;
             btn.onclick = () => {
-                for(let cat in ans.p) scores[cat] += ans.p[cat];
+                scoreHistory.push({ scores: JSON.parse(JSON.stringify(scores)), wantsUni: wantsUni });
+                
+                if (q.type === "uni_check") {
+                    wantsUni = ans.val;
+                } else {
+                    for(let cat in ans.p) scores[cat] += ans.p[cat];
+                }
+                
                 currentQ++;
-                loadQuestion();
+                if (currentQ < questions.length) loadQuestion();
+                else showResult();
             };
             optionsDiv.appendChild(btn);
         });
+    }
+
+    function goBack() {
+        if (currentQ > 0) {
+            currentQ--;
+            const history = scoreHistory.pop();
+            scores = history.scores;
+            wantsUni = history.wantsUni;
+            loadQuestion();
+        }
     }
 
     function showResult() {
@@ -110,10 +192,10 @@
 
         const mapping = {
             S: "Scienze e Ricerca",
-            U: "Cultura e Lingue",
-            E: "Business e Management",
-            A: "Design e Creatività",
-            T: "Tech e Innovazione",
+            U: "Umanistica e Lingue",
+            E: "Economia e Diritto",
+            A: "Arte e Design",
+            T: "Tecnologia e Meccanica",
             H: "Sociale e Salute"
         };
 
@@ -128,14 +210,26 @@
 
         let winner = top3[0][0];
         let indirizzo = "";
-        if(winner === 'S') indirizzo = "Liceo Scientifico o Biotecnologie";
-        else if(winner === 'U') indirizzo = "Liceo Classico o Linguistico";
-        else if(winner === 'E') indirizzo = "Tecnico Economico o Scienze Umane (LES)";
-        else if(winner === 'A') indirizzo = "Liceo Artistico o Grafica e Comunicazione";
-        else if(winner === 'T') indirizzo = "Tecnico Informatico o Meccanico";
-        else if(winner === 'H') indirizzo = "Scienze Umane o Professionale Socio-Sanitario";
+        let desc = "";
+
+        if (wantsUni) {
+            if(winner === 'S') { indirizzo = "Liceo Scientifico"; desc = "Ideale per chi vuole scoprire le leggi del mondo e puntare a carriere mediche o ingegneristiche."; }
+            else if(winner === 'U') { indirizzo = "Liceo Classico o Linguistico"; desc = "Perfetto per chi ama la storia, le parole e vuole capire le radici della nostra cultura."; }
+            else if(winner === 'E') { indirizzo = "Liceo Economico Sociale (LES)"; desc = "Un mix moderno tra diritto, economia e scienze umane per capire la società attuale."; }
+            else if(winner === 'A') { indirizzo = "Liceo Artistico"; desc = "Per chi ha bisogno di esprimersi visivamente e vuole studiare la storia della bellezza."; }
+            else if(winner === 'T') { indirizzo = "Liceo Scientifico (Scienze Applicate)"; desc = "Tanta scienza e informatica, perfetto per chi punta a Informatica o Ingegneria pura."; }
+            else if(winner === 'H') { indirizzo = "Liceo delle Scienze Umane"; desc = "Per chi vuole studiare la psicologia e la mente umana a livello teorico."; }
+        } else {
+            if(winner === 'S') { indirizzo = "IT Chimica o Biotecnologie"; desc = "Laboratorio puro. Impari subito ad analizzare sostanze e processi biologici."; }
+            else if(winner === 'U') { indirizzo = "Tecnico per il Turismo"; desc = "Lingue applicate al lavoro e alla gestione del territorio."; }
+            else if(winner === 'E') { indirizzo = "Tecnico Economico (AFM)"; desc = "Ragioneria, marketing e gestione aziendale. Impari a far quadrare i conti."; }
+            else if(winner === 'A') { indirizzo = "IT Grafica e Comunicazione"; desc = "Trasforma la tua arte in lavoro digitale: video, pubblicità e web design."; }
+            else if(winner === 'T') { indirizzo = "Tecnico Informatico o Meccanico"; desc = "Metti le mani sul codice o sui motori. Tecnologia pura pronta per il mercato."; }
+            else if(winner === 'H') { indirizzo = "Professionale Socio-Sanitario"; desc = "Per chi vuole aiutare gli altri concretamente in strutture sanitarie o sociali."; }
+        }
 
         document.getElementById("indirizzo-consigliato").innerText = indirizzo;
+        document.getElementById("descrizione-indirizzo").innerText = desc;
     }
 
     loadQuestion();
