@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alberghiero - Sbocchi Futuri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        html, body { height: 100%; margin: 0; scroll-behavior: smooth; background-color: #0b0b0b; color: white; font-family: 'Poppins', sans-serif; }
+        header { background: rgba(14, 14, 14, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: fixed; width: 100%; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; max-width: 1200px; margin: 0 auto; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: white; letter-spacing: 1px; }
+        .logo span { color: #4facfe; }
+        .nav-links { display: flex; list-style: none; gap: 30px; margin: 0; padding: 0; }
+        .nav-links a { text-decoration: none; color: white; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: #4facfe; }
+        .materia-page { flex: 1; padding-top: 100px; text-align: center; }
+        .img-container { max-width: 1000px; margin: 0 auto 10px; padding: 0 20px; }
+        .materia-img-header { width: 100%; height: 400px; object-fit: cover; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .hero-text-top h1 { font-size: 3.5rem; font-weight: 800; margin: 20px 0 10px; text-transform: uppercase; color: #4facfe; }
+        .subtitle-desc { font-size: 1.1rem; color: #bbb; font-weight: 300; line-height: 1.8; max-width: 850px; margin: 0 auto 20px; text-align: justify; padding: 0 20px; }
+        
+        /* Sezione Sbocchi Futuri Azzurra */
+        .sbocchi-intro { max-width: 850px; margin: 0 auto 50px; padding: 30px; border-radius: 20px; background: rgba(79, 172, 254, 0.05); border: 1px dashed #4facfe; text-align: justify; }
+        .sbocchi-intro h2 { color: #4facfe; font-size: 1.8rem; text-transform: uppercase; margin-top: 0; text-align: center; }
+        .sbocchi-intro p { font-size: 1rem; color: #e0e0e0; line-height: 1.7; margin-bottom: 0; }
+
+        .info-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1100px; margin: 0 auto 50px; padding: 0 20px; }
+        .info-card { background: #161616; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; text-align: left; transition: 0.4s; }
+        .info-card:hover { transform: translateY(-10px); border-color: #4facfe; }
+        .card-image { width: 100%; height: 180px; overflow: hidden; }
+        .card-image img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7); }
+        .card-content { padding: 20px; }
+        .card-content h3 { color: #4facfe; font-size: 1.4rem; margin: 0 0 10px; }
+        .card-content p { font-size: 0.9rem; color: #ccc; }
+        .card-btn { width: 100%; padding: 15px; border: none; background: rgba(255,255,255,0.03); color: white; font-weight: 700; text-transform: uppercase; cursor: pointer; border-top: 1px solid rgba(255,255,255,0.1); position: relative; transition: 0.3s; }
+        .tooltip { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: #4facfe; color: white; padding: 12px; border-radius: 12px; font-size: 0.8rem; width: 220px; opacity: 0; visibility: hidden; transition: 0.3s; text-align: center; pointer-events: none; line-height: 1.4; }
+        .card-btn:hover { background: #4facfe; }
+        .card-btn:hover .tooltip { opacity: 1; visibility: visible; bottom: 135%; }
+        .bottom-nav { display: flex; justify-content: center; align-items: center; gap: 40px; max-width: 1100px; margin: 40px auto 80px; padding: 0 20px; }
+        .help-link { color: #4facfe; font-weight: 600; font-size: 1rem; text-decoration: none; transition: 0.3s; text-transform: uppercase; font-size: 0.8rem; }
+        .help-link:hover { text-decoration: underline; }
+        .btn-bottom { display: inline-block; padding: 14px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; background: #4facfe; color: white; border: 1px solid #4facfe; }
+        .btn-bottom:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4); }
+        footer { background: #080808; padding: 25px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
+        footer p { margin: 0; color: #777; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../../rapido.html">Materie</a></li>
+                <li><a href="../../contact.html">Contatti</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="materia-page">
+        <div class="img-container"><img src="https://images.unsplash.com/photo-1550966841-3ee3ad359051?q=80&w=1200" class="materia-img-header" alt="Alberghiero"></div>
+        <div class="hero-text-top">
+            <h1>Alberghiero</h1>
+            <p class="subtitle-desc">L'Istituto Professionale per l'Enogastronomia e l'Ospitalità Alberghiera è il cuore pulsante del "Made in Italy". Questo percorso unisce l'arte culinaria, la scienza degli alimenti e le tecniche di accoglienza manageriale. Imparerai a trasformare materie prime in esperienze sensoriali e a gestire complessi sistemi di ospitalità. Che tu sia appassionato di cucina creativa, di mixology o di management alberghiero, qui svilupperai le competenze pratiche e teoriche per eccellere in uno dei settori più dinamici e premianti dell'economia globale.</p>
+        </div>
+
+        <div class="sbocchi-intro">
+            <h2>Possibili Sbocchi Futuri</h2>
+            <p>
+                Il diploma alberghiero offre un accesso immediato al mondo del lavoro in ristoranti stellati, grandi catene alberghiere e navi da crociera. Potrai diventare Chef, Maître, Sommelier o Front Office Manager. Se preferisci continuare gli studi, avrai basi solide per l'Università in Scienze Gastronomiche, Food & Beverage Management o Dietistica. Con l'esperienza, molti diplomati intraprendono la strada dell'imprenditoria aprendo la propria attività o diventando consulenti per l'industria alimentare e del benessere.
+            </p>
+        </div>
+        
+        <div class="info-container">
+            <div class="info-card">
+                <div class="card-image"><img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=800"></div>
+                <div class="card-content">
+                    <h3>Enogastronomia</h3>
+                    <p>Sbocchi in Cucina, Pasticceria e Food Research.</p>
+                </div>
+                <button class="card-btn">Settori Chiave
+                    <div class="tooltip">Diventa Chef de Cuisine, Pastry Chef o esperto di ricerca e sviluppo nel settore alimentare.</div>
+                </button>
+            </div>
+
+            <div class="info-card">
+                <div class="card-image"><img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800"></div>
+                <div class="card-content">
+                    <h3>Sala & Bar</h3>
+                    <p>Sbocchi in Sommelierie, Mixology e Maître.</p>
+                </div>
+                <button class="card-btn">Settori Chiave
+                    <div class="tooltip">Carriere come Restaurant Manager, Sommelier professionista o Bartender di alto livello.</div>
+                </button>
+            </div>
+
+            <div class="info-card">
+                <div class="card-image"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800"></div>
+                <div class="card-content">
+                    <h3>Ospitalità & Management</h3>
+                    <p>Sbocchi in Front Office e Hotel Management.</p>
+                </div>
+                <button class="card-btn">Settori Chiave
+                    <div class="tooltip">Perfetto per diventare Direttore d'Albergo, responsabile eventi o addetto all'accoglienza VIP.</div>
+                </button>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <a href="../../rapido.html" class="btn-bottom">&larr; Altri Indirizzi</a>
+            <a href="../../contact.html" class="help-link">Domande?</a>
+            <a href="../../guidato.html" class="btn-bottom">Test Attitudinale</a>
+        </div>
+    </main>
+    <footer><p>Up to You 2026. Il tuo futuro inizia qui. &hearts;</p></footer>
+</body>
+</html>

@@ -87,12 +87,6 @@
             text-align: left; 
             border-left: 5px solid var(--primary);
             position: relative;
-            transition: 0.3s;
-        }
-        .result-card:hover {
-            border-left-color: var(--accent);
-            background: #2a2a2a;
-            transform: scale(1.02);
         }
         .result-card.top { border-left-color: gold; background: #2a2a2a; }
         .rank { position: absolute; top: 15px; right: 20px; font-size: 0.7rem; color: var(--primary); font-weight: bold; text-transform: uppercase; }
@@ -143,6 +137,10 @@
 </div>
 
 <script>
+    // Mappa codici: CL(Classico), SC(Scientifico), LI(Linguistico), SU(Scienze Umane), AR(Artistico), MU(Musicale)
+    // INF(Informatica), MEC(Meccanica), ELE(Elettronica), CAT(Costruzioni), AGR(Agraria), CHI(Chimica), GRA(Grafica), MOD(Moda), TRA(Trasporti), AFM(AFM), TUR(Turismo)
+    // ALB(Alberghiero), SOC(Socio-Sanitario), MAN(Manutenzione), MID(MadeInItaly), COM(ServiziComm), SAN(Odontotecnico)
+
     const questions = [
         {
             q: "Pensando al tuo futuro dopo il diploma, cosa immagini?",
@@ -243,6 +241,7 @@
                 {t: "Analizzando i costi e i benefici economici.", p: {AFM: 3}}
             ]
         },
+        // Altre 20 domande per arrivare a 30... (Semplificate per brevità nel codice ma coprono tutto)
         { q: "Ti piace l'idea di lavorare all'aria aperta?", a: [{t:"Sì, con piante e animali.", p:{AGR:3}}, {t:"Sì, coordinando cantieri.", p:{CAT:3}}, {t:"Sì, viaggiando su navi o aerei.", p:{TRA:3}}, {t:"No, preferisco un laboratorio o ufficio.", p:{INF:1, CHI:1}}, {t:"No, preferisco studi artistici.", p:{AR:1}}] },
         { q: "Cosa faresti davanti a uno smartphone rotto?", a: [{t:"Provo a riparare l'hardware.", p:{ELE:3, MAN:2}}, {t:"Cerco di capire se è un problema software.", p:{INF:3}}, {t:"Penso a quanto costerà ripararlo o ricomprarlo.", p:{AFM:2}}, {t:"Ne ammiro il design nonostante sia rotto.", p:{AR:1}}, {t:"Cerco un tutorial online.", p:{GRA:1}}] },
         { q: "Ti senti portato per le lingue?", a: [{t:"Moltissimo, voglio parlarne almeno 3.", p:{LI:3}}, {t:"Sì, mi servono per il turismo.", p:{TUR:3}}, {t:"Sì, ma solo per leggere manuali tecnici.", p:{INF:1, MEC:1}}, {t:"No, preferisco il linguaggio universale dei numeri.", p:{SC:3}}, {t:"No, preferisco le note musicali.", p:{MU:3}}] },
@@ -325,29 +324,29 @@
     }
 
     const descriptions = {
-        CL: { n: "Liceo Classico", d: "Latino, greco, letteratura e filosofia. Per chi vuole una cultura vastissima e basi critiche imbattibili.", link: "classico.html" },
-        SC: { n: "Liceo Scientifico", d: "Matematica, fisica e scienze. Perfetto se sogni l'ingegneria, la medicina o la ricerca pura.", link: "scientifico.html" },
-        LI: { n: "Liceo Linguistico", d: "Tre lingue straniere e le loro culture. Per diventare un cittadino del mondo.", link: "linguistico.html" },
-        SU: { n: "Liceo delle Scienze Umane", d: "Psicologia e sociologia. Ideale per chi vuole capire la mente umana e la società.", link: "scienze_umane.html" },
-        AR: { n: "Liceo Artistico", d: "Creatività pura: design, architettura o scenografia. Per chi trasforma le idee in visioni.", link: "artistico.html" },
-        MU: { n: "Liceo Musicale", d: "Musica e danza. Per chi vuole fare della propria passione artistica una professione.", link: "musicale.html" },
-        INF: { n: "Tecnico Informatica", d: "Programmazione, reti e software. Sei il costruttore del mondo digitale.", link: "informatica.html" },
-        MEC: { n: "Tecnico Meccanica ed Energia", d: "Progettazione di motori e impianti. Dove l'idea diventa macchina.", link: "meccanica.html" },
-        ELE: { n: "Tecnico Elettronica", d: "Robotica e automazione. Per dare vita agli oggetti intelligenti di domani.", link: "elettrotecnica.html" },
-        CAT: { n: "Tecnico CAT (Geometra)", d: "Costruzioni e territorio. Per chi vuole progettare case e gestire l'ambiente.", link: "geometra.html" },
-        AGR: { n: "Tecnico Agraria", d: "Gestione agricola e qualità del cibo. L'innovazione che nasce dalla terra.", link: "agrario.html" },
-        CHI: { n: "Tecnico Chimica e Biotec", d: "Analisi di laboratorio e farmaceutica. Per chi vuole scoprire i segreti della materia.", link: "chimica.html" },
-        GRA: { n: "Tecnico Grafica e Comunicazione", d: "Design digitale, video e stampa. Per chi vuole comunicare nel XXI secolo.", link: "grafica.html" },
-        MOD: { n: "Tecnico Moda", d: "Design e produzione tessile. Il cuore creativo del Made in Italy industriale.", link: "moda.html" },
-        TRA: { n: "Tecnico Trasporti e Logistica", d: "Navigazione e Aeronautica. Per chi vuole gestire il movimento globale.", link: "trasporti.html" },
-        AFM: { n: "Tecnico AFM (Ragioneria)", d: "Economia, finanza e marketing. Per diventare i manager del domani.", link: "afm.html" },
-        TUR: { n: "Tecnico per il Turismo", d: "Gestione di servizi e lingue per il business del viaggio.", link: "turismo.html" },
-        ALB: { n: "Professionale Alberghiero", d: "Cucina, sala e accoglienza. Per i futuri chef e leader dell'ospitalità.", link: "alberghiero.html" },
-        SOC: { n: "Professionale Socio-Sanitario", d: "Assistenza e benessere delle persone. Un lavoro fatto di cuore e competenza.", link: "socio_sanitario.html" },
-        MAN: { n: "Professionale Manutenzione", d: "Riparazione di veicoli e impianti. L'esperto tecnico che risolve ogni guasto.", link: "manutenzione.html" },
-        MID: { n: "Professionale Made in Italy", d: "Artigianato d'eccellenza, dalla falegnameria alla moda pratica.", link: "made_in_italy.html" },
-        COM: { n: "Professionale Servizi Commerciali", d: "Vendite, marketing e supporto amministrativo pratico.", link: "servizi_commerciali.html" },
-        SAN: { n: "Professionale Arti Sanitarie", d: "Odontotecnico (protesi) o Ottico. Tecnologia e precisione per la salute.", link: "arti_sanitarie.html" }
+        CL: { n: "Liceo Classico", d: "Latino, greco, letteratura e filosofia. Per chi vuole una cultura vastissima e basi critiche imbattibili." },
+        SC: { n: "Liceo Scientifico", d: "Matematica, fisica e scienze. Perfetto se sogni l'ingegneria, la medicina o la ricerca pura." },
+        LI: { n: "Liceo Linguistico", d: "Tre lingue straniere e le loro culture. Per diventare un cittadino del mondo." },
+        SU: { n: "Liceo delle Scienze Umane", d: "Psicologia e sociologia. Ideale per chi vuole capire la mente umana e la società." },
+        AR: { n: "Liceo Artistico", d: "Creatività pura: design, architettura o scenografia. Per chi trasforma le idee in visioni." },
+        MU: { n: "Liceo Musicale e Coreutico", d: "Musica e danza. Per chi vuole fare della propria passione artistica una professione." },
+        INF: { n: "Tecnico Informatica", d: "Programmazione, reti e software. Sei il costruttore del mondo digitale." },
+        MEC: { n: "Tecnico Meccanica ed Energia", d: "Progettazione di motori e impianti. Dove l'idea diventa macchina." },
+        ELE: { n: "Tecnico Elettronica", d: "Robotica e automazione. Per dare vita agli oggetti intelligenti di domani." },
+        CAT: { n: "Tecnico CAT (Geometra)", d: "Costruzioni e territorio. Per chi vuole progettare case e gestire l'ambiente." },
+        AGR: { n: "Tecnico Agraria", d: "Gestione agricola e qualità del cibo. L'innovazione che nasce dalla terra." },
+        CHI: { n: "Tecnico Chimica e Biotec", d: "Analisi di laboratorio e farmaceutica. Per chi vuole scoprire i segreti della materia." },
+        GRA: { n: "Tecnico Grafica e Comunicazione", d: "Design digitale, video e stampa. Per chi vuole comunicare nel XXI secolo." },
+        MOD: { n: "Tecnico Moda", d: "Design e produzione tessile. Il cuore creativo del Made in Italy industriale." },
+        TRA: { n: "Tecnico Trasporti e Logistica", d: "Navigazione e Aeronautica. Per chi vuole gestire il movimento globale." },
+        AFM: { n: "Tecnico AFM (Ragioneria)", d: "Economia, finanza e marketing. Per diventare i manager del domani." },
+        TUR: { n: "Tecnico per il Turismo", d: "Gestione di servizi e lingue per il business del viaggio." },
+        ALB: { n: "Professionale Alberghiero", d: "Cucina, sala e accoglienza. Per i futuri chef e leader dell'ospitalità." },
+        SOC: { n: "Professionale Socio-Sanitario", d: "Assistenza e benessere delle persone. Un lavoro fatto di cuore e competenza." },
+        MAN: { n: "Professionale Manutenzione", d: "Riparazione di veicoli e impianti. L'esperto tecnico che risolve ogni guasto." },
+        MID: { n: "Professionale Made in Italy", d: "Artigianato d'eccellenza, dalla falegnameria alla moda pratica." },
+        COM: { n: "Professionale Servizi Commerciali", d: "Vendite, marketing e supporto amministrativo pratico." },
+        SAN: { n: "Professionale Arti Sanitarie", d: "Odontotecnico (protesi) o Ottico. Tecnologia e precisione per la salute." }
     };
 
     function showResults() {
@@ -355,6 +354,7 @@
         document.getElementById("result").style.display = "block";
         document.getElementById("progress-fill").style.width = "100%";
 
+        // Boost basato sull'università
         if(uniChoice === "si") {
             for(let k in score) if(["CL","SC","LI","SU","AR","MU"].includes(k)) score[k] += 15;
         } else if(uniChoice === "no") {
@@ -370,19 +370,12 @@
         top3.forEach((m, i) => {
             const data = descriptions[m[0]];
             const isTop = i === 0;
-            
-            // AGGIUNTA TARGET="_BLANK" PER APRIRE IN UNA NUOVA SCHEDA
             list.innerHTML += `
-                <a href="OGdata/indirizzi/${data.link}" target="_blank" style="text-decoration: none; display: block;">
-                    <div class="result-card ${isTop ? 'top' : ''}">
-                        <span class="rank">${i === 0 ? 'Miglior Match' : 'Alternativa'}</span>
-                        <h3>${data.n}</h3>
-                        <p>${data.d}</p>
-                        <div style="margin-top: 15px; font-size: 0.9rem; color: var(--accent); font-weight: 600;">
-                            Clicca per esplorare la pagina dell'indirizzo &rarr;
-                        </div>
-                    </div>
-                </a>
+                <div class="result-card ${isTop ? 'top' : ''}">
+                    <span class="rank">${i === 0 ? 'Miglior Match' : 'Alternativa'}</span>
+                    <h3>${data.n}</h3>
+                    <p>${data.d}</p>
+                </div>
             `;
         });
     }
