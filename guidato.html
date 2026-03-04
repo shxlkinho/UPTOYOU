@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orientamento Guidato - Up to You</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        /* 1. FIX PER IL FOOTER IN FONDO */
+        /* 1. SETUP PAGINA */
         html, body {
             height: 100%;
             margin: 0;
@@ -17,33 +18,47 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background-color: #0d0d0d;
+            background-color: #0e0e0e;
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
-        /* 2. LA SEZIONE PRINCIPALE SI ESPANDE */
+        /* 2. SEZIONE TITOLO E INTRO */
         .guidato-section {
             flex: 1;
-            padding: 120px 20px 80px;
-            max-width: 1300px; /* Aumentato leggermente per far stare 3 card larghe */
+            padding: 100px 5% 80px; /* Ridotto il padding top per non avere troppo vuoto */
+            max-width: 1400px;
             margin: 0 auto;
             text-align: center;
             width: 100%;
             box-sizing: border-box;
         }
 
-        .intro-p {
-            color: #aaa;
-            margin-bottom: 50px;
-            font-size: 1.1rem;
+        .guidato-section h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #4facfe, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
         }
 
-        /* 3. GRID FORZATA A 3 COLONNE ORIZZONTALI */
+        .intro-p {
+            color: #ccc;
+            font-size: 1.2rem;
+            max-width: 850px;
+            margin: 0 auto 60px;
+            line-height: 1.6;
+        }
+
+        /* 3. CONTENITORE CARD CENTRATE */
         .info-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* FORZA 3 COLONNE SEMPRE */
-            gap: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Centra le card orizzontalmente */
+            gap: 30px;
+            margin-top: 50px;
             width: 100%;
         }
 
@@ -54,15 +69,22 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             cursor: pointer;
             overflow: hidden;
+            width: 380px; /* Larghezza fissa per simmetria */
+            min-height: 550px;
             text-align: left;
         }
 
+        .info-card:hover {
+            transform: translateY(-10px);
+            border-color: #4facfe;
+            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.15);
+        }
+
         .card-image {
-            width: 100%;
-            height: 180px; /* Ridotta leggermente per bilanciare la larghezza */
+            height: 200px;
             overflow: hidden;
         }
 
@@ -70,100 +92,81 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: 0.5s;
-            filter: brightness(0.7);
+            transition: transform 0.6s ease;
         }
 
         .info-card:hover .card-image img {
             transform: scale(1.1);
-            filter: brightness(1);
         }
 
         .card-content {
-            padding: 20px;
+            padding: 30px;
+            flex-grow: 1;
         }
 
-        .info-card h3 {
+        .card-content h3 {
             color: #4facfe;
-            font-size: 1.4rem;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .info-card p {
-            color: #ccc;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            margin-bottom: 15px;
+        .card-content p {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
-        .info-card ul {
+        .card-content ul {
             list-style: none;
             padding: 0;
         }
 
-        .info-card ul li {
-            margin-bottom: 8px;
+        .card-content ul li {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
             color: #eee;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .info-card ul li::before {
-            content: "•";
-            color: #00c6ff;
-            font-weight: bold;
+        .card-content ul li strong {
+            color: #4facfe;
         }
 
+        /* 4. BOTTONE CARD */
         .card-btn {
             width: 100%;
-            padding: 15px;
-            border: none;
+            padding: 20px;
             background: rgba(255, 255, 255, 0.03);
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             color: white;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
             cursor: pointer;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.3s;
-        }
-
-        .info-card:hover {
-            transform: translateY(-10px);
-            border-color: #4facfe;
-            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.2);
         }
 
         .info-card:hover .card-btn {
-            background: linear-gradient(to right, #4facfe, #00c6ff);
+            background: #4facfe;
+            color: white;
         }
 
-        /* 4. FOOTER IN FONDO */
+        /* FOOTER */
         footer {
-            background: #080808;
-            padding: 25px 20px;
+            padding: 30px;
             text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
-            width: 100%;
-            box-sizing: border-box;
+            background: #0e0e0e;
+            color: #666;
+            font-size: 0.9rem;
         }
 
-        footer p {
-            margin: 0;
-            color: #777;
-            font-size: 0.85rem;
-        }
-
-        /* RESPONSIVE: Solo per schermi molto piccoli (Smartphone) */
-        @media (max-width: 850px) {
-            .info-container {
-                grid-template-columns: 1fr; /* In verticale solo se non c'è proprio spazio */
-            }
-            .guidato-section { padding-top: 100px; }
+        @media (max-width: 768px) {
+            .info-card { width: 100%; }
+            .guidato-section h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -171,83 +174,90 @@
 
     <header>
         <nav class="navbar">
-            <div class="logo"><a href="index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">UP<span>TOYOU</span></div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="#home">Home</a></li>
                 <li class="dropdown">
                     <a href="#">Lezioni ▾</a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Elementari</a></li>
-                        <li><a href="#">Medie</a></li>
+                        <li><a href="elementari.html">Elementari</a></li>
+                        <li><a href="medie.html">Medie</a></li>
                         <li><a href="#">Superiori</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#">Orientati ▾</a>
+                    <a href="#">Percorsi ▾</a>
                     <ul class="dropdown-menu">
-                        <li><a href="rapido.html">Orientamento Rapido</a></li>
-                        <li><a href="guidato.html">Orientamento Guidato</a></li>
+                        <li><a href="guidato.html">Scuole in zona</a></li>
+                        <li><a href="rapido.html">Indirizzi e Materie</a></li>
                     </ul>
                 </li>
                 <li><a href="contact.html">Contatti</a></li>
+                <li><a href="#about">Chi Siamo</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="guidato-section">
-        <h1>Orientamento Guidato</h1>
-        <p class="intro-p">Esplora le diverse strade che puoi intraprendere dopo le medie.</p>
+    <main>
+        <section class="guidato-section">
+            <h1>Orientamento Guidato</h1>
+            <p class="intro-p">
+                Ogni percorso scolastico è un viaggio unico verso la tua realizzazione professionale. 
+                Esplora le tre direttrici principali del sistema educativo italiano e scopri quale si adatta meglio alle tue passioni, 
+                al tuo metodo di studio e alle tue ambizioni.
+            </p>
 
-        <div class="info-container">
-            <div class="info-card" onclick="window.location.href='OGdata/mappa_licei.html'">
-                <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=800" alt="Liceo">
+            <div class="info-container">
+                <div class="info-card" onclick="window.location.href='OGdata/mappa_licei.html'">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800" alt="Liceo">
+                    </div>
+                    <div class="card-content">
+                        <h3>Liceo 📚</h3>
+                        <p>Ideale per chi cerca una formazione teorica profonda e un metodo di studio solido per l'università.</p>
+                        <ul>
+                            <li><strong>Metodo:</strong> Analitico e Accademico</li>
+                            <li><strong>Profilo:</strong> Curiosità e pensiero critico</li>
+                        </ul>
+                    </div>
+                    <button class="card-btn">Esplora i Licei</button>
                 </div>
-                <div class="card-content">
-                    <h3>Liceo 🏛️</h3>
-                    <p>Ideale per chi vuole una solida base culturale e intende proseguire con l'università.</p>
-                    <ul>
-                        <li><strong>Metodo:</strong> Analitico e teorico</li>
-                        <li><strong>Profilo:</strong> Passione per lo studio</li>
-                    </ul>
-                </div>
-                <button class="card-btn">Scopri di più</button>
-            </div>
 
-            <div class="info-card" onclick="window.location.href='OGdata/mappa_tecnici.html'">
-                <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800" alt="Tecnico">
+                <div class="info-card" onclick="window.location.href='OGdata/mappa_tecnici.html'">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800" alt="Tecnico">
+                    </div>
+                    <div class="card-content">
+                        <h3>Tecnico ⚙️</h3>
+                        <p>Il perfetto equilibrio tra scienza e innovazione applicata ai processi produttivi e digitali.</p>
+                        <ul>
+                            <li><strong>Metodo:</strong> Tecnico-scientifico applicato</li>
+                            <li><strong>Profilo:</strong> Mente logica e progettuale</li>
+                        </ul>
+                    </div>
+                    <button class="card-btn">Esplora i Tecnici</button>
                 </div>
-                <div class="card-content">
-                    <h3>Tecnico ⚙️</h3>
-                    <p>Un percorso che bilancia teoria e pratica, perfetto per l'innovazione tecnologica.</p>
-                    <ul>
-                        <li><strong>Metodo:</strong> Applicativo e laboratoriale</li>
-                        <li><strong>Profilo:</strong> Mente pratica e curiosa</li>
-                    </ul>
-                </div>
-                <button class="card-btn">Scopri di più</button>
-            </div>
 
-            <div class="info-card" onclick="window.location.href='OGdata/mappa_professionali.html'">
-                <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=800" alt="Professionale">
+                <div class="info-card" onclick="window.location.href='OGdata/mappa_professionali.html'">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=800" alt="Professionale">
+                    </div>
+                    <div class="card-content">
+                        <h3>Professionale 🛠️</h3>
+                        <p>Impara un mestiere attraverso l'esperienza pratica, laboratori e inserimento rapido nel lavoro.</p>
+                        <ul>
+                            <li><strong>Metodo:</strong> Pratico e Operativo</li>
+                            <li><strong>Profilo:</strong> Voglia di fare ed imparare</li>
+                        </ul>
+                    </div>
+                    <button class="card-btn">Esplora i Professionali</button>
                 </div>
-                <div class="card-content">
-                    <h3>Professionale 🛠️</h3>
-                    <p>Impara un mestiere attraverso l'esperienza diretta e laboratori specializzati.</p>
-                    <ul>
-                        <li><strong>Metodo:</strong> Pratico e operativo</li>
-                        <li><strong>Profilo:</strong> Voglia di fare ed imparare</li>
-                    </ul>
-                </div>
-                <button class="card-btn">Scopri di più</button>
             </div>
-        </div>
+        </section>
     </main>
 
     <footer>
-        <p>Up to You 2026. Il tuo futuro inizia qui. ❤️</p>
+        <p>Up to You 2026. Il tuo futuro inizia qui.</p>
     </footer>
 
 </body>
