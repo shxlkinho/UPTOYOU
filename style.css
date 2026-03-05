@@ -58,7 +58,13 @@ header {
     list-style: none; border: 1px solid rgba(255,255,255,0.1);
 }
 .dropdown:hover .dropdown-menu { display: flex; }
-.dropdown-menu li a { padding: 10px 20px; font-size: 0.9rem; }
+
+/* MODIFICA QUESTA REGOLA QUI SOTTO */
+.dropdown-menu li a { 
+    padding: 10px 20px; 
+    font-size: 0.9rem; 
+    white-space: nowrap; /* <--- AGGIUNGI QUESTA RIGA */
+}
 
 /* --- HERO SECTION (2 Colonne) --- */
 .hero {
@@ -210,4 +216,5 @@ footer { background: #050505; padding: 80px 5% 40px; border-top: 1px solid rgba(
 .card-test .card-btn-action {
     border: 1px solid rgba(255, 102, 0, 0.4);
     color: var(--accent-orange);
+
 }
