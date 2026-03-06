@@ -26,13 +26,28 @@
     </style>
 </head>
 <body>
-    <header>
+      <header>
         <nav class="navbar">
-            <a href="index.html" class="logo">UP<span>TOYOU</span></a>
+            <div class="logo">UP<span>TOYOU</span></div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="rapido.html">Materie</a></li>
-                <li><a href="contact.html" style="color:#4facfe">Contatti</a></li>
+                <li><a href="#home">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Lezioni ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="elementari.html">Elementari</a></li>
+                        <li><a href="medie.html">Medie</a></li>
+                        <li><a href="#">Superiori</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Orientamento ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="guidato.html">Orientamento Guidato</a></li>
+                        <li><a href="rapido.html">Orientamento Rapido</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contatti</a></li>
+                <li><a href="#about">Chi Siamo</a></li>
             </ul>
         </nav>
     </header>
@@ -50,3 +65,4 @@
     <footer><p>Up to You 2026 - Il futuro e nelle tue mani.</p></footer>
 </body>
 </html>
+
