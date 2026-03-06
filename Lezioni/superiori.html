@@ -40,8 +40,9 @@
         }
 
         .info-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex; /* Cambiato da grid a flex */
+            flex-wrap: wrap; /* Permette di andare a capo */
+            justify-content: center; /* Centra gli elementi nell'ultima riga */
             gap: 25px;
             width: 100%;
         }
@@ -57,6 +58,9 @@
             cursor: pointer;
             overflow: hidden;
             text-align: left;
+            /* Definiamo la larghezza per simulare le 3 colonne */
+            width: calc(33.333% - 17px);
+            min-width: 300px; /* Evita che diventino troppo strette */
         }
 
         .card-image {
@@ -145,9 +149,19 @@
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
+        @media (max-width: 1100px) {
+            .info-card {
+                width: calc(50% - 25px); /* Su tablet ne mette 2 per riga */
+            }
+        }
+
         @media (max-width: 850px) {
             .info-container {
-                grid-template-columns: 1fr;
+                flex-direction: column;
+            }
+
+            .info-card {
+                width: 100%; /* Su mobile torna a colonna singola */
             }
         }
     </style>
