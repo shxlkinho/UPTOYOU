@@ -218,3 +218,14 @@ footer { background: #050505; padding: 80px 5% 40px; border-top: 1px solid rgba(
     color: var(--accent-orange);
 
 }
+/* Stile base per i link nel footer */
+.footer-col ul li a {
+    color: #888; /* Grigio (cambia il codice se vuoi un grigio diverso) */
+    text-decoration: none; /* Rimuove la sottolineatura di default */
+    transition: color 0.3s ease; /* Rende il cambio colore fluido */
+}
+
+/* Effetto al passaggio del mouse (Hover) */
+.footer-col ul li a:hover {
+    color: #007bff; /* Azzurrino (puoi mettere il tuo codice colore esatto) */
+}

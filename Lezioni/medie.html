@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medie - Up to You</title>
+    <link rel="stylesheet" href="../style.css">
+    
+    <style>
+        /* STESSO CSS DELLA PAGINA ELEMENTARI */
+        html, body { height: 100%; margin: 0; }
+        body { display: flex; flex-direction: column; min-height: 100vh; background-color: #0d0d0d; color: white; font-family: 'Poppins', sans-serif; }
+        .classi-section { flex: 1; padding: 120px 20px 80px; max-width: 1300px; margin: 0 auto; text-align: center; width: 100%; box-sizing: border-box; }
+        .intro-p { color: #aaa; margin-bottom: 50px; font-size: 1.1rem; }
+        .info-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; width: 100%; }
+        .info-card { background: #161616; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; overflow: hidden; text-align: left; }
+        .card-image { width: 100%; height: 180px; overflow: hidden; }
+        .card-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: brightness(0.6); }
+        .info-card:hover .card-image img { transform: scale(1.1); filter: brightness(1); }
+        .card-content { padding: 20px; }
+        .info-card h3 { color: #4facfe; font-size: 1.6rem; margin-bottom: 10px; }
+        .info-card p { color: #ccc; font-size: 0.9rem; line-height: 1.4; margin-bottom: 15px; }
+        .info-card ul { list-style: none; padding: 0; }
+        .info-card ul li { margin-bottom: 8px; color: #eee; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
+        .info-card ul li::before { content: "✓"; color: #00c6ff; font-weight: bold; }
+        .card-btn { width: 100%; padding: 15px; border: none; background: rgba(255, 255, 255, 0.03); color: white; font-weight: 700; text-transform: uppercase; cursor: pointer; border-top: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s; }
+        .info-card:hover { transform: translateY(-10px); border-color: #4facfe; box-shadow: 0 10px 30px rgba(79, 172, 254, 0.2); }
+        .info-card:hover .card-btn { background: linear-gradient(to right, #4facfe, #00c6ff); }
+        footer { background: #080808; padding: 25px 20px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        @media (max-width: 850px) { .info-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo"><a href="index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Lezioni ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="elementari.html">Elementari</a></li>
+                        <li><a href="medie.html">Medie</a></li>
+                        <li><a href="superiori.html">Superiori</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Orientati ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../rapido.html">Orientamento Rapido</a></li>
+                        <li><a href="../guidato.html">Orientamento Guidato</a></li>
+                    </ul>
+                </li>
+                <li><a href="../contact.html">Contatti</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="classi-section">
+        <h1>Scuola Media</h1>
+        <p class="intro-p">Materiale completo per affrontare il nuovo metodo di studio.</p>
+
+        <div class="info-container">
+            <div class="info-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1523050853063-bd8012fbb392?q=80&w=800" alt="Prima Media">
+                </div>
+                <div class="card-content">
+                    <h3>Classe Prima 📐</h3>
+                    <p>Il passaggio alle medie: dalle potenze alle nuove lingue.</p>
+                    <ul>
+                        <li>Aritmetica e Geometria</li>
+                        <li>Epica e Antologia</li>
+                        <li>Metodo di studio</li>
+                    </ul>
+                </div>
+                <button class="card-btn">Vai alle Lezioni</button>
+            </div>
+
+            <div class="info-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800" alt="Seconda Media">
+                </div>
+                <div class="card-content">
+                    <h3>Classe Seconda 🧬</h3>
+                    <p>Approfondimento scientifico e letterario.</p>
+                    <ul>
+                        <li>Algebra e Proporzioni</li>
+                        <li>Storia Moderna</li>
+                        <li>Chimica di base</li>
+                    </ul>
+                </div>
+                <button class="card-btn">Vai alle Lezioni</button>
+            </div>
+
+            <div class="info-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=800" alt="Terza Media">
+                </div>
+                <div class="card-content">
+                    <h3>Classe Terza 🌍</h3>
+                    <p>Obiettivo Esame di Stato e tesina finale.</p>
+                    <ul>
+                        <li>Ripasso per l'Esame</li>
+                        <li>Storia Contemporanea</li>
+                        <li>Fisica e Astronomia</li>
+                    </ul>
+                </div>
+                <button class="card-btn">Vai alle Lezioni</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Link Utili</h4>
+            <ul>
+                <li><a href="../guidato.html">Orientamento Guidato</a></li>
+                <li><a href="../rapido.html">Orientamento Rapido</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Supporto</h4>
+            <ul>
+                <li>Privacy Policy</li>
+                <li>Termini di Servizio</li>
+                <li><a href="../contact.html">Contattaci</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Contatti</h4>
+            <ul>
+                <li>Email: info@uptoyou.it</li>
+                <li>Roma, Italia</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
+        <p>Designed with Excellence</p>
+    </div>
+</footer>
+
+</body>
+</html>
