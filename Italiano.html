@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Italiano - Up to You</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
         html, body { height: 100%; margin: 0; scroll-behavior: smooth; background-color: #0b0b0b; color: white; font-family: 'Poppins', sans-serif; }
         header { background: rgba(14, 14, 14, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: fixed; width: 100%; top: 0; z-index: 1000; }
@@ -40,13 +41,28 @@
     </style>
 </head>
 <body>
-    <header>
+         <header>
         <nav class="navbar">
             <div class="logo">UP<span>TOYOU</span></div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="rapido.html">Materie</a></li>
+                <li class="dropdown">
+                    <a href="#">Lezioni ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="elementari.html">Elementari</a></li>
+                        <li><a href="medie.html">Medie</a></li>
+                        <li><a href="#">Superiori</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Orientamento ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="guidato.html">Orientamento Guidato</a></li>
+                        <li><a href="rapido.html">Orientamento Rapido</a></li>
+                    </ul>
+                </li>
                 <li><a href="contact.html">Contatti</a></li>
+                <li><a href="#about">Chi Siamo</a></li>
             </ul>
         </nav>
     </header>
@@ -67,3 +83,4 @@
     <footer><p>Up to You 2026. Il tuo futuro inizia qui. &hearts;</p></footer>
 </body>
 </html>
+
