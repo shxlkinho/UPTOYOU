@@ -152,6 +152,21 @@
             document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
+<div id="ai-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; font-family: sans-serif;">
+    <button id="ai-open-btn" style="background: #8e44ad; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; font-size: 30px; shadow: 0 4px 10px rgba(0,0,0,0.2);">🧠</button>
+
+    <div id="ai-window" style="display: none; width: 300px; height: 400px; background: white; border: 1px solid #ddd; border-radius: 15px; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.1); position: absolute; bottom: 80px; right: 0; overflow: hidden;">
+        <div style="background: #8e44ad; color: white; padding: 15px; font-weight: bold;">UpToYou Mentor AI</div>
+        <div id="ai-messages" style="flex: 1; padding: 10px; overflow-y: auto; font-size: 14px; color: #333; max-height: 280px;">
+            <p>Ciao! Sono il tuo orientatore. Di cosa hai paura o cosa ti incuriosisce della scelta della scuola?</p>
+        </div>
+        <div style="padding: 10px; border-top: 1px solid #eee; display: flex;">
+            <input type="text" id="ai-input" placeholder="Scrivi qui..." style="flex: 1; border: 1px solid #ddd; border-radius: 5px; padding: 5px;">
+            <button id="ai-send" style="margin-left: 5px; background: #8e44ad; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Invia</button>
+        </div>
+    </div>
+</div>
+
 </body>
 
 </html>
