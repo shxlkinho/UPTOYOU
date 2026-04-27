@@ -9,7 +9,7 @@
 </head>
 <body>
 
-   <header>
+    <header>
         <nav class="navbar">
             <div class="logo">UP<span>TOYOU</span></div>
             <ul class="nav-links">
@@ -50,7 +50,7 @@
 
         <div class="hero-slider">
             <div class="slider-track">
-                <div class="slide"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800="Studenti"></div>
+                <div class="slide"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800" alt="Studenti"></div>
                 <div class="slide"><img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800" alt="Studio"></div>
                 <div class="slide"><img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=800" alt="Scelte"></div>
                 <div class="slide"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800" alt="Futuro"></div>
@@ -58,38 +58,38 @@
         </div>
     </section>
 
-   <section class="section-divider">
-    <div class="cards-grid">
-        <a href="guidato.html" class="card-custom card-zona">
-            <span class="card-emoji">📍</span>
-            <div>
-                <h3>Scuole nella tua zona</h3>
-                <p>Esplora la mappa degli istituti vicini a te e confronta i piani di studio reali.</p>
-            </div>
-            <div class="card-btn-action">Cerca Scuole</div>
-        </a>
+    <section class="section-divider">
+        <div class="cards-grid">
+            <a href="guidato.html" class="card-custom card-zona">
+                <span class="card-emoji">📍</span>
+                <div>
+                    <h3>Scuole nella tua zona</h3>
+                    <p>Esplora la mappa degli istituti vicini a te e confronta i piani di studio reali.</p>
+                </div>
+                <div class="card-btn-action">Cerca Scuole</div>
+            </a>
 
-        <a href="javascript:void(0)" class="card-custom card-test" onclick="showTest()">
-            <span class="card-emoji">🧭</span>
-            <div>
-                <h3>Non sai cosa scegliere?</h3>
-                <p>Mettiti alla prova con il nostro test attitudinale avanzato per scoprire i tuoi talenti.</p>
-            </div>
-            <div class="card-btn-action">Fai il Test Gratis</div>
-        </a>
+            <a href="javascript:void(0)" class="card-custom card-test" onclick="showTest()">
+                <span class="card-emoji">🧭</span>
+                <div>
+                    <h3>Non sai cosa scegliere?</h3>
+                    <p>Mettiti alla prova con il nostro test attitudinale avanzato per scoprire i tuoi talenti.</p>
+                </div>
+                <div class="card-btn-action">Fai il Test Gratis</div>
+            </a>
 
-        <a href="rapido.html" class="card-custom card-materie">
-            <span class="card-emoji">📚</span>
-            <div>
-                <h3>Materie & Indirizzi</h3>
-                <p>Scopri gli indirizzi scolastici più coerenti con le materie che ami di più studiare.</p>
-            </div>
-            <div class="card-btn-action">Trova Indirizzo</div>
-        </a>
-    </div>
-</section>
+            <a href="rapido.html" class="card-custom card-materie">
+                <span class="card-emoji">📚</span>
+                <div>
+                    <h3>Materie & Indirizzi</h3>
+                    <p>Scopri gli indirizzi scolastici più coerenti con le materie che ami di più studiare.</p>
+                </div>
+                <div class="card-btn-action">Trova Indirizzo</div>
+            </a>
+        </div>
+    </section>
 
-    <section id="test-section">
+    <section id="test-section" style="display: none;">
         <div class="test-header">
             <button onclick="closeTest()" class="close-btn">Chiudi Test &times;</button>
         </div>
@@ -103,44 +103,58 @@
             Crediamo che la scelta della scuola sia il primo passo verso la felicità professionale.
         </p>
         <div class="video-container">
-            <iframe src="https://www.youtube-nocookie.com/embed/moaY0MqJ0_M?rel=0" allowfullscreen></iframe>
+            <iframe id="ytPlayer" src="https://www.youtube-nocookie.com/embed/moaY0MqJ0_M?rel=0" allowfullscreen></iframe>
         </div>
     </section>
 
- <footer>
-    <div class="footer-grid">
-        <div class="footer-col">
-            <div class="logo">UP<span>TOYOU</span></div>
-            <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">UP<span>TOYOU</span></div>
+                <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Link Utili</h4>
+                <ul>
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Supporto</h4>
+                <ul>
+                    <li>Privacy Policy</li>
+                    <li>Termini di Servizio</li>
+                    <li><a href="contact.html">Contattaci</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contatti</h4>
+                <ul>
+                    <li>Email: info@uptoyou.it</li>
+                    <li>Roma, Italia</li>
+                </ul>
+            </div>
         </div>
-        <div class="footer-col">
-            <h4>Link Utili</h4>
-            <ul>
-                <li><a href="guidato.html">Orientamento Guidato</a></li>
-                <li><a href="rapido.html">Orientamento Rapido</a></li>
-            </ul>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
         </div>
-        <div class="footer-col">
-            <h4>Supporto</h4>
-            <ul>
-                <li>Privacy Policy</li>
-                <li>Termini di Servizio</li>
-                <li><a href="contact.html">Contattaci</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h4>Contatti</h4>
-            <ul>
-                <li>Email: info@uptoyou.it</li>
-                <li>Roma, Italia</li>
-            </ul>
+    </footer>
+
+    <div id="ai-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; font-family: sans-serif;">
+        <button id="ai-open-btn" style="background: #8e44ad; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">🧠</button>
+
+        <div id="ai-window" style="display: none; width: 300px; height: 400px; background: white; border: 1px solid #ddd; border-radius: 15px; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: absolute; bottom: 80px; right: 0; overflow: hidden;">
+            <div style="background: #8e44ad; color: white; padding: 15px; font-weight: bold;">UpToYou Mentor AI</div>
+            <div id="ai-messages" style="flex: 1; padding: 10px; overflow-y: auto; font-size: 14px; color: #333; max-height: 280px; background: #fdfdfd;">
+                <p>Ciao! Sono il tuo orientatore. Di cosa hai paura o cosa ti incuriosisce della scelta della scuola?</p>
+            </div>
+            <div style="padding: 10px; border-top: 1px solid #eee; display: flex; background: white;">
+                <input type="text" id="ai-input" placeholder="Scrivi qui..." style="flex: 1; border: 1px solid #ddd; border-radius: 5px; padding: 8px; color: black; outline: none;">
+                <button id="ai-send" style="margin-left: 5px; background: #8e44ad; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer;">Invia</button>
+            </div>
         </div>
     </div>
-    <div class="footer-bottom">
-        <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
-        <p>Designed with Excellence</p>
-    </div>
-</footer>
 
     <script>
         function showTest() {
@@ -152,22 +166,8 @@
             document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
-<div id="ai-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; font-family: sans-serif;">
-    <button id="ai-open-btn" style="background: #8e44ad; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; font-size: 30px; shadow: 0 4px 10px rgba(0,0,0,0.2);">🧠</button>
-
-    <div id="ai-window" style="display: none; width: 300px; height: 400px; background: white; border: 1px solid #ddd; border-radius: 15px; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.1); position: absolute; bottom: 80px; right: 0; overflow: hidden;">
-        <div style="background: #8e44ad; color: white; padding: 15px; font-weight: bold;">UpToYou Mentor AI</div>
-        <div id="ai-messages" style="flex: 1; padding: 10px; overflow-y: auto; font-size: 14px; color: #333; max-height: 280px;">
-            <p>Ciao! Sono il tuo orientatore. Di cosa hai paura o cosa ti incuriosisce della scelta della scuola?</p>
-        </div>
-        <div style="padding: 10px; border-top: 1px solid #eee; display: flex;">
-            <input type="text" id="ai-input" placeholder="Scrivi qui..." style="flex: 1; border: 1px solid #ddd; border-radius: 5px; padding: 5px;">
-            <button id="ai-send" style="margin-left: 5px; background: #8e44ad; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Invia</button>
-        </div>
-    </div>
-</div>
+    
+    <script src="script.js"></script>
 
 </body>
-
 </html>
-
