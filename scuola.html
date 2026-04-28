@@ -95,7 +95,141 @@
         @media (max-width: 968px) {
             .scuola-grid { grid-template-columns: 1fr; }
             .main-photo-container { height: 300px; }
-        }
+        /* --- SEZIONE RECENSIONI (LIVELLO ULTRA) --- */
+.reviews-section {
+    padding: 80px 10%;
+    background: #0d0d0d;
+    border-top: 1px solid rgba(79, 172, 254, 0.1);
+}
+
+.section-header-reviews {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-header-reviews h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #4facfe, #00c6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.review-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.review-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent);
+}
+
+.stars {
+    color: #ffc107;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.review-text {
+    font-style: italic;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.review-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.author-info strong {
+    display: block;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.author-info span {
+    color: var(--accent);
+    font-size: 0.8rem;
+}
+
+.add-review-cta {
+    text-align: center;
+    padding: 40px;
+    background: rgba(79, 172, 254, 0.05);
+    border-radius: 20px;
+    border: 1px dashed var(--accent);
+}
+
+:root {
+    --fucsia: #ff00ff;
+    --fucsia-glow: rgba(255, 0, 255, 0.4);
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--fucsia) !important;
+    box-shadow: 0 0 15px var(--fucsia-glow);
+}
+
+.stars { color: var(--fucsia) !important; }
+
+/* Casella stile YouTube */
+.comment-input-container {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 40px;
+    border: 1px solid rgba(255, 0, 255, 0.2);
+}
+
+.comment-input-container textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #333;
+    color: white;
+    padding: 10px 0;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    transition: 0.3s;
+}
+
+.comment-input-container textarea:focus {
+    border-bottom-color: var(--fucsia);
+}
+
+.btn-fucsia {
+    background: var(--fucsia);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 15px;
+    transition: 0.3s;
+}
+
+.btn-fucsia:hover {
+    box-shadow: 0 0 20px var(--fucsia);
+}
+			
     </style>
 </head>
 <body>
@@ -129,6 +263,103 @@
 
             <h2>Chi cerchiamo?</h2>
             <p id="school-profile">Caricamento profilo studente...</p>
+			<section class="reviews-section">
+    <div class="section-header-reviews">
+        <h2>Cosa dicono gli studenti</h2>
+        <p>Le esperienze reali di chi frequenta questo istituto.</p>
+    </div>
+
+   <section class="reviews-section">
+    <div class="section-header-reviews">
+        <h2 style="background: linear-gradient(to right, #ff00ff, #ff77ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Recensioni Studenti</h2>
+    </div>
+
+    <div class="comment-input-container">
+        <input type="text" id="rev-name" placeholder="Il tuo nome..." style="background:transparent; border:none; border-bottom:1px solid #333; color:white; margin-bottom:15px; width:200px; outline:none;">
+        <textarea id="rev-text" rows="2" placeholder="Aggiungi un commento..."></textarea>
+        <div style="display:flex; justify-content: space-between; align-items:center;">
+            <select id="rev-stars" style="background:#222; color:white; border:none; padding:5px; border-radius:5px;">
+                <option value="5">5 Stelle</option>
+                <option value="4">4 Stelle</option>
+                <option value="3">3 Stelle</option>
+                <option value="2">2 Stelle</option>
+                <option value="1">1 Stella</option>
+            </select>
+            <button class="btn-fucsia" onclick="inviaRecensione()">Pubblica</button>
+        </div>
+    </div>
+
+    <div id="reviews-grid" class="reviews-grid">
+        <p style="color:#666;">Caricamento recensioni...</p>
+    </div>
+</section>
+
+<script>
+// Prendi l'ID della scuola dall'URL
+const urlParams = new URLSearchParams(window.location.search);
+const schoolId = urlParams.get('id');
+
+// FUNZIONE PER CARICARE I COMMENTI DAL DB
+async function caricaRecensioni() {
+    const grid = document.getElementById('reviews-grid');
+    
+    const { data: recensioni, error } = await supabaseClient
+        .from('recensioni')
+        .select('*')
+        .eq('school_id', schoolId)
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    if (recensioni.length === 0) {
+        grid.innerHTML = "<p style='color:#555;'>Ancora nessuna recensione. Sii il primo!</p>";
+        return;
+    }
+
+    grid.innerHTML = recensioni.map(r => `
+        <div class="review-card">
+            <div class="stars">${'★'.repeat(r.stelle)}${'☆'.repeat(5-r.stelle)}</div>
+            <p class="review-text">"${r.testo}"</p>
+            <div class="author-info">
+                <strong>${r.nome}</strong>
+                <span>Postato il ${new Date(r.created_at).toLocaleDateString()}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// FUNZIONE PER SALVARE UN NUOVO COMMENTO
+async function inviaRecensione() {
+    const nome = document.getElementById('rev-name').value || "Anonimo";
+    const testo = document.getElementById('rev-text').value;
+    const stelle = document.getElementById('rev-stars').value;
+
+    if (!testo) { alert("Scrivi qualcosa prima di pubblicare!"); return; }
+
+    const { error } = await supabaseClient
+        .from('recensioni')
+        .insert([{ 
+            school_id: schoolId, 
+            nome: nome, 
+            testo: testo, 
+            stelle: parseInt(stelle) 
+        }]);
+
+    if (error) {
+        alert("Errore nell'invio");
+    } else {
+        // Pulisci i campi e ricarica
+        document.getElementById('rev-text').value = "";
+        caricaRecensioni();
+    }
+}
+
+// Avvia il caricamento appena la pagina è pronta
+caricaRecensioni();
+</script>
         </main>
 
         <aside>
@@ -140,24 +371,22 @@
         </aside>
     </div>
 
-   <script>
-    // 1. Configurazione - Sostituisci con i tuoi dati che trovi su Supabase (Settings > API)
-   const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+  <script>
+    // 1. Configurazione Supabase
+    const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     async function inizializzaPagina() {
-        // 2. Recupera l'ID della scuola dall'indirizzo della pagina
         const urlParams = new URLSearchParams(window.location.search);
-        const schoolId = urlParams.get('id');
+        const schoolId = urlParams.get('id'); // Questo è l'id (numero) generato automaticamente
 
         if (!schoolId) {
-            console.error("Nessun ID scuola specificato nell'URL!");
-            document.body.innerHTML = "<h1 style='color:white; text-align:center; margin-top:50px;'>Scuola non trovata. Torna alla Home.</h1>";
+            document.body.innerHTML = "<h1 style='color:white; text-align:center; padding-top:100px;'>Scuola non specificata.</h1>";
             return;
         }
 
-        // 3. Chiamata al Database
+        // 2. Chiamata al Database con i nomi delle colonne reali
         const { data: scuola, error } = await supabaseClient
             .from('schools')
             .select('*')
@@ -165,34 +394,57 @@
             .single();
 
         if (error || !scuola) {
-            console.error("Errore nel recupero dati:", error);
+            console.error("Errore:", error);
+            document.getElementById('school-name').innerText = "Scuola non trovata";
             return;
         }
 
-        // 4. Inserimento dati nell'HTML
-        document.title = scuola.name + " | Up to You";
-        document.getElementById('school-name').innerText = scuola.name;
-        document.getElementById('school-type').innerText = scuola.type;
-        document.getElementById('school-location').innerText = scuola.location;
-        document.getElementById('school-description').innerText = scuola.description;
-        document.getElementById('school-profile').innerText = scuola.student_profile;
+        // 3. Inserimento dati dinamici (Mappatura colonne Ministeriali)
+        document.title = scuola.DENOMINAZIONESCUOLA + " | Up to You";
         
-        // Carica la foto se esiste, altrimenti lascia quella di default
-        if (scuola.image_url) {
-            document.getElementById('school-image').src = scuola.image_url;
-        }
+        // Header
+        document.getElementById('school-name').innerText = scuola.DENOMINAZIONESCUOLA;
+        document.getElementById('school-type').innerText = scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA;
+        
+        // Località completa
+        const localita = `${scuola.INDIRIZZOSCUOLA}, ${scuola.CAPSCUOLA} ${scuola.DESCRIZIONECOMUNE} (${scuola.PROVINCIA})`;
+        document.getElementById('school-location').innerText = "📍 " + localita;
 
-        // Popola la lista delle materie (che nel DB è un array)
+        // 4. NUOVE INFO: Info Card laterale potenziata
         const listContainer = document.getElementById('school-subjects');
-        listContainer.innerHTML = ""; // Svuota i segnaposto
-        scuola.subjects.forEach(materia => {
-            const li = document.createElement('li');
-            li.innerText = materia;
-            listContainer.appendChild(li);
-        });
+        listContainer.innerHTML = `
+            <li><strong>Codice Meccanografico:</strong><br>${scuola.CODICESCUOLA}</li>
+            <li><strong>Comune:</strong> ${scuola.DESCRIZIONECOMUNE}</li>
+            <li><strong>Regione:</strong> ${scuola.REGIONE}</li>
+            <li><strong>Plesso:</strong> ${scuola.SEDESCOLASTICA === 'SI' ? 'Sede Principale' : 'Succursale/Plesso'}</li>
+        `;
+
+        // 5. AZIONI: Email e Sito Web
+        const descriptionArea = document.getElementById('school-description');
+        descriptionArea.innerHTML = `
+            <p>Questa scuola fa parte dell'istituto: <strong>${scuola.DENOMINAZIONEISTITUTORIFERIMENTO}</strong>.</p>
+            <div style="margin-top: 20px;">
+                <a href="mailto:${scuola.INDIRIZZOEMAILSCUOLA}" class="cta-button" style="padding: 10px 20px; background: var(--accent); color: black; border-radius: 8px; text-decoration: none; font-weight: 600; margin-right: 10px;">Scrivi alla Scuola</a>
+                <a href="${scuola.SITOWEBSCUOLA}" target="_blank" style="color: var(--accent);">Visita il Sito Ufficiale →</a>
+            </div>
+        `;
+
+        // 6. Google Maps Automatico
+        // Crea un link che apre Google Maps direttamente sull'indirizzo della scuola
+        const mapQuery = encodeURIComponent(`${scuola.DENOMINAZIONESCUOLA} ${scuola.INDIRIZZOSCUOLA} ${scuola.DESCRIZIONECOMUNE}`);
+        const mapUrl = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+        
+        document.getElementById('school-location').innerHTML = `
+            <a href="${mapUrl}" target="_blank" style="color: var(--text-dim); text-decoration: none;">
+                📍 ${localita} <span style="font-size: 0.8rem; color: var(--accent);">(Apri Mappa)</span>
+            </a>
+        `;
+
+        // 7. Gestione Profilo Studente (Dato che non è nel CSV, mettiamo un testo di default intelligente)
+        document.getElementById('school-profile').innerText = 
+            `Cerchiamo studenti interessati al percorso di ${scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA.toLowerCase()}. Se cerchi una scuola a ${scuola.DESCRIZIONECOMUNE} con un ambiente dinamico, questa è la scelta giusta.`;
     }
 
-    // Fai partire tutto al caricamento della pagina
     window.onload = inizializzaPagina;
 </script>
 </body>
