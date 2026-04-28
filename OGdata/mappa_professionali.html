@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mappa Interattiva - Up to You</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
  <link rel="stylesheet" href="../style.css">
     <style>
 
@@ -310,57 +311,87 @@
  <script src="professionali.js"></script>
 
 <script>
+    // 1. Inizializzazione Supabase
+    const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // 2. Funzione per cercare la scuola nel database
+    async function vaiAllaScuola(nomeScuola) {
+        const nomeRicerca = nomeScuola.split('(')[0].trim();
+        try {
+            const { data, error } = await supabaseClient
+                .from('schools')
+                .select('id')
+                .ilike('name', `%${nomeRicerca}%`)
+                .limit(1)
+                .single();
+
+            if (error || !data) {
+                console.warn("Scuola non trovata:", nomeRicerca);
+                alert("Dettagli non ancora disponibili per questa scuola.");
+                return;
+            }
+            // Vai alla pagina dettagli (usa ../ se sei in una sottocartella)
+            window.location.href = `../scuola.html?id=${data.id}`;
+        } catch (err) {
+            console.error("Errore:", err);
+        }
+    }
+
+    // 3. Gestione Click sulla Mappa
     document.querySelectorAll('path, circle').forEach(el => {
-        el.style.cursor = "pointer"; // Forza la manina al passaggio del mouse
+        el.style.cursor = "pointer";
         
         el.addEventListener('click', function() {
-            // 1. Usiamo l'attributo 'name' (es. Piedmont) invece dell'id (es. IT21)
-            const regionName = this.getAttribute('name');
-            console.log("Regione cliccata:", regionName);
-            
-            // 2. Apriamo il menu aggiungendo la classe active direttamente al div #details
+            const regionName = this.getAttribute('name'); 
             const panel = document.getElementById('details');
             panel.classList.add('active');
             
-            // 3. Cerchiamo i dati nel file scuole.js
             if (typeof datiScuole !== 'undefined' && datiScuole[regionName]) {
                 const info = datiScuole[regionName];
-                
-                // Aggiorniamo il titolo (se hai un <h2> nel pannello)
-                const titleElement = panel.querySelector('h2');
-                if (titleElement) titleElement.innerText = regionName;
+                document.querySelector('#details h2').innerText = regionName;
 
                 let htmlContenuto = "";
                 info.comuni.forEach(comune => {
                     htmlContenuto += `
                         <div style="margin-bottom: 20px; border-left: 4px solid #4facfe; padding-left: 15px; text-align: left;">
                             <h3 style="margin: 0; color: #4facfe;">📍 ${comune.nome}</h3>
-                            <ul style="margin: 10px 0; padding-left: 20px; color: #ccc; list-style: disc;">
-                                ${comune.scuole.map(s => `<li>${s}</li>`).join('')}
+                            <ul style="margin: 10px 0; padding-left: 20px; color: #ccc; list-style: none;">
+                                ${comune.scuole.map(s => {
+                                    let nomeSicuro = s.replace(/'/g, "\\'");
+                                    return `<li style="margin-bottom: 8px;">
+                                                <a href="#" onclick="event.preventDefault(); vaiAllaScuola('${nomeSicuro}')" 
+                                                   style="color: #fff; text-decoration: none;">
+                                                   🎓 ${s}
+                                                </a>
+                                            </li>`;
+                                }).join('')}
                             </ul>
                         </div>`;
                 });
                 
-                // Inseriamo i paesini e le scuole (saltando il titolo h2)
-                // Creiamo un contenitore interno se non c'è
+                // --- QUESTA È LA PARTE CHE TI MANCAVA ---
+                // Cerca il contenitore 'schools-list'. Se non c'è lo crea e nasconde 'region-info'
                 let contentDiv = document.getElementById('schools-list');
                 if (!contentDiv) {
                     contentDiv = document.createElement('div');
                     contentDiv.id = 'schools-list';
-                    panel.appendChild(contentDiv);
+                    const regionInfo = document.getElementById('region-info');
+                    if (regionInfo) {
+                        regionInfo.parentNode.insertBefore(contentDiv, regionInfo.nextSibling);
+                        regionInfo.style.display = 'none'; // Nasconde il testo "Clicca su una regione"
+                    } else {
+                        panel.appendChild(contentDiv);
+                    }
                 }
                 contentDiv.innerHTML = htmlContenuto;
+                // ----------------------------------------
 
             } else {
-                alert("Dati non trovati per: " + regionName + ". Verifica che il nome nel JS sia identico a quello nell'SVG.");
+                alert("Nessun dato trovato per questa regione.");
             }
         });
     });
-
-    // Funzione per chiudere il menu (opzionale, aggiungi una X nel pannello)
-    function closeMenu() {
-        document.getElementById('details').classList.remove('active');
-    }
-</script>
-</body>
+</script></body>
 </html>
