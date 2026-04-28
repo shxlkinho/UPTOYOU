@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caricamento Scuola... | Up to You</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .scuola-hero {
+            padding: 140px 5% 40px;
+            background: linear-gradient(180deg, #080808 0%, var(--bg-dark) 100%);
+            text-align: center;
+        }
+
+        .scuola-type {
+            color: var(--accent); text-transform: uppercase;
+            font-weight: 600; letter-spacing: 2px; font-size: 0.9rem;
+            margin-bottom: 10px; display: block;
+        }
+
+        .scuola-header h1 {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 800; margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #bbb);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* --- NUOVA SEZIONE FOTO --- */
+        .scuola-gallery {
+            max-width: 1100px;
+            margin: 0 auto 60px;
+            padding: 0 5%;
+        }
+
+        .main-photo-container {
+            width: 100%;
+            height: 450px;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            background: #1a1a1a;
+        }
+
+        .main-photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        /* --- GRIGLIA CONTENUTI --- */
+        .scuola-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto 100px;
+            padding: 0 5%;
+        }
+
+        .scuola-main-content h2 {
+            color: var(--text-main); font-size: 1.8rem;
+            margin-bottom: 20px; font-weight: 700;
+            border-left: 4px solid var(--accent);
+            padding-left: 15px;
+        }
+
+        .scuola-main-content p {
+            color: var(--text-dim); font-size: 1.05rem;
+            margin-bottom: 40px; line-height: 1.8;
+        }
+
+        .info-card {
+            background: var(--bg-card);
+            padding: 30px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: sticky; top: 100px;
+        }
+
+        .info-card h4 {
+            color: var(--accent); text-transform: uppercase;
+            font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 20px;
+        }
+
+        .tag-list { list-style: none; }
+        .tag-list li {
+            margin-bottom: 12px; padding-left: 30px; position: relative;
+            color: var(--text-dim);
+        }
+        .tag-list li::before { content: "✔️"; position: absolute; left: 0; color: var(--accent); }
+
+        @media (max-width: 968px) {
+            .scuola-grid { grid-template-columns: 1fr; }
+            .main-photo-container { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="contact.html">Contatti</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="scuola-hero">
+        <span class="scuola-type" id="school-type">Caricamento tipo...</span>
+        <h1 id="school-name">Nome Scuola</h1>
+        <p class="scuola-location" id="school-location" style="color: var(--text-dim);">📍 Località</p>
+    </section>
+
+    <div class="scuola-gallery">
+        <div class="main-photo-container">
+            <img id="school-image" src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=1200" alt="Foto Scuola">
+        </div>
+    </div>
+
+    <div class="scuola-grid">
+        <main class="scuola-main-content">
+            <h2>L'Offerta Formativa</h2>
+            <p id="school-description">Caricamento descrizione...</p>
+
+            <h2>Chi cerchiamo?</h2>
+            <p id="school-profile">Caricamento profilo studente...</p>
+        </main>
+
+        <aside>
+            <div class="info-card">
+                <h4>Materie di Indirizzo</h4>
+                <ul class="tag-list" id="school-subjects">
+                    </ul>
+            </div>
+        </aside>
+    </div>
+
+   <script>
+    // 1. Configurazione - Sostituisci con i tuoi dati che trovi su Supabase (Settings > API)
+   const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function inizializzaPagina() {
+        // 2. Recupera l'ID della scuola dall'indirizzo della pagina
+        const urlParams = new URLSearchParams(window.location.search);
+        const schoolId = urlParams.get('id');
+
+        if (!schoolId) {
+            console.error("Nessun ID scuola specificato nell'URL!");
+            document.body.innerHTML = "<h1 style='color:white; text-align:center; margin-top:50px;'>Scuola non trovata. Torna alla Home.</h1>";
+            return;
+        }
+
+        // 3. Chiamata al Database
+        const { data: scuola, error } = await supabaseClient
+            .from('schools')
+            .select('*')
+            .eq('id', schoolId)
+            .single();
+
+        if (error || !scuola) {
+            console.error("Errore nel recupero dati:", error);
+            return;
+        }
+
+        // 4. Inserimento dati nell'HTML
+        document.title = scuola.name + " | Up to You";
+        document.getElementById('school-name').innerText = scuola.name;
+        document.getElementById('school-type').innerText = scuola.type;
+        document.getElementById('school-location').innerText = scuola.location;
+        document.getElementById('school-description').innerText = scuola.description;
+        document.getElementById('school-profile').innerText = scuola.student_profile;
+        
+        // Carica la foto se esiste, altrimenti lascia quella di default
+        if (scuola.image_url) {
+            document.getElementById('school-image').src = scuola.image_url;
+        }
+
+        // Popola la lista delle materie (che nel DB è un array)
+        const listContainer = document.getElementById('school-subjects');
+        listContainer.innerHTML = ""; // Svuota i segnaposto
+        scuola.subjects.forEach(materia => {
+            const li = document.createElement('li');
+            li.innerText = materia;
+            listContainer.appendChild(li);
+        });
+    }
+
+    // Fai partire tutto al caricamento della pagina
+    window.onload = inizializzaPagina;
+</script>
+</body>
+</html>
