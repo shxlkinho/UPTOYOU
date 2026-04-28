@@ -318,10 +318,9 @@ async function caricaLiceiRegionali(nomeRegione) {
     const titoloPanel = document.getElementById('region-name');
     const infoIniziale = document.getElementById('region-info');
 
-    // Mostra il caricamento nel pannello
     if (infoIniziale) infoIniziale.style.display = 'none';
     titoloPanel.innerText = nomeRegione;
-    listaContenitore.innerHTML = `<p style="color: #4facfe; padding: 20px;">🔍 Cerco i licei...</p>`;
+    listaContenitore.innerHTML = `<p style="color: #4facfe; padding: 20px;">🔍 Analisi dati per provincia...</p>`;
 
     try {
         let query = supabaseClient
@@ -331,46 +330,63 @@ async function caricaLiceiRegionali(nomeRegione) {
 
         const nomeUpper = nomeRegione.toUpperCase();
 
-        // GESTIONE REGIONI SPECIALI
         if (nomeUpper.includes("TRENTINO") || nomeUpper.includes("ADIGE")) {
             query = query.or('"REGIONE".ilike.%BOLZANO%, "REGIONE".ilike.%TRENTO%');
-        } 
-        else if (nomeUpper.includes("AOSTA")) {
+        } else if (nomeUpper.includes("AOSTA")) {
             query = query.ilike('"REGIONE"', '%AOSTA%');
-        } 
-        else {
-            // Usa i % prima e dopo il nome per non fallire MAI (ignora spazi)
+        } else {
             query = query.ilike('"REGIONE"', `%${nomeUpper}%`);
         }
 
-        const { data: scuole, error } = await query.order('"DENOMINAZIONESCUOLA"', { ascending: true });
+        // Ordiniamo prima per Provincia e poi per Nome Scuola
+        const { data: scuole, error } = await query
+            .order('"PROVINCIA"', { ascending: true })
+            .order('"DENOMINAZIONESCUOLA"', { ascending: true });
 
         if (error) throw error;
 
-        // SE NON TROVA NULLA
         if (!scuole || scuole.length === 0) {
-            listaContenitore.innerHTML = `<p style="padding: 20px; color: #ccc;">Nessun liceo trovato in ${nomeRegione}.</p>`;
+            listaContenitore.innerHTML = `<p style="padding: 20px;">Nessun liceo trovato.</p>`;
             return;
         }
 
-        // SE TROVA LE SCUOLE (Crea le card cliccabili)
-        let html = `<ul style="list-style: none; padding: 0 15px; margin-top: 20px;">`;
+        // --- LOGICA DI RAGGRUPPAMENTO ---
+        const scuolePerProvincia = {};
         scuole.forEach(s => {
-            html += `
-                <li style="margin-bottom: 15px; border-left: 4px solid #4facfe; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 0 8px 8px 0; transition: 0.3s;">
-                    <a href="../scuola.html?id=${s.id}" style="text-decoration: none; display: block;">
-                        <span style="color: #fff; font-weight: 600; font-size: 1rem;">🎓 ${s.DENOMINAZIONESCUOLA}</span><br>
-                        <small style="color: #4facfe;">📍 ${s.PROVINCIA} - ${s.DESCRIZIONECOMUNE}</small>
-                    </a>
-                </li>`;
+            const prov = s.PROVINCIA || "Altro";
+            if (!scuolePerProvincia[prov]) {
+                scuolePerProvincia[prov] = [];
+            }
+            scuolePerProvincia[prov].push(s);
         });
-        html += `</ul>`;
+
+        // --- COSTRUZIONE HTML ---
+        let html = "";
+        for (const prov in scuolePerProvincia) {
+            html += `
+                <div class="provincia-group" style="margin-top: 25px;">
+                    <h3 style="color: #4facfe; font-size: 0.9rem; letter-spacing: 2px; border-bottom: 1px solid rgba(79, 172, 254, 0.3); padding-bottom: 5px; margin-bottom: 15px; padding-left: 15px;">
+                        PROVINCIA DI ${prov}
+                    </h3>
+                    <ul style="list-style: none; padding: 0 15px;">`;
+            
+            scuolePerProvincia[prov].forEach(s => {
+                html += `
+                    <li style="margin-bottom: 12px; border-left: 3px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); padding: 10px; border-radius: 0 6px 6px 0; transition: 0.3s;">
+                        <a href="../scuola.html?id=${s.id}" style="text-decoration: none; display: block;">
+                            <span style="color: #fff; font-weight: 500; font-size: 0.95rem;">🎓 ${s.DENOMINAZIONESCUOLA}</span><br>
+                            <small style="color: #888; font-size: 0.8rem;">📍 ${s.DESCRIZIONECOMUNE}</small>
+                        </a>
+                    </li>`;
+            });
+            html += `</ul></div>`;
+        }
         
         listaContenitore.innerHTML = html;
 
     } catch (err) {
-        console.error("Errore DB:", err);
-        listaContenitore.innerHTML = `<p style="color: red; padding: 20px;">Errore di connessione al database.</p>`;
+        console.error("Errore:", err);
+        listaContenitore.innerHTML = `<p style="color: red; padding: 20px;">Errore nel caricamento.</p>`;
     }
 }
 
