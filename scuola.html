@@ -295,102 +295,22 @@
 </section>
 
 <script>
-// Prendi l'ID della scuola dall'URL
+// 1. CONFIGURAZIONE (NON TOCCARE)
+const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// 2. RECUPERO ID DALL'URL
 const urlParams = new URLSearchParams(window.location.search);
 const schoolId = urlParams.get('id');
 
-// FUNZIONE PER CARICARE I COMMENTI DAL DB
+// 3. FUNZIONE CARICAMENTO RECENSIONI
 async function caricaRecensioni() {
     const grid = document.getElementById('reviews-grid');
-    
-    const { data: recensioni, error } = await supabaseClient
-        .from('recensioni')
-        .select('*')
-        .eq('school_id', schoolId)
-        .order('created_at', { ascending: false });
+    if (!grid) return; // Sicurezza: se non trova il div, esce
 
-    if (error) {
-        console.error(error);
-        return;
-    }
-
-    if (recensioni.length === 0) {
-        grid.innerHTML = "<p style='color:#555;'>Ancora nessuna recensione. Sii il primo!</p>";
-        return;
-    }
-
-    grid.innerHTML = recensioni.map(r => `
-        <div class="review-card">
-            <div class="stars">${'★'.repeat(r.stelle)}${'☆'.repeat(5-r.stelle)}</div>
-            <p class="review-text">"${r.testo}"</p>
-            <div class="author-info">
-                <strong>${r.nome}</strong>
-                <span>Postato il ${new Date(r.created_at).toLocaleDateString()}</span>
-            </div>
-        </div>
-    `).join('');
-}
-
-// FUNZIONE PER SALVARE UN NUOVO COMMENTO
-async function inviaRecensione() {
-    const nome = document.getElementById('rev-name').value || "Anonimo";
-    const testo = document.getElementById('rev-text').value;
-    const stelle = document.getElementById('rev-stars').value;
-
-    if (!testo) { alert("Scrivi qualcosa prima di pubblicare!"); return; }
-
-    const { error } = await supabaseClient
-        .from('recensioni')
-        .insert([{ 
-            school_id: schoolId, 
-            nome: nome, 
-            testo: testo, 
-            stelle: parseInt(stelle) 
-        }]);
-
-    if (error) {
-        alert("Errore nell'invio");
-    } else {
-        // Pulisci i campi e ricarica
-        document.getElementById('rev-text').value = "";
-        caricaRecensioni();
-    }
-}
-
-// Avvia il caricamento appena la pagina è pronta
-caricaRecensioni();
-</script>
-        </main>
-
-        <aside>
-            <div class="info-card">
-                <h4>Materie di Indirizzo</h4>
-                <ul class="tag-list" id="school-subjects">
-                    </ul>
-            </div>
-        </aside>
-    </div>
-
-  <script>
-    // 1. Configurazione Supabase
-    const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    async function inizializzaPagina() {
-       // 1. Assicuriamoci che l'ID sia presente
-const urlParams = new URLSearchParams(window.location.search);
-const schoolId = urlParams.get('id');
-
-console.log("ID Scuola rilevato:", schoolId); // Controlla in F12 se appare l'ID
-
-// 2. Funzione per caricare le recensioni dal Database
-async function caricaRecensioni() {
-    const grid = document.getElementById('reviews-grid');
-    
-    // Se non c'è l'ID, non possiamo cercare nulla
     if (!schoolId) {
-        grid.innerHTML = "<p style='color:orange;'>Errore: ID scuola non trovato nell'URL.</p>";
+        grid.innerHTML = "<p style='color:orange;'>⚠️ Seleziona una scuola dalla mappa per vedere i commenti.</p>";
         return;
     }
 
@@ -404,71 +324,59 @@ async function caricaRecensioni() {
         if (error) throw error;
 
         if (!recensioni || recensioni.length === 0) {
-            grid.innerHTML = "<p style='color:#555; padding: 20px;'>Ancora nessuna recensione. Sii il primo a scriverne una!</p>";
+            grid.innerHTML = "<p style='color:#555;'>Ancora nessuna recensione fucsia. Scrivine una tu!</p>";
             return;
         }
 
-        // Mapping dei dati nel tuo stile FUCSIA
         grid.innerHTML = recensioni.map(r => `
-            <div class="review-card" style="border: 1px solid rgba(255, 0, 255, 0.1); margin-bottom: 20px;">
-                <div class="stars" style="color: #ff00ff; margin-bottom: 10px;">
-                    ${'★'.repeat(r.stelle)}${'☆'.repeat(5-r.stelle)}
-                </div>
-                <p class="review-text" style="color: #eee; font-style: italic; margin-bottom: 15px;">
-                    "${r.testo}"
-                </p>
-                <div class="author-info">
-                    <strong style="color: #fff; display: block;">${r.nome}</strong>
-                    <span style="color: #ff00ff; font-size: 0.8rem;">Postato il ${new Date(r.created_at).toLocaleDateString()}</span>
+            <div class="review-card" style="border: 1px solid rgba(255, 0, 255, 0.2); background: rgba(255,0,255,0.02); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                <div class="stars" style="color: #ff00ff; margin-bottom: 10px;">${'★'.repeat(r.stelle)}${'☆'.repeat(5-r.stelle)}</div>
+                <p style="color: #eee; font-style: italic;">"${r.testo}"</p>
+                <div style="margin-top: 10px; font-size: 0.8rem;">
+                    <strong style="color: #fff;">${r.nome}</strong>
+                    <span style="color: #ff00ff; margin-left: 10px;">${new Date(r.created_at).toLocaleDateString()}</span>
                 </div>
             </div>
         `).join('');
 
     } catch (err) {
-        console.error("Errore recupero recensioni:", err);
-        grid.innerHTML = "<p style='color:red;'>Errore tecnico nel caricamento dei commenti.</p>";
+        console.error("Errore critico:", err);
+        grid.innerHTML = "<p style='color:red;'>Impossibile caricare le recensioni. Verifica la connessione.</p>";
     }
 }
 
-// 3. Funzione per inviare una nuova recensione
+// 4. FUNZIONE INVIO RECENSIONE
 async function inviaRecensione() {
     const nomeInput = document.getElementById('rev-name');
     const testoInput = document.getElementById('rev-text');
     const stelleInput = document.getElementById('rev-stars');
 
-    if (!testoInput.value.trim()) {
-        alert("Scrivi un commento prima di pubblicare!");
-        return;
-    }
+    if (!testoInput.value.trim()) { alert("Scrivi un commento!"); return; }
 
-    const nuovaRecensione = {
-        school_id: schoolId,
-        nome: nomeInput.value.trim() || "Anonimo",
-        testo: testoInput.value.trim(),
-        stelle: parseInt(stelleInput.value)
-    };
+    try {
+        const { error } = await supabaseClient
+            .from('recensioni')
+            .insert([{ 
+                school_id: schoolId, 
+                nome: nomeInput.value || "Anonimo", 
+                testo: testoInput.value, 
+                stelle: parseInt(stelleInput.value) 
+            }]);
 
-    const { error } = await supabaseClient
-        .from('recensioni')
-        .insert([nuovaRecensione]);
+        if (error) throw error;
 
-    if (error) {
-        console.error("Errore invio:", error);
-        alert("Ops! Qualcosa è andato storto con il database.");
-    } else {
-        // Pulisci i campi
-        testoInput.value = "";
-        nomeInput.value = "";
-        // Ricarica la lista immediatamente
-        caricaRecensioni();
+        testoInput.value = ""; // Pulisce
+        caricaRecensioni(); // Ricarica la lista
+    } catch (err) {
+        alert("Errore durante l'invio. Riprova.");
     }
 }
 
-// --- IL SEGRETO PER IL REFRESH ---
-// Eseguiamo la funzione quando il DOM è completamente pronto
-document.addEventListener('DOMContentLoaded', () => {
+// 5. AVVIO AL CARICAMENTO DELLA PAGINA
+window.onload = () => {
+    // Qui puoi mettere anche la tua vecchia funzione caricaDatiScuola() se ne hai una
     caricaRecensioni();
-});
+};
 </script>
 </body>
 </html>
