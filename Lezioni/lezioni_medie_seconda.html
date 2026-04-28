@@ -4,156 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style.css">
-    <title>Scuola Media - Lezioni</title>
+    <title>Scuola Media - Up to You</title>
 
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background-color: #0a0a0c;
+            background-color: #080808;
             color: #fff;
             padding-bottom: 10px;
-            padding-top: 90px;
+            padding-top: 70px;
         }
-
-        /* Titolo Sezione */
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .section-title h1 { font-size: 2.5rem; color: #fff; }
-        .section-title p { color: #777; }
 
         /* Grid Layout */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            max-width: 1400px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px 20px;
+            margin-bottom: 20px;
         }
 
-        /* Card Style - Più affilato per le medie */
+        /* Card Style - Evoluto per le medie */
         .card {
-            background: linear-gradient(145deg, #121214, #1a1a1e);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
+            background-color: #121212;
+            border-radius: 28px;
+            border: 2px solid rgba(255, 255, 255, 0.1); /* Bordo più sottile */
+            padding: 40px;
             display: flex;
             flex-direction: column;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            transform: scale(1.03);
+            background-color: #181818;
+            border-color: inherit; /* Prende il colore della materia */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* Icone */
         .icon-wrapper {
-            height: 80px;
+            height: 120px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
+            justify-content: flex-start;
         }
 
         .icon-wrapper img {
             height: 100%;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
         }
 
-        /* Colori Tematici (Accenti sui bordi laterali o titoli) */
-        .storia { border-left: 5px solid #ff9f43; }
-        .matematica { border-left: 5px solid #54a0ff; }
-        .scienze { border-left: 5px solid #1dd1a1; }
-        .italiano { border-left: 5px solid #ee5253; }
-        .tecnologia { border-left: 5px solid #5f27cd; }
-        .arte { border-left: 5px solid #ff9ff3; }
-        .musica { border-left: 5px solid #feca57; }
-        .fisica { border-left: 5px solid #48dbfb; }
+        /* Colori Materie */
+        .storia { border-top: 6px solid #c48d5f; }
+        .matematica { border-top: 6px solid #266ef3; }
+        .scienze { border-top: 6px solid #f8fc04; }
+        .italiano { border-top: 6px solid #ef4444; }
+        .geografia { border-top: 6px solid #3cee05; }
+        .inglese { border-top: 6px solid #5d34f1; }
+        .tecnologia { border-top: 6px solid #8e44ad; }
+        .arte { border-top: 6px solid #ff9ff3; }
+        .musica { border-top: 6px solid #f1c40f; }
+        .ed-fisica { border-top: 6px solid #1abc9c; }
 
         .card h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
         }
 
         .card p {
-            color: #b0b0b0;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 25px;
+            color: #a0a0a0;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 30px;
             flex-grow: 1;
         }
 
-        /* Pulsante Sottile e Moderno */
         .btn {
             text-decoration: none;
             text-align: center;
-            padding: 12px;
-            border-radius: 12px;
-            background-color: transparent;
+            padding: 16px;
+            border-radius: 18px;
+            background-color: #1a1a1a;
             color: #fff;
-            border: 1px solid rgba(255,255,255,0.2);
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            border: 1.5px solid #333;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: 0.3s;
         }
 
-        .btn:hover {
+        .card:hover .btn {
             background-color: #fff;
             color: #000;
+            border-color: #fff;
         }
     </style>
 </head>
 
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="../index.html" style="text-decoration: none; color: inherit;">
+                UP<span>TOYOU</span>
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Lezioni ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="elementari.html">Elementari</a></li>
+                    <li><a href="medie.html">Medie</a></li>
+                    <li><a href="superiori.html">Superiori</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Orientamento ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="../guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="../rapido.html">Orientamento Gratuto</a></li>
+                </ul>
+            </li>
+            <li><a href="../contact.html">Contatti</a></li>
+        </ul>
+    </nav>
+</header>
+
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <a href="../index.html" style="text-decoration: none; color: inherit;">
-                    UP<span>TOYOU</span>
-                </a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="../index.html">Home</a></li>
-                <li class="dropdown">
-                    <a href="#">Lezioni ▾</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="elementari.html">Elementari</a></li>
-                        <li><a href="medie.html">Medie</a></li>
-                        <li><a href="superiori.html">Superiori</a></li>
-                    </ul>
-                </li>
-                <li><a href="../contact.html">Contatti</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="section-title">
-        <h1>Scuola Secondaria</h1>
-        <p>Approfondisci le tue conoscenze con materie tecniche e umanistiche.</p>
-    </div>
-
     <main class="grid-container">
-
         <div class="card storia">
             <div class="icon-wrapper">
                 <img src="https://cdn-icons-png.flaticon.com/512/2682/2682065.png" alt="Storia">
             </div>
             <h2>Storia</h2>
-            <p>Dal Medioevo all'epoca contemporanea e le grandi rivoluzioni.</p>
-            <a href="#" class="btn">Apri Lezioni</a>
+            <p>Dal Medioevo alle grandi rivoluzioni industriali del mondo moderno.</p>
+            <a href="#" class="btn">Entra in Materia</a>
         </div>
 
         <div class="card italiano">
@@ -161,8 +158,8 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/3534/3534031.png" alt="Italiano">
             </div>
             <h2>Italiano</h2>
-            <p>Letteratura, analisi del testo e i grandi autori della nostra lingua.</p>
-            <a href="#" class="btn">Apri Lezioni</a>
+            <p>Analisi del testo, letteratura e le basi della Divina Commedia.</p>
+            <a href="#" class="btn">Entra in Materia</a>
         </div>
 
         <div class="card matematica">
@@ -170,45 +167,8 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/3771/3771278.png" alt="Matematica">
             </div>
             <h2>Matematica</h2>
-            <p>Algebra, geometria euclidea e introduzione al pensiero razionale.</p>
-            <a href="#" class="btn">Apri Lezioni</a>
-        </div>
-
-        <div class="card tecnologia">
-            <div class="icon-wrapper">
-                <img src="https://cdn-icons-png.flaticon.com/512/2906/2906274.png" alt="Tecnologia">
-            </div>
-            <h2>Tecnologia</h2>
-            <p>Disegno tecnico, energie rinnovabili e materiali da costruzione.</p>
-            <a href="#" class="btn">Apri Lezioni</a>
-        </div>
-
-        <div class="card arte">
-            <div class="icon-wrapper">
-                <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="Arte">
-            </div>
-            <h2>Arte e Immagine</h2>
-            <p>Storia dell'arte e tecniche di espressione grafica e visiva.</p>
-            <a href="#" class="btn">Apri Lezioni</a>
-        </div>
-
-        <div class="card musica">
-            <div class="icon-wrapper">
-                <img src="https://cdn-icons-png.flaticon.com/512/461/461238.png" alt="Musica">
-            </div>
-            <h2>Musica</h2>
-            <h2 style="font-size: 0.8rem; margin-top: -10px; color: #777;">Teoria e Strumento</h2>
-            <p>Lettura delle note, storia dei compositori e pratica strumentale.</p>
-            <a href="#" class="btn">Apri Lezioni</a>
-        </div>
-
-        <div class="card fisica">
-            <div class="icon-wrapper">
-                <img src="https://cdn-icons-png.flaticon.com/512/2964/2964514.png" alt="Ed Fisica">
-            </div>
-            <h2>Ed. Fisica</h2>
-            <p>Salute, sport di squadra e coordinazione motoria.</p>
-            <a href="#" class="btn">Apri Lezioni</a>
+            <p>Dall'algebra alla geometria solida: potenze, frazioni e teoremi.</p>
+            <a href="#" class="btn">Entra in Materia</a>
         </div>
 
         <div class="card scienze">
@@ -216,13 +176,97 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/3063/3063176.png" alt="Scienze">
             </div>
             <h2>Scienze</h2>
-            <p>Chimica, biologia cellulare e lo studio dell'universo.</p>
-            <a href="#" class="btn">Apri Lezioni</a>
+            <p>Biologia, chimica e lo studio dettagliato del Sistema Solare.</p>
+            <a href="#" class="btn">Entra in Materia</a>
         </div>
 
+        <div class="card geografia">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/2784/2784400.png" alt="Geografia">
+            </div>
+            <h2>Geografia</h2>
+            <p>L'Europa e i continenti extraeuropei: economia, popoli e territori.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+
+        <div class="card inglese">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/197/197374.png" alt="Inglese">
+            </div>
+            <h2>Inglese</h2>
+            <p>Grammatica intermedia e conversazione su temi di attualità.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+
+        <div class="card tecnologia">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/2906/2906274.png" alt="Tecnologia">
+            </div>
+            <h2>Tecnologia</h2>
+            <p>Disegno tecnico, energie rinnovabili e materiali industriali.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+
+        <div class="card arte">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="Arte">
+            </div>
+            <h2>Arte</h2>
+            <p>Storia dell'arte dal Rinascimento al Neoclassicismo e disegno dal vero.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+
+        <div class="card musica">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/461/461238.png" alt="Musica">
+            </div>
+            <h2>Musica</h2>
+            <p>Teoria musicale, solfeggio e pratica con lo strumento musicale.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+
+        <div class="card ed-fisica">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/2964/2964514.png" alt="Ed Fisica">
+            </div>
+            <h2>Ed. Fisica</h2>
+            <p>Anatomia del movimento, sport di squadra e regolamenti atletici.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
     </main>
 
     <footer>
-        </footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">UP<span>TOYOU</span></div>
+                <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Link Utili</h4>
+                <ul>
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Supporto</h4>
+                <ul>
+                    <li>Privacy Policy</li>
+                    <li>Termini di Servizio</li>
+                    <li><a href="contact.html">Contattaci</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contatti</h4>
+                <ul>
+                    <li>Email: info@uptoyou.it</li>
+                    <li>Roma, Italia</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
 </body>
 </html>
