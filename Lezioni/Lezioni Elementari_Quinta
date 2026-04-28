@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Scuola Elementare - Classe Terza</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #080808;
+            color: #fff;
+            padding-bottom: 10px;
+            padding-top: 70px;
+        }
+
+        /* Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            margin-bottom: 20px;
+
+        }
+
+        /* Card Style */
+        .card {
+            background-color: #121212;
+            border-radius: 28px;
+            border: 3px solid;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card:hover {
+            transform: scale(1.03);
+            background-color: #181818;
+        }
+
+        /* Gestione Icone Illustrate */
+        .icon-wrapper {
+            height: 140px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .icon-wrapper img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+        }
+
+        /* Colori Bordi e Luci */
+        .storia { border-color: #c48d5f; }
+        .matematica { border-color:  #266ef3; }
+        .scienze { border-color:#f8fc04; }
+        .italiano { border-color: #ef4444; }
+        .geografia { border-color: #3cee05; }
+        .inglese { border-color: #5d34f1; }
+
+        .card h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .card p {
+            color: #a0a0a0;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        /* Pulsante Moderno */
+        .btn {
+            text-decoration: none;
+            text-align: center;
+            padding: 16px;
+            border-radius: 18px;
+            background-color: #1a1a1a;
+            color: #fff;
+            border: 1.5px solid #333;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #fff;
+            color: #000;
+            border-color: #fff;
+            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="../index.html" style="text-decoration: none; color: inherit;">
+                UP<span>TOYOU</span>
+            </a>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Lezioni ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Lezioni/elementari.html">Elementari</a></li>
+                    <li><a href="Lezioni/medie.html">Medie</a></li>
+                    <li><a href="Lezioni/superiori.html">Superiori</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Orientamento ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="../guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="../rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </li>
+            <li><a href="../contact.html">Contatti</a></li>
+        </ul>
+    </nav>
+</header>
+
+<body>
+            
+    <main class="grid-container">
+
+        <div class="card storia">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/2682/2682065.png" alt="Storia">
+            </div>
+            <h2>Storia</h2>
+            <p>Antiche civiltà e l'origine della scrittura nel mondo.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+
+         <div class="card italiano">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/3534/3534031.png" alt="Italiano">
+            </div>
+            <h2>Italiano</h2>
+            <p>Grammatica avanzata, ortografia e analisi dei testi letterari.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+
+        <div class="card matematica">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/3771/3771278.png" alt="Matematica">
+            </div>
+            <h2>Matematica</h2>
+            <p>Perimetri, aree e la logica complessa dei numeri.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+
+        <div class="card scienze">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/3063/3063176.png" alt="Scienze">
+            </div>
+            <h2>Scienze</h2>
+            <p>Scoperta del corpo umano, degli ecosistemi e della natura.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+
+
+        <div class="card geografia">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/2784/2784400.png" alt="Geografia">
+            </div>
+            <h2>Geografia</h2>
+            <p>Studio dei continenti, dei climi e delle mappe del mondo.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+
+        <div class="card inglese">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/197/197374.png" alt="Inglese">
+            </div>
+            <h2>Inglese</h2>
+            <p>Apprendimento dei vocaboli, grammatica e conversazione base.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+        
+    </main>
+    
+</body>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">UP<span>TOYOU</span></div>
+                <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Link Utili</h4>
+                <ul>
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Supporto</h4>
+                <ul>
+                    <li>Privacy Policy</li>
+                    <li>Termini di Servizio</li>
+                    <li><a href="contact.html">Contattaci</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contatti</h4>
+                <ul>
+                    <li>Email: info@uptoyou.it</li>
+                    <li>Roma, Italia</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+</html>
