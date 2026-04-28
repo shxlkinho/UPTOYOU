@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Scuola Media - Lezioni</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #0a0a0c;
+            color: #fff;
+            padding-bottom: 10px;
+            padding-top: 90px;
+        }
+
+        /* Titolo Sezione */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .section-title h1 { font-size: 2.5rem; color: #fff; }
+        .section-title p { color: #777; }
+
+        /* Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Card Style - Più affilato per le medie */
+        .card {
+            background: linear-gradient(145deg, #121214, #1a1a1e);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        /* Icone */
+        .icon-wrapper {
+            height: 80px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .icon-wrapper img {
+            height: 100%;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+        }
+
+        /* Colori Tematici (Accenti sui bordi laterali o titoli) */
+        .storia { border-left: 5px solid #ff9f43; }
+        .matematica { border-left: 5px solid #54a0ff; }
+        .scienze { border-left: 5px solid #1dd1a1; }
+        .italiano { border-left: 5px solid #ee5253; }
+        .tecnologia { border-left: 5px solid #5f27cd; }
+        .arte { border-left: 5px solid #ff9ff3; }
+        .musica { border-left: 5px solid #feca57; }
+        .fisica { border-left: 5px solid #48dbfb; }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .card p {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        /* Pulsante Sottile e Moderno */
+        .btn {
+            text-decoration: none;
+            text-align: center;
+            padding: 12px;
+            border-radius: 12px;
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #fff;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit;">
+                    UP<span>TOYOU</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Lezioni ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="elementari.html">Elementari</a></li>
+                        <li><a href="medie.html">Medie</a></li>
+                        <li><a href="superiori.html">Superiori</a></li>
+                    </ul>
+                </li>
+                <li><a href="../contact.html">Contatti</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="section-title">
+        <h1>Scuola Secondaria</h1>
+        <p>Approfondisci le tue conoscenze con materie tecniche e umanistiche.</p>
+    </div>
+
+    <main class="grid-container">
+
+        <div class="card storia">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/2682/2682065.png" alt="Storia">
+            </div>
+            <h2>Storia</h2>
+            <p>Dal Medioevo all'epoca contemporanea e le grandi rivoluzioni.</p>
+            <a href="#" class="btn">Apri Lezioni</a>
+        </div>
+
+        <div class="card italiano">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/3534/3534031.png" alt="Italiano">
+            </div>
+            <h2>Italiano</h2>
+            <p>Letteratura, analisi del testo e i grandi autori della nostra lingua.</p>
+            <a href="#" class="btn">Apri Lezioni</a>
+        </div>
+
+        <div class="card matematica">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/3771/3771278.png" alt="Matematica">
+            </div>
+            <h2>Matematica</h2>
+            <p>Algebra, geometria euclidea e introduzione al pensiero razionale.</p>
+            <a href="#" class="btn">Apri Lezioni</a>
+        </div>
+
+        <div class="card tecnologia">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/2906/2906274.png" alt="Tecnologia">
+            </div>
+            <h2>Tecnologia</h2>
+            <p>Disegno tecnico, energie rinnovabili e materiali da costruzione.</p>
+            <a href="#" class="btn">Apri Lezioni</a>
+        </div>
+
+        <div class="card arte">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="Arte">
+            </div>
+            <h2>Arte e Immagine</h2>
+            <p>Storia dell'arte e tecniche di espressione grafica e visiva.</p>
+            <a href="#" class="btn">Apri Lezioni</a>
+        </div>
+
+        <div class="card musica">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/461/461238.png" alt="Musica">
+            </div>
+            <h2>Musica</h2>
+            <h2 style="font-size: 0.8rem; margin-top: -10px; color: #777;">Teoria e Strumento</h2>
+            <p>Lettura delle note, storia dei compositori e pratica strumentale.</p>
+            <a href="#" class="btn">Apri Lezioni</a>
+        </div>
+
+        <div class="card fisica">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/2964/2964514.png" alt="Ed Fisica">
+            </div>
+            <h2>Ed. Fisica</h2>
+            <p>Salute, sport di squadra e coordinazione motoria.</p>
+            <a href="#" class="btn">Apri Lezioni</a>
+        </div>
+
+        <div class="card scienze">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/3063/3063176.png" alt="Scienze">
+            </div>
+            <h2>Scienze</h2>
+            <p>Chimica, biologia cellulare e lo studio dell'universo.</p>
+            <a href="#" class="btn">Apri Lezioni</a>
+        </div>
+
+    </main>
+
+    <footer>
+        </footer>
+</body>
+</html>
