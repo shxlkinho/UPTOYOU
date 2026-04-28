@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerca Licei - Up to You</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="../style.css">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --accent: #4facfe;
+            --accent-grad: linear-gradient(135deg, #4facfe 0%, #00c6ff 100%);
+            --text: #ffffff;
+            --text-muted: #cccccc;
+            --card-bg: #252525;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+      /* HEADER */
+        header { background: rgba(14, 14, 14, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: fixed; width: 100%; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; max-width: 1200px; margin: 0 auto; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; letter-spacing: 1px; }
+        .logo span { color: #4facfe; }
+        .nav-links { display: flex; list-style: none; gap: 30px; margin: 0; padding: 0; }
+        .nav-links a { text-decoration: none; color: white; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: #4facfe; }
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--accent-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: var(--accent); }
+
+        /* --- MAIN CONTENT --- */
+        main {
+            flex: 1;
+            padding: 60px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-section { text-align: center; margin-bottom: 50px; }
+
+        h1 {
+            font-size: 3rem;
+            background: var(--accent-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .subtitle { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* --- GRID REGIONI --- */
+        .grid-regioni {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 50px;
+        }
+
+        .regione-btn {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            color: var(--text);
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .regione-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            background: rgba(79, 172, 254, 0.1);
+        }
+
+        .regione-btn.active {
+            background: var(--accent-grad);
+            border: none;
+            color: #fff;
+        }
+
+        /* --- RISULTATI --- */
+        #risultati {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid #333;
+        }
+
+        #stato {
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            border-left: 4px solid var(--accent);
+            padding-left: 15px;
+        }
+
+        .scuole-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            list-style: none;
+        }
+
+        .scuola-card {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .scuola-card:hover {
+            border-color: var(--accent);
+            background: #333;
+        }
+
+        .scuola-card a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .scuola-card small {
+            color: var(--accent);
+            display: block;
+            font-weight: 400;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #111;
+            padding: 40px 5%;
+            text-align: center;
+            border-top: 1px solid #333;
+            margin-top: 60px;
+        }
+
+        footer p { color: #666; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .grid-regioni { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+        <div class="logo"><a href="index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Lezioni ▾</a>
+                <ul class="dropdown-menu">
+                     <li><a href="../Lezioni/elementari.html">Elementari</a></li>
+                        <li><a href="../Lezioni/medie.html">Medie</a></li>
+                        <li><a href="../Lezioni/superiori.html">Superiori</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Orientati ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="../rapido.html">Orientamento Rapido</a></li>
+                    <li><a href="../guidato.html">Orientamento Guidato</a></li>
+                </ul>
+            </li>
+            <li><a href="../contact.html">Contatti</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="hero-section">
+        <h1>Orientamento Licei</h1>
+        <p class="subtitle">Esplora l'offerta formativa dei licei in tutta Italia</p>
+    </div>
+
+    <div class="grid-regioni">
+        <button class="regione-btn" onclick="caricaRegione(this, 'VALLE D\'AOSTA')">Valle d'Aosta</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'PIEMONTE')">Piemonte</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'LIGURIA')">Liguria</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'LOMBARDIA')">Lombardia</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'TRENTINO-ALTO ADIGE')">Trentino-A.A.</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'VENETO')">Veneto</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'FRIULI-VENEZIA GIULIA')">Friuli-V.G.</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'EMILIA-ROMAGNA')">Emilia-Romagna</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'TOSCANA')">Toscana</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'UMBRIA')">Umbria</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'MARCHE')">Marche</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'LAZIO')">Lazio</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'ABRUZZO')">Abruzzo</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'MOLISE')">Molise</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'CAMPANIA')">Campania</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'PUGLIA')">Puglia</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'BASILICATA')">Basilicata</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'CALABRIA')">Calabria</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'SICILIA')">Sicilia</button>
+        <button class="regione-btn" onclick="caricaRegione(this, 'SARDEGNA')">Sardegna</button>
+    </div>
+
+    <div id="risultati">
+        <h2 id="stato">Seleziona una regione</h2>
+        <ul id="lista-scuole" class="scuole-list">
+            </ul>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 Up to You - Orientamento Scolastico Italiano. Tutti i diritti riservati.</p>
+</footer>
+
+<script>
+    const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function caricaRegione(btn, nome) {
+        // Gestione grafica bottoni
+        document.querySelectorAll('.regione-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const lista = document.getElementById('lista-scuole');
+        const stato = document.getElementById('stato');
+        
+        stato.innerText = "Caricamento licei: " + nome + "...";
+        lista.innerHTML = "";
+
+        try {
+            let query = supabaseClient
+                .from('schools')
+                .select('id, "DENOMINAZIONESCUOLA", "DESCRIZIONECOMUNE", "PROVINCIA"')
+                .ilike('"DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA"', '%LICEO%');
+
+            // CASI SPECIALI (Dati del tuo CSV)
+            if (nome === "TRENTINO-ALTO ADIGE") {
+                query = query.or('"REGIONE".ilike.%BOLZANO%, "REGIONE".ilike.%TRENTO%');
+            } else if (nome === "VALLE D'AOSTA") {
+                query = query.ilike('"REGIONE"', '%AOSTA%');
+            } else {
+                query = query.ilike('"REGIONE"', nome);
+            }
+
+            const { data: scuole, error } = await query.order('"DENOMINAZIONESCUOLA"', { ascending: true });
+
+            if (error) throw error;
+
+            stato.innerText = "Licei in " + nome + " (" + scuole.length + ")";
+
+            if (!scuole || scuole.length === 0) {
+                lista.innerHTML = "<p>Nessun liceo trovato in questa regione.</p>";
+                return;
+            }
+
+            scuole.forEach(s => {
+                const li = document.createElement('li');
+                li.className = 'scuola-card';
+                li.innerHTML = `
+                    <a href="../scuola.html?id=${s.id}">🎓 ${s.DENOMINAZIONESCUOLA}</a>
+                    <small>📍 ${s.PROVINCIA} - ${s.DESCRIZIONECOMUNE}</small>
+                `;
+                lista.appendChild(li);
+            });
+
+        } catch (err) {
+            stato.innerText = "Errore di connessione";
+            lista.innerHTML = "<li>" + err.message + "</li>";
+        }
+    }
+</script>
+
+</body>
+</html>
