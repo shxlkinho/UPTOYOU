@@ -6,111 +6,37 @@
     <link rel="stylesheet" href="../style.css">
     <title>Scuola Media - Up to You</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+<style>
+    /* ... (resto del CSS invariato) ... */
 
-        body {
-            background-color: #080808;
-            color: #fff;
-            padding-bottom: 10px;
-            padding-top: 70px;
-        }
+    /* Colori Materie con Variabili CSS */
+    .storia { --color-materia: #c48d5f; border-top: 6px solid var(--color-materia); }
+    .matematica { --color-materia: #266ef3; border-top: 6px solid var(--color-materia); }
+    .scienze { --color-materia: #f8fc04; border-top: 6px solid var(--color-materia); }
+    .italiano { --color-materia: #ef4444; border-top: 6px solid var(--color-materia); }
+    .geografia { --color-materia: #3cee05; border-top: 6px solid var(--color-materia); }
+    .inglese { --color-materia: #5d34f1; border-top: 6px solid var(--color-materia); }
+    .tecnologia { --color-materia: #8e44ad; border-top: 6px solid var(--color-materia); }
+    .arte { --color-materia: #ff9ff3; border-top: 6px solid var(--color-materia); }
+    .musica { --color-materia: #f1c40f; border-top: 6px solid var(--color-materia); }
+    .ed-fisica { --color-materia: #1abc9c; border-top: 6px solid var(--color-materia); }
 
-        /* Grid Layout */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            margin-bottom: 20px;
-        }
+    .card:hover {
+        transform: scale(1.03);
+        background-color: #181818;
+        /* La scheda si colora del colore della materia */
+        border-color: var(--color-materia); 
+        box-shadow: 0 0 20px rgba(0,0,0,0.5), 0 0 15px var(--color-materia);
+    }
 
-        /* Card Style - Evoluto per le medie */
-        .card {
-            background-color: #121212;
-            border-radius: 28px;
-            border: 2px solid rgba(255, 255, 255, 0.1); /* Bordo più sottile */
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-        }
+    /* ... (resto del CSS invariato) ... */
 
-        .card:hover {
-            transform: scale(1.03);
-            background-color: #181818;
-            border-color: inherit; /* Prende il colore della materia */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .icon-wrapper {
-            height: 120px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        .icon-wrapper img {
-            height: 100%;
-            width: auto;
-            object-fit: contain;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
-        }
-
-        /* Colori Materie */
-        .storia { border-top: 6px solid #c48d5f; }
-        .matematica { border-top: 6px solid #266ef3; }
-        .scienze { border-top: 6px solid #f8fc04; }
-        .italiano { border-top: 6px solid #ef4444; }
-        .geografia { border-top: 6px solid #3cee05; }
-        .inglese { border-top: 6px solid #5d34f1; }
-        .tecnologia { border-top: 6px solid #8e44ad; }
-        .arte { border-top: 6px solid #ff9ff3; }
-        .musica { border-top: 6px solid #f1c40f; }
-        .ed-fisica { border-top: 6px solid #1abc9c; }
-
-        .card h2 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-
-        .card p {
-            color: #a0a0a0;
-            font-size: 1rem;
-            line-height: 1.5;
-            margin-bottom: 30px;
-            flex-grow: 1;
-        }
-
-        .btn {
-            text-decoration: none;
-            text-align: center;
-            padding: 16px;
-            border-radius: 18px;
-            background-color: #1a1a1a;
-            color: #fff;
-            border: 1.5px solid #333;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: 0.3s;
-        }
-
-        .card:hover .btn {
-            background-color: #fff;
-            color: #000;
-            border-color: #fff;
-        }
-    </style>
+    .card:hover .btn {
+        background-color: var(--color-materia);
+        color: #000;
+        border-color: var(--color-materia);
+    }
+</style>
 </head>
 
 <header>
