@@ -36,7 +36,7 @@ header {
 
 .navbar {
     display: flex;
-    align-items: center; /* Allineamento verticale perfetto */
+    align-items: right; /* Allineamento verticale perfetto */
     justify-content: flex-start; /* Essenziale per far funzionare il margin-left: auto */
     padding: 15px 5%;
     min-height: 75px;
