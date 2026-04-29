@@ -24,88 +24,95 @@
         /* Grid Layout */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             max-width: 1300px;
             margin: 0 auto;
             padding: 40px 20px;
             margin-bottom: 20px;
-
         }
 
         /* Card Style */
         .card {
             background-color: #121212;
-            border-radius: 28px;
-            border: 3px solid;
-            padding: 40px;
+            border-radius: 20px; /* Leggermente ridotto per un look più moderno/quadrato */
+            border: 2px solid rgba(255, 255, 255, 0.1); /* Bordo base sottile */
+            padding: 30px;
             display: flex;
             flex-direction: column;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            aspect-ratio: 1 / 1; /* Rende la card quadrata */
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
+        /* Effetti Neon al passaggio del mouse */
         .card:hover {
-            transform: scale(1.03);
-            background-color: #181818;
+            transform: translateY(-10px);
+            background-color: #1a1a1a;
+            border-color: var(--neon-color);
+            box-shadow: 0 0 20px var(--neon-color), inset 0 0 10px var(--neon-color);
         }
 
-        /* Gestione Icone Illustrate */
+        /* Gestione Icone */
         .icon-wrapper {
-            height: 140px;
-            margin-bottom: 20px;
+            height: 100px; /* Ridotto per adattarsi al formato quadrato */
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
         }
 
         .icon-wrapper img {
             height: 100%;
             width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
         }
 
-        /* Colori Bordi e Luci */
-        .storia { border-color: #c48d5f; }
-        .matematica { border-color:  #266ef3; }
-        .scienze { border-color:#f8fc04; }
-        .italiano { border-color: #ef4444; }
-        .geografia { border-color: #3cee05; }
-        .inglese { border-color: #5d34f1; }
+        /* Colori Variabili per il Neon */
+        .storia { --neon-color: #c48d5f; border-color: #c48d5f; }
+        .matematica { --neon-color: #266ef3; border-color: #266ef3; }
+        .scienze { --neon-color: #f8fc04; border-color: #f8fc04; }
+        .italiano { --neon-color: #ef4444; border-color: #ef4444; }
+        .geografia { --neon-color: #3cee05; border-color: #3cee05; }
+        .inglese { --neon-color: #5d34f1; border-color: #5d34f1; }
 
         .card h2 {
-            font-size: 2rem;
-            margin-bottom: 15px;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
             font-weight: 700;
         }
 
         .card p {
             color: #a0a0a0;
-            font-size: 1.1rem;
-            line-height: 1.5;
-            margin-bottom: 30px;
-            flex-grow: 1;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            flex-grow: 0; /* Rimosso flex-grow per mantenere equilibrio */
         }
 
         /* Pulsante Moderno */
         .btn {
             text-decoration: none;
             text-align: center;
-            padding: 16px;
-            border-radius: 18px;
-            background-color: #1a1a1a;
+            padding: 12px 24px;
+            border-radius: 12px;
+            background-color: transparent;
             color: #fff;
-            border: 1.5px solid #333;
-            font-weight: 700;
-            font-size: 1.1rem;
+            border: 1px solid #444;
+            font-weight: 600;
+            font-size: 1rem;
             transition: all 0.3s ease;
         }
 
-        .btn:hover {
-            background-color: #fff;
+        .card:hover .btn {
+            background-color: var(--neon-color);
+            border-color: var(--neon-color);
             color: #000;
-            border-color: #fff;
-            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+            box-shadow: 0 0 15px var(--neon-color);
         }
     </style>
 </head>
@@ -148,7 +155,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/2682/2682065.png" alt="Storia">
             </div>
             <h2>Storia</h2>
-            <p>Antiche civiltà e l'origine della scrittura nel mondo.</p>
+            <p>Antiche civiltà e l'origine della scrittura.</p>
             <a href="#" class="btn">Entra in Materia</a>
         </div>
 
@@ -157,7 +164,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/3534/3534031.png" alt="Italiano">
             </div>
             <h2>Italiano</h2>
-            <p>Grammatica avanzata, ortografia e analisi dei testi letterari.</p>
+            <p>Grammatica, ortografia e analisi dei testi.</p>
             <a href="#" class="btn">Entra in Materia</a>
         </div>
 
@@ -166,7 +173,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/3771/3771278.png" alt="Matematica">
             </div>
             <h2>Matematica</h2>
-            <p>Perimetri, aree e la logica complessa dei numeri.</p>
+            <p>Perimetri, aree e la logica dei numeri.</p>
             <a href="#" class="btn">Entra in Materia</a>
         </div>
 
@@ -175,7 +182,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/3063/3063176.png" alt="Scienze">
             </div>
             <h2>Scienze</h2>
-            <p>Scoperta del corpo umano, degli ecosistemi e della natura.</p>
+            <p>Corpo umano, ecosistemi e natura.</p>
             <a href="#" class="btn">Entra in Materia</a>
         </div>
 
@@ -185,7 +192,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/2784/2784400.png" alt="Geografia">
             </div>
             <h2>Geografia</h2>
-            <p>Studio dei continenti, dei climi e delle mappe del mondo.</p>
+            <p>Continenti, climi e mappe del mondo.</p>
             <a href="#" class="btn">Entra in Materia</a>
         </div>
 
@@ -194,7 +201,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/197/197374.png" alt="Inglese">
             </div>
             <h2>Inglese</h2>
-            <p>Apprendimento dei vocaboli, grammatica e conversazione base.</p>
+            <p>Vocaboli, grammatica e conversazione.</p>
             <a href="#" class="btn">Entra in Materia</a>
         </div>
         
