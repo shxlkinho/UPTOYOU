@@ -7,7 +7,66 @@
     <title>Scuola Media - Up to You</title>
 
 <style>
-    /* ... (resto del CSS invariato fino ai colori) ... */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        background-color: #080808;
+        color: #fff;
+        padding-bottom: 10px;
+        padding-top: 70px;
+    }
+
+    /* Grid Layout */
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        margin-bottom: 20px;
+    }
+
+    /* Card Style - Dimensioni Originali */
+    .card {
+        background-color: #121212;
+        border-radius: 28px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        position: relative;
+    }
+
+    /* Effetto Hover: Colore dinamico e Glow */
+    .card:hover {
+        transform: translateY(-5px);
+        background-color: #181818;
+        border-color: var(--color-materia);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px var(--color-materia);
+    }
+
+    .icon-wrapper {
+        height: 120px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .icon-wrapper img {
+        height: 100%;
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+    }
 
     /* Colori Materie con Variabili CSS */
     .storia { --color-materia: #c48d5f; border-top: 6px solid var(--color-materia); }
@@ -48,10 +107,10 @@
         transition: 0.3s;
     }
 
-    /* MODIFICA QUI: Il pulsante prende il colore della materia */
+    /* Il pulsante diventa del colore della materia all'hover */
     .card:hover .btn {
         background-color: var(--color-materia);
-        color: #000; /* Testo nero per leggibilità, o #fff se preferisci */
+        color: #000;
         border-color: var(--color-materia);
     }
 </style>
