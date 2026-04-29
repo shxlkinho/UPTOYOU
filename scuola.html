@@ -3,233 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caricamento Scuola... | Up to You</title>
+    <title>Dettagli Scuola | Up to You</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        :root {
+            --fucsia: #ff00ff;
+            --fucsia-glow: rgba(255, 0, 255, 0.4);
+        }
+
+        body { background-color: #080808; color: white; }
+
         .scuola-hero {
-            padding: 140px 5% 40px;
-            background: linear-gradient(180deg, #080808 0%, var(--bg-dark) 100%);
+            padding: 160px 5% 40px;
             text-align: center;
         }
 
-        .scuola-type {
-            color: var(--accent); text-transform: uppercase;
-            font-weight: 600; letter-spacing: 2px; font-size: 0.9rem;
-            margin-bottom: 10px; display: block;
-        }
-
         .scuola-header h1 {
-            font-size: clamp(2.5rem, 6vw, 3.5rem);
-            font-weight: 800; margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, #bbb);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            color: #4facfe;
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
-        /* --- NUOVA SEZIONE FOTO --- */
-        .scuola-gallery {
-            max-width: 1100px;
-            margin: 0 auto 60px;
-            padding: 0 5%;
+        .maps-link {
+            color: #00c6ff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-left: 10px;
         }
 
         .main-photo-container {
-            width: 100%;
-            height: 450px;
-            border-radius: 24px;
+            max-width: 1000px;
+            margin: 30px auto;
+            border-radius: 25px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-            background: #1a1a1a;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
         .main-photo-container img {
             width: 100%;
-            height: 100%;
+            height: auto;
+            max-height: 500px;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            display: block;
         }
 
-        /* --- GRIGLIA CONTENUTI --- */
         .scuola-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 50px;
+            gap: 40px;
             max-width: 1200px;
-            margin: 0 auto 100px;
+            margin: 0 auto 80px;
             padding: 0 5%;
         }
 
-        .scuola-main-content h2 {
-            color: var(--text-main); font-size: 1.8rem;
-            margin-bottom: 20px; font-weight: 700;
-            border-left: 4px solid var(--accent);
-            padding-left: 15px;
-        }
-
-        .scuola-main-content p {
-            color: var(--text-dim); font-size: 1.05rem;
-            margin-bottom: 40px; line-height: 1.8;
-        }
-
         .info-card {
-            background: var(--bg-card);
-            padding: 30px; border-radius: 20px;
+            background: #151515;
+            padding: 30px;
+            border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.05);
-            position: sticky; top: 100px;
+            margin-bottom: 25px;
         }
 
-        .info-card h4 {
-            color: var(--accent); text-transform: uppercase;
-            font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 20px;
+        /* Recensioni */
+        .reviews-wrapper {
+            grid-column: span 2;
+            padding-top: 50px;
+            border-top: 1px solid rgba(255, 0, 255, 0.2);
         }
 
-        .tag-list { list-style: none; }
-        .tag-list li {
-            margin-bottom: 12px; padding-left: 30px; position: relative;
-            color: var(--text-dim);
+        .comment-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--fucsia);
+            margin-bottom: 30px;
         }
-        .tag-list li::before { content: "✔️"; position: absolute; left: 0; color: var(--accent); }
 
-        @media (max-width: 968px) {
+        .comment-box textarea {
+            width: 100%; background: transparent; border: none;
+            border-bottom: 1px solid #333; color: white; padding: 10px 0;
+            outline: none; margin-bottom: 15px;
+        }
+
+        .btn-fucsia {
+            background: var(--fucsia); color: white; border: none;
+            padding: 12px 30px; border-radius: 8px; cursor: pointer;
+            font-weight: 700; transition: 0.3s;
+        }
+
+        .btn-fucsia:hover { box-shadow: 0 0 20px var(--fucsia); }
+
+        .review-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px; border-radius: 15px;
+            border: 1px solid rgba(255, 0, 255, 0.1);
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 900px) {
             .scuola-grid { grid-template-columns: 1fr; }
-            .main-photo-container { height: 300px; }
-        /* --- SEZIONE RECENSIONI (LIVELLO ULTRA) --- */
-.reviews-section {
-    padding: 80px 10%;
-    background: #0d0d0d;
-    border-top: 1px solid rgba(79, 172, 254, 0.1);
-}
-
-.section-header-reviews {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.section-header-reviews h2 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 10px;
-    background: linear-gradient(to right, #4facfe, #00c6ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-bottom: 50px;
-}
-
-.review-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 30px;
-    border-radius: 20px;
-    transition: 0.3s;
-}
-
-.review-card:hover {
-    transform: translateY(-10px);
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--accent);
-}
-
-.stars {
-    color: #ffc107;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-}
-
-.review-text {
-    font-style: italic;
-    color: #ccc;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.review-author {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.author-info strong {
-    display: block;
-    color: #fff;
-    font-size: 1rem;
-}
-
-.author-info span {
-    color: var(--accent);
-    font-size: 0.8rem;
-}
-
-.add-review-cta {
-    text-align: center;
-    padding: 40px;
-    background: rgba(79, 172, 254, 0.05);
-    border-radius: 20px;
-    border: 1px dashed var(--accent);
-}
-
-:root {
-    --fucsia: #ff00ff;
-    --fucsia-glow: rgba(255, 0, 255, 0.4);
-}
-
-.review-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--fucsia) !important;
-    box-shadow: 0 0 15px var(--fucsia-glow);
-}
-
-.stars { color: var(--fucsia) !important; }
-
-/* Casella stile YouTube */
-.comment-input-container {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 25px;
-    border-radius: 15px;
-    margin-bottom: 40px;
-    border: 1px solid rgba(255, 0, 255, 0.2);
-}
-
-.comment-input-container textarea {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid #333;
-    color: white;
-    padding: 10px 0;
-    font-family: inherit;
-    resize: none;
-    outline: none;
-    transition: 0.3s;
-}
-
-.comment-input-container textarea:focus {
-    border-bottom-color: var(--fucsia);
-}
-
-.btn-fucsia {
-    background: var(--fucsia);
-    color: white;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 15px;
-    transition: 0.3s;
-}
-
-.btn-fucsia:hover {
-    box-shadow: 0 0 20px var(--fucsia);
-}
-			
+            .reviews-wrapper { grid-column: 1; }
+        }
     </style>
 </head>
 <body>
@@ -239,126 +119,186 @@
             <div class="logo">UP<span>TOYOU</span></div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Lezioni ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="Lezioni/elementari.html">Elementari</a></li>
+                        <li><a href="Lezioni/medie.html">Medie</a></li>
+                        <li><a href="Lezioni/superiori.html">Superiori</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Orientamento ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="guidato.html">Orientamento Guidato</a></li>
+                        <li><a href="rapido.html">Orientamento Rapido</a></li>
+                    </ul>
+                </li>
                 <li><a href="contact.html">Contatti</a></li>
+                <li><a href="#about">Chi Siamo</a></li>
             </ul>
         </nav>
     </header>
 
     <section class="scuola-hero">
-        <span class="scuola-type" id="school-type">Caricamento tipo...</span>
+        <span id="school-type" style="color:var(--accent); text-transform:uppercase; letter-spacing:2px;">Caricamento...</span>
         <h1 id="school-name">Nome Scuola</h1>
-        <p class="scuola-location" id="school-location" style="color: var(--text-dim);">📍 Località</p>
+        <p style="color:#888;">
+            📍 <span id="display-address">Indirizzo...</span>
+            <a id="maps-url" href="#" target="_blank" class="maps-link">Vedi su Google Maps →</a>
+        </p>
+
+        <div class="main-photo-container">
+            <img id="school-image" src="https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&q=80&w=1200" alt="Scuola">
+        </div>
     </section>
 
-    <div class="scuola-gallery">
-        <div class="main-photo-container">
-            <img id="school-image" src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=1200" alt="Foto Scuola">
-        </div>
-    </div>
-
     <div class="scuola-grid">
-        <main class="scuola-main-content">
-            <h2>L'Offerta Formativa</h2>
-            <p id="school-description">Caricamento descrizione...</p>
+        <main>
+            <div class="info-card">
+                <h2 style="color:#4facfe; margin-bottom:15px;">L'Offerta Formativa</h2>
+                <p id="school-description">Caricamento...</p>
+            </div>
+            <div class="info-card">
+                <h2 style="color:#4facfe; margin-bottom:15px;">Profilo dello Studente</h2>
+                <p id="school-profile">Caricamento...</p>
+            </div>
+        </main>
 
-            <h2>Chi cerchiamo?</h2>
-            <p id="school-profile">Caricamento profilo studente...</p>
-			<section class="reviews-section">
-    <div class="section-header-reviews">
-        <h2>Cosa dicono gli studenti</h2>
-        <p>Le esperienze reali di chi frequenta questo istituto.</p>
-    </div>
+        <aside>
+            <div class="info-card">
+                <h4 style="color:var(--fucsia); margin-bottom:15px;">CONTATTI</h4>
+                <p id="school-email" style="margin-bottom:20px; font-weight:600;">Email: --</p>
+                <div id="school-website-container"></div>
+            </div>
+        </aside>
 
-   <section class="reviews-section">
-    <div class="section-header-reviews">
-        <h2 style="background: linear-gradient(to right, #ff00ff, #ff77ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Recensioni Studenti</h2>
-    </div>
-
-    <div class="comment-input-container">
-        <input type="text" id="rev-name" placeholder="Il tuo nome..." style="background:transparent; border:none; border-bottom:1px solid #333; color:white; margin-bottom:15px; width:200px; outline:none;">
-        <textarea id="rev-text" rows="2" placeholder="Aggiungi un commento..."></textarea>
-        <div style="display:flex; justify-content: space-between; align-items:center;">
-            <select id="rev-stars" style="background:#222; color:white; border:none; padding:5px; border-radius:5px;">
-                <option value="5">5 Stelle</option>
-                <option value="4">4 Stelle</option>
-                <option value="3">3 Stelle</option>
-                <option value="2">2 Stelle</option>
-                <option value="1">1 Stella</option>
-            </select>
-            <button class="btn-fucsia" onclick="inviaRecensione()">Pubblica</button>
+        <div class="reviews-wrapper">
+            <h2 style="color: var(--fucsia); margin-bottom: 25px;">Recensioni degli Studenti</h2>
+            <div class="comment-box">
+                <input type="text" id="rev-name" placeholder="Il tuo nome..." style="background:transparent; border:none; border-bottom:1px solid #333; color:white; width:200px; outline:none; margin-bottom:15px;">
+                <textarea id="rev-text" rows="2" placeholder="Cosa ne pensi di questa scuola?"></textarea>
+                <div style="display:flex; justify-content: space-between; align-items:center;">
+                    <select id="rev-stars" style="background:#222; color:white; border:none; padding:8px; border-radius:5px;">
+                        <option value="5">⭐⭐⭐⭐⭐</option>
+                        <option value="4">⭐⭐⭐⭐</option>
+                        <option value="3">⭐⭐⭐</option>
+                        <option value="2">⭐⭐</option>
+                        <option value="1">⭐</option>
+                    </select>
+                    <button class="btn-fucsia" onclick="inviaRecensione()">Pubblica</button>
+                </div>
+            </div>
+            <div id="reviews-grid"></div>
         </div>
     </div>
 
-    <div id="reviews-grid" class="reviews-grid">
-        <p style="color:#666;">Caricamento recensioni...</p>
-    </div>
-</section>
-
-<script>
-// Prendi l'ID della scuola dall'URL
-const urlParams = new URLSearchParams(window.location.search);
-const schoolId = urlParams.get('id');
-
-// FUNZIONE PER CARICARE I COMMENTI DAL DB
-async function caricaRecensioni() {
-    const grid = document.getElementById('reviews-grid');
-    
-    const { data: recensioni, error } = await supabaseClient
-        .from('recensioni')
-        .select('*')
-        .eq('school_id', schoolId)
-        .order('created_at', { ascending: false });
-
-    if (error) {
-        console.error(error);
-        return;
-    }
-
-    if (recensioni.length === 0) {
-        grid.innerHTML = "<p style='color:#555;'>Ancora nessuna recensione. Sii il primo!</p>";
-        return;
-    }
-
-    grid.innerHTML = recensioni.map(r => `
-        <div class="review-card">
-            <div class="stars">${'★'.repeat(r.stelle)}${'☆'.repeat(5-r.stelle)}</div>
-            <p class="review-text">"${r.testo}"</p>
-            <div class="author-info">
-                <strong>${r.nome}</strong>
-                <span>Postato il ${new Date(r.created_at).toLocaleDateString()}</span>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">UP<span>TOYOU</span></div>
+                <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Link Utili</h4>
+                <ul>
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Supporto</h4>
+                <ul>
+                    <li>Privacy Policy</li>
+                    <li>Termini di Servizio</li>
+                    <li><a href="contact.html">Contattaci</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contatti</h4>
+                <ul>
+                    <li>Email: info@uptoyou.it</li>
+                    <li>Roma, Italia</li>
+                </ul>
             </div>
         </div>
-    `).join('');
-}
+        <div class="footer-bottom">
+            <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
 
-// FUNZIONE PER SALVARE UN NUOVO COMMENTO
-async function inviaRecensione() {
-    const nome = document.getElementById('rev-name').value || "Anonimo";
-    const testo = document.getElementById('rev-text').value;
-    const stelle = document.getElementById('rev-stars').value;
+    <script>
+        const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    if (!testo) { alert("Scrivi qualcosa prima di pubblicare!"); return; }
+        const urlParams = new URLSearchParams(window.location.search);
+        const schoolId = urlParams.get('id');
 
-    const { error } = await supabaseClient
-        .from('recensioni')
-        .insert([{ 
-            school_id: schoolId, 
-            nome: nome, 
-            testo: testo, 
-            stelle: parseInt(stelle) 
-        }]);
+        async function inizializzaPagina() {
+            if (!schoolId) return;
 
-    if (error) {
-        alert("Errore nell'invio");
-    } else {
-        // Pulisci i campi e ricarica
-        document.getElementById('rev-text').value = "";
-        caricaRecensioni();
-    }
-}
+            try {
+                const { data: scuola, error } = await supabaseClient
+                    .from('schools').select('*').eq('id', schoolId).single();
 
-// Avvia il caricamento appena la pagina è pronta
-caricaRecensioni();
-</script>
+                if (scuola) {
+                    document.getElementById('school-name').innerText = scuola.DENOMINAZIONESCUOLA;
+                    document.getElementById('school-type').innerText = scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA;
+                    
+                    const indirizzo = `${scuola.INDIRIZZOSCUOLA}, ${scuola.DESCRIZIONECOMUNE} (${scuola.PROVINCIA})`;
+                    document.getElementById('display-address').innerText = indirizzo;
+                    
+                    const mapQuery = encodeURIComponent(`${scuola.DENOMINAZIONESCUOLA} ${indirizzo}`);
+                    document.getElementById('maps-url').href = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+
+                    document.getElementById('school-description').innerText = `L'istituto ${scuola.DENOMINAZIONESCUOLA} è un centro d'eccellenza per la formazione in ${scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA}. Codice: ${scuola.CODICESCUOLA}.`;
+                    document.getElementById('school-profile').innerText = `Cerchiamo studenti motivati che vogliano intraprendere un percorso in ${scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA}.`;
+                    
+                    // FIX EMAIL: Usiamo il nome esatto della colonna dal tuo DB
+                    const emailScuola = scuola.INDIRIZZOEMAILSCUOLA || 'Non disponibile';
+                    document.getElementById('school-email').innerText = `Email: ${emailScuola}`;
+                    
+                    if(scuola.SITOWEBSCUOLA) {
+                        document.getElementById('school-website-container').innerHTML = `
+                            <a href="${scuola.SITOWEBSCUOLA}" target="_blank" class="btn-fucsia" style="text-decoration:none; display:block; text-align:center;">Sito Ufficiale</a>
+                        `;
+                    }
+                }
+                await caricaRecensioni();
+            } catch (err) { console.error(err); }
+        }
+
+        async function caricaRecensioni() {
+            const grid = document.getElementById('reviews-grid');
+            const { data } = await supabaseClient.from('recensioni').select('*').eq('school_id', schoolId).order('created_at', { ascending: false });
+
+            if (!data || data.length === 0) {
+                grid.innerHTML = "<p style='color:#555;'>Nessuna recensione. Scrivi la prima!</p>";
+                return;
+            }
+
+            grid.innerHTML = data.map(r => `
+                <div class="review-card">
+                    <div style="color:var(--fucsia); margin-bottom:8px;">${'★'.repeat(r.stelle)}</div>
+                    <p style="color:#eee; font-style:italic;">"${r.testo}"</p>
+                    <small style="color:#888;"><strong>${r.nome}</strong> • ${new Date(r.created_at).toLocaleDateString()}</small>
+                </div>
+            `).join('');
+        }
+
+        async function inviaRecensione() {
+            const nome = document.getElementById('rev-name').value || "Anonimo";
+            const testo = document.getElementById('rev-text').value;
+            const stelle = document.getElementById('rev-stars').value;
+            if (!testo.trim()) return alert("Scrivi un commento!");
+
+            await supabaseClient.from('recensioni').insert([{ school_id: schoolId, nome, testo, stelle: parseInt(stelle) }]);
+            document.getElementById('rev-text').value = "";
+            caricaRecensioni();
+        }
+
+        window.addEventListener('DOMContentLoaded', inizializzaPagina);
+    </script>
 </body>
 </html>
