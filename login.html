@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accedi - Up to You</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <div class="auth-card">
+            <h2>Bentornato</h2>
+            <p>Accedi per gestire il tuo profilo</p>
+
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            
+            <button class="btn-primary" id="loginBtn">ACCEDI</button>
+
+            <div class="divider"><span>oppure</span></div>
+
+            <button class="btn-google" id="googleBtn">
+                <img src="https://www.google.com/favicon.ico" alt="Google"> Accedi con Google
+            </button>
+
+            <p class="footer-text">
+                Non hai un account? <a href="register.html">Registrati</a>
+            </p>
+            <div id="status-msg"></div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        // Login Classico
+        document.getElementById('loginBtn').onclick = async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('status-msg');
+
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) msg.innerHTML = `<span style="color:red">${error.message}</span>`;
+            else window.location.href = 'index.html';
+        };
+
+        // Login Google
+        document.getElementById('googleBtn').onclick = async () => {
+            await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: window.location.origin }
+            });
+        };
+    </script>
+</body>
+</html>
