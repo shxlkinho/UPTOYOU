@@ -46,20 +46,26 @@
         }
 
         /* Effetto Hover: Colore dinamico e Glow */
-        .card:hover {
-            transform: translateY(-5px);
-            background-color: #181818;
-            border-color: var(--color-materia);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px var(--color-materia);
-        }
+.card {
+        background-color: #121212;
+        border-radius: 28px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centra l'icona e il pulsante orizzontalmente */
+        text-align: center;  /* Centra il titolo e il paragrafo */
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        posit
 
-        .icon-wrapper {
-            height: 100px; /* Altezza ottimizzata */
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center !important;
-            justify-content: flex-start;
-        }
+.icon-wrapper {
+        height: 100px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Centra l'immagine dentro il wrapper */
+    }
 
         .icon-wrapper img {
             height: 100%;
@@ -94,18 +100,19 @@
             flex-grow: 1;
         }
 
-        .btn {
-            text-decoration: none;
-            text-align: center !important;
-            padding: 14px;
-            border-radius: 16px;
-            background-color: #1a1a1a;
-            color: #fff;
-            border: 1.5px solid #333;
-            font-weight: 700;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
+.btn {
+        width: 100%; /* Fa sì che il pulsante occupi la larghezza corretta centrandosi */
+        text-decoration: none;
+        text-align: center;
+        padding: 14px;
+        border-radius: 16px;
+        background-color: #1a1a1a;
+        color: #fff;
+        border: 1.5px solid #333;
+        font-weight: 700;
+        font-size: 1rem;
+        transition: 0.3s;
+    }
 
         /* Il pulsante diventa del colore della materia all'hover */
         .card:hover .btn {
