@@ -1,35 +1,7 @@
 /* ==========================================================================
-
-   CONFIGURAZIONE GENERALE & VARIABILI
-
+   HEADER & NAVBAR (Organizzato e Pulito)
    ========================================================================== */
 
-:root {
-    --bg-dark: #0e0e0e;
-    --bg-card: #161616;
-    --accent: #4facfe;
-    --accent-sec: #00c6ff;
-    --text-main: white;
-    --text-dim: #ccc;
-    --accent-orange: #ff6600;
-    --accent-orange-hover: #ff8533;
-    --transition-smooth: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-
-
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Poppins', sans-serif; 
-}
-
-/* ==========================================================================
-
-   HEADER & NAVBAR
-
-   ========================================================================== */
 header { 
     width: 100%; 
     position: fixed; 
@@ -41,40 +13,33 @@ header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
 }
 
-
 .navbar {
     display: flex;
-    align-items: center;
+    align-items: center; /* Allinea verticalmente logo, link e pulsanti */
+    justify-content: flex-start; /* Permette al margin-left: auto di funzionare */
     padding: 15px 5%;
-    min-height: 75px;
+    min-height: 70px;
 }
 
 /* --- LOGO --- */
-
 .logo { 
     font-weight: 800; 
     font-size: 1.6rem; 
     letter-spacing: -1px; 
     color: var(--text-main);
     text-decoration: none;
-    /* IL TRUCCO: Questo margine spinge TUTTO ciò che segue verso destra */
-    margin-right: auto; 
 }
-
 .logo span { color: var(--accent); }
 
-/* --- BLOCCO NAVIGAZIONE (Ora compatto a destra) --- */
-
+/* --- MENU DI NAVIGAZIONE --- */
 .nav-links { 
     display: flex; 
     list-style: none; 
     gap: 30px; 
     margin: 0;
     padding: 0;
-    align-items: center;
+    margin-left: auto; /* SPINGE TUTTO IL MENU A DESTRA */
 }
-
-
 
 .nav-links a { 
     text-decoration: none; 
@@ -82,103 +47,75 @@ header {
     font-weight: 500; 
     font-size: 0.95rem;
     transition: 0.3s; 
-    white-space: nowrap;
 }
 
 .nav-links a:hover { color: var(--accent); }
 
-/* --- PULSANTI AUTH (Vicini ai link) --- */
-
+/* --- PULSANTI ACCEDI / REGISTRATI --- */
 .nav-auth {
     display: flex;
     gap: 15px;
     align-items: center;
-    /* Distanza fissa tra "Chi Siamo" e i pulsanti */
-    margin-left: 30px; 
+    margin-left: 40px; /* DISTANZA TRA 'CHI SIAMO' E I PULSANTI */
 }
 
 .nav-auth a {
     text-decoration: none;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
     font-weight: 600;
-    padding: 9px 24px;
+    padding: 8px 22px;
     border-radius: 50px;
-    transition: var(--transition-smooth);
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-
-
 .btn-login {
-    background-color: #4dabf7; 
+    background-color: #4dabf7; /* Azzurro specifico richiesto */
     color: #ffffff !important;
     border: 2px solid #4dabf7;
 }
-
-
 
 .btn-register {
     background-color: transparent;
     color: #ffffff !important;
     border: 2px solid #4dabf7;
-
 }
-
-
 
 .btn-login:hover, .btn-register:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(77, 171, 247, 0.3);
+    box-shadow: 0 5px 15px rgba(77, 171, 247, 0.4);
     background-color: #4dabf7;
     color: white !important;
-
 }
 
-
-
-/* --- DROPDOWN --- */
-
+/* --- DROPDOWN (Menu a tendina) --- */
 .dropdown { position: relative; }
 
 .dropdown-menu {
     position: absolute; 
     top: 100%; 
-    right: 0; /* Allineato a destra per sicurezza */
+    left: 0;
     background: #1a1a1a; 
     display: none;
     flex-direction: column; 
-    min-width: 220px;
-    border-radius: 12px; 
+    min-width: 210px;
+    border-radius: 10px; 
     padding: 10px 0;
+    list-style: none; 
     border: 1px solid rgba(255,255,255,0.1);
-
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
 .dropdown:hover .dropdown-menu { display: flex; }
-.dropdown-menu li a { padding: 12px 25px; display: block; }
 
+.dropdown-menu li a { 
+    padding: 12px 20px; 
+    font-size: 0.9rem; 
+    display: block;
+    white-space: nowrap; /* Evita che il testo vada a capo */
+}
 
-
-/* --- RESPONSIVE HEADER --- */
-
-@media (max-width: 968px) {
-
-    .navbar {
-        padding: 15px 3%;
-    }
-
-    .nav-links {
-        gap: 15px;
-    }
-
-    .nav-auth {
-        margin-left: 20px;
-        gap: 10px;
-    }
-
-    .nav-auth a {
-        padding: 7px 15px;
-        font-size: 0.8rem;
-
-    }
-
+.dropdown-menu li a:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--accent);
 }
