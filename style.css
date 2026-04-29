@@ -36,8 +36,7 @@ header {
 
 .navbar {
     display: flex;
-    align-items: center; /* Allineamento verticale perfetto */
-    justify-content: flex-start; /* Essenziale per far funzionare il margin-left: auto */
+    align-items: center;
     padding: 15px 5%;
     min-height: 75px;
 }
@@ -49,21 +48,20 @@ header {
     letter-spacing: -1px; 
     color: var(--text-main);
     text-decoration: none;
-    flex-shrink: 0; /* Impedisce al logo di rimpicciolirsi */
+    /* IL TRUCCO: Questo margine spinge TUTTO ciò che segue verso destra */
+    margin-right: auto; 
 }
 
-.logo span { 
-    color: var(--accent); 
-}
+.logo span { color: var(--accent); }
 
-/* --- LINK DI NAVIGAZIONE --- */
+/* --- BLOCCO NAVIGAZIONE (Ora compatto a destra) --- */
 .nav-links { 
     display: flex; 
     list-style: none; 
     gap: 30px; 
     margin: 0;
     padding: 0;
-    margin-left: auto; /* IL TRUCCO: Spinge tutto il blocco menu a destra */
+    align-items: center;
 }
 
 .nav-links a { 
@@ -72,18 +70,18 @@ header {
     font-weight: 500; 
     font-size: 0.95rem;
     transition: 0.3s; 
+    white-space: nowrap;
 }
 
-.nav-links a:hover { 
-    color: var(--accent); 
-}
+.nav-links a:hover { color: var(--accent); }
 
-/* --- PULSANTI ACCEDI / REGISTRATI (AUTH) --- */
+/* --- PULSANTI AUTH (Vicini ai link) --- */
 .nav-auth {
     display: flex;
     gap: 15px;
     align-items: center;
-    margin-left: 45px; /* DISTANZA tra l'ultimo link (Chi Siamo) e i pulsanti */
+    /* Distanza fissa tra "Chi Siamo" e i pulsanti */
+    margin-left: 30px; 
 }
 
 .nav-auth a {
@@ -96,7 +94,7 @@ header {
 }
 
 .btn-login {
-    background-color: #4dabf7; /* Azzurro come richiesto */
+    background-color: #4dabf7; 
     color: #ffffff !important;
     border: 2px solid #4dabf7;
 }
@@ -107,49 +105,29 @@ header {
     border: 2px solid #4dabf7;
 }
 
-/* Hover pulsanti */
 .btn-login:hover, .btn-register:hover {
-    transform: translateY(-3px) scale(1.02);
+    transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(77, 171, 247, 0.3);
     background-color: #4dabf7;
     color: white !important;
 }
 
-/* --- DROPDOWN (Menu a tendina) --- */
-.dropdown { 
-    position: relative; 
-}
-
+/* --- DROPDOWN --- */
+.dropdown { position: relative; }
 .dropdown-menu {
     position: absolute; 
     top: 100%; 
-    left: 0;
+    right: 0; /* Allineato a destra per sicurezza */
     background: #1a1a1a; 
     display: none;
     flex-direction: column; 
     min-width: 220px;
     border-radius: 12px; 
     padding: 10px 0;
-    list-style: none; 
     border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
 }
-
-.dropdown:hover .dropdown-menu { 
-    display: flex; 
-}
-
-.dropdown-menu li a { 
-    padding: 12px 25px; 
-    font-size: 0.9rem; 
-    display: block;
-    white-space: nowrap; /* Impedisce al testo di andare a capo */
-}
-
-.dropdown-menu li a:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--accent);
-}
+.dropdown:hover .dropdown-menu { display: flex; }
+.dropdown-menu li a { padding: 12px 25px; display: block; }
 
 /* --- RESPONSIVE HEADER --- */
 @media (max-width: 968px) {
