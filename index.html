@@ -221,7 +221,7 @@
 </section>
 
 
-    <section class="section-divider">
+     <section class="section-divider">
         <div class="cards-grid">
             <a href="guidato.html" class="card-custom card-zona">
                 <span class="card-emoji">📍</span>
@@ -269,6 +269,7 @@
             <iframe id="ytPlayer" src="https://www.youtube-nocookie.com/embed/moaY0MqJ0_M?rel=0" allowfullscreen></iframe>
         </div>
     </section>
+
 
     <footer>
         <div class="footer-grid">
@@ -430,6 +431,15 @@ async function checkUserSession() {
 
 // Avvia il controllo della sessione
 checkUserSession();
+
+        function showTest() {
+            document.getElementById('test-section').style.display = 'block';
+            document.getElementById('test-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        function closeTest() {
+            document.getElementById('test-section').style.display = 'none';
+            document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+        }
     </script>
 </body>
 </html>
