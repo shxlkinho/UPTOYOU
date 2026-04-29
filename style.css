@@ -37,8 +37,9 @@ header {
 .navbar {
     display: flex;
     align-items: center;
-    padding: 15px 5%;
-    min-height: 75px;
+    padding: 0 5%; /* Padding laterale */
+    height: 80px;  /* Altezza fissa per precisione */
+    justify-content: space-between; /* Spinge logo a sx e il resto a dx */
 }
 
 /* --- LOGO --- */
@@ -48,20 +49,24 @@ header {
     letter-spacing: -1px; 
     color: var(--text-main);
     text-decoration: none;
-    /* IL TRUCCO: Questo margine spinge TUTTO ciò che segue verso destra */
-    margin-right: auto; 
+    flex-shrink: 0;
 }
-
 .logo span { color: var(--accent); }
 
-/* --- BLOCCO NAVIGAZIONE (Ora compatto a destra) --- */
+/* --- CONTENITORE DESTRA (Link + Pulsanti) --- */
+.nav-right-container {
+    display: flex;
+    align-items: center;
+    gap: 40px; /* Distanza tra "Chi Siamo" e il primo pulsante */
+}
+
+/* --- SOLO I LINK --- */
 .nav-links { 
     display: flex; 
     list-style: none; 
     gap: 30px; 
     margin: 0;
     padding: 0;
-    align-items: center;
 }
 
 .nav-links a { 
@@ -72,16 +77,13 @@ header {
     transition: 0.3s; 
     white-space: nowrap;
 }
-
 .nav-links a:hover { color: var(--accent); }
 
-/* --- PULSANTI AUTH (Vicini ai link) --- */
+/* --- PULSANTI AUTH --- */
 .nav-auth {
     display: flex;
     gap: 15px;
     align-items: center;
-    /* Distanza fissa tra "Chi Siamo" e i pulsanti */
-    margin-left: 30px; 
 }
 
 .nav-auth a {
@@ -105,19 +107,18 @@ header {
     border: 2px solid #4dabf7;
 }
 
+/* Effetti hover */
 .btn-login:hover, .btn-register:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(77, 171, 247, 0.3);
-    background-color: #4dabf7;
-    color: white !important;
 }
 
-/* --- DROPDOWN --- */
+/* --- DROPDOWN (Menu a tendina) --- */
 .dropdown { position: relative; }
 .dropdown-menu {
     position: absolute; 
     top: 100%; 
-    right: 0; /* Allineato a destra per sicurezza */
+    left: 0;
     background: #1a1a1a; 
     display: none;
     flex-direction: column; 
