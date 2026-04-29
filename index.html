@@ -39,6 +39,11 @@
                 </li>
                 <li><a href="contact.html">Contatti</a></li>
                 <li><a href="#about">Chi Siamo</a></li>
+<ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="contact.html">Contatti</a></li>
+    <li><button id="google-login-btn" style="background: #4285F4; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-family: 'Poppins'; font-weight: 600;">Accedi con Google</button></li>
+    <li id="user-greeting" style="color: #ff00ff; font-weight: 600; display: none;"></li>
             </ul>
         </nav>
     </header>
@@ -357,6 +362,44 @@
                 tendina.style.display = 'none';
             }
         });
+
+// --- GESTIONE LOGIN GOOGLE ---
+
+const loginBtn = document.getElementById('login-google-btn');
+const userNameDisplay = document.getElementById('user-name');
+
+// 1. Funzione per avviare il login
+loginBtn.addEventListener('click', async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            // Reindirizza l'utente alla pagina corrente dopo il login
+            redirectTo: window.location.origin 
+        }
+    });
+    
+    if (error) {
+        console.error("Errore durante il login:", error.message);
+        alert("Ops! Qualcosa è andato storto con il login.");
+    }
+});
+
+// 2. Funzione per controllare se l'utente è loggato all'apertura della pagina
+async function checkUserSession() {
+    const { data: { user }, error } = await supabase.auth.getUser();
+
+    if (user) {
+        // Se l'utente esiste, nascondiamo il tasto e mostriamo il suo nome
+        loginBtn.style.display = 'none';
+        userNameDisplay.innerText = "Ciao, " + user.user_metadata.full_name;
+        userNameDisplay.style.display = 'block';
+        
+        console.log("Utente loggato:", user);
+    }
+}
+
+// Avvia il controllo della sessione
+checkUserSession();
     </script>
 </body>
 </html>
