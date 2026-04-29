@@ -13,62 +13,6 @@
         .search-item:hover { background: #222; color: #ff00ff; }
         .search-item strong { display: block; color: white; font-size: 0.95rem; }
         .search-item small { color: #777; font-size: 0.8rem; }
-
-        /* --- NUOVO STILE APPLE GLASS PER LA BARRA --- */
-        .search-box-glass {
-            width: 100%;
-            max-width: 600px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 5px 20px;
-            transition: 0.4s;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .search-box-glass:focus-within {
-            border-color: #ff00ff;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
-        }
-
-        .search-box-glass input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 20px;
-            padding: 15px 0;
-            outline: none;
-        }
-
-        .search-box-glass .lente-svg {
-            width: 24px;
-            height: 24px;
-            margin-left: 15px;
-            stroke: white;
-            opacity: 0.6;
-            transition: 0.3s;
-        }
-
-        .search-box-glass:focus-within .lente-svg {
-            opacity: 1;
-            stroke: #ff00ff;
-        }
-
-        /* Tendina in stile Glass */
-        #tendina {
-            background: rgba(17, 17, 17, 0.9) !important;
-            backdrop-filter: blur(20px);
-            border-radius: 0 0 20px 20px !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            top: 100% !important;
-        }
     </style>
 </head>
 <body>
@@ -122,25 +66,125 @@
         </div>
     </section>
 
+      <style>
+        body { background: #080808; font-family: 'Poppins', sans-serif; color: white; margin: 0; }
+        
+        /* Contenitore principale */
+        .search-section {
+            padding: 100px 5%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* La riga di testo */
+        .search-box {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            border-bottom: 2px solid #333;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .search-box:focus-within {
+            border-bottom-color: #ff00ff;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 15px 0;
+            outline: none;
+        }
+
+        .search-box .lente {
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* La tendina */
+        #tendina {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #111;
+            border: 1px solid #333;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 999;
+            display: none;
+            text-align: left;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .item-scuola {
+            padding: 15px;
+            border-bottom: 1px solid #222;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .item-scuola:hover {
+            background: #1a1a1a;
+            border-left: 4px solid #ff00ff;
+        }
+
+        .item-scuola strong { display: block; color: #fff; font-size: 16px; }
+        .item-scuola small { color: #888; font-size: 13px; }
+
+        #debug { color: #ff00ff; font-size: 12px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
     <section class="search-section">
         <h1>Cerca la tua scuola</h1>
         
-        <div class="search-box-glass">
+        <div class="search-box">
             <input type="text" id="inputRicerca" placeholder="Scrivi il nome..." autocomplete="off">
-            <svg class="lente-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M21 21L16.65 16.65" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <span class="lente">🔍</span>
             
             <div id="tendina"></div>
         </div>
         
-        <div id="debug" style="display: none;"></div>
-
-        <small style="display: block; color: #777; margin-top: 20px; text-align: center; font-size: 0.85rem; max-width: 600px;">
+        <div id="debug">In attesa di digitazione...</div>
+    </section>
+        
+        <small style="display: block; color: #777; margin-top: 10px; text-align: left; font-size: 0.85rem;">
             * Scrivi il nome della scuola e clicca sulla lente (o premi Invio) per cercare.
         </small>
-    </section>
+        
+        <div id="search-results-box" style="margin-top: 20px; background: #111; border: 1px solid #333; border-radius: 10px; display: none; max-height: 350px; overflow-y: auto; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            </div>
+    </div>
+</section>
+
+<style>
+    /* Effetto quando si clicca sulla linea di ricerca */
+    #search-line-container:focus-within {
+        border-bottom-color: var(--fucsia, #ff00ff);
+        box-shadow: 0 10px 10px -10px rgba(255, 0, 255, 0.3);
+    }
+    
+    #search-btn:hover {
+        transform: scale(1.1);
+        color: var(--fucsia, #ff00ff) !important;
+    }
+
+    .search-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #222; transition: 0.2s; color: #ccc; }
+    .search-item:last-child { border-bottom: none; }
+    .search-item:hover { background: #1a1a1a; color: #ff00ff; border-left: 3px solid #ff00ff; }
+    .search-item strong { display: block; color: white; font-size: 1rem; margin-bottom: 5px; }
+    .search-item small { color: #888; font-size: 0.85rem; }
+</style>
 
     <section class="section-divider">
         <div class="cards-grid">
@@ -227,6 +271,7 @@
 
     <div id="ai-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; font-family: sans-serif;">
         <button id="ai-open-btn" style="background: #8e44ad; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">🧠</button>
+
         <div id="ai-window" style="display: none; width: 300px; height: 400px; background: white; border: 1px solid #ddd; border-radius: 15px; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: absolute; bottom: 80px; right: 0; overflow: hidden;">
             <div style="background: #8e44ad; color: white; padding: 15px; font-weight: bold;">UpToYou Mentor AI</div>
             <div id="ai-messages" style="flex: 1; padding: 10px; overflow-y: auto; font-size: 14px; color: #333; max-height: 280px; background: #fdfdfd;">
@@ -239,61 +284,117 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
+        // 1. CONFIGURAZIONE (Assicurati che questi dati siano corretti)
         const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
         const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        
+        // IL FIX: Creazione corretta del client
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
         const input = document.getElementById('inputRicerca');
         const tendina = document.getElementById('tendina');
         const debug = document.getElementById('debug');
 
-        // FUNZIONI TEST (Ripristinate)
-        function showTest() { document.getElementById('test-section').style.display = 'block'; window.scrollTo(0, document.getElementById('test-section').offsetTop); }
-        function closeTest() { document.getElementById('test-section').style.display = 'none'; }
-
+        // 2. FUNZIONE DI RICERCA REAL-TIME
         input.addEventListener('input', async () => {
             const val = input.value.trim();
-            if (val.length < 2) { tendina.style.display = 'none'; return; }
+
+            if (val.length < 2) {
+                tendina.style.display = 'none';
+                debug.innerText = "Scrivi almeno 2 lettere...";
+                return;
+            }
+
+            debug.innerText = "Cerco: " + val + "...";
 
             try {
+                // Cerchiamo nel DB
                 const { data: scuole, error } = await supabaseClient
                     .from('schools')
                     .select('id, DENOMINAZIONESCUOLA, DESCRIZIONECOMUNE')
                     .ilike('DENOMINAZIONESCUOLA', `%${val}%`)
                     .limit(10);
 
+                if (error) {
+                    debug.innerText = "ERRORE: " + error.message;
+                    return;
+                }
+
                 if (scuole && scuole.length > 0) {
+                    debug.innerText = "Trovate " + scuole.length + " scuole";
+                    
+                    // Riempiamo la tendina
                     tendina.innerHTML = scuole.map(s => `
                         <div class="item-scuola" onclick="vaiAllaScuola('${s.id}')">
                             <strong>${s.DENOMINAZIONESCUOLA}</strong>
                             <small>📍 ${s.DESCRIZIONECOMUNE}</small>
                         </div>
                     `).join('');
+                    
+                    tendina.style.display = 'block';
+                } else {
+                    debug.innerText = "Nessun risultato.";
+                    tendina.innerHTML = '<div style="padding:15px; color:#666;">Nessuna scuola trovata</div>';
                     tendina.style.display = 'block';
                 }
-            } catch (e) { console.error(e); }
+
+            } catch (e) {
+                debug.innerText = "Errore di connessione.";
+                console.error(e);
+            }
         });
 
-        function vaiAllaScuola(id) { window.location.href = `scuola.html?id=${id}`; }
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.search-box-glass')) { tendina.style.display = 'none'; }
-        });
-
-        // GESTIONE AI WIDGET (Ripristinata)
-        const aiBtn = document.getElementById('ai-open-btn');
-        const aiWin = document.getElementById('ai-window');
-        aiBtn.onclick = () => { aiWin.style.display = aiWin.style.display === 'none' ? 'flex' : 'none'; };
-
-        // GESTIONE LOGIN GOOGLE (Invariata)
-        async function checkUserSession() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            if (user) { console.log("Utente loggato:", user); }
+        function vaiAllaScuola(id) {
+            window.location.href = `scuola.html?id=${id}`;
         }
-        checkUserSession();
+
+        // Chiudi se clicchi fuori
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-box')) {
+                tendina.style.display = 'none';
+            }
+        });
+
+// --- GESTIONE LOGIN GOOGLE ---
+
+const loginBtn = document.getElementById('login-google-btn');
+const userNameDisplay = document.getElementById('user-name');
+
+// 1. Funzione per avviare il login
+loginBtn.addEventListener('click', async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            // Reindirizza l'utente alla pagina corrente dopo il login
+            redirectTo: window.location.origin 
+        }
+    });
+    
+    if (error) {
+        console.error("Errore durante il login:", error.message);
+        alert("Ops! Qualcosa è andato storto con il login.");
+    }
+});
+
+// 2. Funzione per controllare se l'utente è loggato all'apertura della pagina
+async function checkUserSession() {
+    const { data: { user }, error } = await supabase.auth.getUser();
+
+    if (user) {
+        // Se l'utente esiste, nascondiamo il tasto e mostriamo il suo nome
+        loginBtn.style.display = 'none';
+        userNameDisplay.innerText = "Ciao, " + user.user_metadata.full_name;
+        userNameDisplay.style.display = 'block';
+        
+        console.log("Utente loggato:", user);
+    }
+}
+
+// Avvia il controllo della sessione
+checkUserSession();
     </script>
 </body>
 </html>
