@@ -229,3 +229,56 @@ footer { background: #050505; padding: 80px 5% 40px; border-top: 1px solid rgba(
 .footer-col ul li a:hover {
     color: #007bff; /* Azzurrino (puoi mettere il tuo codice colore esatto) */
 }
+
+/* Centrare il modulo nella pagina */
+.auth-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.auth-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.auth-card {
+    background: #111;
+    padding: 40px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+/* Stile per i campi di testo */
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: #222;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 8px;
+}
+
+/* Stile pulsante Google */
+.btn-google {
+    width: 100%;
+    padding: 10px;
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: bold;
+    margin-top: 10px;
+}
