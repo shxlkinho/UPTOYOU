@@ -37,9 +37,11 @@ header {
 .navbar {
     display: flex;
     align-items: center;
-    padding: 0 5%; /* Padding laterale */
-    height: 80px;  /* Altezza fissa per precisione */
-    justify-content: space-between; /* Spinge logo a sx e il resto a dx */
+    padding: 0 5%;
+    height: 80px;
+    /* justify-content: space-between assicura che il logo stia a sinistra 
+       e il contenitore 'nav-right-container' stia a destra */
+    justify-content: space-between; 
 }
 
 /* --- LOGO --- */
@@ -53,11 +55,12 @@ header {
 }
 .logo span { color: var(--accent); }
 
-/* --- CONTENITORE DESTRA (Link + Pulsanti) --- */
+/* --- CONTENITORE DESTRA (Raggruppa Link + Pulsanti) --- */
 .nav-right-container {
     display: flex;
     align-items: center;
-    gap: 40px; /* Distanza tra "Chi Siamo" e il primo pulsante */
+    /* Questo gap gestisce la distanza tra l'ultimo link (Chi Siamo) e i pulsanti */
+    gap: 40px; 
 }
 
 /* --- SOLO I LINK --- */
@@ -107,7 +110,6 @@ header {
     border: 2px solid #4dabf7;
 }
 
-/* Effetti hover */
 .btn-login:hover, .btn-register:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(77, 171, 247, 0.3);
@@ -115,6 +117,7 @@ header {
 
 /* --- DROPDOWN (Menu a tendina) --- */
 .dropdown { position: relative; }
+
 .dropdown-menu {
     position: absolute; 
     top: 100%; 
@@ -127,23 +130,16 @@ header {
     padding: 10px 0;
     border: 1px solid rgba(255,255,255,0.1);
 }
+
 .dropdown:hover .dropdown-menu { display: flex; }
 .dropdown-menu li a { padding: 12px 25px; display: block; }
 
 /* --- RESPONSIVE HEADER --- */
-@media (max-width: 968px) {
-    .navbar {
-        padding: 15px 3%;
+@media (max-width: 1100px) {
+    .nav-right-container {
+        gap: 20px;
     }
     .nav-links {
         gap: 15px;
-    }
-    .nav-auth {
-        margin-left: 20px;
-        gap: 10px;
-    }
-    .nav-auth a {
-        padding: 7px 15px;
-        font-size: 0.8rem;
     }
 }
