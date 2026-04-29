@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrati - Up to You</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <div class="auth-card">
+            <h2>Crea Account</h2>
+            <p>Unisciti alla community di UpToYou</p>
+
+            <div class="input-group">
+                <input type="text" id="fullname" placeholder="Nome e Cognome" required>
+            </div>
+
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password (min. 6 caratteri)" required>
+            </div>
+            
+            <button class="btn-primary" id="regBtn">REGISTRATI</button>
+
+            <div class="divider"><span>oppure</span></div>
+
+            <button class="btn-google" id="googleBtn">
+                <img src="https://www.google.com/favicon.ico" alt="Google"> Registrati con Google
+            </button>
+
+            <p class="footer-text">
+                Hai già un account? <a href="login.html">Accedi qui</a>
+            </p>
+            
+            <div id="status-msg"></div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        const msg = document.getElementById('status-msg');
+
+        // Logica Registrazione Classica
+        document.getElementById('regBtn').onclick = async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const name = document.getElementById('fullname').value;
+
+            if(!name || !email || !password) {
+                msg.innerHTML = `<span style="color:orange">Per favore, compila tutti i campi.</span>`;
+                return;
+            }
+
+            const { error } = await supabaseClient.auth.signUp({
+                email: email,
+                password: password,
+                options: { 
+                    data: { full_name: name } 
+                }
+            });
+
+            if (error) {
+                msg.innerHTML = `<span style="color:red">${error.message}</span>`;
+            } else {
+                msg.innerHTML = `<span style="color:lightgreen">Registrazione riuscita! Controlla la tua email per confermare l'account.</span>`;
+            }
+        };
+
+        // Logica Google (stessa di login.html)
+        document.getElementById('googleBtn').onclick = async () => {
+            await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: window.location.origin }
+            });
+        };
+    </script>
+</body>
+</html>
