@@ -1,6 +1,4 @@
-/* ==========================================================================
-   CONFIGURAZIONE GENERALE & VARIABILI
-   ========================================================================== */
+/* --- VARIABILI (Dal vecchio style.css) --- */
 :root {
     --bg-dark: #0e0e0e;
     --bg-card: #161616;
@@ -11,17 +9,10 @@
     --card-1: #4f46e5;
     --card-2: #0891b2;
     --card-3: #10b981;
-    --accent-orange: #ff6600;
-    --accent-orange-hover: #ff8533;
     --transition-smooth: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Poppins', sans-serif; 
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
 body { 
     background: var(--bg-dark); 
@@ -30,141 +21,64 @@ body {
     line-height: 1.6;
 }
 
-/* ==========================================================================
-   HEADER & NAVBAR (Effetto Blur + Layout Destra)
-   ========================================================================== */
+/* --- NAVBAR (Effetto Blur) --- */
 header { 
     width: 100%; 
     position: fixed; 
     top: 0; 
     background: rgba(14, 14, 14, 0.85); 
     backdrop-filter: blur(12px); 
-    -webkit-backdrop-filter: blur(12px);
     z-index: 1000; 
     border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
 }
 
 .navbar { 
     display: flex; 
+    justify-content: space-between; 
     align-items: center; 
-    justify-content: flex-start; /* Essenziale per il margin-left: auto dei links */
     padding: 15px 5%; 
     max-width: 1400px; 
     margin: 0 auto; 
-    min-height: 75px;
 }
 
-/* --- LOGO --- */
-.logo { 
-    font-weight: 800; 
-    font-size: 1.6rem; 
-    letter-spacing: -1px; 
-    color: var(--text-main);
-    text-decoration: none;
-}
+.logo { font-weight: 800; font-size: 1.6rem; letter-spacing: -1px; }
 .logo span { color: var(--accent); }
 
-/* --- MENU DI NAVIGAZIONE --- */
-.nav-links { 
-    display: flex; 
-    list-style: none; 
-    gap: 30px; 
-    margin: 0;
-    padding: 0;
-    margin-left: auto; /* SPINGE MENU E PULSANTI A DESTRA */
-}
-
-.nav-links a { 
-    text-decoration: none; 
-    color: white; 
-    font-weight: 500; 
-    font-size: 0.95rem;
-    transition: 0.3s; 
-}
+.nav-links { display: flex; list-style: none; gap: 30px; }
+.nav-links a { text-decoration: none; color: white; font-weight: 500; transition: 0.3s; }
 .nav-links a:hover { color: var(--accent); }
 
-/* --- PULSANTI ACCEDI / REGISTRATI (AUTH) --- */
-.nav-auth {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    margin-left: 40px; /* Distanza tra 'Chi Siamo' e i pulsanti */
-}
-
-.nav-auth a {
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 8px 22px;
-    border-radius: 50px;
-    transition: var(--transition-smooth);
-}
-
-.btn-login {
-    background-color: #4dabf7;
-    color: #ffffff !important;
-    border: 2px solid #4dabf7;
-}
-
-.btn-register {
-    background-color: transparent;
-    color: #ffffff !important;
-    border: 2px solid #4dabf7;
-}
-
-.btn-login:hover, .btn-register:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(77, 171, 247, 0.4);
-    background-color: #4dabf7;
-    color: white !important;
-}
-
-/* --- DROPDOWN (Menu a tendina) --- */
+/* DROPDOWN */
 .dropdown { position: relative; }
 .dropdown-menu {
-    position: absolute; 
-    top: 100%; 
-    left: 0;
-    background: #1a1a1a; 
-    display: none;
-    flex-direction: column; 
-    min-width: 210px;
-    border-radius: 10px; 
-    padding: 10px 0;
-    list-style: none; 
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    position: absolute; top: 100%; left: 0;
+    background: #1a1a1a; display: none;
+    flex-direction: column; min-width: 200px;
+    border-radius: 10px; padding: 10px 0;
+    list-style: none; border: 1px solid rgba(255,255,255,0.1);
 }
-
 .dropdown:hover .dropdown-menu { display: flex; }
 
+/* MODIFICA QUESTA REGOLA QUI SOTTO */
 .dropdown-menu li a { 
-    padding: 12px 20px; 
+    padding: 10px 20px; 
     font-size: 0.9rem; 
-    display: block;
-    white-space: nowrap; /* Impedisce al testo di andare a capo */
+    white-space: nowrap; /* <--- AGGIUNGI QUESTA RIGA */
 }
 
-.dropdown-menu li a:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--accent);
-}
-
-/* ==========================================================================
-   HERO SECTION (2 Colonne)
-   ========================================================================== */
+/* --- HERO SECTION (2 Colonne) --- */
 .hero {
     display: flex;
     align-items: center;
     min-height: 100vh;
-    padding: 120px 5% 50px 5%;
+    padding: 100px 5% 50px 5%;
     gap: 50px;
 }
 
 .hero-content { flex: 1; text-align: left; }
 .hero-content h1 {
     font-size: clamp(3rem, 8vw, 5rem);
-    line-height: 1.1;
+    line-height: 1;
     margin-bottom: 15px;
     background: linear-gradient(to right, var(--accent), var(--accent-sec));
     -webkit-background-clip: text;
@@ -205,9 +119,7 @@ header {
     100% { transform: translateX(0); }
 }
 
-/* ==========================================================================
-   CARDS SECTION & SPECIAL CARD TEST
-   ========================================================================== */
+/* --- CARDS SECTION --- */
 .section-divider { padding: 100px 5%; background: #080808; }
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 
@@ -238,18 +150,9 @@ header {
     border: 1px solid rgba(255,255,255,0.1);
     transition: 0.3s;
 }
-.card-custom:hover .card-btn-action { background: var(--accent); border-color: var(--accent); color: white; }
+.card-custom:hover .card-btn-action { background: var(--accent); border-color: var(--accent); }
 
-/* MODIFICA SPECIFICA CARD TEST ARANCIONE */
-.card-test { border: 1px solid rgba(255, 102, 0, 0.2); }
-.card-test h3 { color: var(--accent-orange) !important; }
-.card-test:hover { border-color: var(--accent-orange); box-shadow: 0 10px 30px rgba(255, 102, 0, 0.2); }
-.card-test .card-btn-action { border: 1px solid rgba(255, 102, 0, 0.4); color: var(--accent-orange); }
-.card-test:hover .card-btn-action { background: var(--accent-orange) !important; border-color: var(--accent-orange) !important; color: white; }
-
-/* ==========================================================================
-   ABOUT & VIDEO SECTION
-   ========================================================================== */
+/* --- VIDEO SECTION --- */
 .about-section { padding: 100px 5%; text-align: center; }
 .about-desc { max-width: 800px; margin: 0 auto 50px; color: var(--text-dim); }
 .video-container {
@@ -261,38 +164,68 @@ header {
 }
 .video-container iframe { width: 100%; height: 100%; border: none; }
 
-/* ==========================================================================
-   TEST SECTION & FOOTER
-   ========================================================================== */
+/* --- TEST SECTION --- */
 #test-section { display: none; background: #000; padding: 20px 0; }
 .test-header { text-align: right; padding: 0 5% 20px; }
 .close-btn { background: var(--accent); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
 
+/* --- FOOTER --- */
 footer { background: #050505; padding: 80px 5% 40px; border-top: 1px solid rgba(255,255,255,0.05); }
 .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 50px; }
 .footer-col h4 { color: var(--accent); margin-bottom: 20px; }
 .footer-col ul { list-style: none; }
-
-/* Stile link footer */
-.footer-col ul li a {
-    color: #888; 
-    text-decoration: none; 
-    transition: color 0.3s ease; 
-}
-.footer-col ul li a:hover { color: var(--accent); }
-
+.footer-col li { margin-bottom: 10px; color: #888; cursor: pointer; transition: 0.3s; }
+.footer-col li:hover { color: var(--accent); }
 .footer-bottom { display: flex; justify-content: space-between; opacity: 0.5; font-size: 0.8rem; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); }
 
-/* ==========================================================================
-   RESPONSIVE
-   ========================================================================== */
+/* RESPONSIVE */
 @media (max-width: 968px) {
-    .navbar { padding: 15px 3%; }
-    .nav-links { gap: 15px; }
-    .nav-auth { margin-left: 20px; gap: 10px; }
-    
-    .hero { flex-direction: column; text-align: center; padding-top: 100px; }
+    .hero { flex-direction: column; text-align: center; }
     .hero-content { order: 2; }
     .hero-slider { order: 1; width: 100%; height: 350px; }
     .hero-content h1 { font-size: 2.8rem; }
+}
+/* --- AGGIUNTA NELLE VARIABILI IN ALTO --- */
+:root {
+    /* ... altre variabili ... */
+    --accent-orange: #ff6600;
+    --accent-orange-hover: #ff8533;
+}
+
+/* --- MODIFICA SPECIFICA PER LA CARD TEST ARANCIONE --- */
+.card-test {
+    border: 1px solid rgba(255, 102, 0, 0.2); /* Bordo arancione sfumato di base */
+}
+
+.card-test h3 {
+    color: var(--accent-orange) !important; /* Titolo Arancione */
+}
+
+.card-test:hover {
+    border-color: var(--accent-orange);
+    box-shadow: 0 10px 30px rgba(255, 102, 0, 0.2);
+}
+
+.card-test:hover .card-btn-action {
+    background: var(--accent-orange) !important;
+    border-color: var(--accent-orange) !important;
+    color: white;
+}
+
+/* Animazione pulsante test nella card per attirare l'attenzione */
+.card-test .card-btn-action {
+    border: 1px solid rgba(255, 102, 0, 0.4);
+    color: var(--accent-orange);
+
+}
+/* Stile base per i link nel footer */
+.footer-col ul li a {
+    color: #888; /* Grigio (cambia il codice se vuoi un grigio diverso) */
+    text-decoration: none; /* Rimuove la sottolineatura di default */
+    transition: color 0.3s ease; /* Rende il cambio colore fluido */
+}
+
+/* Effetto al passaggio del mouse (Hover) */
+.footer-col ul li a:hover {
+    color: #007bff; /* Azzurrino (puoi mettere il tuo codice colore esatto) */
 }
