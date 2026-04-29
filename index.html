@@ -8,151 +8,67 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        /* STILI GENERALI */
-        body { background: #080808; font-family: 'Poppins', sans-serif; color: white; margin: 0; overflow-x: hidden; }
+        #main-search-input:focus { border-color: #ff00ff; box-shadow: 0 0 15px rgba(255, 0, 255, 0.2); }
+        .search-item { padding: 12px 20px; cursor: pointer; border-bottom: 1px solid #222; transition: 0.2s; color: #ccc; }
+        .search-item:hover { background: #222; color: #ff00ff; }
+        .search-item strong { display: block; color: white; font-size: 0.95rem; }
+        .search-item small { color: #777; font-size: 0.8rem; }
 
-        /* HEADER & NAVBAR (Invariati) */
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; position: fixed; width: 100%; top: 0; z-index: 1000; background: rgba(8, 8, 8, 0.8); backdrop-filter: blur(10px); }
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: 1px; }
-        .logo span { color: #ff00ff; }
-        .nav-links { display: flex; list-style: none; gap: 30px; }
-        .nav-links a { text-decoration: none; color: white; font-weight: 500; transition: 0.3s; }
-        .nav-links a:hover { color: #ff00ff; }
-
-        /* SEZIONE RICERCA - APPLE GLASS STYLE */
-        .search-section {
-            padding: 120px 5% 60px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: radial-gradient(circle at center, #111 0%, #080808 100%);
-        }
-
-        .search-section h1 {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            font-weight: 800;
-        }
-
-        .search-container-glass {
-            width: 100%;
-            max-width: 650px;
-            position: relative;
-        }
-
+        /* --- NUOVO STILE APPLE GLASS PER LA BARRA --- */
         .search-box-glass {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 22px;
-            padding: 8px 25px;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 5px 20px;
+            transition: 0.4s;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
         .search-box-glass:focus-within {
-            background: rgba(255, 255, 255, 0.07);
             border-color: #ff00ff;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.15);
-            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
         }
 
         .search-box-glass input {
-            flex: 1;
+            width: 100%;
             background: transparent;
             border: none;
             color: white;
-            font-size: 1.2rem;
+            font-size: 20px;
             padding: 15px 0;
             outline: none;
         }
 
-        /* LENTE SVG STILE APPLE */
-        .search-icon-wrapper {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 10px;
-        }
-
-        .search-icon-wrapper svg {
+        .search-box-glass .lente-svg {
             width: 24px;
             height: 24px;
-            stroke: rgba(255, 255, 255, 0.5);
+            margin-left: 15px;
+            stroke: white;
+            opacity: 0.6;
             transition: 0.3s;
         }
 
-        .search-box-glass:focus-within .search-icon-wrapper svg {
+        .search-box-glass:focus-within .lente-svg {
+            opacity: 1;
             stroke: #ff00ff;
         }
 
-        /* TENDINA RISULTATI GLASS */
+        /* Tendina in stile Glass */
         #tendina {
-            position: absolute;
-            top: calc(100% + 12px);
-            left: 0;
-            right: 0;
-            background: rgba(20, 20, 20, 0.9);
+            background: rgba(17, 17, 17, 0.9) !important;
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            max-height: 380px;
-            overflow-y: auto;
-            z-index: 999;
-            display: none;
-            text-align: left;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            border-radius: 0 0 20px 20px !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            top: 100% !important;
         }
-
-        .item-scuola {
-            padding: 18px 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .item-scuola:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-left: 4px solid #ff00ff;
-            padding-left: 30px;
-        }
-
-        .item-scuola strong { display: block; color: #fff; font-size: 1rem; margin-bottom: 3px; }
-        .item-scuola small { color: rgba(255, 255, 255, 0.5); font-size: 0.85rem; }
-
-        /* TESTI DI SUPPORTO */
-        #debug { 
-            color: #ff00ff; 
-            font-size: 11px; 
-            margin-top: 15px; 
-            letter-spacing: 1px; 
-            text-transform: uppercase;
-            opacity: 0.8;
-            min-height: 15px;
-        }
-
-        .info-small {
-            display: block;
-            color: #666;
-            margin-top: 10px;
-            font-size: 0.8rem;
-            max-width: 500px;
-        }
-
-        /* CARDS GRID (Invariate) */
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 50px 5%; max-width: 1300px; margin: 0 auto; }
-        .card-custom { background: #121212; border: 1px solid #222; border-radius: 20px; padding: 30px; text-decoration: none; color: white; transition: 0.3s; display: flex; flex-direction: column; gap: 15px; }
-        .card-custom:hover { border-color: #ff00ff; transform: translateY(-5px); background: #181818; }
-        .card-emoji { font-size: 40px; }
-        .card-btn-action { margin-top: auto; padding: 10px; background: #1a1a1a; border-radius: 10px; text-align: center; border: 1px solid #333; font-weight: 600; }
-        .card-custom:hover .card-btn-action { background: #ff00ff; color: black; border-color: #ff00ff; }
     </style>
 </head>
 <body>
@@ -162,38 +78,73 @@
             <div class="logo">UP<span>TOYOU</span></div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Lezioni ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="Lezioni/elementari.html">Elementari</a></li>
+                        <li><a href="Lezioni/medie.html">Medie</a></li>
+                        <li><a href="Lezioni/superiori.html">Superiori</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Orientamento ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="guidato.html">Orientamento Guidato</a></li>
+                        <li><a href="rapido.html">Orientamento Rapido</a></li>
+                    </ul>
+                </li>
                 <li><a href="contact.html">Contatti</a></li>
                 <li><a href="#about">Chi Siamo</a></li>
             </ul>
         </nav>
     </header>
 
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Up to You</h1>
+            <p class="subtitle">Clear choices, bright Future.</p>
+            <div class="description">
+                <p>
+                    <strong>UpToYou</strong> è l'ecosistema di orientamento che ti accompagna dalle medie fino al mondo del lavoro. 
+                    Offriamo lezioni, recensioni autentiche e percorsi pensati per valorizzare il tuo potenziale.
+                </p>
+                <p>Costruisci oggi il tuo domani con i nostri strumenti digitali.</p>
+            </div>
+        </div>
+
+        <div class="hero-slider">
+            <div class="slider-track">
+                <div class="slide"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800" alt="Studenti"></div>
+                <div class="slide"><img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800" alt="Studio"></div>
+                <div class="slide"><img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=800" alt="Scelte"></div>
+                <div class="slide"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800" alt="Futuro"></div>
+            </div>
+        </div>
+    </section>
+
     <section class="search-section">
         <h1>Cerca la tua scuola</h1>
         
-        <div class="search-container-glass">
-            <div class="search-box-glass">
-                <input type="text" id="inputRicerca" placeholder="Scrivi il nome della scuola..." autocomplete="off">
-                <div class="search-icon-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M21 21L16.65 16.65" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <div id="tendina"></div>
-            </div>
+        <div class="search-box-glass">
+            <input type="text" id="inputRicerca" placeholder="Scrivi il nome..." autocomplete="off">
+            <svg class="lente-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 21L16.65 16.65" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             
-            <div id="debug">In attesa di digitazione...</div>
-            
-            <small class="info-small">
-                * Scrivi il nome della scuola e seleziona il risultato dalla lista per i dettagli.
-            </small>
+            <div id="tendina"></div>
         </div>
+        
+        <div id="debug" style="display: none;"></div>
+
+        <small style="display: block; color: #777; margin-top: 20px; text-align: center; font-size: 0.85rem; max-width: 600px;">
+            * Scrivi il nome della scuola e clicca sulla lente (o premi Invio) per cercare.
+        </small>
     </section>
 
     <section class="section-divider">
         <div class="cards-grid">
-            <a href="guidato.html" class="card-custom">
+            <a href="guidato.html" class="card-custom card-zona">
                 <span class="card-emoji">📍</span>
                 <div>
                     <h3>Scuole nella tua zona</h3>
@@ -202,7 +153,16 @@
                 <div class="card-btn-action">Cerca Scuole</div>
             </a>
 
-            <a href="rapido.html" class="card-custom">
+            <a href="javascript:void(0)" class="card-custom card-test" onclick="showTest()">
+                <span class="card-emoji">🧭</span>
+                <div>
+                    <h3>Non sai cosa scegliere?</h3>
+                    <p>Mettiti alla prova con il nostro test attitudinale avanzato per scoprire i tuoi talenti.</p>
+                </div>
+                <div class="card-btn-action">Fai il Test Gratis</div>
+            </a>
+
+            <a href="rapido.html" class="card-custom card-materie">
                 <span class="card-emoji">📚</span>
                 <div>
                     <h3>Materie & Indirizzi</h3>
@@ -213,9 +173,75 @@
         </div>
     </section>
 
+    <section id="test-section" style="display: none;">
+        <div class="test-header">
+            <button onclick="closeTest()" class="close-btn">Chiudi Test &times;</button>
+        </div>
+        <iframe src="test.html" width="100%" height="750px" frameborder="0"></iframe>
+    </section>
+
+    <section id="about" class="about-section">
+        <h2>Chi Siamo?</h2>
+        <p class="about-desc">
+            Siamo un team di educatori e tutor dedicati ad aiutare ogni studente a trovare la propria strada. 
+            Crediamo che la scelta della scuola sia il primo passo verso la felicità professionale.
+        </p>
+        <div class="video-container">
+            <iframe id="ytPlayer" src="https://www.youtube-nocookie.com/embed/moaY0MqJ0_M?rel=0" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">UP<span>TOYOU</span></div>
+                <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Link Utili</h4>
+                <ul>
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Supporto</h4>
+                <ul>
+                    <li>Privacy Policy</li>
+                    <li>Termini di Servizio</li>
+                    <li><a href="contact.html">Contattaci</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contatti</h4>
+                <ul>
+                    <li>Email: info@uptoyou.it</li>
+                    <li>Roma, Italia</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <div id="ai-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; font-family: sans-serif;">
+        <button id="ai-open-btn" style="background: #8e44ad; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">🧠</button>
+        <div id="ai-window" style="display: none; width: 300px; height: 400px; background: white; border: 1px solid #ddd; border-radius: 15px; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: absolute; bottom: 80px; right: 0; overflow: hidden;">
+            <div style="background: #8e44ad; color: white; padding: 15px; font-weight: bold;">UpToYou Mentor AI</div>
+            <div id="ai-messages" style="flex: 1; padding: 10px; overflow-y: auto; font-size: 14px; color: #333; max-height: 280px; background: #fdfdfd;">
+                <p>Ciao! Sono il tuo orientatore. Di cosa hai paura o cosa ti incuriosisce della scelta della scuola?</p>
+            </div>
+            <div style="padding: 10px; border-top: 1px solid #eee; display: flex; background: white;">
+                <input type="text" id="ai-input" placeholder="Scrivi qui..." style="flex: 1; border: 1px solid #ddd; border-radius: 5px; padding: 8px; color: black; outline: none;">
+                <button id="ai-send" style="margin-left: 5px; background: #8e44ad; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer;">Invia</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
-        // CONFIGURAZIONE SUPABASE
         const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
         const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
@@ -224,17 +250,13 @@
         const tendina = document.getElementById('tendina');
         const debug = document.getElementById('debug');
 
-        // LOGICA DI RICERCA
+        // FUNZIONI TEST (Ripristinate)
+        function showTest() { document.getElementById('test-section').style.display = 'block'; window.scrollTo(0, document.getElementById('test-section').offsetTop); }
+        function closeTest() { document.getElementById('test-section').style.display = 'none'; }
+
         input.addEventListener('input', async () => {
             const val = input.value.trim();
-
-            if (val.length < 2) {
-                tendina.style.display = 'none';
-                debug.innerText = "Scrivi almeno 2 lettere...";
-                return;
-            }
-
-            debug.innerText = "Cerco: " + val + "...";
+            if (val.length < 2) { tendina.style.display = 'none'; return; }
 
             try {
                 const { data: scuole, error } = await supabaseClient
@@ -243,13 +265,7 @@
                     .ilike('DENOMINAZIONESCUOLA', `%${val}%`)
                     .limit(10);
 
-                if (error) {
-                    debug.innerText = "ERRORE: " + error.message;
-                    return;
-                }
-
                 if (scuole && scuole.length > 0) {
-                    debug.innerText = "Trovate " + scuole.length + " scuole";
                     tendina.innerHTML = scuole.map(s => `
                         <div class="item-scuola" onclick="vaiAllaScuola('${s.id}')">
                             <strong>${s.DENOMINAZIONESCUOLA}</strong>
@@ -257,27 +273,27 @@
                         </div>
                     `).join('');
                     tendina.style.display = 'block';
-                } else {
-                    debug.innerText = "Nessun risultato trovato.";
-                    tendina.innerHTML = '<div style="padding:20px; color:#666;">Nessuna scuola trovata</div>';
-                    tendina.style.display = 'block';
                 }
-            } catch (e) {
-                debug.innerText = "Errore di connessione.";
-                console.error(e);
-            }
+            } catch (e) { console.error(e); }
         });
 
-        function vaiAllaScuola(id) {
-            window.location.href = `scuola.html?id=${id}`;
-        }
+        function vaiAllaScuola(id) { window.location.href = `scuola.html?id=${id}`; }
 
-        // Chiudi tendina se clicchi fuori
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('.search-container-glass')) {
-                tendina.style.display = 'none';
-            }
+            if (!e.target.closest('.search-box-glass')) { tendina.style.display = 'none'; }
         });
+
+        // GESTIONE AI WIDGET (Ripristinata)
+        const aiBtn = document.getElementById('ai-open-btn');
+        const aiWin = document.getElementById('ai-window');
+        aiBtn.onclick = () => { aiWin.style.display = aiWin.style.display === 'none' ? 'flex' : 'none'; };
+
+        // GESTIONE LOGIN GOOGLE (Invariata)
+        async function checkUserSession() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) { console.log("Utente loggato:", user); }
+        }
+        checkUserSession();
     </script>
 </body>
 </html>
