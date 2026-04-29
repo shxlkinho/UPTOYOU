@@ -21,7 +21,6 @@
             padding-top: 70px;
         }
 
-        /* Grid Layout */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -32,7 +31,6 @@
             margin-bottom: 20px;
         }
 
-        /* Card Style - Dimensioni Originali Bilanciate */
         .card {
             background-color: #121212;
             border-radius: 28px;
@@ -40,41 +38,38 @@
             padding: 40px;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            text-align: center;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             position: relative;
         }
 
-        /* Effetto Hover: Colore dinamico e Glow */
-.card {
-        background-color: #121212;
-        border-radius: 28px;
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        padding: 40px;
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Centra l'icona e il pulsante orizzontalmente */
-        text-align: center;  /* Centra il titolo e il paragrafo */
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        cursor: pointer;
-        posit
+        .card:hover {
+            transform: translateY(-5px);
+            background-color: #181818;
+            border-color: var(--color-materia);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px var(--color-materia);
+        }
 
-.icon-wrapper {
-        height: 100px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center; /* Centra l'immagine dentro il wrapper */
-    }
+        .icon-wrapper {
+            height: 100px;
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
         .icon-wrapper img {
-            height: 100%;
+            max-height: 100%;
+            max-width: 100%;
             width: auto;
             object-fit: contain;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
         }
 
-        /* Colori Materie con Variabili CSS */
+        /* Colori Materie */
         .storia { --color-materia: #c48d5f; border-top: 6px solid var(--color-materia); }
         .matematica { --color-materia: #266ef3; border-top: 6px solid var(--color-materia); }
         .scienze { --color-materia: #f8fc04; border-top: 6px solid var(--color-materia); }
@@ -87,6 +82,7 @@
         .ed-fisica { --color-materia: #1abc9c; border-top: 6px solid var(--color-materia); }
 
         .card h2 {
+            color: #ffffff;
             font-size: 1.6rem;
             margin-bottom: 12px;
             font-weight: 700;
@@ -100,21 +96,20 @@
             flex-grow: 1;
         }
 
-.btn {
-        width: 100%; /* Fa sì che il pulsante occupi la larghezza corretta centrandosi */
-        text-decoration: none;
-        text-align: center;
-        padding: 14px;
-        border-radius: 16px;
-        background-color: #1a1a1a;
-        color: #fff;
-        border: 1.5px solid #333;
-        font-weight: 700;
-        font-size: 1rem;
-        transition: 0.3s;
-    }
+        .btn {
+            width: 100%;
+            text-decoration: none;
+            text-align: center;
+            padding: 14px;
+            border-radius: 16px;
+            background-color: #1a1a1a;
+            color: #fff;
+            border: 1.5px solid #333;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
 
-        /* Il pulsante diventa del colore della materia all'hover */
         .card:hover .btn {
             background-color: var(--color-materia);
             color: #000;
@@ -122,32 +117,7 @@
         }
     </style>
 </head>
-
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo"><a href="../index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
-            <ul class="nav-links">
-                <li><a href="../index.html">Home</a></li>
-                <li class="dropdown">
-                    <a href="#">Lezioni ▾</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="elementari.html">Elementari</a></li>
-                        <li><a href="medie.html">Medie</a></li>
-                        <li><a href="superiori.html">Superiori</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#">Orientati ▾</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="../rapido.html">Orientamento Rapido</a></li>
-                        <li><a href="../guidato.html">Orientamento Guidato</a></li>
-                    </ul>
-                </li>
-                <li><a href="../contact.html">Contatti</a></li>
-            </ul>
-        </nav>
-    </header>
 
     <main class="grid-container">
         <div class="card storia">
@@ -241,40 +211,5 @@
         </div>
     </main>
 
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <div class="logo">UP<span>TOYOU</span></div>
-                <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Link Utili</h4>
-                <ul>
-                    <li><a href="guidato.html">Orientamento Guidato</a></li>
-                    <li><a href="rapido.html">Orientamento Rapido</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Supporto</h4>
-                <ul>
-                    <li>Privacy Policy</li>
-                    <li>Termini di Servizio</li>
-                    <li><a href="contact.html">Contattaci</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Contatti</h4>
-                <ul>
-                    <li>Email: info@uptoyou.it</li>
-                    <li>Roma, Italia</li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
-        </div>
-    </footer>
-</body>
-</html>
 </body>
 </html>
