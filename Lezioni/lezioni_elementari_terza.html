@@ -6,125 +6,124 @@
     <link rel="stylesheet" href="../style.css">
     <title>Scuola Elementare - Classe Terza</title>
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', sans-serif;
-    }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
 
-    body {
-        background-color: #080808;
-        color: #fff;
-        padding-bottom: 10px;
-        padding-top: 70px;
-    }
+        body {
+            background-color: #080808;
+            color: #fff;
+            padding-bottom: 10px;
+            padding-top: 70px;
+        }
 
-    /* Grid Layout */
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 35px;
-        max-width: 1300px;
-        margin: 0 auto;
-        padding: 40px 20px;
-    }
+        /* Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            margin-bottom: 20px;
+        }
 
-    /* Card Style */
-    .card {
-        background-color: #121212;
-        border-radius: 24px;
-        /* Bordo leggermente più spesso e colorato ma tenue di base */
-        border: 4px solid rgba(255, 255, 255, 0.05); 
-        padding: 40px 30px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        aspect-ratio: 1 / 1;
-        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        position: relative;
-    }
+        /* Card Style */
+        .card {
+            background-color: #121212;
+            border-radius: 20px; /* Leggermente ridotto per un look più moderno/quadrato */
+            border: 2px solid rgba(255, 255, 255, 0.1); /* Bordo base sottile */
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            aspect-ratio: 1 / 1; /* Rende la card quadrata */
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* Colori Variabili e Bordi di base */
-    .storia { --neon: #d4a373; border-color: rgba(212, 163, 115, 0.3); }
-    .italiano { --neon: #ff4d4d; border-color: rgba(255, 77, 77, 0.3); }
-    .matematica { --neon: #3a86ff; border-color: rgba(58, 134, 255, 0.3); }
-    .scienze { --neon: #e9ff70; border-color: rgba(233, 255, 112, 0.3); }
-    .geografia { --neon: #06d6a0; border-color: rgba(6, 214, 160, 0.3); }
-    .inglese { --neon: #7209b7; border-color: rgba(114, 9, 183, 0.3); }
+        /* Effetti Neon al passaggio del mouse */
+        .card:hover {
+            transform: translateY(-10px);
+            background-color: #1a1a1a;
+            border-color: var(--neon-color);
+            box-shadow: 0 0 20px var(--neon-color), inset 0 0 10px var(--neon-color);
+        }
 
-    /* Effetto Hover Neon */
-    .card:hover {
-        transform: translateY(-12px);
-        background-color: #161616;
-        border-color: var(--neon);
-        /* Effetto bagliore esterno ed interno */
-        box-shadow: 0 0 25px rgba(0, 0, 0, 0.5), 
-                    0 0 20px var(--neon),
-                    inset 0 0 10px var(--neon);
-    }
+        /* Gestione Icone */
+        .icon-wrapper {
+            height: 100px; /* Ridotto per adattarsi al formato quadrato */
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    /* Gestione Icone Nuove */
-    .icon-wrapper {
-        height: 110px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.3s ease;
-    }
+        .icon-wrapper img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
 
-    .card:hover .icon-wrapper {
-        transform: scale(1.1);
-    }
+        /* Colori Variabili per il Neon */
+        .storia { --neon-color: #c48d5f; border-color: #c48d5f; }
+        .matematica { --neon-color: #266ef3; border-color: #266ef3; }
+        .scienze { --neon-color: #f8fc04; border-color: #f8fc04; }
+        .italiano { --neon-color: #ef4444; border-color: #ef4444; }
+        .geografia { --neon-color: #3cee05; border-color: #3cee05; }
+        .inglese { --neon-color: #5d34f1; border-color: #5d34f1; }
 
-    .icon-wrapper img {
-        height: 100%;
-        width: auto;
-        object-fit: contain;
-    }
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
 
-    .card h2 {
-        font-size: 1.8rem;
-        margin-bottom: 12px;
-        font-weight: 800;
-        letter-spacing: -0.5px;
-    }
+        .card p {
+            color: #a0a0a0;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            flex-grow: 0; /* Rimosso flex-grow per mantenere equilibrio */
+        }
 
-    .card p {
-        color: #b0b0b0;
-        font-size: 1rem;
-        line-height: 1.4;
-        margin-bottom: 25px;
-    }
+        /* Pulsante Moderno */
+        .btn {
+            text-decoration: none;
+            text-align: center;
+            padding: 12px 24px;
+            border-radius: 12px;
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #444;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
 
-    /* Pulsante */
-    .btn {
-        text-decoration: none;
-        padding: 12px 28px;
-        border-radius: 14px;
-        background-color: #1a1a1a;
-        color: #fff;
-        border: 1px solid rgba(255,255,255,0.1);
-        font-weight: 700;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-    }
-
-    .card:hover .btn {
-        background-color: #fff;
-        color: #000;
-        border-color: #fff;
-        box-shadow: 0 5px 15px rgba(255,255,255,0.2);
-    }
-</style>
+        .card:hover .btn {
+            background-color: var(--neon-color);
+            border-color: var(--neon-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-color);
+        }
+    </style>
 </head>
 <header>
     <nav class="navbar">
-        <div class="logo"><a href="../index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
+        <div class="logo">
+            <a href="../index.html" style="text-decoration: none; color: inherit;">
+                UP<span>TOYOU</span>
+            </a>
+        </div>
+        
         <ul class="nav-links">
             <li><a href="../index.html">Home</a></li>
             <li class="dropdown">
@@ -136,10 +135,10 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#">Orientati ▾</a>
+                <a href="#">Orientamento ▾</a>
                 <ul class="dropdown-menu">
-                    <li><a href="../rapido.html">Orientamento Rapido</a></li>
                     <li><a href="../guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="../rapido.html">Orientamento Rapido</a></li>
                 </ul>
             </li>
             <li><a href="../contact.html">Contatti</a></li>
@@ -149,61 +148,64 @@
 
 <body>
             
-<main class="grid-container">
-    <div class="card storia">
-        <div class="icon-wrapper">
-            <img src="https://cdn-icons-png.flaticon.com/512/3501/3501230.png" alt="Storia">
-        </div>
-        <h2>Storia</h2>
-        <p>Civiltà antiche e grandi scoperte.</p>
-        <a href="#" class="btn">Esplora</a>
-    </div>
+    <main class="grid-container">
 
-    <div class="card italiano">
-        <div class="icon-wrapper">
-            <img src="https://cdn-icons-png.flaticon.com/512/3500/3500587.png" alt="Italiano">
+        <div class="card storia">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/2682/2682065.png" alt="Storia">
+            </div>
+            <h2>Storia</h2>
+            <p>Antiche civiltà e l'origine della scrittura.</p>
+            <a href="#" class="btn">Entra in Materia</a>
         </div>
-        <h2>Italiano</h2>
-        <p>Grammatica e lettura creativa.</p>
-        <a href="#" class="btn">Esplora</a>
-    </div>
 
-    <div class="card matematica">
-        <div class="icon-wrapper">
-            <img src="https://cdn-icons-png.flaticon.com/512/3500/3500854.png" alt="Matematica">
+         <div class="card italiano">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/3534/3534031.png" alt="Italiano">
+            </div>
+            <h2>Italiano</h2>
+            <p>Grammatica, ortografia e analisi dei testi.</p>
+            <a href="#" class="btn">Entra in Materia</a>
         </div>
-        <h2>Matematica</h2>
-        <p>Numeri, logica e geometria.</p>
-        <a href="#" class="btn">Esplora</a>
-    </div>
 
-    <div class="card scienze">
-        <div class="icon-wrapper">
-            <img src="https://cdn-icons-png.flaticon.com/512/3500/3500913.png" alt="Scienze">
+        <div class="card matematica">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/3771/3771278.png" alt="Matematica">
+            </div>
+            <h2>Matematica</h2>
+            <p>Perimetri, aree e la logica dei numeri.</p>
+            <a href="#" class="btn">Entra in Materia</a>
         </div>
-        <h2>Scienze</h2>
-        <p>Natura e corpo umano.</p>
-        <a href="#" class="btn">Esplora</a>
-    </div>
 
-    <div class="card geografia">
-        <div class="icon-wrapper">
-            <img src="https://cdn-icons-png.flaticon.com/512/3501/3501111.png" alt="Geografia">
+        <div class="card scienze">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/3063/3063176.png" alt="Scienze">
+            </div>
+            <h2>Scienze</h2>
+            <p>Corpo umano, ecosistemi e natura.</p>
+            <a href="#" class="btn">Entra in Materia</a>
         </div>
-        <h2>Geografia</h2>
-        <p>Mappe e continenti del mondo.</p>
-        <a href="#" class="btn">Esplora</a>
-    </div>
 
-    <div class="card inglese">
-        <div class="icon-wrapper">
-            <img src="https://cdn-icons-png.flaticon.com/512/3501/3501062.png" alt="Inglese">
+
+        <div class="card geografia">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/2784/2784400.png" alt="Geografia">
+            </div>
+            <h2>Geografia</h2>
+            <p>Continenti, climi e mappe del mondo.</p>
+            <a href="#" class="btn">Entra in Materia</a>
         </div>
-        <h2>Inglese</h2>
-        <p>Vocabulario, Grammatica e dialoghi base.</p>
-        <a href="#" class="btn">Esplora</a>
-    </div>
-</main>
+
+        <div class="card inglese">
+            <div class="icon-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/197/197374.png" alt="Inglese">
+            </div>
+            <h2>Inglese</h2>
+            <p>Vocaboli, grammatica e conversazione.</p>
+            <a href="#" class="btn">Entra in Materia</a>
+        </div>
+        
+    </main>
     
 </body>
     <footer>
