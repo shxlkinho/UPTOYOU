@@ -17,36 +17,36 @@
 </head>
 <body>
 
-    <header>
-        <nav class="navbar">
-            <div class="logo">UP<span>TOYOU</span></div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li class="dropdown">
-                    <a href="#">Lezioni ▾</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="Lezioni/elementari.html">Elementari</a></li>
-                        <li><a href="Lezioni/medie.html">Medie</a></li>
-                        <li><a href="Lezioni/superiori.html">Superiori</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#">Orientamento ▾</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="guidato.html">Orientamento Guidato</a></li>
-                        <li><a href="rapido.html">Orientamento Rapido</a></li>
-                    </ul>
-                </li>
-                <li><a href="contact.html">Contatti</a></li>
-                <li><a href="#about">Chi Siamo</a></li>
-            </ul>
-    <li id="auth-nav-item" class="dropdown">
-        <a href="login.html" id="auth-link">Accedi / Registrati</a>
-        <!-- Il menu a tendina verrà inserito qui dal JavaScript -->
-    </li>
-</ul>
-        </nav>
-    </header>
+  <header>
+    <nav class="navbar">
+        <div class="logo">UP<span>TOYOU</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Lezioni ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Lezioni/elementari.html">Elementari</a></li>
+                    <li><a href="Lezioni/medie.html">Medie</a></li>
+                    <li><a href="Lezioni/superiori.html">Superiori</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Orientamento ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </li>
+            <li><a href="contact.html">Contatti</a></li>
+            <li><a href="#about">Chi Siamo</a></li>
+            
+            <!-- CONTENITORE AUTH: Qui il JS inietterà i bottoni o il menu utente -->
+            <li id="auth-nav-item" class="nav-auth-container">
+                <!-- Caricamento iniziale... -->
+            </li>
+        </ul>
+    </nav>
+</header>
 
     <section id="home" class="hero">
         <div class="hero-content">
@@ -365,33 +365,46 @@
 
     // --- FUNZIONI PER L'AUTENTICAZIONE (NAVBAR) ---
 
-    function updateNavbar(session) {
-        const authNavItem = document.getElementById('auth-nav-item');
-        if (!authNavItem) return; // Sicurezza se l'elemento non esiste nella pagina
-        
+    // 3. LOGICA NAVBAR & AUTENTICAZIONE
+    async function updateNavbar(session) {
+        const authContainer = document.getElementById('auth-nav-item');
+        if (!authContainer) return;
+
         if (session) {
+            // --- UTENTE LOGGATO ---
             const user = session.user;
-            // Usa il nome dai metadati, altrimenti usa la parte prima della @ dell'email
             const displayName = user.user_metadata?.full_name || user.email.split('@')[0];
             
-            authNavItem.innerHTML = `
-                <a href="#">Benvenuto, <span style="color:var(--fucsia, #ff00ff)">${displayName}</span> ▾</a>
+            // Imposto la classe per il CSS "bellino"
+            authContainer.className = "dropdown user-menu-wrapper";
+            authContainer.innerHTML = `
+                <div class="user-welcome-box">
+                    Benvenuto, <span>${displayName}</span> ▾
+                </div>
                 <ul class="user-dropdown-menu">
-                    <li><a href="impostazioni.html">⚙️ Impostazioni</a></li>
                     <li><a href="profilo.html">👤 Dati Personali</a></li>
-                    <li><hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;"></li>
-                    <li><a onclick="handleLogout()" class="btn-logout" style="color: #ff4444; cursor:pointer;">🚪 Logout</a></li>
+                    <li><a href="settings.html">⚙️ Impostazioni</a></li>
+                    <li><a onclick="handleLogout()" class="btn-logout">🚪 Logout</a></li>
                 </ul>
             `;
         } else {
-            authNavItem.innerHTML = `<a href="login.html">Accedi / Registrati</a>`;
+            // --- UTENTE NON LOGGATO ---
+            authContainer.className = "nav-auth-buttons";
+            authContainer.innerHTML = `
+                <a href="login.html" class="nav-box btn-login">Accedi</a>
+                <a href="register.html" class="nav-box btn-register">Registrati</a>
+            `;
         }
     }
 
+    // Funzione per il Logout
     async function handleLogout() {
         const { error } = await supabaseClient.auth.signOut();
-        if (error) alert("Errore durante il logout: " + error.message);
-        else window.location.reload(); 
+        if (error) {
+            alert("Errore durante il logout: " + error.message);
+        } else {
+            window.location.reload();
+        }
     }
 
     // Ascolta i cambiamenti di stato (Login/Logout)
@@ -400,7 +413,7 @@
         updateNavbar(session);
     });
 
-    // Esegui al caricamento della pagina
+    // Inizializzazione al caricamento della pagina
     window.addEventListener('DOMContentLoaded', async () => {
         const { data: { session } } = await supabaseClient.auth.getSession();
         updateNavbar(session);
