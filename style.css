@@ -523,42 +523,79 @@ footer { background: #050505; padding: 80px 5% 40px; border-top: 1px solid rgba(
 /* --- QUESTO GESTISCE QUANDO L UTENTE E' LOGGATO ---*/
 
 /* Stile per il menu utente loggato */
+/* --- FIX NAVBAR UTENTE LOGGATO --- */
+
+/* Rimuove i pallini e allinea il link "Benvenuto" */
+#auth-nav-item {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+#auth-nav-item > a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 10px 0;
+}
+
+/* La tendina (Dropdown) */
 .user-dropdown-menu {
     display: none;
     position: absolute;
     top: 100%;
-    right: 0;
+    right: 0; /* Lo ancora a destra per non farlo uscire dallo schermo */
     background: #111;
-    border: 1px solid var(--fucsia, #ff00ff);
-    border-radius: 10px;
-    min-width: 180px;
-    list-style: none;
+    border: 1px solid rgba(255, 0, 255, 0.3);
+    border-radius: 12px;
+    min-width: 200px;
+    list-style: none; /* RIMUOVE I PALLINI */
     padding: 10px 0;
+    margin-top: 10px;
     z-index: 1000;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
 }
 
-.dropdown:hover .user-dropdown-menu {
+/* Mostra la tendina al passaggio del mouse */
+#auth-nav-item:hover .user-dropdown-menu {
     display: block;
+}
+
+/* Voci del menu interno */
+.user-dropdown-menu li {
+    width: 100%;
+    list-style: none; /* Sicurezza extra */
 }
 
 .user-dropdown-menu li a {
-    padding: 10px 20px;
-    display: block;
-    color: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ccc !important; /* Grigio chiaro di base */
     text-decoration: none;
-    font-size: 0.9rem;
-    transition: 0.2s;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
 }
 
+/* Hover sulle voci interne */
 .user-dropdown-menu li a:hover {
     background: rgba(255, 0, 255, 0.1);
-    color: var(--fucsia, #ff00ff);
+    color: #ff00ff !important; /* Diventa fucsia solo al passaggio */
+    padding-left: 25px; /* Effetto spostamento */
 }
 
+/* Stile Logout specifico */
 .btn-logout {
-    color: #ff4444 !important; /* Rosso per il logout */
-    cursor: pointer;
+    color: #ff4444 !important;
+    border-top: 1px solid #222;
+    margin-top: 5px;
+    padding-top: 15px !important;
 }
 
-
+.btn-logout:hover {
+    background: rgba(255, 68, 68, 0.1) !important;
+    color: #ff6666 !important;
+}
