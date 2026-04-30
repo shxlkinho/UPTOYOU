@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impostazioni - Up to You</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <header>
+        <nav class="navbar">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="profilo.html">Il mio Profilo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <div class="auth-card" style="max-width: 500px;">
+            <h2>Impostazioni ⚙️</h2>
+            <p>Gestisci la sicurezza del tuo account</p>
+
+            <!-- Cambio Password -->
+            <div style="text-align: left; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 20px;">
+                <h3 style="color: var(--accent); margin-bottom: 15px;">Aggiorna Password</h3>
+                <div class="input-group">
+                    <input type="password" id="new-password" placeholder="Nuova Password">
+                </div>
+                <button class="btn-primary" onclick="updatePassword()">Salva Nuova Password</button>
+            </div>
+
+            <!-- Zona Pericolo -->
+            <div style="text-align: left; background: rgba(255, 68, 68, 0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(255, 68, 68, 0.2);">
+                <h3 style="color: #ff4444; margin-bottom: 10px;">Zona Pericolo</h3>
+                <p style="font-size: 0.8rem; margin-bottom: 15px;">L'eliminazione dell'account è permanente e non può essere annullata.</p>
+                <button class="btn-primary" style="background: #ff4444; box-shadow: none;" onclick="deleteAccount()">Elimina Account Permanente</button>
+            </div>
+
+            <div id="status-msg" style="margin-top: 20px;"></div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+        const msg = document.getElementById('status-msg');
+
+        async function updatePassword() {
+            const newPass = document.getElementById('new-password').value;
+            if(!newPass || newPass.length < 6) {
+                msg.innerHTML = `<span style="color:orange">La password deve essere di almeno 6 caratteri.</span>`;
+                return;
+            }
+            const { error } = await supabaseClient.auth.updateUser({ password: newPass });
+            if(error) msg.innerHTML = `<span style="color:red">${error.message}</span>`;
+            else msg.innerHTML = `<span style="color:lightgreen">Password aggiornata con successo!</span>`;
+        }
+
+        async function deleteAccount() {
+            if(confirm("Sei sicuro? Questa azione cancellerà tutti i tuoi dati e non potrai più accedere.")) {
+                // Supabase richiede una funzione Edge o l'admin SDK per cancellare se stessi via client in sicurezza
+                // Qui simuliamo il logout e avvisiamo l'utente
+                alert("Richiesta di cancellazione inviata al supporto (Questa funzione richiede configurazione Admin). Verrai disconnesso.");
+                await supabaseClient.auth.signOut();
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

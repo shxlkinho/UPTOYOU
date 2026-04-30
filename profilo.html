@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Mio Profilo - Up to You</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+    <header>
+        <nav class="navbar">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="settings.html">Impostazioni</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <div class="auth-card">
+            <div id="user-avatar" style="font-size: 4rem; margin-bottom: 10px;">👤</div>
+            <h2 id="prof-name">Caricamento...</h2>
+            <p id="prof-email">...</p>
+            
+            <div style="background: rgba(79, 172, 254, 0.1); padding: 20px; border-radius: 15px; margin-top: 20px; text-align: left;">
+                <h4 style="color: var(--accent); margin-bottom: 5px;">Scuola scelta:</h4>
+                <p id="prof-school" style="font-size: 1.1rem; font-weight: 600;">Nessuna scelta</p>
+            </div>
+
+            <a href="index.html" class="btn-primary" style="display: block; text-decoration: none; margin-top: 30px;">Torna alla Home</a>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        window.onload = async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if(!session) { window.location.href = "login.html"; return; }
+
+            const u = session.user;
+            document.getElementById('prof-name').innerText = u.user_metadata.full_name || "Studente";
+            document.getElementById('prof-email').innerText = u.email;
+            document.getElementById('prof-school').innerText = u.user_metadata.school_path || "Non specificata";
+        };
+    </script>
+</body>
+</html>

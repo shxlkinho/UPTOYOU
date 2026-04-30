@@ -21,7 +21,7 @@
     <main class="auth-container">
         <div class="auth-card">
             <h2>Crea Account</h2>
-            <p>Unisciti alla community di UpToYou</p>
+            <p>Costruisci oggi il tuo domani.</p>
 
             <div class="input-group">
                 <input type="text" id="fullname" placeholder="Nome e Cognome" required>
@@ -32,7 +32,43 @@
             </div>
 
             <div class="input-group">
+                <select id="school-choice" required>
+                    <option value="" disabled selected>Che scuola frequenti / vorresti frequentare?</option>
+                    <optgroup label="Licei">
+                        <option value="Liceo Scientifico">Liceo Scientifico</option>
+                        <option value="Liceo Classico">Liceo Classico</option>
+                        <option value="Liceo Linguistico">Liceo Linguistico</option>
+                        <option value="Liceo delle Scienze Umane">Liceo delle Scienze Umane</option>
+                        <option value="Liceo Artistico">Liceo Artistico</option>
+                        <option value="Liceo Musicale e Coreutico">Liceo Musicale e Coreutico</option>
+                    </optgroup>
+                    <optgroup label="Istituti Tecnici (ITI / ITE)">
+                        <option value="Tecnico - Informatica e Telecomunicazioni">Informatica e Telecomunicazioni</option>
+                        <option value="Tecnico - Chimica, Materiali e Biotecnologie">Chimica, Materiali e Biotecnologie</option>
+                        <option value="Tecnico - Meccanica, Meccatronica ed Energia">Meccanica, Meccatronica ed Energia</option>
+                        <option value="Tecnico - Elettronica ed Elettrotecnica">Elettronica ed Elettrotecnica</option>
+                        <option value="Tecnico - Amministrazione, Finanza e Marketing (AFM)">Amministrazione, Finanza e Marketing (AFM/SIA)</option>
+                        <option value="Tecnico - Turismo">Turismo</option>
+                        <option value="Tecnico - Agraria e Agroindustria">Agraria e Agroindustria</option>
+                        <option value="Tecnico - Costruzioni, Ambiente e Territorio (Geometra)">Costruzioni, Ambiente e Territorio (Geometra)</option>
+                    </optgroup>
+                    <optgroup label="Istituti Professionali">
+                        <option value="Professionale - Enogastronomia e Ospitalità Alberghiera">Enogastronomia e Ospitalità (Alberghiero)</option>
+                        <option value="Professionale - Manutenzione e Assistenza Tecnica">Manutenzione e Assistenza Tecnica</option>
+                        <option value="Professionale - Servizi Commerciali">Servizi Commerciali</option>
+                        <option value="Professionale - Sanità e Assistenza Sociale">Sanità e Assistenza Sociale</option>
+                        <option value="Professionale - Industria e Artigianato (Moda, ecc.)">Industria e Artigianato</option>
+                    </optgroup>
+                    <option value="Altro / Non lo so ancora">Altro / Non lo so ancora</option>
+                </select>
+            </div>
+
+            <div class="input-group">
                 <input type="password" id="password" placeholder="Password (min. 6 caratteri)" required>
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="confirm-password" placeholder="Conferma Password" required>
             </div>
             
             <button class="btn-primary" id="regBtn">REGISTRATI</button>
@@ -40,14 +76,14 @@
             <div class="divider"><span>oppure</span></div>
 
             <button class="btn-google" id="googleBtn">
-                <img src="https://www.google.com/favicon.ico" alt="Google"> Registrati con Google
+                <img src="https://www.google.com/favicon.ico" alt="Google"> Continua con Google
             </button>
 
             <p class="footer-text">
                 Hai già un account? <a href="login.html">Accedi qui</a>
             </p>
             
-            <div id="status-msg"></div>
+            <div id="status-msg" style="margin-top: 15px; font-size: 0.9rem;"></div>
         </div>
     </main>
 
@@ -59,33 +95,45 @@
 
         const msg = document.getElementById('status-msg');
 
-        // Logica Registrazione Classica
+        // Logica Registrazione
         document.getElementById('regBtn').onclick = async () => {
+            const fullname = document.getElementById('fullname').value;
             const email = document.getElementById('email').value;
+            const schoolChoice = document.getElementById('school-choice').value;
             const password = document.getElementById('password').value;
-            const name = document.getElementById('fullname').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
 
-            if(!name || !email || !password) {
-                msg.innerHTML = `<span style="color:orange">Per favore, compila tutti i campi.</span>`;
+            // Controlli base
+            if(!fullname || !email || !password || !confirmPassword || !schoolChoice) {
+                msg.innerHTML = `<span style="color:#ffcc00;">Per favore, compila tutti i campi.</span>`;
                 return;
             }
 
+            if(password !== confirmPassword) {
+                msg.innerHTML = `<span style="color:#ff4444;">Le password non coincidono!</span>`;
+                return;
+            }
+
+            // Invia a Supabase (salvando anche la scuola scelta)
             const { error } = await supabaseClient.auth.signUp({
                 email: email,
                 password: password,
                 options: { 
-                    data: { full_name: name } 
+                    data: { 
+                        full_name: fullname,
+                        school_path: schoolChoice
+                    } 
                 }
             });
 
             if (error) {
-                msg.innerHTML = `<span style="color:red">${error.message}</span>`;
+                msg.innerHTML = `<span style="color:#ff4444;">${error.message}</span>`;
             } else {
-                msg.innerHTML = `<span style="color:lightgreen">Registrazione riuscita! Controlla la tua email per confermare l'account.</span>`;
+                msg.innerHTML = `<span style="color:#10b981;">Registrazione riuscita! Controlla la tua email per confermare l'account.</span>`;
             }
         };
 
-        // Logica Google (stessa di login.html)
+        // Logica Google
         document.getElementById('googleBtn').onclick = async () => {
             await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
