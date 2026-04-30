@@ -17,20 +17,98 @@
         </nav>
     </header>
 
-    <main class="auth-container">
-        <div class="auth-card">
-            <div id="user-avatar" style="font-size: 4rem; margin-bottom: 10px;">👤</div>
-            <h2 id="prof-name">Caricamento...</h2>
-            <p id="prof-email">...</p>
-            
-            <div style="background: rgba(79, 172, 254, 0.1); padding: 20px; border-radius: 15px; margin-top: 20px; text-align: left;">
-                <h4 style="color: var(--accent); margin-bottom: 5px;">Scuola scelta:</h4>
-                <p id="prof-school" style="font-size: 1.1rem; font-weight: 600;">Nessuna scelta</p>
-            </div>
+   <!-- profilo.html -->
+<style>
+    .profile-grid {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
 
-            <a href="index.html" class="btn-primary" style="display: block; text-decoration: none; margin-top: 30px;">Torna alla Home</a>
+    .profile-sidebar {
+        background: rgba(22, 22, 22, 0.6);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 30px;
+        text-align: center;
+        border: 1px solid rgba(79, 172, 254, 0.2);
+        height: fit-content;
+    }
+
+    .profile-main {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .content-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 20px;
+        padding: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .content-card h3 {
+        color: var(--accent);
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .badge-school {
+        background: var(--accent);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .comment-item {
+        border-left: 2px solid var(--accent-sec);
+        padding-left: 15px;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+    }
+</style>
+
+<main class="profile-grid">
+    <!-- Sidebar con Info Base -->
+    <aside class="profile-sidebar">
+        <div style="font-size: 5rem; margin-bottom: 15px;">👤</div>
+        <h2 id="prof-name">Nome Utente</h2>
+        <p id="prof-email" style="color: var(--text-dim); font-size: 0.9rem;">email@esempio.it</p>
+        <div style="margin-top: 20px;">
+            <span class="badge-school" id="prof-school-badge">Liceo Scientifico</span>
         </div>
-    </main>
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 25px 0;">
+        <a href="settings.html" class="edit-link">Modifica Profilo</a>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="profile-main">
+        <!-- Scuole Preferite -->
+        <section class="content-card">
+            <h3>⭐ Scuole Preferite</h3>
+            <div id="favorites-list" style="color: var(--text-dim);">
+                Non hai ancora salvato scuole nei preferiti.
+            </div>
+        </section>
+
+        <!-- Ultimi Commenti -->
+        <section class="content-card">
+            <h3>💬 I tuoi Commenti</h3>
+            <div id="comments-list">
+                <div class="comment-item">
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>

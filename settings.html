@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impostazioni - Up to You</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .settings-grid {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .settings-section {
+            margin-bottom: 60px;
+        }
+
+        .settings-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--text-main);
+            border-left: 4px solid var(--accent);
+            padding-left: 15px;
+        }
+
+        /* 1. INFO PERSONALI - STRUTTURA A CASELLE */
+        .info-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 25px;
+            position: relative;
+            transition: 0.3s ease;
+        }
+
+        .info-box:hover {
+            background: rgba(79, 172, 254, 0.05);
+            border-color: rgba(79, 172, 254, 0.3);
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .edit-link {
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .edit-link:hover {
+            text-decoration: underline;
+            filter: brightness(1.2);
+        }
+
+        /* 2. ELIMINA ACCOUNT - STILE MINIMAL IMPACT */
+        .delete-zone {
+            margin-top: 100px;
+            padding: 40px;
+            border-radius: 30px;
+            background: linear-gradient(to right, rgba(255, 68, 68, 0.05), transparent);
+            border-left: 2px solid #ff4444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .delete-text h3 {
+            color: #ff4444;
+            margin-bottom: 5px;
+            font-size: 1.4rem;
+        }
+
+        .delete-text p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            max-width: 500px;
+        }
+
+        .btn-delete-minimal {
+            background: transparent;
+            color: #ff4444;
+            border: 1px solid #ff4444;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-delete-minimal:hover {
+            background: #ff4444;
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
+        }
+
+        /* Modal o Input di modifica rapida */
+        .quick-edit-input {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--accent);
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body class="auth-page">
+    <header>
+        <nav class="navbar">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="profilo.html">Il mio Profilo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+<main class="settings-grid">
+    <section class="settings-section">
+        <h2>Informazioni Personali</h2>
+        <div class="info-container">
+            <!-- Box Nome -->
+            <div class="info-box">
+                <span class="info-label">Nome Completo</span>
+                <span id="display-name" class="info-value">Caricamento...</span>
+                <input type="text" id="edit-name-input" class="quick-edit-input" style="display:none;">
+                <a class="edit-link" onclick="toggleEdit('name')">Modifica nome</a>
+            </div>
+
+            <!-- Box Email & Password -->
+            <div class="info-box">
+                <span class="info-label">Indirizzo Email</span>
+                <span id="display-email" class="info-value">Caricamento...</span>
+                
+                <!-- Link Reset Password -->
+                <a class="edit-link" onclick="togglePasswordMenu()" style="display:block; margin-top:5px; color:var(--accent-sec);">Reimposta Password</a>
+                
+                <!-- Menu Password Nascosto -->
+                <div id="password-menu" style="display:none; margin-top:15px; padding-top:15px; border-top:1px solid rgba(255,255,255,0.1);">
+                    <input type="password" id="new-pass" class="quick-edit-input" style="display:block; margin-bottom:10px;" placeholder="Nuova Password">
+                    <input type="password" id="confirm-pass" class="quick-edit-input" style="display:block;" placeholder="Conferma Nuova Password">
+                    <button class="btn-primary" style="padding:8px; font-size:0.8rem; margin-top:10px;" onclick="updatePassword()">Aggiorna Ora</button>
+                </div>
+            </div>
+
+            <!-- Box Istituto (Select invece di Input) -->
+            <div class="info-box">
+                <span class="info-label">Istituto Scolastico</span>
+                <span id="display-school" class="info-value">Caricamento...</span>
+                
+                <select id="edit-school-input" class="quick-edit-input" style="display:none; background:#111;">
+                    <!-- Opzioni copiate da register.html -->
+                    <optgroup label="Licei">
+                        <option value="Liceo Scientifico">Liceo Scientifico</option>
+                        <option value="Liceo Classico">Liceo Classico</option>
+                        <!-- ... altre opzioni ... -->
+                    </optgroup>
+                    <option value="Altro / Non lo so ancora">Altro / Non lo so ancora</option>
+                </select>
+                <a class="edit-link" onclick="toggleEdit('school')">Cambia istituto</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="delete-zone">
+        <div class="delete-text">
+            <h3>Elimina Account</h3>
+            <p>Azione permanente. Tutti i tuoi dati verranno rimossi dai nostri sistemi.</p>
+        </div>
+        <button class="btn-delete-minimal" onclick="deleteAccount()">Elimina permanentemente</button>
+    </section>
+</main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        // Caricamento Dati Iniziale
+        window.onload = async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if(!session) { window.location.href = "login.html"; return; }
+
+            const u = session.user;
+            document.getElementById('display-name').innerText = u.user_metadata.full_name || "Studente";
+            document.getElementById('display-email').innerText = u.email;
+            document.getElementById('display-school').innerText = u.user_metadata.school_path || "Non specificato";
+        };
+
+        // Funzione per mostrare/nascondere gli input di modifica
+        function toggleEdit(field) {
+            const display = document.getElementById(`display-${field}`);
+            const input = document.getElementById(`edit-${field}-input`);
+            const link = event.target;
+
+            if (input.style.display === "none" || input.style.display === "") {
+                input.style.display = "block";
+                display.style.display = "none";
+                link.innerText = "Salva modifiche";
+                input.focus();
+            } else {
+                saveData(field, input.value);
+                input.style.display = "none";
+                display.style.display = "block";
+                link.innerText = `Modifica ${field}`;
+            }
+        }
+
+        async function saveData(field, value) {
+            if(!value) return;
+            const msg = document.getElementById('status-msg');
+            
+            let updateObj = {};
+            if(field === 'name') updateObj = { data: { full_name: value } };
+            if(field === 'school') updateObj = { data: { school_path: value } };
+            
+            // Nota: Cambiare email richiede logica di conferma via mail su Supabase
+            if(field === 'email') {
+                const { error } = await supabaseClient.auth.updateUser({ email: value });
+                if(error) msg.innerHTML = `<span style="color:red">Errore email: ${error.message}</span>`;
+                else msg.innerHTML = `<span style="color:var(--accent)">Controlla la nuova mail per confermare!</span>`;
+                return;
+            }
+
+            const { data, error } = await supabaseClient.auth.updateUser(updateObj);
+            
+            if(error) msg.innerHTML = `<span style="color:red">${error.message}</span>`;
+            else {
+                msg.innerHTML = `<span style="color:lightgreen">Profilo aggiornato!</span>`;
+                document.getElementById(`display-${field}`).innerText = value;
+            }
+        }
+
+        async function deleteAccount() {
+            if(confirm("Sei assolutamente sicuro? Non potrai tornare indietro.")) {
+                const { error } = await supabaseClient.auth.signOut();
+                alert("Account rimosso (Simulazione). Verrai riportato alla Home.");
+                window.location.href = "index.html";
+            }
+        }
+
+// Nuova funzione per il menu password
+    function togglePasswordMenu() {
+        const menu = document.getElementById('password-menu');
+        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+
+    async function updatePassword() {
+        const p1 = document.getElementById('new-pass').value;
+        const p2 = document.getElementById('confirm-pass').value;
+        if(p1 !== p2) { alert("Le password non coincidono"); return; }
+        
+        const { error } = await supabaseClient.auth.updateUser({ password: p1 });
+        if(error) alert(error.message);
+        else { alert("Password aggiornata!"); togglePasswordMenu(); }
+    }
+    
+    // La funzione toggleEdit ora gestisce correttamente il selettore per 'school'
+    </script>
+</body>
+</html>
