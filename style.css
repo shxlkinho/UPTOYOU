@@ -354,219 +354,108 @@ footer { background: #050505; padding: 80px 5% 40px; border-top: 1px solid rgba(
 
 ** QUESTA è LA PARTE DEDICATA A LOGIN E ALLA REGISTRAZIONE */
 
-/* --- STILE PAGINE DI AUTENTICAZIONE (Login & Register) --- */
+/* ============================================================
+   SEZIONE AUTH: LOGIN, REGISTER & BENVENUTO (CELESTE)
+   ============================================================ */
 
-/* Sfondo specifico per la pagina auth per centrare tutto */
-.auth-page {
-    background: #080808;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* Contenitore che centra la card verticalmente e orizzontalmente */
-.auth-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-/* La Card Centrale */
-.auth-card {
-    background: #111;
-    padding: 40px;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-    border: 1px solid #222;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
-}
-
-.auth-card h2 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 10px;
-    color: white;
-}
-
-.auth-card p {
-    color: #888;
-    margin-bottom: 30px;
-}
-
-/* Miglioramento Caselle di Testo (Input) */
-.input-group {
-    margin-bottom: 20px;
-    width: 100%;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 15px;
-    background: #1a1a1a;
-    border: 2px solid #333;
-    color: white;
-    border-radius: 12px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    outline: none;
-    box-sizing: border-box; /* Evita che l'input esca dai bordi */
-    transition: all 0.3s ease;
-}
-
-/* Animazione Input quando ci clicchi sopra */
-.input-group input:focus {
-    border-color: #ff00ff;
-    background: #222;
-    box-shadow: 0 0 15px rgba(255, 0, 255, 0.15);
-}
-
-/* Stile pulsante principale (Fucsia) */
-.btn-primary {
-    width: 100%;
-    padding: 15px;
-    background: #ff00ff;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.btn-primary:hover {
-    background: #d600d6;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255, 0, 255, 0.4);
-}
-
-/* Divisore "oppure" */
-.divider {
-    margin: 25px 0;
-    position: relative;
-    border-bottom: 1px solid #333;
-}
-
-.divider span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #111;
-    padding: 0 15px;
-    color: #555;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-}
-
-/* Pulsante Google elegante */
-.btn-google {
-    width: 100%;
-    padding: 12px;
-    background: white;
-    color: #333;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
+/* 1. Contenitore generale nella Navbar */
+.nav-auth {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 12px;
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-    transition: all 0.3s ease;
+    margin-left: 20px;
+    list-style: none !important; /* Rimuove i pallini alla radice */
 }
 
-.btn-google img {
-    width: 20px;
-}
-
-.btn-google:hover {
-    background: #f1f1f1;
-    transform: translateY(-2px);
-}
-
-/* Testi a fondo pagina */
-.footer-text {
-    margin-top: 25px;
-    font-size: 0.9rem;
-    color: #666 !important;
-}
-
-.footer-text a {
-    color: #ff00ff;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.footer-text a:hover {
-    text-decoration: underline;
-}
-
-/* Messaggi di errore/successo */
-#status-msg {
-    margin-top: 15px;
-    font-size: 0.85rem;
-    min-height: 20px;
-}
-
-
-
-
-
-/* --- QUESTO GESTISCE QUANDO L UTENTE E' LOGGATO ---*/
-
-/* Stile per il menu utente loggato */
-/* --- FIX NAVBAR UTENTE LOGGATO --- */
-
-/* Rimuove i pallini e allinea il link "Benvenuto" */
 #auth-nav-item {
-    list-style: none;
+    list-style: none !important; /* Sicurezza extra per l'elemento Supabase */
+    position: relative;
+}
+
+/* 2. Stile base per i "Riquadri" (Bottoni e Benvenuto) */
+.nav-box {
+    text-decoration: none;
+    padding: 9px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    cursor: pointer;
+    white-space: nowrap;
 }
 
-#auth-nav-item > a {
+/* 3. Bottone ACCEDI (Vetro / Bordato Celeste) */
+.btn-login {
+    color: var(--accent);
+    background: rgba(79, 172, 254, 0.05);
+    border: 1px solid rgba(79, 172, 254, 0.3);
+}
+
+.btn-login:hover {
+    background: rgba(79, 172, 254, 0.15);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
+}
+
+/* 4. Bottone REGISTRATI (Pieno / Gradiente) */
+.btn-register {
+    color: white !important;
+    background: linear-gradient(135deg, var(--accent), var(--accent-sec));
+    border: 1px solid transparent;
+    box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3);
+}
+
+.btn-register:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 198, 255, 0.4);
+    filter: brightness(1.1);
+}
+
+/* 5. Riquadro BENVENUTO (Utente Loggato) */
+.user-welcome-box {
     color: white;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-    padding: 10px 0;
+    background: rgba(14, 14, 14, 0.5);
+    border: 1px solid var(--accent); /* Bordo celeste acceso */
+    box-shadow: 0 0 10px rgba(79, 172, 254, 0.1);
 }
 
-/* La tendina (Dropdown) */
+.user-welcome-box span {
+    color: var(--accent); /* Il nome dell'utente risalta in celeste */
+    font-weight: 800;
+}
+
+.user-welcome-box:hover {
+    background: rgba(79, 172, 254, 0.1);
+    box-shadow: 0 0 20px rgba(79, 172, 254, 0.3);
+}
+
+/* 6. Menu a tendina Utente (Dropdown) */
 .user-dropdown-menu {
     display: none;
     position: absolute;
-    top: 100%;
-    right: 0; /* Lo ancora a destra per non farlo uscire dallo schermo */
+    top: 110%;
+    right: 0;
     background: #111;
-    border: 1px solid rgba(255, 0, 255, 0.3);
+    border: 1px solid rgba(79, 172, 254, 0.2);
     border-radius: 12px;
     min-width: 200px;
-    list-style: none; /* RIMUOVE I PALLINI */
-    padding: 10px 0;
-    margin-top: 10px;
+    list-style: none !important;
+    padding: 8px 0;
     z-index: 1000;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
     backdrop-filter: blur(10px);
 }
 
-/* Mostra la tendina al passaggio del mouse */
 #auth-nav-item:hover .user-dropdown-menu {
     display: block;
 }
 
-/* Voci del menu interno */
 .user-dropdown-menu li {
-    width: 100%;
-    list-style: none; /* Sicurezza extra */
+    list-style: none !important;
 }
 
 .user-dropdown-menu li a {
@@ -574,20 +463,19 @@ footer { background: #050505; padding: 80px 5% 40px; border-top: 1px solid rgba(
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #ccc !important; /* Grigio chiaro di base */
+    color: #ccc;
     text-decoration: none;
     font-size: 0.85rem;
-    transition: all 0.2s ease;
+    transition: 0.2s;
 }
 
-/* Hover sulle voci interne */
 .user-dropdown-menu li a:hover {
-    background: rgba(255, 0, 255, 0.1);
-    color: #ff00ff !important; /* Diventa fucsia solo al passaggio */
-    padding-left: 25px; /* Effetto spostamento */
+    background: rgba(79, 172, 254, 0.1);
+    color: var(--accent);
+    padding-left: 25px;
 }
 
-/* Stile Logout specifico */
+/* 7. Pulsante Logout */
 .btn-logout {
     color: #ff4444 !important;
     border-top: 1px solid #222;
