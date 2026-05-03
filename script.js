@@ -21,32 +21,6 @@ if(hamburger) {
     });
 }
 
-// BOTTONE SCOPRI DI PIU
-const discoverBtn = document.getElementById('discoverBtn');
-const expandContainer = document.getElementById('expandContainer');
-if(discoverBtn && expandContainer) {
-    discoverBtn.addEventListener('click', () => {
-        expandContainer.classList.toggle('active');
-        discoverBtn.textContent = expandContainer.classList.contains('active') ? 'Chiudi' : 'Scopri di più';
-    });
-}
-
-// GESTIONE VIDEO
-const openVideoBtn = document.getElementById('openVideo'); // CAMBIATO NOME QUI
-const closeVideoBtn = document.getElementById('closeVideo');
-const overlay = document.getElementById('videoOverlay');
-const iframe = document.getElementById('ytPlayer');
-
-if(openVideoBtn) {
-    openVideoBtn.addEventListener('click', () => { overlay.style.display = 'flex'; });
-    closeVideoBtn.addEventListener('click', () => {
-        overlay.style.display = 'none';
-        let videoSrc = iframe.src;
-        iframe.src = videoSrc; 
-    });
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeVideoBtn.click(); });
-}
-
 // --- INTEGRAZIONE IA UPTOYOU ---
 const API_KEY = "AIzaSyDobHcblteBLZ05xqdlfXXWjHNLj8sM2gA";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
@@ -103,3 +77,62 @@ if(aiSendBtn) {
         display.scrollTop = display.scrollHeight;
     };
 }
+
+// 3. LOGICA NAVBAR & AUTENTICAZIONE
+// Inizializzazione Supabase (Usa le tue costanti)
+const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+    async function updateNavbar(session) {
+        const authContainer = document.getElementById('auth-nav-item');
+        if (!authContainer) return;
+
+        if (session) {
+            // --- UTENTE LOGGATO ---
+            const user = session.user;
+            const displayName = user.user_metadata?.full_name || user.email.split('@')[0];
+            
+            // Imposto la classe per il CSS "bellino"
+            authContainer.className = "dropdown user-menu-wrapper";
+            authContainer.innerHTML = `
+                <div class="user-welcome-box">
+                    Benvenuto, <span>${displayName}</span> ▾
+                </div>
+                <ul class="user-dropdown-menu">
+                    <li><a href="profilo.html">👤 Dati Personali</a></li>
+                    <li><a href="settings.html">⚙️ Impostazioni</a></li>
+                    <li><a onclick="handleLogout()" class="btn-logout">🚪 Logout</a></li>
+                </ul>
+            `;
+        } else {
+            // --- UTENTE NON LOGGATO ---
+            authContainer.className = "nav-auth-buttons";
+            authContainer.innerHTML = `
+                <a href="login.html" class="nav-box btn-login">Accedi</a>
+                <a href="register.html" class="nav-box btn-register">Registrati</a>
+            `;
+        }
+    }
+
+    // Funzione per il Logout
+    async function handleLogout() {
+        const { error } = await supabaseClient.auth.signOut();
+        if (error) {
+            alert("Errore durante il logout: " + error.message);
+        } else {
+            window.location.reload();
+        }
+    }
+
+    // Ascolta i cambiamenti di stato (Login/Logout)
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+        console.log("Auth Event:", event);
+        updateNavbar(session);
+    });
+
+    // Inizializzazione al caricamento della pagina
+    window.addEventListener('DOMContentLoaded', async () => {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        updateNavbar(session);
+    });
