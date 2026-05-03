@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percorsi Scolastici - Up to You</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. SETUP PAGINA */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #0e0e0e;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* 2. SEZIONE TITOLO E INTRO */
+        .guidato-section {
+            flex: 1;
+            padding: 100px 5% 80px; 
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .guidato-section h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #4facfe, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .intro-p {
+            color: #ccc;
+            font-size: 1.2rem;
+            max-width: 850px;
+            margin: 0 auto 60px;
+            line-height: 1.6;
+        }
+
+        /* 3. CONTENITORE CARD CENTRATE */
+        .info-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; 
+            gap: 30px;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        .info-card {
+            background: #161616;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: pointer;
+            overflow: hidden;
+            width: 380px; 
+            min-height: 550px;
+            text-align: left;
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px);
+            border-color: #4facfe;
+            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.15);
+        }
+
+        .card-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .info-card:hover .card-image img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        .card-content h3 {
+            color: #4facfe;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-content p {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-content ul li {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #eee;
+        }
+
+        .card-content ul li strong {
+            color: #4facfe;
+        }
+
+        /* 4. BOTTONE CARD */
+        .card-btn {
+            width: 100%;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .info-card:hover .card-btn {
+            background: #4facfe;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .info-card { width: 100%; }
+            .guidato-section h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                UP<span>TOYOU</span>
+            </a>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Lezioni ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Lezioni/elementari.html">Elementari</a></li>
+                    <li><a href="Lezioni/medie.html">Medie</a></li>
+                    <li><a href="Lezioni/superiori.html">Superiori</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Orientamento ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </li>
+            <li><a href="contact.html">Contatti</a></li>
+            <li id="auth-nav-item" class="nav-auth-container"></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="guidato-section">
+        <h1>Il Tuo Percorso Formativo</h1>
+        <p class="intro-p">
+            Dalle prime scoperte alla specializzazione professionale. 
+            Esplora le tappe fondamentali del sistema educativo e trova le risorse adatte a ogni fase della tua crescita.
+        </p>
+
+        <div class="info-container">
+            <!-- CARD ELEMENTARI -->
+            <div class="info-card" onclick="window.location.href='Lezioni/elementari.html'">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=800" alt="Elementari">
+                </div>
+                <div class="card-content">
+                    <h3>Elementari 🏫</h3>
+                    <p>Il primo passo nel mondo del sapere: dove la curiosità diventa metodo e si costruiscono le basi del futuro.</p>
+                    <ul>
+                        <li><strong>Focus:</strong> Alfabetizzazione e Socialità</li>
+                        <li><strong>Obiettivo:</strong> Sviluppo delle competenze base</li>
+                    </ul>
+                </div>
+                <button class="card-btn">Vai alle Elementari</button>
+            </div>
+
+            <!-- CARD MEDIE -->
+            <div class="info-card" onclick="window.location.href='Lezioni/medie.html'">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800" alt="Medie">
+                </div>
+                <div class="card-content">
+                    <h3>Medie 📖</h3>
+                    <p>Un periodo cruciale di transizione e scoperta delle proprie attitudini personali e del metodo di studio.</p>
+                    <ul>
+                        <li><strong>Focus:</strong> Autonomia e Orientamento</li>
+                        <li><strong>Obiettivo:</strong> Scelta consapevole del futuro</li>
+                    </ul>
+                </div>
+                <button class="card-btn">Vai alle Medie</button>
+            </div>
+
+            <!-- CARD SUPERIORI -->
+            <div class="info-card" onclick="window.location.href='Lezioni/superiori.html'">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800" alt="Superiori">
+                </div>
+                <div class="card-content">
+                    <h3>Superiori 🎓</h3>
+                    <p>La fase della specializzazione: Licei, Tecnici o Professionali per prepararsi all'Università o al Lavoro.</p>
+                    <ul>
+                        <li><strong>Focus:</strong> Specializzazione e Competenze</li>
+                        <li><strong>Obiettivo:</strong> Realizzazione professionale</li>
+                    </ul>
+                </div>
+                <button class="card-btn">Vai alle Superiori</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Link Utili</h4>
+            <ul>
+                <li><a href="guidato.html">Orientamento Guidato</a></li>
+                <li><a href="rapido.html">Orientamento Rapido</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Supporto</h4>
+            <ul>
+                <li>Privacy Policy</li>
+                <li>Termini di Servizio</li>
+                <li><a href="contact.html">Contattaci</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Contatti</h4>
+            <ul>
+                <li>Email: info@uptoyou.it</li>
+                <li>Roma, Italia</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
+        <p>Designed with Excellence</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
