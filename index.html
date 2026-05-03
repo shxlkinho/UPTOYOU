@@ -4,22 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Up to You - Orientamento Professionale</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-    
+    <link href="style.css" rel="stylesheet">
     <style>
-        body { background: #080808; font-family: 'Poppins', sans-serif; color: white; margin: 0; }
-        
+        :root {
+            --bg-dark: #080808;
+            --bg-card: rgba(22, 22, 22, 0.6);
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --accent: #4facfe;
+            --accent-sec: #00f2fe;
+            --accent-orange: #ff6600;
+            --accent-green: #00ff80; /* Nuovo colore per lezioni */
+            --transition-smooth: all 0.3s ease;
+        }
+
+        body { background: var(--bg-dark); font-family: 'Poppins', sans-serif; color: var(--text-main); margin: 0; }
+
         /* RICERCA SCUOLE BARRA, LISTA */
+        
         .search-section {
-            padding: 100px 5%;
+            padding: 100px 5% 50px 5%;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* La riga di testo */
         .search-box {
             width: 100%;
             max-width: 600px;
@@ -30,9 +41,7 @@
             transition: 0.3s;
         }
 
-        .search-box:focus-within {
-            border-bottom-color: #ff00ff;
-        }
+        .search-box:focus-within { border-bottom-color: #ff00ff; box-shadow: 0 10px 10px -10px rgba(255, 0, 255, 0.3); }
 
         .search-box input {
             width: 100%;
@@ -44,350 +53,108 @@
             outline: none;
         }
 
-        .search-box .lente {
-            font-size: 24px;
-            cursor: pointer;
-            padding: 10px;
-        }
+        .search-box .lente { font-size: 24px; cursor: pointer; padding: 10px; transition: 0.3s; }
+        .search-box .lente:hover { transform: scale(1.1); }
 
-        /* La tendina */
         #tendina {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: #111;
-            border: 1px solid #333;
-            max-height: 400px;
-            overflow-y: auto;
-            z-index: 999;
-            display: none;
-            text-align: left;
-            border-radius: 0 0 10px 10px;
+            position: absolute; top: 100%; left: 0; right: 0; background: #111; border: 1px solid #333;
+            max-height: 400px; overflow-y: auto; z-index: 999; display: none; text-align: left;
+            border-radius: 0 0 10px 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .item-scuola {
-            padding: 15px;
-            border-bottom: 1px solid #222;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .item-scuola:hover {
-            background: #1a1a1a;
-            border-left: 4px solid #ff00ff;
-        }
-
+        .item-scuola { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; transition: 0.2s; }
+        .item-scuola:hover { background: #1a1a1a; border-left: 4px solid #ff00ff; }
         .item-scuola strong { display: block; color: #fff; font-size: 16px; }
         .item-scuola small { color: #888; font-size: 13px; }
-
         #debug { color: #ff00ff; font-size: 12px; margin-top: 10px; }
 
-
-
-            /* Effetto quando si clicca sulla linea di ricerca */
-        #search-line-container:focus-within {
-            border-bottom-color: var(--fucsia, #ff00ff);
-            box-shadow: 0 10px 10px -10px rgba(255, 0, 255, 0.3);
+        /* ============================================================
+           HERO SECTION MODIFICATA (TEST CARD INVECE DELLO SLIDER)
+           ============================================================ */
+        .hero { display: flex; align-items: center; min-height: 100vh; padding: 100px 5% 50px 5%; gap: 50px; }
+        .hero-content { flex: 1; text-align: left; }
+        .hero-content h1 {
+            font-size: clamp(3rem, 8vw, 5rem); line-height: 1; margin-bottom: 15px;
+            background: linear-gradient(to right, var(--accent), var(--accent-sec));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;
         }
+        .subtitle { font-size: 1.5rem; color: var(--accent); font-weight: 600; margin-bottom: 25px; letter-spacing: 1px; }
+        .description { font-size: 1.1rem; color: var(--text-dim); max-width: 550px; }
 
-        #search-btn:hover {
-            transform: scale(1.1);
-            color: var(--fucsia, #ff00ff) !important;
+        /* Contenitore per la Card del Test nella Hero */
+        .hero-card-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-
-        .search-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #222; transition: 0.2s; color: #ccc; }
-        .search-item:last-child { border-bottom: none; }
-        .search-item:hover { background: #1a1a1a; color: #ff00ff; border-left: 3px solid #ff00ff; }
-        .search-item strong { display: block; color: white; font-size: 1rem; margin-bottom: 5px; }
-        .search-item small { color: #888; font-size: 0.85rem; }
-        #main-search-input:focus { border-color: #ff00ff; box-shadow: 0 0 15px rgba(255, 0, 255, 0.2); }
 
         /* ============================================================
-   3.2 SEZIONE AUTH: CARDS (IL TUO DESIGN SUPER ESTETICO)
-   ============================================================ */
+           CARDS SECTION (STYLES CONDIVISI)
+           ============================================================ */
+        .section-divider { padding: 50px 5% 100px 5%; background: var(--bg-dark); }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 
-.auth-page {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background: radial-gradient(circle at top right, rgba(79, 172, 254, 0.1), transparent 40%), var(--bg-dark);
-}
+        .card-custom {
+            background: var(--bg-card); padding: 40px; border-radius: 24px; color: white;
+            text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.05); transition: var(--transition-smooth);
+            backdrop-filter: blur(10px);
+        }
+        .card-custom:hover { transform: translateY(-12px); border-color: var(--accent); }
+        .card-emoji { font-size: 3rem; margin-bottom: 20px; display: block; }
+        .card-custom h3 { font-size: 1.6rem; margin-bottom: 15px; color: var(--accent); }
+        .card-custom p { color: var(--text-dim); margin-bottom: 30px; font-size: 0.95rem; }
 
-.auth-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 100px 20px;
-}
+        .card-btn-action {
+            background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px;
+            text-align: center; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
+        }
+        .card-custom:hover .card-btn-action { background: var(--accent); border-color: var(--accent); }
 
-.auth-card {
-    background: rgba(22, 22, 22, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 40px;
-    border-radius: 24px;
-    width: 100%;
-    max-width: 450px;
-    text-align: center;
-    border: 1px solid rgba(79, 172, 254, 0.2);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(79, 172, 254, 0.05);
-}
+        /* Card Test Arancione (Usata ora nella Hero) */
+        .card-test { border: 1px solid rgba(255, 102, 0, 0.3); box-shadow: 0 10px 40px rgba(255, 102, 0, 0.1); }
+        .card-test h3 { color: var(--accent-orange) !important; font-size: 2rem;}
+        .card-test p { font-size: 1.1rem; }
+        .card-test:hover { border-color: var(--accent-orange); box-shadow: 0 15px 50px rgba(255, 102, 0, 0.3); }
+        .card-test:hover .card-btn-action { background: var(--accent-orange) !important; border-color: var(--accent-orange) !important; color: white; }
+        .card-test .card-btn-action { border: 1px solid rgba(255, 102, 0, 0.4); color: var(--accent-orange); font-size: 1.1rem;}
 
-.auth-card h2 {
-    color: var(--text-main);
-    margin-bottom: 10px;
-    font-size: 2.2rem;
-    font-weight: 800;
-}
+        /* NUOVA Card Lezioni Verde Smeraldo */
+        .card-lezioni { border: 1px solid rgba(0, 255, 128, 0.2); }
+        .card-lezioni h3 { color: var(--accent-green) !important; }
+        .card-lezioni:hover { border-color: var(--accent-green); box-shadow: 0 10px 30px rgba(0, 255, 128, 0.2); }
+        .card-lezioni:hover .card-btn-action { background: var(--accent-green) !important; border-color: var(--accent-green) !important; color: #000; }
+        .card-lezioni .card-btn-action { border: 1px solid rgba(0, 255, 128, 0.4); color: var(--accent-green); }
 
-.auth-card p {
-    color: var(--text-dim);
-    margin-bottom: 30px;
-}
+        /* ============================================================
+           VIDEO & TEST SECTION
+           ============================================================ */
+        .about-section { padding: 100px 5%; text-align: center; }
+        .about-desc { max-width: 800px; margin: 0 auto 50px; color: var(--text-dim); }
+        .video-container {
+            max-width: 900px; margin: 0 auto; border-radius: 30px; overflow: hidden;
+            box-shadow: 0 0 40px rgba(79, 172, 254, 0.2); aspect-ratio: 16/9; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .video-container iframe { width: 100%; height: 100%; border: none; }
 
-/* Campi di input */
-.input-group {
-    margin-bottom: 18px;
-    text-align: left;
-}
+        #test-section { display: none; background: #000; padding: 20px 0; }
+        .test-header { text-align: right; padding: 0 5% 20px; }
+        .close-btn { background: var(--accent); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
 
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--text-dim);
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.input-group input, 
-.input-group select {
-    width: 100%;
-    padding: 15px 18px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: white;
-    border-radius: 14px;
-    font-size: 0.95rem;
-    transition: 0.3s;
-}
-
-.input-group input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 15px rgba(79, 172, 254, 0.2);
-}
-
-/* Pulsante Principale della Card */
-.btn-primary {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-sec));
-    color: white;
-    border: none;
-    border-radius: 14px;
-    font-size: 1.05rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3);
-}
-
-.btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 198, 255, 0.5);
-}
-
-/* Google & Footer */
-.btn-google {
-    width: 100%;
-    padding: 15px;
-    background: white;
-    color: #111;
-    border: none;
-    border-radius: 14px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.divider {
-    margin: 25px 0;
-    display: flex;
-    align-items: center;
-    color: var(--text-dim);
-}
-
-.divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.divider span { padding: 0 15px; font-size: 0.85rem; }
-
-.footer-text a {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 700;
-}
-/* ============================================================
-   4. HERO SECTION
-   ============================================================ */
-.hero {
-    display: flex;
-    align-items: center;
-    min-height: 100vh;
-    padding: 100px 5% 50px 5%;
-    gap: 50px;
-}
-
-.hero-content { flex: 1; text-align: left; }
-.hero-content h1 {
-    font-size: clamp(3rem, 8vw, 5rem);
-    line-height: 1;
-    margin-bottom: 15px;
-    background: linear-gradient(to right, var(--accent), var(--accent-sec));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 800;
-}
-
-.subtitle {
-    font-size: 1.5rem;
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 25px;
-    letter-spacing: 1px;
-}
-
-.description { font-size: 1.1rem; color: var(--text-dim); max-width: 550px; }
-
-.hero-slider {
-    flex: 1;
-    height: 550px;
-    border-radius: 30px;
-    overflow: hidden;
-    position: relative;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-}
-
-.slider-track { display: flex; width: 400%; height: 100%; animation: slide 16s infinite ease-in-out; }
-.slide { width: 25%; height: 100%; }
-.slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8); }
-
-@keyframes slide {
-    0%, 20% { transform: translateX(0); }
-    25%, 45% { transform: translateX(-25%); }
-    50%, 70% { transform: translateX(-50%); }
-    75%, 95% { transform: translateX(-75%); }
-    100% { transform: translateX(0); }
-}
-
-/* ============================================================
-   5. CARDS SECTION
-   ============================================================ */
-.section-divider { padding: 100px 5%; background: #080808; }
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-
-.card-custom {
-    background: var(--bg-card);
-    padding: 40px;
-    border-radius: 24px;
-    color: white;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid rgba(255,255,255,0.05);
-    transition: var(--transition-smooth);
-}
-
-.card-custom:hover { transform: translateY(-12px); border-color: var(--accent); }
-.card-emoji { font-size: 2.5rem; margin-bottom: 20px; display: block; }
-.card-custom h3 { font-size: 1.6rem; margin-bottom: 15px; color: var(--accent); }
-.card-custom p { color: var(--text-dim); margin-bottom: 30px; font-size: 0.95rem; }
-
-.card-btn-action {
-    background: rgba(255,255,255,0.05);
-    padding: 12px;
-    border-radius: 12px;
-    text-align: center;
-    font-weight: 600;
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: 0.3s;
-}
-.card-custom:hover .card-btn-action { background: var(--accent); border-color: var(--accent); }
-
-/* Card Test Arancione */
-.card-test {
-    border: 1px solid rgba(255, 102, 0, 0.2); 
-}
-
-.card-test h3 {
-    color: var(--accent-orange) !important; 
-}
-
-.card-test:hover {
-    border-color: var(--accent-orange);
-    box-shadow: 0 10px 30px rgba(255, 102, 0, 0.2);
-}
-
-.card-test:hover .card-btn-action {
-    background: var(--accent-orange) !important;
-    border-color: var(--accent-orange) !important;
-    color: white;
-}
-
-.card-test .card-btn-action {
-    border: 1px solid rgba(255, 102, 0, 0.4);
-    color: var(--accent-orange);
-}
-
-/* ============================================================
-   6. VIDEO & TEST SECTION
-   ============================================================ */
-.about-section { padding: 100px 5%; text-align: center; }
-.about-desc { max-width: 800px; margin: 0 auto 50px; color: var(--text-dim); }
-.video-container {
-    max-width: 900px; margin: 0 auto;
-    border-radius: 30px; overflow: hidden;
-    box-shadow: 0 0 40px rgba(79, 172, 254, 0.2);
-    aspect-ratio: 16/9;
-    border: 1px solid rgba(255,255,255,0.1);
-}
-.video-container iframe { width: 100%; height: 100%; border: none; }
-
-#test-section { display: none; background: #000; padding: 20px 0; }
-.test-header { text-align: right; padding: 0 5% 20px; }
-.close-btn { background: var(--accent); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
-
-/* ============================================================
-   9. RESPONSIVE
-   ============================================================ */
-@media (max-width: 968px) {
-    .hero { flex-direction: column; text-align: center; }
-    .hero-content { order: 2; }
-    .hero-slider { order: 1; width: 100%; height: 350px; }
-    .hero-content h1 { font-size: 2.8rem; }
-}
+        /* RESPONSIVE */
+        @media (max-width: 968px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 50px;}
+            .hero-content h1 { font-size: 2.8rem; }
+            .hero-card-container { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
-  <header>
+    <header>
     <nav class="navbar">
-        <div class="logo">
-            <a href="index.html" style="text-decoration: none; color: inherit;">
-                UP<span>TOYOU</span>
-            </a>
-        </div>
-        
+        <div class="logo">UP<span>TOYOU</span></div>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li class="dropdown">
@@ -407,20 +174,17 @@
             </li>
             <li><a href="contact.html">Contatti</a></li>
             <li><a href="#about">Chi Siamo</a></li>
-            
-            <!-- CONTENITORE AUTH: Qui il JS inietterà i bottoni o il menu utente -->
-            <li id="auth-nav-item" class="nav-auth-container">
-                <!-- Caricamento iniziale... -->
-            </li>
+            <li id="auth-nav-item" class="nav-auth-container"></li>
         </ul>
     </nav>
 </header>
 
+    <!-- HERO SECTION MODIFICATA -->
     <section id="home" class="hero">
         <div class="hero-content">
             <h1>Up to You</h1>
             <p class="subtitle">Clear choices, bright Future.</p>
-            <div class="description">
+            <div class="description" style="color: #ffffff;">
                 <p>
                     <strong>UpToYou</strong> è l'ecosistema di orientamento che ti accompagna dalle medie fino al mondo del lavoro. 
                     Offriamo lezioni, recensioni autentiche e percorsi pensati per valorizzare il tuo potenziale.
@@ -429,41 +193,33 @@
             </div>
         </div>
 
-        <div class="hero-slider">
-            <div class="slider-track">
-                <div class="slide"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800" alt="Studenti"></div>
-                <div class="slide"><img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800" alt="Studio"></div>
-                <div class="slide"><img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=800" alt="Scelte"></div>
-                <div class="slide"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800" alt="Futuro"></div>
-            </div>
+        <!-- QUI C'E' LA CARD DEL TEST AL POSTO DELLO SLIDER -->
+        <div class="hero-card-container">
+            <a href="javascript:void(0)" class="card-custom card-test" onclick="showTest()" style="width: 100%; max-width: 500px;">
+                <span class="card-emoji" style="font-size: 4rem;">🧭</span>
+                <div>
+                    <h3>Non sai cosa scegliere?</h3>
+                    <p>Mettiti alla prova con il nostro test attitudinale avanzato per scoprire i tuoi talenti nascosti e trovare la scuola su misura per te.</p>
+                </div>
+                <div class="card-btn-action">Fai il Test Gratis Ora</div>
+            </a>
         </div>
     </section>
 
-</head>
-<body>
-
+    <!-- SEZIONE RICERCA -->
     <section class="search-section">
-        <h1 style="color: #ff00ff">Cerca la tua scuola</h1>
+        <h1 style="color: #ff00ff; margin-bottom: 20px;">Cerca la tua scuola</h1>
         
         <div class="search-box">
             <input type="text" id="inputRicerca" placeholder="Scrivi il nome..." autocomplete="off">
             <span class="lente">🔍</span>
-            
             <div id="tendina"></div>
         </div>
-        
         <div id="debug">In attesa di digitazione...</div>
+        <small style="color: #777; margin-top: 10px; font-size: 0.85rem; display: none;">* Scrivi il nome della scuola e clicca sulla lente per cercare.</small>
     </section>
-        
-        <small style="display: none; color: #777; margin-top: 10px; text-align: left; font-size: 0.85rem;">
-            * Scrivi il nome della scuola e clicca sulla lente (o premi Invio) per cercare.
-        </small>
-        
-        <div id="search-results-box" style="margin-top: 20px; background: #111; border: 1px solid #333; border-radius: 10px; display: none; max-height: 350px; overflow-y: auto; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            </div>
-    </div>
-</section>
 
+    <!-- SEZIONE CARDS AGGIORNATA -->
     <section class="section-divider">
         <div class="cards-grid">
             <a href="guidato.html" class="card-custom card-zona">
@@ -475,13 +231,14 @@
                 <div class="card-btn-action">Cerca Scuole</div>
             </a>
 
-            <a href="javascript:void(0)" class="card-custom card-test" onclick="showTest()">
-                <span class="card-emoji">🧭</span>
+            <!-- QUI C'E' LA NUOVA CARD LEZIONI AL POSTO DEL TEST -->
+            <a href="Lezioni/index.html" class="card-custom card-lezioni">
+                <span class="card-emoji">🎓</span>
                 <div>
-                    <h3>Non sai cosa scegliere?</h3>
-                    <p>Mettiti alla prova con il nostro test attitudinale avanzato per scoprire i tuoi talenti.</p>
+                    <h3>Scopri le Lezioni</h3>
+                    <p>Accedi a materiali didattici, ripetizioni e percorsi di studio personalizzati per potenziare le tue competenze.</p>
                 </div>
-                <div class="card-btn-action">Fai il Test Gratis</div>
+                <div class="card-btn-action">Inizia a Studiare</div>
             </a>
 
             <a href="rapido.html" class="card-custom card-materie">
@@ -495,6 +252,7 @@
         </div>
     </section>
 
+    <!-- SEZIONE TEST (Nascosta di default, si apre cliccando la Card nella Hero) -->
     <section id="test-section" style="display: none;">
         <div class="test-header">
             <button onclick="closeTest()" class="close-btn">Chiudi Test &times;</button>
@@ -502,6 +260,7 @@
         <iframe src="test.html" width="100%" height="750px" frameborder="0"></iframe>
     </section>
 
+    <!-- ABOUT SECTION -->
     <section id="about" class="about-section">
         <h2>Chi Siamo?</h2>
         <p class="about-desc">
@@ -513,7 +272,7 @@
         </div>
     </section>
 
-    <footer>
+        <footer>
         <div class="footer-grid">
             <div class="footer-col">
                 <div class="logo">UP<span>TOYOU</span></div>
@@ -547,6 +306,7 @@
         </div>
     </footer>
 
+    <!-- WIDGET AI MANTENUTO INTACTO -->
     <div id="ai-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; font-family: sans-serif;">
         <button id="ai-open-btn" style="background: #8e44ad; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">🧠</button>
 
@@ -562,104 +322,137 @@
         </div>
     </div>
 
-     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-     <script src="script.js"></script>
-  <script>
-    // 1. CONFIGURAZIONE UNICA
-    const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-    const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
-    
-    // Inizializziamo il client una sola volta per tutta la pagina
-    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+    <!-- SCRIPT (Supabase e logica UI mantenuta intatta) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <scrpt src="script.js"></scrpt>
+    <script>
+        // Configurazione Supabase
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-    // Elementi DOM per la ricerca
-    const input = document.getElementById('inputRicerca');
-    const tendina = document.getElementById('tendina');
-    const debug = document.getElementById('debug');
+        // Ricerca Scuole
+        const input = document.getElementById('inputRicerca');
+        const tendina = document.getElementById('tendina');
+        const debug = document.getElementById('debug');
 
-    // --- FUNZIONI PER LA RICERCA ---
-
-    if (input) {
-        input.addEventListener('input', async () => {
-            const val = input.value.trim();
-
-            if (val.length < 2) {
-                tendina.style.display = 'none';
-                debug.innerText = "Scrivi almeno 2 lettere...";
-                return;
-            }
-
-            debug.innerText = "Cerco: " + val + "...";
-
-            try {
-                const { data: scuole, error } = await supabaseClient
-                    .from('schools')
-                    .select('id, DENOMINAZIONESCUOLA, DESCRIZIONECOMUNE')
-                    .ilike('DENOMINAZIONESCUOLA', `%${val}%`)
-                    .limit(10);
-
-                if (error) {
-                    debug.innerText = "ERRORE: " + error.message;
+        if (input) {
+            input.addEventListener('input', async () => {
+                const val = input.value.trim();
+                if (val.length < 2) {
+                    tendina.style.display = 'none';
+                    debug.innerText = "Scrivi almeno 2 lettere...";
                     return;
                 }
+                debug.innerText = "Cerco: " + val + "...";
+                try {
+                    const { data: scuole, error } = await supabaseClient
+                        .from('schools')
+                        .select('id, DENOMINAZIONESCUOLA, DESCRIZIONECOMUNE')
+                        .ilike('DENOMINAZIONESCUOLA', `%${val}%`)
+                        .limit(10);
 
-                if (scuole && scuole.length > 0) {
-                    debug.innerText = "Trovate " + scuole.length + " scuole";
-                    tendina.innerHTML = scuole.map(s => `
-                        <div class="item-scuola" onclick="vaiAllaScuola('${s.id}')">
-                            <strong>${s.DENOMINAZIONESCUOLA}</strong>
-                            <small>📍 ${s.DESCRIZIONECOMUNE}</small>
-                        </div>
-                    `).join('');
-                    tendina.style.display = 'block';
-                } else {
-                    debug.innerText = "Nessun risultato.";
-                    tendina.innerHTML = '<div style="padding:15px; color:#666;">Nessuna scuola trovata</div>';
-                    tendina.style.display = 'block';
+                    if (error) { debug.innerText = "ERRORE: " + error.message; return; }
+
+                    if (scuole && scuole.length > 0) {
+                        debug.innerText = "Trovate " + scuole.length + " scuole";
+                        tendina.innerHTML = scuole.map(s => `
+                            <div class="item-scuola" onclick="vaiAllaScuola('${s.id}')">
+                                <strong>${s.DENOMINAZIONESCUOLA}</strong>
+                                <small>📍 ${s.DESCRIZIONECOMUNE}</small>
+                            </div>
+                        `).join('');
+                        tendina.style.display = 'block';
+                    } else {
+                        debug.innerText = "Nessun risultato.";
+                        tendina.innerHTML = '<div style="padding:15px; color:#666;">Nessuna scuola trovata</div>';
+                        tendina.style.display = 'block';
+                    }
+                } catch (e) {
+                    debug.innerText = "Errore di connessione.";
+                    console.error(e);
                 }
-            } catch (e) {
-                debug.innerText = "Errore di connessione.";
-                console.error(e);
+            });
+        }
+
+        function vaiAllaScuola(id) { window.location.href = `scuola.html?id=${id}`; }
+
+        document.addEventListener('click', (e) => {
+            if (tendina && !e.target.closest('.search-box')) {
+                tendina.style.display = 'none';
             }
         });
-    }
 
-    function vaiAllaScuola(id) {
-        window.location.href = `scuola.html?id=${id}`;
-    }
-
-    // Chiudi la ricerca se clicchi fuori
-    document.addEventListener('click', (e) => {
-        if (tendina && !e.target.closest('.search-box')) {
-            tendina.style.display = 'none';
+        // Gestione Test iframe
+        function showTest() {
+            document.getElementById('test-section').style.display = 'block';
+            document.getElementById('test-section').scrollIntoView({ behavior: 'smooth' });
         }
+        function closeTest() {
+            document.getElementById('test-section').style.display = 'none';
+        }
+
+        // Gestione AI Widget (semplice toggle per estetica)
+        const aiBtn = document.getElementById('ai-open-btn');
+        const aiWindow = document.getElementById('ai-window');
+        if(aiBtn && aiWindow) {
+            aiBtn.addEventListener('click', () => {
+                aiWindow.style.display = aiWindow.style.display === 'none' ? 'flex' : 'none';
+            });
+        }
+
+    async function updateNavbar(session) {
+        const authContainer = document.getElementById('auth-nav-item');
+        if (!authContainer) return;
+
+        if (session) {
+            // --- UTENTE LOGGATO ---
+            const user = session.user;
+            const displayName = user.user_metadata?.full_name || user.email.split('@')[0];
+            
+            // Imposto la classe per il CSS "bellino"
+            authContainer.className = "dropdown user-menu-wrapper";
+            authContainer.innerHTML = `
+                <div class="user-welcome-box">
+                    Benvenuto, <span>${displayName}</span> ▾
+                </div>
+                <ul class="user-dropdown-menu">
+                    <li><a href="profilo.html">👤 Dati Personali</a></li>
+                    <li><a href="settings.html">⚙️ Impostazioni</a></li>
+                    <li><a onclick="handleLogout()" class="btn-logout">🚪 Logout</a></li>
+                </ul>
+            `;
+        } else {
+            // --- UTENTE NON LOGGATO ---
+            authContainer.className = "nav-auth-buttons";
+            authContainer.innerHTML = `
+                <a href="login.html" class="nav-box btn-login">Accedi</a>
+                <a href="register.html" class="nav-box btn-register">Registrati</a>
+            `;
+        }
+    }
+
+    // Funzione per il Logout
+    async function handleLogout() {
+        const { error } = await supabaseClient.auth.signOut();
+        if (error) {
+            alert("Errore durante il logout: " + error.message);
+        } else {
+            window.location.reload();
+        }
+    }
+
+    // Ascolta i cambiamenti di stato (Login/Logout)
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+        console.log("Auth Event:", event);
+        updateNavbar(session);
     });
 
-          // BOTTONE SCOPRI DI PIU
-const discoverBtn = document.getElementById('discoverBtn');
-const expandContainer = document.getElementById('expandContainer');
-if(discoverBtn && expandContainer) {
-    discoverBtn.addEventListener('click', () => {
-        expandContainer.classList.toggle('active');
-        discoverBtn.textContent = expandContainer.classList.contains('active') ? 'Chiudi' : 'Scopri di più';
+    // Inizializzazione al caricamento della pagina
+    window.addEventListener('DOMContentLoaded', async () => {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        updateNavbar(session);
     });
-}
-
-// GESTIONE VIDEO
-const openVideoBtn = document.getElementById('openVideo'); // CAMBIATO NOME QUI
-const closeVideoBtn = document.getElementById('closeVideo');
-const overlay = document.getElementById('videoOverlay');
-const iframe = document.getElementById('ytPlayer');
-
-if(openVideoBtn) {
-    openVideoBtn.addEventListener('click', () => { overlay.style.display = 'flex'; });
-    closeVideoBtn.addEventListener('click', () => {
-        overlay.style.display = 'none';
-        let videoSrc = iframe.src;
-        iframe.src = videoSrc; 
-    });
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeVideoBtn.click(); });
-}
-</script>
+    </script>
 </body>
 </html>
