@@ -8,70 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        #main-search-input:focus { border-color: #ff00ff; box-shadow: 0 0 15px rgba(255, 0, 255, 0.2); }
-        .search-item { padding: 12px 20px; cursor: pointer; border-bottom: 1px solid #222; transition: 0.2s; color: #ccc; }
-        .search-item:hover { background: #222; color: #ff00ff; }
-        .search-item strong { display: block; color: white; font-size: 0.95rem; }
-        .search-item small { color: #777; font-size: 0.8rem; }
-    </style>
-</head>
-<body>
-
-  <header>
-    <nav class="navbar">
-        <div class="logo">UP<span>TOYOU</span></div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li class="dropdown">
-                <a href="#">Lezioni ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="Lezioni/elementari.html">Elementari</a></li>
-                    <li><a href="Lezioni/medie.html">Medie</a></li>
-                    <li><a href="Lezioni/superiori.html">Superiori</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">Orientamento ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="guidato.html">Orientamento Guidato</a></li>
-                    <li><a href="rapido.html">Orientamento Rapido</a></li>
-                </ul>
-            </li>
-            <li><a href="contact.html">Contatti</a></li>
-            <li><a href="#about">Chi Siamo</a></li>
-            
-            <!-- CONTENITORE AUTH: Qui il JS inietterà i bottoni o il menu utente -->
-            <li id="auth-nav-item" class="nav-auth-container">
-                <!-- Caricamento iniziale... -->
-            </li>
-        </ul>
-    </nav>
-</header>
-
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Up to You</h1>
-            <p class="subtitle">Clear choices, bright Future.</p>
-            <div class="description">
-                <p>
-                    <strong>UpToYou</strong> è l'ecosistema di orientamento che ti accompagna dalle medie fino al mondo del lavoro. 
-                    Offriamo lezioni, recensioni autentiche e percorsi pensati per valorizzare il tuo potenziale.
-                </p>
-                <p>Costruisci oggi il tuo domani con i nostri strumenti digitali.</p>
-            </div>
-        </div>
-
-        <div class="hero-slider">
-            <div class="slider-track">
-                <div class="slide"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800" alt="Studenti"></div>
-                <div class="slide"><img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800" alt="Studio"></div>
-                <div class="slide"><img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=800" alt="Scelte"></div>
-                <div class="slide"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800" alt="Futuro"></div>
-            </div>
-        </div>
-    </section>
-
-      <style>
         body { background: #080808; font-family: 'Poppins', sans-serif; color: white; margin: 0; }
         
         /* Contenitore principale */
@@ -146,7 +82,85 @@
         .item-scuola small { color: #888; font-size: 13px; }
 
         #debug { color: #ff00ff; font-size: 12px; margin-top: 10px; }
+
+
+
+            /* Effetto quando si clicca sulla linea di ricerca */
+        #search-line-container:focus-within {
+            border-bottom-color: var(--fucsia, #ff00ff);
+            box-shadow: 0 10px 10px -10px rgba(255, 0, 255, 0.3);
+        }
+
+        #search-btn:hover {
+            transform: scale(1.1);
+            color: var(--fucsia, #ff00ff) !important;
+        }
+
+        .search-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #222; transition: 0.2s; color: #ccc; }
+        .search-item:last-child { border-bottom: none; }
+        .search-item:hover { background: #1a1a1a; color: #ff00ff; border-left: 3px solid #ff00ff; }
+        .search-item strong { display: block; color: white; font-size: 1rem; margin-bottom: 5px; }
+        .search-item small { color: #888; font-size: 0.85rem; }
+        #main-search-input:focus { border-color: #ff00ff; box-shadow: 0 0 15px rgba(255, 0, 255, 0.2); }
+
     </style>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+        <div class="logo">UP<span>TOYOU</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Lezioni ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Lezioni/elementari.html">Elementari</a></li>
+                    <li><a href="Lezioni/medie.html">Medie</a></li>
+                    <li><a href="Lezioni/superiori.html">Superiori</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Orientamento ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </li>
+            <li><a href="contact.html">Contatti</a></li>
+            <li><a href="#about">Chi Siamo</a></li>
+            
+            <!-- CONTENITORE AUTH: Qui il JS inietterà i bottoni o il menu utente -->
+            <li id="auth-nav-item" class="nav-auth-container">
+                <!-- Caricamento iniziale... -->
+            </li>
+        </ul>
+    </nav>
+</header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Up to You</h1>
+            <p class="subtitle">Clear choices, bright Future.</p>
+            <div class="description">
+                <p>
+                    <strong>UpToYou</strong> è l'ecosistema di orientamento che ti accompagna dalle medie fino al mondo del lavoro. 
+                    Offriamo lezioni, recensioni autentiche e percorsi pensati per valorizzare il tuo potenziale.
+                </p>
+                <p>Costruisci oggi il tuo domani con i nostri strumenti digitali.</p>
+            </div>
+        </div>
+
+        <div class="hero-slider">
+            <div class="slider-track">
+                <div class="slide"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800" alt="Studenti"></div>
+                <div class="slide"><img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800" alt="Studio"></div>
+                <div class="slide"><img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=800" alt="Scelte"></div>
+                <div class="slide"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800" alt="Futuro"></div>
+            </div>
+        </div>
+    </section>
+
 </head>
 <body>
 
@@ -163,7 +177,7 @@
         <div id="debug">In attesa di digitazione...</div>
     </section>
         
-        <small style="display: block; color: #777; margin-top: 10px; text-align: left; font-size: 0.85rem;">
+        <small style="display: none; color: #777; margin-top: 10px; text-align: left; font-size: 0.85rem;">
             * Scrivi il nome della scuola e clicca sulla lente (o premi Invio) per cercare.
         </small>
         
@@ -171,25 +185,6 @@
             </div>
     </div>
 </section>
-
-<style>
-    /* Effetto quando si clicca sulla linea di ricerca */
-    #search-line-container:focus-within {
-        border-bottom-color: var(--fucsia, #ff00ff);
-        box-shadow: 0 10px 10px -10px rgba(255, 0, 255, 0.3);
-    }
-    
-    #search-btn:hover {
-        transform: scale(1.1);
-        color: var(--fucsia, #ff00ff) !important;
-    }
-
-    .search-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #222; transition: 0.2s; color: #ccc; }
-    .search-item:last-child { border-bottom: none; }
-    .search-item:hover { background: #1a1a1a; color: #ff00ff; border-left: 3px solid #ff00ff; }
-    .search-item strong { display: block; color: white; font-size: 1rem; margin-bottom: 5px; }
-    .search-item small { color: #888; font-size: 0.85rem; }
-</style>
 
     <section class="section-divider">
         <div class="cards-grid">
