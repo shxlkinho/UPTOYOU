@@ -81,13 +81,6 @@ header {
     align-items: center;
 }
 
-/* Se hai dei pulsanti a destra (Accedi/Registrati) dentro nav-links o subito dopo */
-.nav-links li {
-    display: flex;
-    align-items: center;
-}
-
-
 .nav-links a:hover { 
     color: var(--accent); 
 }
