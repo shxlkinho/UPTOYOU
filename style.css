@@ -43,14 +43,6 @@ header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
 }
 
-.navbar { 
-    display: flex; 
-    align-items: center; 
-    padding: 15px 3%; 
-    width: 100%; 
-    margin: 0 auto; 
-}
-
 .logo { 
     font-weight: 800; 
     font-size: 1.6rem; 
@@ -61,19 +53,40 @@ header {
     color: var(--accent); 
 }
 
+.navbar { 
+    display: flex; 
+    align-items: center; 
+    /* Aumentiamo leggermente il padding verticale se vuoi più spazio sopra/sotto */
+    padding: 20px 3%; 
+    width: 100%; 
+    margin: 0 auto; 
+}
+
 .nav-links { 
     display: flex; 
     list-style: none; 
     gap: 30px; 
-    margin-left: auto; 
+    margin-left: auto;
+    /* Centra i link rispetto alla riga se ci sono elementi più alti (come i bottoni) */
+    align-items: center; 
 }
 
 .nav-links a { 
     text-decoration: none; 
     color: white; 
     font-weight: 500; 
-    transition: 0.3s; 
+    transition: 0.3s;
+    /* Assicura che l'area cliccabile sia centrata */
+    display: flex;
+    align-items: center;
 }
+
+/* Se hai dei pulsanti a destra (Accedi/Registrati) dentro nav-links o subito dopo */
+.nav-links li {
+    display: flex;
+    align-items: center;
+}
+
 
 .nav-links a:hover { 
     color: var(--accent); 
