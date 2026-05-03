@@ -61,6 +61,7 @@
                 </li>
                 <li><a href="guidato.html">Orientamento</a></li>
                 <li><a href="contact.html">Contatti</a></li>
+                <li id="auth-nav-item" class="nav-auth-container"></li>
             </ul>
         </nav>
     </header>
@@ -128,11 +129,46 @@
         </div>
     </div>
 
-    <footer>
+   <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">UP<span>TOYOU</span></div>
+                <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Link Utili</h4>
+                <ul>
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Supporto</h4>
+                <ul>
+                    <li>Privacy Policy</li>
+                    <li>Termini di Servizio</li>
+                    <li><a href="contact.html">Contattaci</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contatti</h4>
+                <ul>
+                    <li>Email: info@uptoyou.it</li>
+                    <li>Roma, Italia</li>
+                </ul>
+            </div>
+        </div>
         <div class="footer-bottom">
-            <p>© 2026 Up to You. Tutti i diritti riservati.</p>
+            <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
         </div>
     </footer>
+
+    
+<!-- 1. Libreria Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- 2. Il tuo nuovo file logica (assicurati che il percorso sia giusto) -->
+<script src="script.js"></script>
 
     <script>
         const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
