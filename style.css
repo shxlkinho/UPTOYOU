@@ -76,9 +76,6 @@ header {
     color: white; 
     font-weight: 500; 
     transition: 0.3s;
-    /* Assicura che l'area cliccabile sia centrata */
-    display: flex;
-    align-items: center;
 }
 
 .nav-links a:hover { 
