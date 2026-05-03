@@ -80,9 +80,9 @@ if(aiSendBtn) {
 
 // 3. LOGICA NAVBAR & AUTENTICAZIONE
 // Inizializzazione Supabase (Usa le tue costanti)
-const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
-const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+window.SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+window.SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+window.supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
     async function updateNavbar(session) {
         const authContainer = document.getElementById('auth-nav-item');
