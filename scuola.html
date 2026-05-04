@@ -4,38 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dettagli Scuola | Up to You</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Libreria Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
-        :root { --fucsia: #ff00ff; --fucsia-glow: rgba(255, 0, 255, 0.4); }
-        body { background-color: #080808; color: white; margin: 0; }
+        :root { --fucsia: #ff00ff; --fucsia-glow: rgba(255, 0, 255, 0.4); --accent: #4facfe; }
+        body { background-color: #080808; color: white; margin: 0; font-family: 'Poppins', sans-serif; }
 
-        /* Layout Fix */
+        /* Layout */
         .scuola-hero { padding: 160px 5% 40px; text-align: center; }
-        .scuola-header h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; color: #4facfe; text-transform: uppercase; margin-bottom: 10px; }
+        .scuola-header h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
         .main-photo-container { max-width: 1000px; margin: 30px auto; border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
         .main-photo-container img { width: 100%; height: auto; max-height: 500px; object-fit: cover; display: block; }
 
         .scuola-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto 80px; padding: 0 5%; }
         .info-card { background: #151515; padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px; }
 
-        /* Sezione Recensioni */
+        /* Recensioni */
         .reviews-wrapper { grid-column: span 2; padding-top: 50px; border-top: 1px solid rgba(255, 0, 255, 0.2); }
         .comment-box { background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 15px; border: 1px solid var(--fucsia); margin-bottom: 30px; }
-        
         .input-group { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
-        .comment-box input, .comment-box select { 
-            background: #222; border: 1px solid #444; color: white; 
-            padding: 10px; border-radius: 8px; outline: none;
-        }
-        .comment-box textarea { 
-            width: 100%; background: transparent; border: none; 
-            border-bottom: 1px solid #444; color: white; padding: 10px 0; 
-            outline: none; margin-bottom: 20px; resize: none;
-        }
+        .comment-box input, .comment-box select { background: #222; border: 1px solid #444; color: white; padding: 10px; border-radius: 8px; outline: none; }
+        .comment-box textarea { width: 100%; background: transparent; border: none; border-bottom: 1px solid #444; color: white; padding: 10px 0; outline: none; margin-bottom: 20px; resize: none; }
 
-        .btn-fucsia { background: var(--fucsia); color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        .btn-fucsia { background: var(--fucsia); color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.3s; text-decoration: none; display: inline-block; }
         .btn-fucsia:hover { box-shadow: 0 0 20px var(--fucsia); transform: translateY(-2px); }
 
         .review-card { background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: 15px; border: 1px solid rgba(255, 0, 255, 0.1); margin-bottom: 20px; }
@@ -46,44 +39,12 @@
 </head>
 <body>
 
-<header>
-    <nav class="navbar">
-        <div class="logo">
-            <a href="index.html" style="text-decoration: none; color: inherit;">
-                UP<span>TOYOU</span>
-            </a>
-        </div>
-        
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li class="dropdown">
-                <a href="#">Lezioni ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="Lezioni/elementari.html">Elementari</a></li>
-                    <li><a href="Lezioni/medie.html">Medie</a></li>
-                    <li><a href="Lezioni/superiori.html">Superiori</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">Orientamento ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="guidato.html">Orientamento Guidato</a></li>
-                    <li><a href="rapido.html">Orientamento Rapido</a></li>
-                </ul>
-            </li>
-            <li><a href="contact.html">Contatti</a></li>
-            <li id="auth-nav-item" class="nav-auth-container"></li>
-
-        </ul>
-    </nav>
-</header>
-
     <section class="scuola-hero">
         <span id="school-type" style="color:var(--accent); text-transform:uppercase; letter-spacing:2px; font-size:0.9rem;">Caricamento...</span>
         <h1 id="school-name">Nome Scuola</h1>
         <p style="color:#888;">
             📍 <span id="display-address">Indirizzo...</span>
-            <a id="maps-url" href="#" target="_blank" style="color:#4facfe; text-decoration:none; margin-left:10px; font-weight:600;">Vedi su Maps →</a>
+            <a id="maps-url" href="#" target="_blank" style="color:var(--accent); text-decoration:none; margin-left:10px; font-weight:600;">Vedi su Maps →</a>
         </p>
 
         <div class="main-photo-container">
@@ -94,12 +55,12 @@
     <div class="scuola-grid">
         <main>
             <div class="info-card">
-                <h2 style="color:#4facfe;">L'Offerta Formativa</h2>
+                <h2 style="color:var(--accent);">L'Offerta Formativa</h2>
                 <p id="school-description">Recupero informazioni...</p>
             </div>
             <div class="info-card">
-                <h2 style="color:#4facfe;">Profilo dello Studente</h2>
-                <p id="school-profile">Caricamento profilo...</p>
+                <h2 style="color:var(--accent);">Profilo dello Studente</h2>
+                <p id="school-profile">L'istituto accoglie studenti determinati a intraprendere un percorso di crescita sia professionale che umano, offrendo strumenti all'avanguardia.</p>
             </div>
         </main>
 
@@ -141,125 +102,115 @@
         </div>
     </div>
 
-<footer>
-<div class="footer-grid">
-    <div class="footer-col">
-        <div class="logo">UP<span>TOYOU</span></div>
-        <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
-    </div>
-    <div class="footer-col">
-        <h4>Link Utili</h4>
-        <ul>
-            <li><a href="../guidato.html">Orientamento Guidato</a></li>
-            <li><a href="../rapido.html">Orientamento Rapido</a></li>
-        </ul>
-    </div>
-    <div class="footer-col">
-        <h4>Supporto</h4>
-        <ul>
-            <li>Privacy Policy</li>
-            <li>Termini di Servizio</li>
-            <li><a href="../contact.html">Contattaci</a></li>
-        </ul>
-    </div>
-    <div class="footer-col">
-        <h4>Contatti</h4>
-        <ul>
-            <li>Email: info@uptoyou.it</li>
-            <li>Roma, Italia</li>
-        </ul>
-    </div>
-</div>
-<div class="footer-bottom">
-    <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
-    <p>Designed with Excellence</p>
-</div>
- </footer>
-
- <!-- 1. Libreria Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- 2. Il tuo nuovo file logica (assicurati che il percorso sia giusto) -->
-<script src="script.js"></script>
-
     <script>
+        // Configurazione Supabase
         const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo'; // Assicurati sia la ANON KEY
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const urlParams = new URLSearchParams(window.location.search);
         const schoolId = urlParams.get('id');
 
         async function inizializzaPagina() {
-            if (!schoolId) return;
+            if (!schoolId) {
+                console.error("ID Scuola mancante nell'URL");
+                return;
+            }
+            
             try {
-                const { data: scuola } = await supabaseClient.from('schools').select('*').eq('id', schoolId).single();
+                const { data: scuola, error } = await supabaseClient
+                    .from('schools')
+                    .select('*')
+                    .eq('id', schoolId)
+                    .single();
+
+                if (error) throw error;
+
                 if (scuola) {
                     document.getElementById('school-name').innerText = scuola.DENOMINAZIONESCUOLA;
                     document.getElementById('school-type').innerText = scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA;
                     const indirizzo = `${scuola.INDIRIZZOSCUOLA}, ${scuola.DESCRIZIONECOMUNE}`;
                     document.getElementById('display-address').innerText = indirizzo;
                     document.getElementById('maps-url').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(scuola.DENOMINAZIONESCUOLA + " " + indirizzo)}`;
-                    document.getElementById('school-description').innerText = `L'istituto ${scuola.DENOMINAZIONESCUOLA} è un punto di riferimento a ${scuola.DESCRIZIONECOMUNE}.`;
-                    document.getElementById('school-email').innerText = `Email: ${scuola.INDIRIZZOEMAILSCUOLA || 'N/A'}`;
+                    document.getElementById('school-description').innerText = `L'istituto ${scuola.DENOMINAZIONESCUOLA} è un punto di riferimento formativo situato a ${scuola.DESCRIZIONECOMUNE}.`;
+                    document.getElementById('school-email').innerText = `Email: ${scuola.INDIRIZZOEMAILSCUOLA || 'Non disponibile'}`;
+                    
                     if(scuola.SITOWEBSCUOLA) {
-                        document.getElementById('school-website-container').innerHTML = `<a href="${scuola.SITOWEBSCUOLA}" target="_blank" class="btn-fucsia" style="text-decoration:none;">Sito Ufficiale</a>`;
+                        document.getElementById('school-website-container').innerHTML = 
+                            `<a href="${scuola.SITOWEBSCUOLA}" target="_blank" class="btn-fucsia">Sito Ufficiale</a>`;
                     }
                 }
                 await caricaRecensioni();
-            } catch (err) { console.error(err); }
+            } catch (err) { 
+                console.error("Errore caricamento dati:", err); 
+            }
         }
 
         async function caricaRecensioni() {
             const grid = document.getElementById('reviews-grid');
-            const { data } = await supabaseClient.from('recensioni').select('*').eq('school_id', schoolId).order('created_at', { ascending: false });
+            try {
+                const { data, error } = await supabaseClient
+                    .from('recensioni')
+                    .select('*')
+                    .eq('school_id', schoolId)
+                    .order('created_at', { ascending: false });
 
-            if (!data || data.length === 0) {
-                grid.innerHTML = "<p style='color:#555;'>Nessun commento. Sii il primo!</p>";
-                return;
-            }
+                if (error) throw error;
 
-            grid.innerHTML = data.map(r => `
-                <div class="review-card">
-                    <div style="color:var(--fucsia); margin-bottom:10px;">${'★'.repeat(r.stelle)}</div>
-                    <p style="color:#eee; font-style:italic;">"${r.testo}"</p>
-                    <div style="margin-top:10px; font-size:0.9rem;">
-                        <strong style="color:#fff;">${r.nome}</strong> 
-                        <span class="review-role">${r.ruolo || ''}</span>
-                        <span style="color:#555; margin-left:10px;">• ${new Date(r.created_at).toLocaleDateString()}</span>
+                if (!data || data.length === 0) {
+                    grid.innerHTML = "<p style='color:#555;'>Nessun commento presente. Sii il primo a scriverne uno!</p>";
+                    return;
+                }
+
+                grid.innerHTML = data.map(r => `
+                    <div class="review-card">
+                        <div style="color:var(--fucsia); margin-bottom:10px;">${'★'.repeat(r.stelle)}</div>
+                        <p style="color:#eee; font-style:italic;">"${r.testo}"</p>
+                        <div style="margin-top:10px; font-size:0.9rem;">
+                            <strong style="color:#fff;">${r.nome}</strong> 
+                            <span class="review-role">${r.ruolo || ''}</span>
+                            <span style="color:#555; margin-left:10px;">• ${new Date(r.created_at).toLocaleDateString()}</span>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            } catch (err) {
+                console.error("Errore caricamento recensioni:", err);
+            }
         }
 
         async function inviaRecensione() {
-            const nome = document.getElementById('rev-name').value || "Anonimo";
+            const nome = document.getElementById('rev-name').value.trim() || "Anonimo";
             const ruolo = document.getElementById('rev-status').value;
-            const testo = document.getElementById('rev-text').value;
+            const testo = document.getElementById('rev-text').value.trim();
             const stelle = document.getElementById('rev-stars').value;
 
-            // 1. BLACKLIST FILTRO
-            const blacklist = ["negro","negri","negre","negra","cogliona","zoccola","coglione", "imbecille", "stronzo", "vaffanculo", "puttana", "troia", "merda", "bastardo", "cretino", "deficiente", "frocio", "mongoloide", "testa di cazzo", "scemo"];
+            if (!schoolId) return alert("Errore: ID scuola non valido.");
+            if (!testo) return alert("Per favore, inserisci un commento.");
+
+            // Filtro parole offensive
+            const blacklist = ["negro","negri","coglione","stronzo","puttana","troia","merda","bastardo"];
             const testoMinuscolo = testo.toLowerCase();
             if (blacklist.some(p => testoMinuscolo.includes(p))) {
-                alert("⚠️ Commento bloccato: contiene linguaggio offensivo.");
+                alert("⚠️ Il commento contiene linguaggio non consentito.");
                 return;
             }
 
-            if (!testo.trim()) return alert("Scrivi un commento!");
-
-            // 2. INVIO (Assicurati di avere la colonna 'ruolo' nella tabella recensioni)
-            const { error } = await supabaseClient.from('recensioni').insert([{ 
-                school_id: schoolId, 
-                nome: nome, 
-                ruolo: ruolo, 
-                testo: testo, 
-                stelle: parseInt(stelle) 
-            }]);
+            // Invio a Supabase
+            const { error } = await supabaseClient
+                .from('recensioni')
+                .insert([{ 
+                    school_id: schoolId, 
+                    nome: nome, 
+                    ruolo: ruolo, 
+                    testo: testo, 
+                    stelle: parseInt(stelle) 
+                }]);
 
             if (error) {
-                alert("Errore nell'invio");
+                console.error("Dettaglio Errore Supabase:", error);
+                alert("Errore nell'invio: " + error.message);
             } else {
+                alert("Recensione pubblicata con successo!");
                 document.getElementById('rev-text').value = "";
                 await caricaRecensioni();
             }
