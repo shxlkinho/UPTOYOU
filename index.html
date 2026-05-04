@@ -397,13 +397,87 @@
         }
 
         // Gestione AI Widget (semplice toggle per estetica)
-        const aiBtn = document.getElementById('ai-open-btn');
-        const aiWindow = document.getElementById('ai-window');
-        if(aiBtn && aiWindow) {
-            aiBtn.addEventListener('click', () => {
-                aiWindow.style.display = aiWindow.style.display === 'none' ? 'flex' : 'none';
-            });
+       // --- LOGICA AI MENTOR INTEGRATA ---
+const aiBtn = document.getElementById('ai-open-btn');
+const aiWindow = document.getElementById('ai-window');
+const aiMessages = document.getElementById('ai-messages');
+const aiInput = document.getElementById('ai-input');
+const aiSend = document.getElementById('ai-send');
+
+// 1. Inserisci qui la tua API KEY e l'URL visto nel Playground
+const GEMINI_API_KEY = "AIzaSyCbmFLEVzj1fIKJTprH0f9NUHJK2nbbHTw"; 
+const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
+
+// Toggle apertura/chiusura finestra
+if(aiBtn && aiWindow) {
+    aiBtn.addEventListener('click', () => {
+        aiWindow.style.display = aiWindow.style.display === 'none' ? 'flex' : 'none';
+    });
+}
+
+// Funzione per inviare il messaggio
+async function sendAiMessage() {
+    const text = aiInput.value.trim();
+    if (!text) return;
+
+    // Aggiungi messaggio utente a schermo
+    appendAiMessage(text, 'user');
+    aiInput.value = "";
+
+    try {
+        const response = await fetch(GEMINI_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                // Qui passiamo le istruzioni che hai configurato nel Playground
+                system_instruction: {
+                    parts: { text: "Agisci come un Orientatore Scolastico esperto e cauto per UpToYou. Proponi 2-3 percorsi diversi, sii empatico e fai domande sulle attitudini dello studente prima di dare consigli definitivi. Rispondi in italiano in modo sintetico." }
+                },
+                contents: [{ parts: [{ text: text }] }]
+            })
+        });
+
+        const data = await response.json();
+        
+        if (data.candidates && data.candidates[0].content) {
+            const aiText = data.candidates[0].content.parts[0].text;
+            appendAiMessage(aiText, 'ai');
+        } else {
+            appendAiMessage("Scusa, ho avuto un problema tecnico. Riprova più tardi.", 'ai');
         }
+    } catch (error) {
+        appendAiMessage("Errore di connessione con il server.", 'ai');
+    }
+}
+
+// Funzione per visualizzare i messaggi nel widget
+function appendAiMessage(text, side) {
+    const p = document.createElement('p');
+    p.style.marginBottom = "10px";
+    p.style.padding = "8px";
+    p.style.borderRadius = "8px";
+    
+    if (side === 'user') {
+        p.style.background = "#e1bee7";
+        p.style.marginLeft = "20px";
+        p.style.color = "#000";
+        p.innerHTML = `<strong>Tu:</strong> ${text}`;
+    } else {
+        p.style.background = "#f0f0f0";
+        p.style.marginRight = "20px";
+        p.style.color = "#333";
+        p.innerHTML = `<strong>Mentor:</strong> ${text}`;
+    }
+    
+    aiMessages.appendChild(p);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+}
+
+// Listener per invio (Click o Tasto Invio)
+aiSend.addEventListener('click', sendAiMessage);
+aiInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendAiMessage();
+});
 
     async function updateNavbar(session) {
         const authContainer = document.getElementById('auth-nav-item');
