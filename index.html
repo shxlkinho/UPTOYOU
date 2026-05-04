@@ -431,7 +431,7 @@ async function sendAiMessage() {
             body: JSON.stringify({
                 // Qui passiamo le istruzioni che hai configurato nel Playground
                 system_instruction: {
-                    parts: { text: "Sei il Mentor AI di UpToYou. Regole: 1. NO YAPPING: Per domande semplici, chiuse o calcoli rispondi in modo diretto e secco senza preamboli. 2. ORIENTATORE ESPERTO: Per consigli su scuole/carriera sii esaustivo, empatico e proponi 2-3 alternative. 3. ASSISTENTE: Aiuta in ogni task (compiti, coding, riassunti) spiegando semplicemente. 4. FORMATTAZIONE: Usa grassetto e liste puntate, evita muri di testo. 5. DOMANDA GUIDA: Chiudi con una domanda solo in fase di orientamento, mai dopo risposte secche." }
+                    parts: [{ text: "Sei il Mentor AI di UpToYou. Regole: 1. NO YAPPING: Per domande semplici, chiuse o calcoli rispondi in modo diretto e secco senza preamboli. 2. ORIENTATORE ESPERTO: Per consigli su scuole/carriera sii esaustivo, empatico e proponi 2-3 alternative. 3. ASSISTENTE: Aiuta in ogni task (compiti, coding, riassunti) spiegando semplicemente. 4. FORMATTAZIONE: Usa grassetto e liste puntate, evita muri di testo. 5. DOMANDA GUIDA: Chiudi con una domanda solo in fase di orientamento, mai dopo risposte secche."}]
                 },
                 contents: [{ parts: [{ text: text }] }]
             })
