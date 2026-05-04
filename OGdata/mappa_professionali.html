@@ -36,15 +36,6 @@
         
         /* RESET E STILE BASE */
         html, body { height: 100%; margin: 0; scroll-behavior: smooth; background-color: #0b0b0b; color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
-        
-        /* HEADER */
-        header { background: rgba(14, 14, 14, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: fixed; width: 100%; top: 0; z-index: 1000; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; max-width: 1200px; margin: 0 auto; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; letter-spacing: 1px; }
-        .logo span { color: #4facfe; }
-        .nav-links { display: flex; list-style: none; gap: 30px; margin: 0; padding: 0; }
-        .nav-links a { text-decoration: none; color: white; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
-        .nav-links a:hover { color: #4facfe; }
 
         /* TITOLO E LAYOUT */
         .main-content { padding-top: 120px; text-align: center; min-height: calc(100vh - 180px); display: flex; flex-direction: column; align-items: center; }
@@ -80,10 +71,6 @@
         #details h2 { color: #4facfe; margin-top: 0; }
          .close-btn { position: absolute; top: 30px; right: 20px; cursor: pointer; font-size: 1.5rem; z-index: 2100; }
 
-
-        /* FOOTER */
-        footer { background: #080808; padding: 25px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.05); }
-        footer p { margin: 0; color: #777; font-size: 0.85rem; }
 #details {
     max-height: 100vh; /* Limita l'altezza all'80% dello schermo */
     overflow-y: auto; /* Attiva la rotellina del mouse */
@@ -102,17 +89,17 @@
 </head>
 <body>
 
-   <header>
+<header>
     <nav class="navbar">
-        <div class="logo"><a href="index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
+        <div class="logo"><a href="../index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
         <ul class="nav-links">
             <li><a href="../index.html">Home</a></li>
             <li class="dropdown">
                 <a href="#">Lezioni ▾</a>
                 <ul class="dropdown-menu">
-                   <li><a href="../Lezioni/elementari.html">Elementari</a></li>
-                        <li><a href="../Lezioni/medie.html">Medie</a></li>
-                        <li><a href="../Lezioni/superiori.html">Superiori</a></li>
+                    <li><a href="elementari.html">Elementari</a></li>
+                    <li><a href="medie.html">Medie</a></li>
+                    <li><a href="superiori.html">Superiori</a></li>
                 </ul>
             </li>
             <li class="dropdown">
@@ -123,6 +110,7 @@
                 </ul>
             </li>
             <li><a href="../contact.html">Contatti</a></li>
+            <li id="auth-nav-item" class="nav-auth-container"></li>
         </ul>
     </nav>
 </header>
@@ -273,42 +261,46 @@
     <div id="schools-list"></div>
 </div>
 
- <footer>
-<div class="footer-grid">
-    <div class="footer-col">
-        <div class="logo">UP<span>TOYOU</span></div>
-        <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+   <footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Link Utili</h4>
+            <ul>
+                <li><a href="../guidato.html">Orientamento Guidato</a></li>
+                <li><a href="../rapido.html">Orientamento Rapido</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Supporto</h4>
+            <ul>
+                <li>Privacy Policy</li>
+                <li>Termini di Servizio</li>
+                <li><a href="../contact.html">Contattaci</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Contatti</h4>
+            <ul>
+                <li>Email: info@uptoyou.it</li>
+                <li>Roma, Italia</li>
+            </ul>
+        </div>
     </div>
-    <div class="footer-col">
-        <h4>Link Utili</h4>
-        <ul>
-            <li><a href="../guidato.html">Orientamento Guidato</a></li>
-            <li><a href="../rapido.html">Orientamento Rapido</a></li>
-        </ul>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
+        <p>Designed with Excellence</p>
     </div>
-    <div class="footer-col">
-        <h4>Supporto</h4>
-        <ul>
-            <li>Privacy Policy</li>
-            <li>Termini di Servizio</li>
-            <li><a href="../contact.html">Contattaci</a></li>
-        </ul>
-    </div>
-    <div class="footer-col">
-        <h4>Contatti</h4>
-        <ul>
-            <li>Email: info@uptoyou.it</li>
-            <li>Roma, Italia</li>
-        </ul>
-    </div>
-</div>
-<div class="footer-bottom">
-    <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
-    <p>Designed with Excellence</p>
-</div>
 </footer>
 
+<!-- 1. Libreria Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<!-- 2. Il tuo nuovo file logica (assicurati che il percorso sia giusto) -->
+<script src="../script.js"></script>
 
 <script>
 // 1. Configurazione Supabase
