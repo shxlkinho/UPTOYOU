@@ -14,8 +14,10 @@
         /* Layout Fix */
         .scuola-hero { padding: 160px 5% 40px; text-align: center; }
         .scuola-header h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; color: #4facfe; text-transform: uppercase; margin-bottom: 10px; }
-        .main-photo-container { max-width: 1000px; margin: 30px auto; border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-        .main-photo-container img { width: 100%; height: auto; max-height: 500px; object-fit: cover; display: block; }
+        .main-photo-container { max-width: 1000px; margin: 30px auto; border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); position: relative; }
+        
+        /* Aggiunta animazione morbida per il caricamento dell'immagine */
+        .main-photo-container img { width: 100%; height: auto; max-height: 500px; object-fit: cover; display: block; transition: opacity 0.5s ease-in-out; }
 
         .scuola-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto 80px; padding: 0 5%; }
         .info-card { background: #151515; padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px; }
@@ -86,7 +88,8 @@
         </p>
 
         <div class="main-photo-container">
-            <img id="school-image" src="https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&q=80&w=1200" alt="Scuola">
+            <!-- Immagine con segnaposto iniziale in attesa del caricamento dinamico -->
+            <img id="school-image" style="opacity: 0.6;" src="https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&q=80&w=1200" alt="Scuola">
         </div>
     </section>
 
@@ -194,7 +197,7 @@
  <!-- 1. Libreria Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- 2. Il tuo nuovo file logica (assicurati che il percorso sia giusto) -->
+<!-- 2. Il tuo nuovo file logica -->
 <script src="script.js"></script>
 
     <script>
@@ -207,6 +210,34 @@ const schoolId = urlParams.get('id');
 
 // Variabile globale per memorizzare l'utente loggato
 let currentUser = null;
+
+// ---> NUOVA FUNZIONE: Estrazione Dinamica Foto (Wikipedia API / Fallback) <---
+async function cercaFotoScuola(nomeScuola, citta) {
+    try {
+        // Genera una query di ricerca per Wikipedia
+        const termineRicerca = encodeURIComponent(`${nomeScuola} ${citta}`);
+        // Endpoint di ricerca Wikipedia: cerca la pagina più vicina e prende l'immagine originale
+        const url = `https://it.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${termineRicerca}&gsrlimit=1&prop=pageimages&piprop=original&format=json&origin=*`;
+        
+        const res = await fetch(url);
+        const json = await res.json();
+        
+        if (json.query && json.query.pages) {
+            const pages = json.query.pages;
+            const pageId = Object.keys(pages)[0];
+            
+            // Se Wikipedia ha trovato una foto associata alla pagina
+            if (pages[pageId].original && pages[pageId].original.source) {
+                return pages[pageId].original.source; 
+            }
+        }
+    } catch (e) {
+        console.log("Errore nella ricerca Wiki, procedo col fallback.", e);
+    }
+    
+    // FALLBACK: Se Wikipedia non ha foto o la ricerca fallisce, restituisce questa bellissima immagine premium
+    return "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=1200";
+}
 
 // 1. Funzione per controllare se l'utente è loggato
 async function controllaSessione() {
@@ -247,6 +278,12 @@ async function inizializzaPagina() {
             if(scuola.SITOWEBSCUOLA) {
                 document.getElementById('school-website-container').innerHTML = `<a href="${scuola.SITOWEBSCUOLA}" target="_blank" class="btn-fucsia" style="text-decoration:none;">Sito Ufficiale</a>`;
             }
+
+            // ---> TRIGGER RICERCA FOTO DINAMICA <---
+            const imgElement = document.getElementById('school-image');
+            const urlFotoDinamica = await cercaFotoScuola(scuola.DENOMINAZIONESCUOLA, scuola.DESCRIZIONECOMUNE);
+            imgElement.src = urlFotoDinamica;
+            imgElement.style.opacity = "1"; // Effetto transizione fluida
         }
         
         // Carica e mostra i commenti a prescindere dal login
