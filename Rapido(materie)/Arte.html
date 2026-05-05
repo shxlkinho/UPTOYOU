@@ -1,52 +1,141 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arte - Up to You</title>
-<link rel="stylesheet" href="../style.css">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="materie.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+    
+    <style>
+        /* RESET E BASI */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background-color: #000000; color: #f8fafc; line-height: 1.6; }
+
+        /* TITOLO SOPRA IL CONTENITORE BLU */
+        .materia-title-outer { padding: 60px 5% 20px; text-align: center; background-color: #000000; }
+        .materia-title-outer h1 { font-size: 4.5rem; color: #38bdf8; font-weight: 800; text-transform: uppercase; letter-spacing: 6px; text-shadow: 0 0 30px rgba(56, 189, 248, 0.4); padding-top: 50px; }
+        
+        /* CONTENITORE BLU (HERO) */
+        .hero-materia { padding: 60px 5%; background: linear-gradient(135deg, #0f172a 0%, #020617 100%); border-top: 1px solid #1e293b; border-bottom: 1px solid #1e293b; }
+        .hero-container { display: flex; align-items: center; gap: 60px; max-width: 1300px; margin: 0 auto; }
+        
+        /* IMMAGINE PIÙ LARGA */
+        .hero-image-side { flex: 1.5; }
+        .hero-image-side img { width: 100%; height: 450px; object-fit: cover; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid #334155; }
+        
+        .hero-text-side { flex: 1; }
+        .hero-text-side p { font-size: 0.95rem; color: #cbd5e1; text-align: left; font-weight: 400; line-height: 1.8; margin-bottom: 15px; }
+
+        /* CARD CONTAINER */
+        .info-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; padding: 30px 5%; max-width: 1300px; margin: 0 auto; }
+        .info-card { background: #000000; border: 1px solid #1e293b; border-radius: 24px; overflow: hidden; text-align: center; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .info-card:hover { transform: translateY(-12px); border-color: #38bdf8; box-shadow: 0 15px 40px rgba(56, 189, 248, 0.15); }
+        
+        .card-image img { width: 100%; height: 220px; object-fit: cover; filter: grayscale(20%); }
+        .card-content { padding: 35px; }
+        .card-content h3 { color: #ffffff; font-size: 1.6rem; margin-bottom: 15px; font-weight: 700; }
+        .card-content p { color: #94a3b8; margin-bottom: 30px; font-size: 0.9rem; }
+        
+        .card-btn { background: transparent; color: #38bdf8; border: 2px solid #38bdf8; padding: 12px 35px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+        .card-btn:hover { background: #38bdf8; color: #000000; }
+
+        .section-divider { text-align: center; padding-top: 70px; background-color: #000000; }
+        .section-divider h2 { font-family: 'Montserrat', sans-serif; font-size: 2.5rem; color: #38bdf8; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .section-divider h2 { font-size: 2rem; }
+            .hero-container { flex-direction: column; gap: 40px; }
+            .hero-image-side, .hero-text-side { flex: none; width: 100%; }
+            .materia-title-outer h1 { font-size: 3.5rem; }
+        }
+    </style>
 </head>
 <body>
+
 <header>
     <nav class="navbar">
-        <div class="logo"><a href="../index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
+        <div class="logo"><a href="../index.html" style="text-decoration: none; color: inherit;">UP<span>TOYOU</span></a></div>
         <ul class="nav-links">
             <li><a href="../index.html">Home</a></li>
             <li class="dropdown">
                 <a href="#">Lezioni ▾</a>
                 <ul class="dropdown-menu">
-                    <li><a href="elementari.html">Elementari</a></li>
-                    <li><a href="medie.html">Medie</a></li>
-                    <li><a href="superiori.html">Superiori</a></li>
+                    <li><a href="../Lezioni/elementari.html">Elementari</a></li>
+                    <li><a href="../Lezioni/medie.html">Medie</a></li>
+                    <li><a href="../Lezioni/superiori.html">Superiori</a></li>
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#">Orientati ▾</a>
+                <a href="#">Orientamento ▾</a>
                 <ul class="dropdown-menu">
-                    <li><a href="../rapido.html">Orientamento Rapido</a></li>
                     <li><a href="../guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="../rapido.html">Orientamento Rapido</a></li>
                 </ul>
             </li>
             <li><a href="../contact.html">Contatti</a></li>
+            <li id="auth-nav-item" class="nav-auth-container"></li>
         </ul>
     </nav>
 </header>
-    <main class="materia-page">
-        <div class="img-container"><img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=1200" class="materia-img-header"></div>
-        <div class="hero-text-top"><h1>Arte</h1><p class="subtitle-desc">L'arte e il linguaggio universale attraverso cui l'umanita esprime emozioni e valori. Studiarla significa educare lo sguardo alla bellezza e alla creativita come motore di cambiamento. Attraverso la storia dell'arte, scoprirai come ogni epoca abbia usato forme e colori per raccontarsi, mentre la pratica laboratoriale ti insegnera a gestire i materiali. Alle superiori, apre possibilita nel design, grafica, architettura e moda, settori dove l'eccellenza italiana e mondiale. Svilupperai sensibilita estetica, fondamentale nella comunicazione moderna. L'arte non e solo decorazione, ma un potente strumento di marketing e identita: saper creare un'immagine coordinata o un prodotto dal design accattivante puo determinare il successo di un'intera azienda nel mercato globale, rendendo la tua creativita una risorsa economica fondamentale e ricercatissima.</p></div>
-        <div class="info-container">
-            <div class="info-card"><div class="card-image"><img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=1200"></div><div class="card-content"><h3>Liceo Artistico</h3><p>Percorso formativo.</p></div><button class="card-btn">Scopri di piu<div class="tooltip">Formazione figurativa.</div></button></div>
-            <div class="info-card"><div class="card-image"><img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=1200"></div><div class="card-content"><h3>Grafica e Comunicazione</h3><p>Percorso tecnico.</p></div><button class="card-btn">Scopri di piu<div class="tooltip">Design digitale.</div></button></div>
-            <div class="info-card"><div class="card-image"><img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=1200"></div><div class="card-content"><h3>Design del Prodotto</h3><p>Percorso professionale.</p></div><button class="card-btn">Scopri di piu<div class="tooltip">Creazione stili.</div></button></div>
+
+<main class="materia-page">
+    <div class="materia-title-outer">
+        <h1>Arte</h1>
+    </div>
+
+    <section class="hero-materia">
+        <div class="hero-container">
+            <div class="hero-image-side">
+                <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=1200" alt="Materiali d'Arte">
+            </div>
+            
+            <div class="hero-text-side">
+                <p>
+                    L'arte è l'espressione più profonda della creatività umana. Studiare questa materia significa esplorare le tecniche, la storia e le emozioni dietro ai grandi capolavori. Svilupperai il senso estetico e la capacità di comunicare attraverso immagini, colori, forme e volumi. Imparerai a guardare il mondo con occhi diversi.
+                </p>
+                <p>
+                    Alle superiori, questa base è essenziale per percorsi creativi come il Liceo Artistico, ma anche per istituti tecnici orientati alla grafica, alla moda e al design. Padroneggiare l'arte significa avere gli strumenti per progettare, innovare e interpretare il mondo visivo che ci circonda, aprendoti la strada verso le professioni creative del futuro.
+                </p>
+            </div>
         </div>
-        <div class="bottom-nav">
-            <a href="rapido.html" class="btn-bottom">&larr; Altre Materie</a>
-            <a href="contact.html" class="help-link">Serve aiuto?</a>
-            <a href="guidato.html" class="btn-bottom">Orientamento Guidato</a>
+    </section>
+
+    <div class="section-divider">
+        <h2>Scelta Consigliata</h2>
+    </div>
+
+    <div class="info-container">
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Liceo Artistico</h3>
+                <p>Percorso dedicato a pittura, scultura, architettura e arti visive.</p>
+                <button class="card-btn">Scopri di più</button>
+            </div>
         </div>
-    </main>
+
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Tecnico Grafica</h3>
+                <p>Unisci la creatività artistica agli strumenti di design digitale e web.</p>
+                <button class="card-btn">Scopri di più</button>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Liceo Scienze Umane</h3>
+                <p>Approfondisci l'arte come fenomeno sociale e culturale umano.</p>
+                <button class="card-btn">Scopri di più</button>
+            </div>
+        </div>
+    </div>
+</main>
+
 <footer>
 <div class="footer-grid">
     <div class="footer-col">
@@ -80,8 +169,9 @@
     <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
     <p>Designed with Excellence</p>
 </div>
- </footer>
+</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../script.js"></script>
 </body>
 </html>
-
