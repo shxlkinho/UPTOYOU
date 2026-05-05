@@ -43,7 +43,7 @@
 
         .progress-container { margin-bottom: 30px; }
         .progress-bar { width: 100%; height: 8px; background: #222; border-radius: 10px; overflow: hidden; }
-        #progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--primary)); }
+        #progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--primary)); transition: width 0.4s ease; }
         .step-info { font-size: 0.8rem; color: #666; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
 
         .question-box { min-height: 120px; }
@@ -120,7 +120,7 @@
     <div id="quiz-ui">
         <div class="progress-container">
             <div class="progress-bar"><div id="progress-fill"></div></div>
-            <div class="step-info" id="step-info">Domanda 1 di 30</div>
+            <div class="step-info" id="step-info">Inizializzazione...</div>
         </div>
         
         <div class="question-box">
@@ -138,146 +138,242 @@
         <h2 class="result-title">Il tuo futuro inizia qui 🚀</h2>
         <div id="results-list"></div>
         <button class="restart-btn" onclick="location.reload()">Rifai il test</button>
-        <p style="margin-top:20px; font-size: 0.8rem; color: #444;">Analisi basata sui macro-indirizzi ufficiali del Ministero dell'Istruzione</p>
+        <p style="margin-top:20px; font-size: 0.8rem; color: #444;">Analisi dinamica basata sulle tue risposte specifiche</p>
     </div>
 </div>
 
 <script>
-    const questions = [
-        {
-            q: "Pensando al tuo futuro dopo il diploma, cosa immagini?",
-            type: "uni",
+    // --- DATABASE DOMANDE DI APPROFONDIMENTO (BRANCHING) ---
+    // Queste appaiono SOLO se l'utente seleziona determinate risposte
+    const branchQuestions = {
+        branch_informatica_vs_scienze: {
+            q: "Hai detto che ti piacciono i computer e la tecnologia. Quale di questi due approcci ti descrive meglio?",
             a: [
-                {t: "Voglio assolutamente andare all'Università.", v: "si"},
-                {t: "Voglio imparare un mestiere pratico e lavorare subito.", v: "no"},
-                {t: "Non lo so ancora, vorrei tenermi aperte tutte le strade.", v: "forse"}
+                { t: "Voglio imparare a programmare, creare app, siti web e capire come funzionano le reti e i server.", p: { INF: 5, SCA: 1 } },
+                { t: "Mi piace il PC, ma lo vedo più come uno strumento per fare ricerche, esperimenti scientifici o studiare la fisica.", p: { SCA: 5, INF: 1 } },
+                { t: "Mi interessa di più smontare i computer, saldare i circuiti e capire l'hardware.", p: { ELE: 4, MEC: 2 } }
             ]
         },
-        {
-            q: "Quale di queste sfide ti affascina di più?",
+        branch_umane_vs_economico: {
+            q: "Ti interessa il mondo delle persone e della società. Cosa ti incuriosisce di più?",
             a: [
-                {t: "Tradurre un testo antico o capire l'origine delle parole.", p: {CL: 3, LI: 1}},
-                {t: "Risolvere un complesso problema matematico o fisico.", p: {SC: 3, INF: 1}},
-                {t: "Smontare e rimontare un motore o un circuito.", p: {MEC: 3, ELE: 3, MAN: 3}},
-                {t: "Cucinare un piatto perfetto curando ogni dettaglio.", p: {ALB: 3}},
-                {t: "Ascoltare qualcuno e aiutarlo a superare un momento difficile.", p: {SU: 2, SOC: 3}}
+                { t: "Capire la psicologia umana, come crescono i bambini e i processi mentali.", p: { SU: 5, SOC: 2 } },
+                { t: "Capire come funziona la società moderna, il diritto, l'economia globale e la globalizzazione.", p: { LES: 5, AFM: 2 } },
+                { t: "Aiutare direttamente sul campo persone in difficoltà, anziani o malati.", p: { SOC: 5, SAN: 2 } }
             ]
         },
-        {
-            q: "Se dovessi passare un pomeriggio in un laboratorio, cosa sceglieresti?",
+        branch_sport: {
+            q: "Hai mostrato interesse per lo sport o l'aria aperta. Come vedi lo sport nel tuo futuro?",
             a: [
-                {t: "Laboratorio di chimica tra provette e reazioni.", p: {CHI: 3, SC: 1}},
-                {t: "Laboratorio informatico a programmare software.", p: {INF: 3, ELE: 1}},
-                {t: "Laboratorio artistico tra tele, creta o grafica.", p: {AR: 3, GRA: 2}},
-                {t: "Laboratorio odontotecnico per creare protesi precise.", p: {SAN: 3}},
-                {t: "Serra o campo agricolo per studiare piante e colture.", p: {AGR: 3}}
+                { t: "Vorrei studiare l'anatomia, il management sportivo e farne una carriera scientifica/organizzativa.", p: { SPO: 5, SC: 2 } },
+                { t: "È solo una forte passione, per gli studi preferisco materie tradizionali o scientifiche.", p: { SC: 2, SU: 1 } },
+                { t: "Mi piace muovermi e stare all'aperto, magari in ambiti pratici come natura o cantieri.", p: { AGR: 3, CAT: 2 } }
             ]
         },
-        {
-            q: "Cosa ti interessa di più quando viaggi?",
+        branch_lingue_turismo: {
+            q: "Ami le lingue straniere! Qual è il tuo obiettivo imparandole?",
             a: [
-                {t: "Parlare con le persone del posto nella loro lingua.", p: {LI: 3, TUR: 2}},
-                {t: "Osservare l'architettura dei palazzi e come sono costruiti.", p: {CAT: 3, AR: 1}},
-                {t: "Visitare musei d'arte o teatri famosi.", p: {AR: 2, MU: 2, CL: 1}},
-                {t: "Capire come funziona l'economia e il commercio del paese.", p: {AFM: 3, COM: 2}},
-                {t: "Vedere come funzionano i grandi trasporti (navi, aerei).", p: {TRA: 3}}
+                { t: "Studiare la letteratura straniera, la cultura profonda e magari tradurre testi o insegnare.", p: { LI: 5, CL: 1 } },
+                { t: "Usarle per viaggiare, lavorare negli hotel, gestire tour operator o eventi internazionali.", p: { TUR: 5, ALB: 2 } },
+                { t: "Usarle nel mondo del commercio estero, per fare affari con le aziende di altri paesi.", p: { AFM: 3, COM: 3, LES: 2 } }
             ]
         },
-        {
-            q: "Quale materia ti pesa meno studiare?",
+        branch_artistico_grafico: {
+            q: "Hai un'anima creativa. Qual è il tuo mezzo di espressione preferito?",
             a: [
-                {t: "Storia, Filosofia e Letteratura.", p: {CL: 3, SU: 1}},
-                {t: "Matematica, Informatica o Tecnologia.", p: {SC: 2, INF: 3, ELE: 2}},
-                {t: "Lingue Straniere.", p: {LI: 3, TUR: 2}},
-                {t: "Disegno tecnico o artistico.", p: {AR: 3, CAT: 2, GRA: 2}},
-                {t: "Scienze naturali, Biologia o Anatomia.", p: {SC: 2, CHI: 2, SOC: 2, SAN: 2}}
+                { t: "Matita, tela, creta o progettazione architettonica pura.", p: { AR: 5 } },
+                { t: "Computer, software di grafica (Photoshop, Illustrator), video e comunicazione visiva digitale.", p: { GRA: 5, INF: 1 } },
+                { t: "Tessuti, macchine da cucire, creare abiti e accessori.", p: { MOD: 5 } }
             ]
-        },
-        {
-            q: "In un gruppo di lavoro, chi sei?",
-            a: [
-                {t: "Quello che organizza i conti e gestisce i soldi.", p: {AFM: 3, COM: 2}},
-                {t: "Quello che cura l'estetica e la presentazione grafica.", p: {GRA: 3, AR: 2}},
-                {t: "Quello che risolve i guasti tecnici o i bug.", p: {INF: 2, MEC: 2, ELE: 2}},
-                {t: "Quello che scrive i testi e cura la comunicazione.", p: {CL: 2, LI: 1, SU: 1}},
-                {t: "Quello che si occupa del benessere e dei pasti del gruppo.", p: {ALB: 3}}
-            ]
-        },
-        {
-            q: "Sei attratto dal mondo della moda?",
-            a: [
-                {t: "Sì, mi piacerebbe disegnare e creare abiti.", p: {MOD: 3, AR: 1}},
-                {t: "Sì, ma più dal lato commerciale e delle vendite.", p: {COM: 3, AFM: 1}},
-                {t: "Mi interessa la tecnologia dietro i nuovi tessuti.", p: {MOD: 2, CHI: 1}},
-                {t: "No, preferisco settori più tecnici o scientifici.", p: {SC: 1, INF: 1, MEC: 1}},
-                {t: "No, preferisco il contatto umano o sociale.", p: {SU: 1, SOC: 1}}
-            ]
-        },
-        {
-            q: "Cosa pensi delle macchine e della robotica?",
-            a: [
-                {t: "Mi affascina programmare il loro 'cervello'.", p: {INF: 3, ELE: 1}},
-                {t: "Voglio capire come sono costruiti gli ingranaggi.", p: {MEC: 3, MAN: 2}},
-                {t: "Mi interessa il loro impatto sulla società e psicologia.", p: {SU: 3}},
-                {t: "Le vedo utili solo se applicate all'agricoltura o ambiente.", p: {AGR: 3}},
-                {t: "Preferisco la creatività umana pura.", p: {MU: 2, AR: 2, CL: 1}}
-            ]
-        },
-        {
-            q: "Quale di questi ambienti ti ispira di più?",
-            a: [
-                {t: "Un ufficio moderno con analisi dati e marketing.", p: {AFM: 3, COM: 2}},
-                {t: "Un hotel di lusso o la cucina di un ristorante.", p: {ALB: 3, TUR: 2}},
-                {t: "Un cantiere edile o uno studio di progettazione.", p: {CAT: 3, AR: 1}},
-                {t: "Un ospedale o un centro di riabilitazione.", p: {SOC: 3, SAN: 2, SU: 1}},
-                {t: "Uno studio di registrazione o un palcoscenico.", p: {MU: 3, MU: 3}}
-            ]
-        },
-        {
-            q: "Come preferisci risolvere un problema?",
-            a: [
-                {t: "Usando la logica astratta e il ragionamento.", p: {CL: 2, SC: 3}},
-                {t: "Usando le mani e gli strumenti pratici.", p: {MAN: 3, MEC: 2, SAN: 2}},
-                {t: "Cercando una soluzione creativa e fuori dagli schemi.", p: {AR: 3, GRA: 2}},
-                {t: "Parlando e mediando con le persone coinvolte.", p: {SU: 3, SOC: 2}},
-                {t: "Analizzando i costi e i benefici economici.", p: {AFM: 3}}
-            ]
-        },
-        { q: "Ti piace l'idea di lavorare all'aria aperta?", a: [{t:"Sì, con piante e animali.", p:{AGR:3}}, {t:"Sì, coordinando cantieri.", p:{CAT:3}}, {t:"Sì, viaggiando su navi o aerei.", p:{TRA:3}}, {t:"No, preferisco un laboratorio o ufficio.", p:{INF:1, CHI:1}}, {t:"No, preferisco studi artistici.", p:{AR:1}}] },
-        { q: "Cosa faresti davanti a uno smartphone rotto?", a: [{t:"Provo a riparare l'hardware.", p:{ELE:3, MAN:2}}, {t:"Cerco di capire se è un problema software.", p:{INF:3}}, {t:"Penso a quanto costerà ripararlo o ricomprarlo.", p:{AFM:2}}, {t:"Ne ammiro il design nonostante sia rotto.", p:{AR:1}}, {t:"Cerco un tutorial online.", p:{GRA:1}}] },
-        { q: "Ti senti portato per le lingue?", a: [{t:"Moltissimo, voglio parlarne almeno 3.", p:{LI:3}}, {t:"Sì, mi servono per il turismo.", p:{TUR:3}}, {t:"Sì, ma solo per leggere manuali tecnici.", p:{INF:1, MEC:1}}, {t:"No, preferisco il linguaggio universale dei numeri.", p:{SC:3}}, {t:"No, preferisco le note musicali.", p:{MU:3}}] },
-        { q: "Ti interessa come funzionano le leggi e lo Stato?", a: [{t:"Sì, è fondamentale.", p:{AFM:2, CL:2, SU:2}}, {t:"Più o meno, preferisco la gestione pratica.", p:{COM:2}}, {t:"No, preferisco le leggi della fisica.", p:{SC:3}}, {t:"No, preferisco la natura.", p:{AGR:1}}, {t:"No, sono uno spirito artistico.", p:{AR:1}}] },
-        { q: "Qual è il tuo rapporto con il cibo?", a: [{t:"Amo cucinare per gli altri.", p:{ALB:3}}, {t:"Mi interessa la qualità chimica degli alimenti.", p:{CHI:3, AGR:2}}, {t:"Mi interessa il business legato al cibo.", p:{AFM:1, TUR:1}}, {t:"Lo vedo come fonte di salute e benessere.", p:{SOC:1}}, {t:"Mi piace fotografarlo e curarne l'estetica.", p:{GRA:2}}] },
-        { q: "Cosa pensi del disegno?", a: [{t:"Disegno a mano libera continuamente.", p:{AR:3}}, {t:"Preferisco il disegno tecnico al computer (CAD).", p:{CAT:3, MEC:2}}, {t:"Mi interessa la grafica pubblicitaria.", p:{GRA:3}}, {t:"Disegno schemi elettrici o grafici di dati.", p:{ELE:2, SC:1}}, {t:"Non so disegnare.", p:{CL:1, SU:1}}] },
-        { q: "Quale libro sceglieresti in biblioteca?", a: [{t:"Un grande classico della letteratura.", p:{CL:3}}, {t:"Un saggio sulla psicologia infantile.", p:{SU:3}}, {t:"Un manuale di programmazione o robotica.", p:{INF:3, ELE:2}}, {t:"Una rivista di viaggi e culture.", p:{TUR:3, LI:1}}, {t:"Un libro di ricette o tecniche culinarie.", p:{ALB:3}}] },
-        { q: "Ti piacerebbe lavorare in ambito sanitario?", a: [{t:"Sì, come tecnico (es. protesi o occhiali).", p:{SAN:3}}, {t:"Sì, assistendo direttamente i pazienti.", p:{SOC:3}}, {t:"Solo come ricercatore in laboratorio.", p:{CHI:2, SC:2}}, {t:"No, preferisco altri settori.", p:{MEC:1, AFM:1}}, {t:"Mi interessa lo sport e la fisioterapia.", p:{SC:3, SOC:1}}] },
-        { q: "Come ti vedi tra 10 anni?", a: [{t:"In un ufficio di una grande banca.", p:{AFM:3}}, {t:"Sotto un aereo a controllare i motori.", p:{TRA:3, MAN:2}}, {t:"In una sartoria d'alta moda.", p:{MOD:3}}, {t:"In classe a insegnare.", p:{SU:2, CL:2}}, {t:"In un laboratorio biotecnologico.", p:{CHI:3}}] },
-        { q: "Quale strumento preferiresti saper usare?", a: [{t:"Il pianoforte o il violino.", p:{MU:3}}, {t:"La macchina da cucire professionale.", p:{MOD:3}}, {t:"Il trapano a colonna o il tornio.", p:{MEC:3, MAN:2}}, {t:"Lo scalpello o il pennello.", p:{AR:3}}, {t:"Il software Excel per i conti.", p:{AFM:3}}] },
-        { q: "Ti interessa l'ecologia?", a: [{t:"Sì, vorrei studiare energie rinnovabili.", p:{ELE:2, MEC:2, CAT:2}}, {t:"Sì, attraverso l'agricoltura bio.", p:{AGR:3}}, {t:"Sì, studiando i cambiamenti chimici dell'aria.", p:{CHI:3, SC:1}}, {t:"Mi interessa l'impatto economico del green.", p:{AFM:2}}, {t:"Mi interessa sensibilizzare le persone.", p:{SU:2}}] },
-        { q: "Cosa ne pensi della musica?", a: [{t:"È la mia vita, suono uno strumento.", p:{MU:3}}, {t:"Amo la tecnologia audio e il DJing.", p:{ELE:2, INF:1}}, {t:"Mi piace la storia della musica e dell'arte.", p:{AR:1, CL:1}}, {t:"La ascolto solo come sottofondo.", p:{SC:1, AFM:1}}, {t:"Mi piace ballare.", p:{MU:3}}] },
-        { q: "Ti piace organizzare eventi?", a: [{t:"Sì, curando l'accoglienza e il cibo.", p:{ALB:3, TUR:2}}, {t:"Sì, gestendo la promozione e il budget.", p:{AFM:2, COM:3}}, {t:"Sì, occupandomi delle luci e dei suoni.", p:{ELE:3}}, {t:"Preferisco partecipare senza responsabilità.", p:{SC:1, CL:1}}, {t:"Sì, curando le scenografie.", p:{AR:2}}] },
-        { q: "Sei una persona precisa?", a: [{t:"Man maniacale, tutto deve essere al millimetro.", p:{CAT:3, SAN:3, MEC:2}}, {t:"Abbastanza, soprattutto nei calcoli.", p:{AFM:2, SC:2}}, {t:"Sono più per l'ispirazione del momento.", p:{AR:2, MU:2}}, {t:"Sono preciso nei rapporti con gli altri.", p:{SU:2}}, {t:"Dipende da cosa sto facendo.", p:{INF:1, LI:1}}] },
-        { q: "Come gestisci lo stress?", a: [{t:"Analizzo il problema freddamente.", p:{SC:2, INF:2}}, {t:"Mi sfogo con l'attività fisica o sport.", p:{SC:2}}, {t:"Cucinando o mangiando qualcosa di buono.", p:{ALB:2}}, {t:"Disegnando o ascoltando musica.", p:{AR:2, MU:2}}, {t:"Chiedo consiglio a un amico.", p:{SU:3}}] },
-        { q: "Ti affascina lo spazio e l'astronomia?", a: [{t:"Sì, vorrei capire la fisica delle stelle.", p:{SC:3}}, {t:"Mi interessa la tecnologia dei razzi.", p:{MEC:3, ELE:2}}, {t:"Lo vedo come un tema poetico o artistico.", p:{CL:1, AR:1}}, {t:"No, preferisco i problemi della Terra.", p:{AFM:1, SOC:1}}, {t:"Mi interessa la navigazione satellitare.", p:{TRA:3}}] },
-        { q: "Quale di queste app preferiresti creare?", a: [{t:"Un'app per la gestione dei risparmi.", p:{AFM:3}}, {t:"Un videogioco con grafica pazzesca.", p:{INF:2, GRA:3}}, {t:"Un social network per connettere le persone.", p:{SU:2, INF:2}}, {t:"Un'app che riconosce le piante.", p:{AGR:3, CHI:1}}, {t:"Un'app per accordare strumenti.", p:{MU:3, ELE:1}}] },
-        { q: "Ti interessa la biologia umana?", a: [{t:"Sì, vorrei fare medicina.", p:{SC:3, CHI:2}}, {t:"Sì, vorrei lavorare nel sociale.", p:{SOC:3, SU:2}}, {t:"Mi interessa come fabbricare protesi.", p:{SAN:3, MEC:1}}, {t:"Solo a livello sportivo.", p:{SC:2}}, {t:"No, preferisco le macchine.", p:{MEC:3}}] },
-        { q: "Preferiresti scrivere...", a: [{t:"Un romanzo o una poesia.", p:{CL:3, LI:1}}, {t:"Un articolo di economia.", p:{AFM:3}}, {t:"Un codice software.", p:{INF:3}}, {t:"Un manuale d'istruzioni tecniche.", p:{MEC:2, ELE:2}}, {t:"Un diario psicologico.", p:{SU:3}}] },
-        { q: "Quale di questi 'superpoteri' vorresti?", a: [{t:"Parlare ogni lingua del mondo.", p:{LI:3, TUR:2}}, {t:"Riparare qualsiasi cosa istantaneamente.", p:{MAN:3, MEC:2, ELE:2}}, {t:"Prevedere le oscillazioni della borsa.", p:{AFM:3}}, {t:"Leggere nel pensiero delle persone.", p:{SU:3, SOC:1}}, {t:"Creare capolavori d'arte con un tocco.", p:{AR:3, GRA:2}}] }
+        }
+    };
+
+    // --- DOMANDE BASE (Saranno mescolate) ---
+    const baseQuestions = [
+        { q: "Quale di queste sfide ti affascina di più?", a: [
+            { t: "Tradurre un testo antico o capire l'origine delle parole.", p: { CL: 4, LI: 1 } },
+            { t: "Risolvere un complesso problema matematico o fisico.", p: { SC: 3, SCA: 3 } },
+            { t: "Inventare un algoritmo o configurare un computer.", p: { INF: 2, SCA: 1 }, followUp: "branch_informatica_vs_scienze" },
+            { t: "Smontare e rimontare un motore o un circuito elettrico.", p: { MEC: 3, ELE: 3, MAN: 2 } },
+            { t: "Cucinare un piatto perfetto curando ogni dettaglio.", p: { ALB: 3 } }
+        ]},
+        { q: "Se dovessi passare un pomeriggio in un laboratorio, cosa sceglieresti?", a: [
+            { t: "Laboratorio di chimica o biologia tra provette e microscopi.", p: { CHI: 4, SCA: 3, SC: 2 } },
+            { t: "Laboratorio informatico o di robotica.", p: { INF: 2, ELE: 2 }, followUp: "branch_informatica_vs_scienze" },
+            { t: "Laboratorio artistico o atelier di moda.", p: { AR: 2, MOD: 2 }, followUp: "branch_artistico_grafico" },
+            { t: "Laboratorio odontotecnico o ottico per creare protesi e lenti.", p: { SAN: 4 } },
+            { t: "Serra, cantina o campo agricolo per studiare piante e colture.", p: { AGR: 4 } }
+        ]},
+        { q: "Cosa ti interessa di più quando viaggi?", a: [
+            { t: "Parlare con le persone del posto nella loro lingua.", p: { LI: 2, TUR: 2 }, followUp: "branch_lingue_turismo" },
+            { t: "Osservare l'architettura dei palazzi, i ponti e come sono costruiti.", p: { CAT: 4, AR: 1 } },
+            { t: "Visitare musei d'arte, teatri o siti archeologici.", p: { AR: 2, CL: 2, MU: 2 } },
+            { t: "Capire come funziona l'economia e lo stile di vita del paese.", p: { AFM: 2, LES: 2 }, followUp: "branch_umane_vs_economico" },
+            { t: "Vedere come funzionano i grandi trasporti (navi, aerei, stazioni).", p: { TRA: 4 } }
+        ]},
+        { q: "Quale materia ti pesa meno studiare?", a: [
+            { t: "Storia, Filosofia e Letteratura.", p: { CL: 4, SU: 2 } },
+            { t: "Matematica, Scienze o Tecnologia.", p: { SC: 2, SCA: 2, INF: 2 } },
+            { t: "Lingue Straniere.", p: { LI: 2, TUR: 2 }, followUp: "branch_lingue_turismo" },
+            { t: "Disegno tecnico o artistico.", p: { AR: 2, CAT: 2, GRA: 2 } },
+            { t: "Educazione Fisica e Scienze Motorie.", p: { SPO: 2 }, followUp: "branch_sport" }
+        ]},
+        { q: "In un gruppo di lavoro, chi sei?", a: [
+            { t: "Quello che organizza i conti, il budget e il piano d'azione.", p: { AFM: 3, COM: 3 } },
+            { t: "Quello che cura l'estetica e la presentazione finale.", p: { GRA: 2, AR: 2 }, followUp: "branch_artistico_grafico" },
+            { t: "Quello che risolve i problemi tecnici o i guasti fisici.", p: { MEC: 2, MAN: 3, ELE: 2 } },
+            { t: "Quello che ascolta tutti, media i conflitti e osserva le dinamiche.", p: { SU: 3, SOC: 2 }, followUp: "branch_umane_vs_economico" },
+            { t: "Quello che crea l'energia giusta, magari mettendo musica o portando il cibo.", p: { MU: 2, ALB: 2 } }
+        ]},
+        { q: "Cosa pensi della matematica?", a: [
+            { t: "La adoro per la sua logica teorica e pura.", p: { SC: 4, INF: 2 } },
+            { t: "Mi piace, ma solo se serve a risolvere problemi concreti (es. calcolare forze, bilanci).", p: { AFM: 2, CAT: 2, MEC: 2 } },
+            { t: "Non la amo, preferisco di gran lunga leggere o scrivere.", p: { CL: 3, LI: 2, SU: 2 } },
+            { t: "Non mi piace la teoria, preferisco la pratica manuale.", p: { MAN: 3, MID: 2 } },
+            { t: "La uso solo per calcolare misure, proporzioni o prospettive nel disegno.", p: { AR: 2, CAT: 2 } }
+        ]},
+        { q: "Come ti rapporti con le notizie del telegiornale?", a: [
+            { t: "Mi interessano le scoperte scientifiche, la medicina o l'ambiente.", p: { SC: 2, CHI: 2, AGR: 2 } },
+            { t: "Mi interessano l'economia, i mercati finanziari e le aziende.", p: { AFM: 4, LES: 3 } },
+            { t: "Mi interessano i problemi sociali, la psicologia delle persone e le leggi.", p: { SU: 2, LES: 2 }, followUp: "branch_umane_vs_economico" },
+            { t: "Non le seguo molto, preferisco concentrarmi sulle mie passioni pratiche/creative.", p: { AR: 1, MID: 1, MU: 1 } },
+            { t: "Mi affascinano le notizie di nuove tecnologie, intelligenza artificiale o motori.", p: { INF: 2, MEC: 2, ELE: 2 } }
+        ]},
+        { q: "Ti piace l'idea di lavorare all'aria aperta?", a: [
+            { t: "Sì, assolutamente, a contatto con la natura, le piante o gli animali.", p: { AGR: 4 } },
+            { t: "Sì, per coordinare grandi cantieri o ispezionare territori.", p: { CAT: 4 } },
+            { t: "Sì, viaggiando su navi mercantili o pilotando aerei.", p: { TRA: 4 } },
+            { t: "Sì, facendo sport o insegnandolo.", p: { SPO: 2 }, followUp: "branch_sport" },
+            { t: "No, preferisco stare al chiuso in ufficio, laboratorio o studio.", p: { INF: 1, CHI: 1, AFM: 1, CL: 1 } }
+        ]},
+        { q: "Cosa faresti davanti a uno smartphone o un PC rotto?", a: [
+            { t: "Prendo i cacciaviti giusti e provo a cambiare i pezzi (schermo, batteria).", p: { ELE: 3, MAN: 3 } },
+            { t: "Cerco di capire se è un problema software, provo a reinstallare il sistema.", p: { INF: 2 }, followUp: "branch_informatica_vs_scienze" },
+            { t: "Penso subito a quanto mi costerà ripararlo o se mi conviene ricomprarlo (analisi costi).", p: { AFM: 3, COM: 2 } },
+            { t: "Mi frustra la tecnologia, chiedo aiuto a qualcuno di più tecnico.", p: { CL: 1, SU: 1, AR: 1 } },
+            { t: "Uso l'occasione per uscire e staccare gli occhi dallo schermo.", p: { SPO: 2, AGR: 2 } }
+        ]},
+        { q: "Ti interessa come funzionano le leggi e lo Stato?", a: [
+            { t: "Sì, credo sia fondamentale conoscere il Diritto e l'Economia Politica.", p: { LES: 4, AFM: 3 } },
+            { t: "Mi interessa più la filosofia dietro le leggi e i diritti storici.", p: { CL: 3, SU: 2 } },
+            { t: "Solo per la parte amministrativa e fiscale di un'azienda.", p: { COM: 3, AFM: 2 } },
+            { t: "Preferisco le leggi oggettive della Fisica o della Chimica.", p: { SC: 3, SCA: 3, CHI: 2 } },
+            { t: "Non molto, mi sento uno spirito più libero e creativo.", p: { AR: 2, MU: 2 } }
+        ]},
+        { q: "Qual è il tuo rapporto con il cibo e l'alimentazione?", a: [
+            { t: "Amo cucinare per gli altri, curare la sala o organizzare banchetti.", p: { ALB: 4 } },
+            { t: "Mi interessa la composizione chimica degli alimenti e il controllo qualità.", p: { CHI: 3, AGR: 3 } },
+            { t: "Mi affascina il lato nutrizionale legato all'allenamento e al corpo umano.", p: { SPO: 3, SAN: 2 } },
+            { t: "Mi interessa il business legato al food e l'esportazione dei prodotti.", p: { AFM: 2, TUR: 2 } },
+            { t: "Lo vedo dal punto di vista assistenziale, per il benessere delle persone fragili.", p: { SOC: 3 } }
+        ]},
+        { q: "Quale libro sceglieresti in biblioteca?", a: [
+            { t: "Un grande classico o un saggio filosofico.", p: { CL: 4 } },
+            { t: "Un libro di psicologia, pedagogia o sociologia.", p: { SU: 3, LES: 2 }, followUp: "branch_umane_vs_economico" },
+            { t: "Un manuale per imparare a programmare o costruire circuiti.", p: { INF: 2, ELE: 2 }, followUp: "branch_informatica_vs_scienze" },
+            { t: "Una rivista in lingua straniera o di culture lontane.", p: { LI: 2, TUR: 2 }, followUp: "branch_lingue_turismo" },
+            { t: "Un libro sulla biochimica, l'universo o l'evoluzione.", p: { SC: 3, SCA: 3 } }
+        ]},
+        { q: "Ti piacerebbe lavorare in ambito sanitario o del benessere?", a: [
+            { t: "Sì, come tecnico (es. costruendo apparecchiature, occhiali, dentiere).", p: { SAN: 4 } },
+            { t: "Sì, assistendo direttamente le persone fragili o i bambini (OSS, educatore).", p: { SOC: 4 } },
+            { t: "Sì, ma punto a studiare Medicina o Biologia all'università.", p: { SC: 3, SCA: 2, CHI: 2 } },
+            { t: "Sì, come fisioterapista o legato alla riabilitazione sportiva.", p: { SPO: 4 } },
+            { t: "No, preferisco settori tecnici, economici o artistici.", p: { MEC: 1, AFM: 1, AR: 1 } }
+        ]},
+        { q: "Come ti vedi tra 10 anni?", a: [
+            { t: "In un ufficio di una grande banca o azienda.", p: { AFM: 4 } },
+            { t: "A progettare un ponte, una rete elettrica o un motore.", p: { CAT: 2, MEC: 2, ELE: 2 } },
+            { t: "In una sartoria d'alta moda o in uno studio grafico.", p: { MOD: 2, GRA: 2 }, followUp: "branch_artistico_grafico" },
+            { t: "In classe a insegnare o in un consolato all'estero.", p: { SU: 2, CL: 2, LI: 2 } },
+            { t: "In un laboratorio biotecnologico o di ricerca dati.", p: { CHI: 3, SCA: 3 } }
+        ]},
+        { q: "Quale strumento preferiresti saper usare in modo professionale?", a: [
+            { t: "Il pianoforte, la chitarra o la voce.", p: { MU: 4 } },
+            { t: "Un tornio, una fresa a controllo numerico o un saldatore.", p: { MEC: 4, MAN: 3 } },
+            { t: "Lo scalpello, il pennello o i software di rendering 3D.", p: { AR: 3, GRA: 3 } },
+            { t: "Il pacchetto Office, specialmente Excel per i bilanci.", p: { AFM: 4, COM: 3 } },
+            { t: "Il microscopio o i reagenti chimici.", p: { CHI: 4, SCA: 2 } }
+        ]},
+        { q: "Ti interessa l'ecologia e l'ambiente?", a: [
+            { t: "Sì, vorrei studiare come produrre energie rinnovabili o motori puliti.", p: { ELE: 3, MEC: 3 } },
+            { t: "Sì, attraverso l'agricoltura sostenibile e la gestione del territorio.", p: { AGR: 4, CAT: 2 } },
+            { t: "Sì, analizzando le acque e l'aria nei laboratori chimici.", p: { CHI: 4 } },
+            { t: "Mi interessa capire l'impatto economico e le leggi sul green.", p: { LES: 3, AFM: 2 } },
+            { t: "Sì, ma più a livello di divulgazione umanistica e giornalistica.", p: { CL: 2, SU: 2 } }
+        ]},
+        { q: "Sei una persona precisa?", a: [
+            { t: "Maniacale, tutto deve essere millimetrico (disegni, pezzi meccanici).", p: { CAT: 3, SAN: 3, MEC: 3 } },
+            { t: "Abbastanza, soprattutto quando i numeri devono 'quadrare'.", p: { AFM: 3, SC: 2 } },
+            { t: "Dipende. Nel codice o nei calcoli scientifici sì, altrimenti no.", p: { INF: 3, SCA: 2 } },
+            { t: "Sono più per l'intuizione, la creatività e l'ispirazione.", p: { AR: 3, MU: 3, CL: 1 } },
+            { t: "Sono preciso nel pesare le parole quando parlo con gli altri.", p: { SU: 2, LI: 2 } }
+        ]},
+        { q: "Quale di queste app preferiresti inventare?", a: [
+            { t: "Un'app per la gestione dei risparmi o il trading.", p: { AFM: 4 } },
+            { t: "Un videogioco con grafica pazzesca e logica complessa.", p: { INF: 2, GRA: 2 }, followUp: "branch_informatica_vs_scienze" },
+            { t: "Un social network per psicologi e supporto mentale.", p: { SU: 3, SOC: 2 } },
+            { t: "Un'app che riconosce malattie delle piante e consiglia concimi.", p: { AGR: 4 } },
+            { t: "Un'app per tracciare le prestazioni degli atleti al millisecondo.", p: { SPO: 4 } }
+        ]},
+        { q: "Preferiresti scrivere...", a: [
+            { t: "Un romanzo, un saggio letterario o una sceneggiatura.", p: { CL: 4, LI: 2 } },
+            { t: "Un report aziendale di analisi delle vendite.", p: { AFM: 4, COM: 3 } },
+            { t: "Le linee di codice per un'intelligenza artificiale.", p: { INF: 3, SCA: 2 } },
+            { t: "Il manuale d'istruzioni di un macchinario industriale.", p: { MEC: 3, ELE: 2 } },
+            { t: "Un articolo sulle dinamiche dell'apprendimento nei bambini.", p: { SU: 4 } }
+        ]}
     ];
 
+    // Array dinamico delle domande (Coda)
+    let questionQueue = [];
     let currentStep = 0;
+    
+    // Profili ampliati
     let score = { 
-        CL:0, SC:0, LI:0, SU:0, AR:0, MU:0, 
+        CL:0, SC:0, SCA:0, SPO:0, LI:0, SU:0, LES:0, AR:0, MU:0, 
         INF:0, MEC:0, ELE:0, CAT:0, AGR:0, CHI:0, GRA:0, MOD:0, TRA:0, AFM:0, TUR:0, 
         ALB:0, SOC:0, MAN:0, MID:0, COM:0, SAN:0 
     };
     let uniChoice = "forse";
-    let history = [];
+    let history = []; // Per il bottone "Indietro"
+
+    // Funzione per mescolare un array (Fisher-Yates)
+    function shuffleArray(array) {
+        let curId = array.length;
+        while (0 !== curId) {
+            let randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            let tmp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = tmp;
+        }
+        return array;
+    }
+
+    function initQuiz() {
+        // La domanda 1 è fissa sull'università
+        const firstQuestion = {
+            q: "Prima di iniziare: pensando al tuo futuro dopo il diploma, cosa immagini?",
+            type: "uni",
+            a: [
+                { t: "Voglio assolutamente andare all'Università.", v: "si" },
+                { t: "Voglio imparare un mestiere pratico e lavorare subito.", v: "no" },
+                { t: "Non lo so ancora, vorrei tenermi aperte tutte le strade.", v: "forse" }
+            ]
+        };
+
+        // Prepariamo la coda: Q1 + Domande Base Mescolate
+        questionQueue = [firstQuestion, ...shuffleArray([...baseQuestions])];
+        loadQuestion();
+    }
 
     function loadQuestion() {
-        const q = questions[currentStep];
-        document.getElementById("step-info").innerText = `Domanda ${currentStep + 1} di ${questions.length}`;
-        document.getElementById("progress-fill").style.width = `${((currentStep) / questions.length) * 100}%`;
+        const q = questionQueue[currentStep];
+        const totalEstimated = questionQueue.length;
+        
+        document.getElementById("step-info").innerText = `Domanda ${currentStep + 1} di ${totalEstimated}`;
+        document.getElementById("progress-fill").style.width = `${((currentStep) / totalEstimated) * 100}%`;
         document.getElementById("q-text").innerText = q.q;
         
         const optionsBox = document.getElementById("q-options");
@@ -295,59 +391,82 @@
         else backBtn.classList.remove("visible");
     }
 
-    function selectOption(ans) {
-        history.push({ step: currentStep, score: {...score}, uni: uniChoice });
-        
-        if(questions[currentStep].type === "uni") {
-            uniChoice = ans.v;
-        } else {
-            for(let key in ans.p) {
-                score[key] += ans.p[key];
-            }
+  function selectOption(ans) {
+    // Salva lo stato attuale per permettere di tornare indietro
+    history.push({ 
+        step: currentStep, 
+        score: JSON.parse(JSON.stringify(score)), 
+        uni: uniChoice,
+        queueSnapshot: [...questionQueue],
+        usedBranchesSnapshot: new Set(usedBranches) // Salviamo anche i rami usati
+    });
+    
+    // Assegnazione punti o preferenza Uni
+    if (questionQueue[currentStep].type === "uni") {
+        uniChoice = ans.v;
+    } else if (ans.p) {
+        for(let key in ans.p) {
+            score[key] += ans.p[key];
         }
+    }
 
-        currentStep++;
-        if(currentStep < questions.length) {
-            loadQuestion();
-        } else {
-            showResults();
+    // --- LOGICA BRANCHING CORRETTA ---
+    if (ans.followUp && branchQuestions[ans.followUp]) {
+        // Controlla se questo ramo è già stato inserito o mostrato
+        if (!usedBranches.has(ans.followUp)) {
+            const nextIndex = currentStep + 1;
+            questionQueue.splice(nextIndex, 0, branchQuestions[ans.followUp]);
+            usedBranches.add(ans.followUp); // Segna come "già prenotato/usato"
         }
     }
 
-    function goBack() {
-        if(currentStep > 0) {
-            const lastState = history.pop();
-            currentStep = lastState.step;
-            score = lastState.score;
-            uniChoice = lastState.uni;
-            loadQuestion();
-        }
+    currentStep++;
+    if(currentStep < questionQueue.length) {
+        loadQuestion();
+    } else {
+        showResults();
     }
+}
+
+   function goBack() {
+    if(currentStep > 0) {
+        const lastState = history.pop();
+        currentStep = lastState.step;
+        score = lastState.score;
+        uniChoice = lastState.uni;
+        questionQueue = lastState.queueSnapshot;
+        usedBranches = lastState.usedBranchesSnapshot; // Ripristina i rami usati
+        loadQuestion();
+    }
+}
 
     const descriptions = {
         CL: { n: "Liceo Classico", d: "Latino, greco, letteratura e filosofia. Per chi vuole una cultura vastissima e basi critiche imbattibili.", link: "classico.html" },
         SC: { n: "Liceo Scientifico", d: "Matematica, fisica e scienze. Perfetto se sogni l'ingegneria, la medicina o la ricerca pura.", link: "scientifico.html" },
+        SCA: { n: "Liceo Scientifico - Scienze Applicate", d: "Niente latino, molta più informatica e laboratori pratici. La scienza del futuro.", link: "scienze_applicate.html" },
+        SPO: { n: "Liceo Scientifico Sportivo", d: "Scienze, economia e diritto uniti allo studio pratico e teorico delle discipline sportive.", link: "sportivo.html" },
         LI: { n: "Liceo Linguistico", d: "Tre lingue straniere e le loro culture. Per diventare un cittadino del mondo.", link: "linguistico.html" },
-        SU: { n: "Liceo delle Scienze Umane", d: "Psicologia e sociologia. Ideale per chi vuole capire la mente umana e la società.", link: "scienze_umane.html" },
-        AR: { n: "Liceo Artistico", d: "Creatività pura: design, architettura o scenografia. Per chi trasforma le idee in visioni.", link: "artistico.html" },
-        MU: { n: "Liceo Musicale", d: "Musica e danza. Per chi vuole fare della propria passione artistica una professione.", link: "musicale.html" },
-        INF: { n: "Tecnico Informatica", d: "Programmazione, reti e software. Sei il costruttore del mondo digitale.", link: "informatica.html" },
-        MEC: { n: "Tecnico Meccanica ed Energia", d: "Progettazione di motori e impianti. Dove l'idea diventa macchina.", link: "meccanica.html" },
-        ELE: { n: "Tecnico Elettronica", d: "Robotica e automazione. Per dare vita agli oggetti intelligenti di domani.", link: "elettrotecnica.html" },
-        CAT: { n: "Tecnico CAT (Geometra)", d: "Costruzioni e territorio. Per chi vuole progettare case e gestire l'ambiente.", link: "geometra.html" },
-        AGR: { n: "Tecnico Agraria", d: "Gestione agricola e qualità del cibo. L'innovazione che nasce dalla terra.", link: "agrario.html" },
-        CHI: { n: "Tecnico Chimica e Biotec", d: "Analisi di laboratorio e farmaceutica. Per chi vuole scoprire i segreti della materia.", link: "chimica.html" },
-        GRA: { n: "Tecnico Grafica e Comunicazione", d: "Design digitale, video e stampa. Per chi vuole comunicare nel XXI secolo.", link: "grafica.html" },
-        MOD: { n: "Tecnico Moda", d: "Design e produzione tessile. Il cuore creativo del Made in Italy industriale.", link: "moda.html" },
-        TRA: { n: "Tecnico Trasporti e Logistica", d: "Navigazione e Aeronautica. Per chi vuole gestire il movimento globale.", link: "trasporti.html" },
-        AFM: { n: "Tecnico AFM (Ragioneria)", d: "Economia, finanza e marketing. Per diventare i manager del domani.", link: "afm.html" },
-        TUR: { n: "Tecnico per il Turismo", d: "Gestione di servizi e lingue per il business del viaggio.", link: "turismo.html" },
-        ALB: { n: "Professionale Alberghiero", d: "Cucina, sala e accoglienza. Per i futuri chef e leader dell'ospitalità.", link: "alberghiero.html" },
-        SOC: { n: "Professionale Socio-Sanitario", d: "Assistenza e benessere delle persone. Un lavoro fatto di cuore e competenza.", link: "socio_sanitario.html" },
-        MAN: { n: "Professionale Manutenzione", d: "Riparazione di veicoli e impianti. L'esperto tecnico che risolve ogni guasto.", link: "manutenzione.html" },
-        MID: { n: "Professionale Made in Italy", d: "Artigianato d'eccellenza, dalla falegnameria alla moda pratica.", link: "made_in_italy.html" },
-        COM: { n: "Professionale Servizi Commerciali", d: "Vendite, marketing e supporto amministrativo pratico.", link: "servizi_commerciali.html" },
-        SAN: { n: "Professionale Arti Sanitarie", d: "Odontotecnico (protesi) o Ottico. Tecnologia e precisione per la salute.", link: "arti_sanitarie.html" }
+        SU: { n: "Liceo delle Scienze Umane", d: "Psicologia, pedagogia e sociologia. Ideale per chi vuole capire la mente umana.", link: "scienze_umane.html" },
+        LES: { n: "Liceo Economico Sociale", d: "Il liceo della contemporaneità: Diritto, Economia e Scienze Umane. Nessun latino.", link: "economico_sociale.html" },
+        AR: { n: "Liceo Artistico", d: "Creatività pura: arti figurative, design o architettura. Per chi trasforma le idee in visioni.", link: "artistico.html" },
+        MU: { n: "Liceo Musicale e Coreutico", d: "Musica e danza. Per chi vuole fare della propria passione artistica una professione.", link: "musicale.html" },
+        INF: { n: "Tecnico Informatica e Telecomunicazioni", d: "Programmazione, reti e software. Sei il costruttore del mondo digitale.", link: "informatica.html" },
+        MEC: { n: "Tecnico Meccanica e Meccatronica", d: "Progettazione di motori, robot e impianti. Dove l'idea diventa macchina.", link: "meccanica.html" },
+        ELE: { n: "Tecnico Elettronica ed Elettrotecnica", d: "Domotica, robotica e automazione. Per dare vita agli oggetti intelligenti.", link: "elettrotecnica.html" },
+        CAT: { n: "Tecnico CAT (Costruzioni e Territorio)", d: "L'ex Geometra. Per chi vuole progettare case, ponti e gestire l'ambiente.", link: "geometra.html" },
+        AGR: { n: "Tecnico Agraria e Agroindustria", d: "Gestione del territorio e qualità del cibo. L'innovazione che nasce dalla terra.", link: "agrario.html" },
+        CHI: { n: "Tecnico Chimica, Materiali e Biotec.", d: "Analisi di laboratorio, ambiente e salute. Per scoprire i segreti della materia.", link: "chimica.html" },
+        GRA: { n: "Tecnico Grafica e Comunicazione", d: "Design digitale, video, web e stampa. Per comunicare nel XXI secolo.", link: "grafica.html" },
+        MOD: { n: "Tecnico Sistema Moda", d: "Design e produzione tessile. Il cuore creativo del Made in Italy industriale.", link: "moda.html" },
+        TRA: { n: "Tecnico Trasporti e Logistica", d: "Costruzione e pilotaggio di navi o aerei. Per chi vuole gestire il movimento globale.", link: "trasporti.html" },
+        AFM: { n: "Tecnico AFM (Amministrazione e Finanza)", d: "L'ex Ragioneria: Economia, finanza, marketing e diritto. Per i manager del domani.", link: "afm.html" },
+        TUR: { n: "Tecnico per il Turismo", d: "Gestione di aziende turistiche, marketing del territorio e lingue straniere.", link: "turismo.html" },
+        ALB: { n: "Professionale Enogastronomia (Alberghiero)", d: "Cucina, sala e accoglienza. Per i futuri chef e leader dell'ospitalità.", link: "alberghiero.html" },
+        SOC: { n: "Professionale Sanità e Assistenza Sociale", d: "Assistenza a bambini, anziani e disabili. Un lavoro fatto di cuore e competenza.", link: "socio_sanitario.html" },
+        MAN: { n: "Professionale Manutenzione e Assistenza", d: "Riparazione di veicoli, motori e impianti. L'esperto tecnico che risolve ogni guasto.", link: "manutenzione.html" },
+        MID: { n: "Professionale Industria e Artigianato", d: "Made in Italy d'eccellenza, dalla lavorazione del legno alla moda pratica.", link: "made_in_italy.html" },
+        COM: { n: "Professionale Servizi Commerciali", d: "Vendite, gestione negozio, web marketing e supporto amministrativo pratico.", link: "servizi_commerciali.html" },
+        SAN: { n: "Professionale Arti Ausiliarie", d: "Odontotecnico o Ottico. Laboratorio, tecnologia e precisione per la salute.", link: "arti_sanitarie.html" }
     };
 
     function showResults() {
@@ -355,12 +474,14 @@
         document.getElementById("result").style.display = "block";
         document.getElementById("progress-fill").style.width = "100%";
 
+        // Boost legato all'università
         if(uniChoice === "si") {
-            for(let k in score) if(["CL","SC","LI","SU","AR","MU"].includes(k)) score[k] += 15;
+            for(let k in score) if(["CL","SC","SCA","SPO","LI","SU","LES","AR","MU"].includes(k)) score[k] += 15;
         } else if(uniChoice === "no") {
             for(let k in score) if(["ALB","SOC","MAN","MID","COM","SAN"].includes(k)) score[k] += 15;
         }
 
+        // Ordinamento dei risultati
         let sorted = Object.entries(score).sort((a,b) => b[1] - a[1]);
         const top3 = sorted.slice(0, 3);
         
@@ -371,7 +492,6 @@
             const data = descriptions[m[0]];
             const isTop = i === 0;
             
-            // AGGIUNTA TARGET="_BLANK" PER APRIRE IN UNA NUOVA SCHEDA
             list.innerHTML += `
                 <a href="OGdata/indirizzi/${data.link}" target="_blank" style="text-decoration: none; display: block;">
                     <div class="result-card ${isTop ? 'top' : ''}">
@@ -387,7 +507,8 @@
         });
     }
 
-    loadQuestion();
+    // Avvio del quiz
+    initQuiz();
 </script>
 </body>
 </html>
