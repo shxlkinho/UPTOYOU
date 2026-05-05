@@ -1,120 +1,226 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ist. Tecnico AFM - Sbocchi Futuri</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        html, body { height: 100%; margin: 0; scroll-behavior: smooth; background-color: #0b0b0b; color: white; font-family: 'Poppins', sans-serif; }
-        header { background: rgba(14, 14, 14, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: fixed; width: 100%; top: 0; z-index: 1000; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; max-width: 1200px; margin: 0 auto; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: white; letter-spacing: 1px; }
-        .logo span { color: #4facfe; }
-        .nav-links { display: flex; list-style: none; gap: 30px; margin: 0; padding: 0; }
-        .nav-links a { text-decoration: none; color: white; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
-        .nav-links a:hover { color: #4facfe; }
-        .materia-page { flex: 1; padding-top: 100px; text-align: center; }
-        .img-container { max-width: 1000px; margin: 0 auto 10px; padding: 0 20px; }
-        .materia-img-header { width: 100%; height: 400px; object-fit: cover; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .hero-text-top h1 { font-size: 3.5rem; font-weight: 800; margin: 20px 0 10px; text-transform: uppercase; color: #4facfe; }
-        .subtitle-desc { font-size: 1.1rem; color: #bbb; font-weight: 300; line-height: 1.8; max-width: 850px; margin: 0 auto 20px; text-align: justify; padding: 0 20px; }
+        html, body { margin: 0; scroll-behavior: smooth; background-color: #0b0b0b; color: white; font-family: 'Poppins', sans-serif; }
         
-        .sbocchi-intro { max-width: 850px; margin: 0 auto 50px; padding: 30px; border-radius: 20px; background: rgba(79, 172, 254, 0.05); border: 1px dashed #4facfe; text-align: justify; }
-        .sbocchi-intro h2 { color: #4facfe; font-size: 1.8rem; text-transform: uppercase; margin-top: 0; text-align: center; }
-        .sbocchi-intro p { font-size: 1rem; color: #e0e0e0; line-height: 1.7; margin-bottom: 0; }
+        /* --- NUOVO HEADER HERO (STRUTTURA MATERIE) --- */
+        .materia-title-outer {
+            padding: 120px 5% 40px;
+            text-align: center;
+            background-color: #0b0b0b;
+        }
 
-        .info-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1100px; margin: 0 auto 50px; padding: 0 20px; }
-        .info-card { background: #161616; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; text-align: left; transition: 0.4s; }
+        .materia-title-outer h1 {
+            font-size: 4rem;
+            color: #4facfe;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin: 0;
+            text-shadow: 0 0 30px rgba(79, 172, 254, 0.3);
+        }
+
+        .hero-materia {
+            padding: 60px 5%;
+            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            border-top: 1px solid rgba(79, 172, 254, 0.2);
+            border-bottom: 1px solid rgba(79, 172, 254, 0.2);
+            margin-bottom: 60px;
+        }
+
+        .hero-container {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-image-side { flex: 1.2; }
+        .hero-image-side img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .hero-text-side { flex: 1; }
+        .hero-text-side p {
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            text-align: justify;
+            font-weight: 300;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        /* --- VECCHIO CONTENITORE SBOCCHI (RIPRISTINATO) --- */
+        .sbocchi-intro { 
+            max-width: 850px; 
+            margin: 0 auto 60px; 
+            padding: 40px; 
+            border-radius: 20px; 
+            background: rgba(79, 172, 254, 0.05); 
+            border: 1px dashed #4facfe; 
+            text-align: justify; 
+        }
+
+        .sbocchi-intro h2 { 
+            color: #4facfe; 
+            font-size: 2rem; 
+            text-transform: uppercase; 
+            margin-top: 0; 
+            text-align: center; 
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        .sbocchi-intro p { 
+            font-size: 1.05rem; 
+            color: #e0e0e0; 
+            line-height: 1.8; 
+            margin-bottom: 0; 
+        }
+
+        /* --- INFO CARDS --- */
+        .info-container { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 25px; 
+            max-width: 1200px; 
+            margin: 0 auto 80px; 
+            padding: 0 20px; 
+        }
+
+        .info-card { 
+            background: #161616; 
+            border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            overflow: hidden; 
+            transition: 0.4s; 
+        }
+
         .info-card:hover { transform: translateY(-10px); border-color: #4facfe; }
-        .card-image { width: 100%; height: 180px; overflow: hidden; }
-        .card-image img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8); }
-        .card-content { padding: 20px; }
+        .card-image img { width: 100%; height: 200px; object-fit: cover; filter: brightness(0.8); }
+        .card-content { padding: 25px; text-align: left; }
         .card-content h3 { color: #4facfe; font-size: 1.4rem; margin: 0 0 10px; }
-        .card-content p { font-size: 0.9rem; color: #ccc; }
-        .card-btn { width: 100%; padding: 15px; border: none; background: rgba(255,255,255,0.03); color: white; font-weight: 700; text-transform: uppercase; cursor: pointer; border-top: 1px solid rgba(255,255,255,0.1); position: relative; transition: 0.3s; }
-        .tooltip { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: #4facfe; color: white; padding: 12px; border-radius: 12px; font-size: 0.8rem; width: 220px; opacity: 0; visibility: hidden; transition: 0.3s; text-align: center; pointer-events: none; line-height: 1.4; }
-        .card-btn:hover { background: #4facfe; }
-        .card-btn:hover .tooltip { opacity: 1; visibility: visible; bottom: 135%; }
-        
-        .bottom-nav { display: flex; justify-content: center; align-items: center; gap: 40px; max-width: 1100px; margin: 40px auto 80px; padding: 0 20px; }
-        .help-link { color: #4facfe; font-weight: 600; font-size: 1rem; text-decoration: none; transition: 0.3s; text-transform: uppercase; font-size: 0.8rem; }
-        .help-link:hover { text-decoration: underline; }
-        .btn-bottom { display: inline-block; padding: 14px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; background: #4facfe; color: white; border: 1px solid #4facfe; }
-        .btn-bottom:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4); }
-        footer { background: #080808; padding: 25px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
-        footer p { margin: 0; color: #777; font-size: 0.85rem; }
+        .card-content p { font-size: 0.95rem; color: #aaa; margin: 0; }
+
+        .card-btn { 
+            width: 100%; padding: 18px; border: none; background: rgba(255,255,255,0.03); 
+            color: white; font-weight: 700; text-transform: uppercase; cursor: pointer; 
+            border-top: 1px solid rgba(255,255,255,0.1); position: relative; transition: 0.3s; 
+        }
+
+        .card-btn:hover { background: #4facfe; color: #000; }
+
+        .tooltip { 
+            position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); 
+            background: #4facfe; color: black; padding: 15px; border-radius: 12px; 
+            font-size: 0.85rem; width: 250px; opacity: 0; visibility: hidden; 
+            transition: 0.3s; text-align: center; pointer-events: none; font-weight: 500;
+        }
+        .card-btn:hover .tooltip { opacity: 1; visibility: visible; bottom: 130%; }
+
+        /* --- NAVIGATION --- */
+        .bottom-nav { display: flex; justify-content: center; align-items: center; gap: 40px; margin: 40px auto 100px; }
+        .btn-bottom { padding: 14px 35px; border-radius: 50px; text-decoration: none; font-weight: 600; background: #4facfe; color: #000; transition: 0.3s; }
+        .btn-bottom:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(79, 172, 254, 0.4); }
+        .help-link { color: #4facfe; text-decoration: none; font-size: 0.9rem; text-transform: uppercase; font-weight: 600; }
+
+        @media (max-width: 1024px) {
+            .hero-container { flex-direction: column; }
+            .info-container { grid-template-columns: 1fr; }
+            .materia-title-outer h1 { font-size: 2.8rem; }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo">UP<span>TOYOU</span></div>
-            <ul class="nav-links">
-                <li><a href="../../index.html">Home</a></li>
-                <li><a href="../../rapido.html">Materie</a></li>
-                <li><a href="../../contact.html">Contatti</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main class="materia-page">
-        <div class="img-container">
-            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200" class="materia-img-header" alt="Economia e Finanza">
-        </div>
-        
-        <div class="hero-text-top">
-            <h1>Istituto AFM</h1>
-            <p class="subtitle-desc">L'Istituto Tecnico Amministrazione, Finanza e Marketing (l'ex "Ragioneria") ti prepara per il mondo del business e dell'economia moderna. Qui imparerai come funziona un'azienda dall'interno: dal calcolo dei bilanci all'analisi dei mercati internazionali, dalla giurisprudenza commerciale fino alle strategie di marketing digitale per il posizionamento dei brand.</p>
-        </div>
 
-        <div class="sbocchi-intro">
-            <h2>Possibili Sbocchi Futuri</h2>
-            <p>
-                Il diploma AFM garantisce un inserimento rapido nel mondo del lavoro in banche, assicurazioni, studi di commercialisti e uffici amministrativi di qualsiasi azienda. Se vuoi proseguire gli studi, fornisce basi imbattibili per le facoltÃ  di Economia, Scienze Bancarie, Giurisprudenza e Management. Ãˆ inoltre la rampa di lancio perfetta per chi sogna di diventare un imprenditore e lanciare la propria start-up.
-            </p>
-        </div>
-        
-        <div class="info-container">
-            <div class="info-card">
-                <div class="card-image"><img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800"></div>
-                <div class="card-content">
-                    <h3>Finanza & ContabilitÃ </h3>
-                    <p>Sbocchi in Banche, Studi Contabili e Assicurazioni.</p>
-                </div>
-                <button class="card-btn">Settori Chiave
-                    <div class="tooltip">Carriere strutturate come contabile aziendale, consulente finanziario o analista dei mercati.</div>
-                </button>
+<main>
+    <!-- TITOLO TOP -->
+    <div class="materia-title-outer">
+        <h1>Istituto AFM</h1>
+    </div>
+
+    <!-- STRISCIA HERO CON IMMAGINE E TESTO -->
+    <section class="hero-materia">
+        <div class="hero-container">
+            <div class="hero-image-side">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200" alt="Economia e Finanza">
             </div>
-
-            <div class="info-card">
-                <div class="card-image"><img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=800"></div>
-                <div class="card-content">
-                    <h3>Marketing & Sales</h3>
-                    <p>Sbocchi in PubblicitÃ , Vendite e Strategia Brand.</p>
-                </div>
-                <button class="card-btn">Settori Chiave
-                    <div class="tooltip">Perfetto per diventare Marketing Manager, specialista E-commerce e responsabile commerciale.</div>
-                </button>
-            </div>
-
-            <div class="info-card">
-                <div class="card-image"><img src="https://images.unsplash.com/photo-1507099985932-87a4520ed1d5?q=80&w=800"></div>
-                <div class="card-content">
-                    <h3>Management Globale</h3>
-                    <p>Sbocchi in Imprenditoria e Commercio Estero.</p>
-                </div>
-                <button class="card-btn">Settori Chiave
-                    <div class="tooltip">Basi solide per avviare una start-up, gestire l'import/export o occuparsi di logistica internazionale.</div>
-                </button>
+            
+            <div class="hero-text-side">
+                <p>
+                    L'Istituto Tecnico Amministrazione, Finanza e Marketing (l'ex "Ragioneria") ti prepara per il mondo del business e dell'economia moderna. Qui imparerai come funziona un'azienda dall'interno: dal calcolo dei bilanci all'analisi dei mercati internazionali, dalla giurisprudenza commerciale fino alle strategie di marketing digitale per il posizionamento dei brand.
+                </p>
             </div>
         </div>
+    </section>
 
-        <div class="bottom-nav">
-            <a href="../../rapido.html" class="btn-bottom">&larr; Altri Indirizzi</a>
-            <a href="../../contact.html" class="help-link">Domande?</a>
-            <a href="../../guidato.html" class="btn-bottom">Test Attitudinale</a>
+    <!-- CONTENITORE SBOCCHI RIPRISTINATO -->
+    <div class="sbocchi-intro">
+        <h2>Possibili Sbocchi Futuri</h2>
+        <p>
+            Il diploma AFM garantisce un inserimento rapido nel mondo del lavoro in banche, assicurazioni, studi di commercialisti e uffici amministrativi di qualsiasi azienda. Se vuoi proseguire gli studi, fornisce basi imbattibili per le facoltà di Economia, Scienze Bancarie, Giurisprudenza e Management. È inoltre la rampa di lancio perfetta per chi sogna di diventare un imprenditore e lanciare la propria start-up.
+        </p>
+    </div>
+    
+    <!-- GRID DELLE CARD -->
+    <div class="info-container">
+        <!-- Card 1 -->
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Finanza & Contabilità</h3>
+                <p>Sbocchi in Banche, Studi Contabili e Assicurazioni.</p>
+            </div>
+            <button class="card-btn">Settori Chiave
+                <div class="tooltip">Carriere strutturate come contabile aziendale, consulente finanziario o analista dei mercati.</div>
+            </button>
         </div>
-    </main>
-    <footer><p>Up to You 2026. Il tuo futuro inizia qui. &hearts;</p></footer>
+
+        <!-- Card 2 -->
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Marketing & Sales</h3>
+                <p>Sbocchi in Pubblicità, Vendite e Strategia Brand.</p>
+            </div>
+            <button class="card-btn">Settori Chiave
+                <div class="tooltip">Perfetto per diventare Marketing Manager, specialista E-commerce e responsabile commerciale.</div>
+            </button>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1507099985932-87a4520ed1d5?q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Management Globale</h3>
+                <p>Sbocchi in Imprenditoria e Commercio Estero.</p>
+            </div>
+            <button class="card-btn">Settori Chiave
+                <div class="tooltip">Basi solide per avviare una start-up, gestire l'import/export o occuparsi di logistica internazionale.</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- BOTTONI DI NAVIGAZIONE -->
+    <div class="bottom-nav">
+        <a href="../../rapido.html" class="btn-bottom">&larr; Altri Indirizzi</a>
+        <a href="../../contact.html" class="help-link">Domande?</a>
+        <a href="../../guidato.html" class="btn-bottom">Test Attitudinale</a>
+    </div>
+</main>
+
 </body>
 </html>
