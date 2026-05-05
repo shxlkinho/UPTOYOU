@@ -110,34 +110,50 @@
             </div>
         </aside>
 
-        <div class="reviews-wrapper">
-            <h2 style="color: var(--fucsia); margin-bottom: 25px;">Recensioni degli Studenti</h2>
-            
-            <div class="comment-box">
-                <div class="input-group">
-                    <input type="text" id="rev-name" placeholder="Tuo Nome">
-                    <select id="rev-status">
-                        <option value="Studente 1° Anno">1° Anno</option>
-                        <option value="Studente 2° Anno">2° Anno</option>
-                        <option value="Studente 3° Anno">3° Anno</option>
-                        <option value="Studente 4° Anno">4° Anno</option>
-                        <option value="Studente 5° Anno">5° Anno</option>
-                        <option value="Ex Studente">Ex Studente</option>
-                    </select>
-                    <select id="rev-stars">
-                        <option value="5">⭐⭐⭐⭐⭐</option>
-                        <option value="4">⭐⭐⭐⭐</option>
-                        <option value="3">⭐⭐⭐</option>
-                        <option value="2">⭐⭐</option>
-                        <option value="1">⭐</option>
-                    </select>
-                </div>
-                <textarea id="rev-text" rows="2" placeholder="Scrivi la tua esperienza qui..."></textarea>
-                <button class="btn-fucsia" onclick="inviaRecensione()">Pubblica Commento</button>
-            </div>
-
-            <div id="reviews-grid"></div>
+ <div class="reviews-wrapper">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px;">
+        <h2 style="color: var(--fucsia); margin: 0;">Recensioni degli Studenti</h2>
+        <!-- Contenitore dinamico per la media delle stelle -->
+        <div id="average-rating" style="background: rgba(255, 255, 255, 0.05); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255, 0, 255, 0.3);">
+            Calcolo media...
         </div>
+    </div>
+    
+    <!-- Messaggio per chi non è loggato (visibile solo ai non loggati) -->
+    <div id="auth-comment-placeholder" style="display: none; margin-bottom: 30px;">
+        <p style="color: #bbb; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; border: 1px dashed var(--fucsia); text-align: center;">
+            Effettua il Login per poter lasciare una recensione sulla scuola. <br>
+            <a href="login.html" style="color: var(--fucsia); text-decoration: none; font-weight: bold; margin-top: 10px; display: inline-block;">Accedi o Registrati ora →</a>
+        </p>
+    </div>
+
+    <!-- Box recensioni (visibile solo ai loggati) -->
+    <div id="comment-box-logged" class="comment-box" style="display: none;">
+        <div class="input-group">
+            <input type="text" id="rev-name" placeholder="Tuo Nome">
+            <select id="rev-status">
+                <option value="Studente 1° Anno">1° Anno</option>
+                <option value="Studente 2° Anno">2° Anno</option>
+                <option value="Studente 3° Anno">3° Anno</option>
+                <option value="Studente 4° Anno">4° Anno</option>
+                <option value="Studente 5° Anno">5° Anno</option>
+                <option value="Ex Studente">Ex Studente</option>
+            </select>
+            <select id="rev-stars">
+                <option value="5">⭐⭐⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="1">⭐</option>
+            </select>
+        </div>
+        <textarea id="rev-text" rows="2" placeholder="Scrivi la tua esperienza qui..."></textarea>
+        <button class="btn-fucsia" onclick="inviaRecensione()">Pubblica Commento</button>
+    </div>
+
+    <!-- La griglia dei commenti rimane sempre visibile -->
+    <div id="reviews-grid"></div>
+</div>
     </div>
 
 <footer>
@@ -182,103 +198,151 @@
 <script src="script.js"></script>
 
     <script>
-        const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const schoolId = urlParams.get('id');
+const urlParams = new URLSearchParams(window.location.search);
+const schoolId = urlParams.get('id');
 
-        async function inizializzaPagina() {
-            if (!schoolId) return;
-            try {
-                const { data: scuola } = await supabaseClient.from('schools').select('*').eq('id', schoolId).single();
-                if (scuola) {
-                    document.getElementById('school-name').innerText = scuola.DENOMINAZIONESCUOLA;
-                    document.getElementById('school-type').innerText = scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA;
-                    const indirizzo = `${scuola.INDIRIZZOSCUOLA}, ${scuola.DESCRIZIONECOMUNE}`;
-                    document.getElementById('display-address').innerText = indirizzo;
-                    document.getElementById('maps-url').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(scuola.DENOMINAZIONESCUOLA + " " + indirizzo)}`;
-                    document.getElementById('school-description').innerText = `L'istituto ${scuola.DENOMINAZIONESCUOLA} è un punto di riferimento a ${scuola.DESCRIZIONECOMUNE}.`;
-                    document.getElementById('school-email').innerText = `Email: ${scuola.INDIRIZZOEMAILSCUOLA || 'N/A'}`;
-                    if(scuola.SITOWEBSCUOLA) {
-                        document.getElementById('school-website-container').innerHTML = `<a href="${scuola.SITOWEBSCUOLA}" target="_blank" class="btn-fucsia" style="text-decoration:none;">Sito Ufficiale</a>`;
-                    }
-                }
-                await caricaRecensioni();
-            } catch (err) { console.error(err); }
-        }
+// Variabile globale per memorizzare l'utente loggato
+let currentUser = null;
 
-        async function caricaRecensioni() {
-            const grid = document.getElementById('reviews-grid');
-            const { data } = await supabaseClient.from('recensioni').select('*').eq('school_id', schoolId).order('created_at', { ascending: false });
+// 1. Funzione per controllare se l'utente è loggato
+async function controllaSessione() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    
+    const placeholder = document.getElementById('auth-comment-placeholder');
+    const commentBox = document.getElementById('comment-box-logged');
 
-            if (!data || data.length === 0) {
-                grid.innerHTML = "<p style='color:#555;'>Nessun commento. Sii il primo!</p>";
-                return;
-            }
+    if (session) {
+        currentUser = session.user;
+        if(placeholder) placeholder.style.display = 'none';
+        if(commentBox) commentBox.style.display = 'block';
+    } else {
+        currentUser = null;
+        if(placeholder) placeholder.style.display = 'block';
+        if(commentBox) commentBox.style.display = 'none';
+    }
+}
 
-            grid.innerHTML = data.map(r => `
-                <div class="review-card">
-                    <div style="color:var(--fucsia); margin-bottom:10px;">${'★'.repeat(r.stelle)}</div>
-                    <p style="color:#eee; font-style:italic;">"${r.testo}"</p>
-                    <div style="margin-top:10px; font-size:0.9rem;">
-                        <strong style="color:#fff;">${r.nome}</strong> 
-                        <span style="color:#555; margin-left:10px;">• ${new Date(r.created_at).toLocaleDateString()}</span>
-                    </div>
-                </div>
-            `).join('');
-        }
+// 2. Inizializzazione pagina
+async function inizializzaPagina() {
+    if (!schoolId) return;
 
-        async function inviaRecensione() {
-            const nomeInput = document.getElementById('rev-name').value.trim() || "Anonimo";
-            const ruolo = document.getElementById('rev-status').value;
-            const testo = document.getElementById('rev-text').value;
-            const stelle = document.getElementById('rev-stars').value;
+    // Controllo sessione per abilitare/disabilitare il form di scrittura
+    await controllaSessione();
 
-            if (!testo.trim()) return alert("Scrivi un commento!");
-
-            // 1. BLACKLIST FILTRO AMPLIATO
-            const blacklist = [
-                // Razzismo e discriminazione
-                "negro", "negri", "negre", "negra", "frocio", "froci", "ricchione", "mongoloide", "handicappato", "spastico",
-                // Insulti standard
-                "coglione", "coglioni", "cogliona", "zoccola", "stronzo", "stronza", "stronzi", "puttana", "troia", "merda", 
-                "bastardo", "bastarda", "bastardi", "mignotta", "baldracca", "cornuto", "cagna",
-                // Espressioni volgari
-                "vaffanculo", "testa di cazzo", "cazzo", "figa", "minchia", "porca",
-                // Varianti generiche
-                "cretino", "deficiente", "scemo", "idiota", "imbecille", "rincoglionito", "sfigato"
-            ];
-            
-            const testoMinuscolo = testo.toLowerCase();
-            if (blacklist.some(p => testoMinuscolo.includes(p))) {
-                alert("⚠️ Commento bloccato: contiene linguaggio offensivo o non consono.");
-                return;
-            }
-
-            // 2. CORREZIONE INVIO A SUPABASE
-            // Uniamo "nome" e "ruolo" visto che nel DB non hai la colonna "ruolo"
-            const nomeCombinato = `${nomeInput} - ${ruolo}`;
-
-            const { error } = await supabaseClient.from('recensioni').insert([{ 
-                school_id: schoolId, 
-                nome: nomeCombinato, // Salviamo tutto nella colonna nome
-                testo: testo, 
-                stelle: parseInt(stelle) 
-            }]);
-
-            if (error) {
-                console.error("Errore Supabase:", error);
-                alert("Errore nell'invio: controlla la console per i dettagli.");
-            } else {
-                document.getElementById('rev-text').value = "";
-                document.getElementById('rev-name').value = "";
-                await caricaRecensioni();
+    try {
+        // Caricamento Info Scuola
+        const { data: scuola } = await supabaseClient.from('schools').select('*').eq('id', schoolId).single();
+        if (scuola) {
+            document.getElementById('school-name').innerText = scuola.DENOMINAZIONESCUOLA;
+            document.getElementById('school-type').innerText = scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA;
+            const indirizzo = `${scuola.INDIRIZZOSCUOLA}, ${scuola.DESCRIZIONECOMUNE}`;
+            document.getElementById('display-address').innerText = indirizzo;
+            document.getElementById('maps-url').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(scuola.DENOMINAZIONESCUOLA + " " + indirizzo)}`;
+            document.getElementById('school-description').innerText = `L'istituto ${scuola.DENOMINAZIONESCUOLA} è un punto di riferimento a ${scuola.DESCRIZIONECOMUNE}.`;
+            document.getElementById('school-email').innerText = `Email: ${scuola.INDIRIZZOEMAILSCUOLA || 'N/A'}`;
+            if(scuola.SITOWEBSCUOLA) {
+                document.getElementById('school-website-container').innerHTML = `<a href="${scuola.SITOWEBSCUOLA}" target="_blank" class="btn-fucsia" style="text-decoration:none;">Sito Ufficiale</a>`;
             }
         }
+        
+        // Carica e mostra i commenti a prescindere dal login
+        await caricaRecensioni();
+        
+    } catch (err) { console.error(err); }
+}
 
-        window.addEventListener('DOMContentLoaded', inizializzaPagina);
+// 3. Caricamento recensioni e calcolo media
+async function caricaRecensioni() {
+    const grid = document.getElementById('reviews-grid');
+    const mediaContainer = document.getElementById('average-rating');
+    
+    const { data } = await supabaseClient.from('recensioni').select('*').eq('school_id', schoolId).order('created_at', { ascending: false });
+
+    // Se non ci sono recensioni
+    if (!data || data.length === 0) {
+        grid.innerHTML = "<p style='color:#555;'>Nessun commento. Sii il primo a recensire!</p>";
+        if (mediaContainer) mediaContainer.innerHTML = "Media: <strong>N/A</strong>";
+        return;
+    }
+
+    // Calcolo della media delle stelle
+    const sommaStelle = data.reduce((acc, recensione) => acc + recensione.stelle, 0);
+    const media = (sommaStelle / data.length).toFixed(1); // Arrotonda a 1 decimale (es. 4.3)
+    const stelleIntere = Math.round(media); // Per disegnare le stelline visive
+
+    if (mediaContainer) {
+        mediaContainer.innerHTML = `Media: <strong style="color: white; font-size: 1.2rem;">${media} / 5</strong> <span style="color:var(--fucsia); margin-left: 5px;">${'★'.repeat(stelleIntere)}</span> <span style="font-size:0.8rem; color:#888; margin-left: 5px;">(${data.length} recensioni)</span>`;
+    }
+
+    // Stampa le recensioni nella griglia (visibili a tutti)
+    grid.innerHTML = data.map(r => `
+        <div class="review-card">
+            <div style="color:var(--fucsia); margin-bottom:10px;">${'★'.repeat(r.stelle)}</div>
+            <p style="color:#eee; font-style:italic;">"${r.testo}"</p>
+            <div style="margin-top:10px; font-size:0.9rem;">
+                <strong style="color:#fff;">${r.nome}</strong> 
+                <span style="color:#555; margin-left:10px;">• ${new Date(r.created_at).toLocaleDateString()}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 4. Invio recensione (protetto da login)
+async function inviaRecensione() {
+    if (!currentUser) {
+        alert("⚠️ Devi effettuare l'accesso per poter lasciare una recensione.");
+        return;
+    }
+
+    const nomeInput = document.getElementById('rev-name').value.trim() || "Anonimo";
+    const ruolo = document.getElementById('rev-status').value;
+    const testo = document.getElementById('rev-text').value;
+    const stelle = document.getElementById('rev-stars').value;
+
+    if (!testo.trim()) return alert("Scrivi un commento!");
+
+    // BLACKLIST FILTRO
+    const blacklist = [
+        "negro", "negri", "negre", "negra", "frocio", "froci", "ricchione", "mongoloide", "handicappato", "spastico",
+        "coglione", "coglioni", "cogliona", "zoccola", "stronzo", "stronza", "stronzi", "puttana", "troia", "merda", 
+        "bastardo", "bastarda", "bastardi", "mignotta", "baldracca", "cornuto", "cagna",
+        "vaffanculo", "testa di cazzo", "cazzo", "figa", "minchia", "porca",
+        "cretino", "deficiente", "scemo", "idiota", "imbecille", "rincoglionito", "sfigato"
+    ];
+    
+    const testoMinuscolo = testo.toLowerCase();
+    if (blacklist.some(p => testoMinuscolo.includes(p))) {
+        alert("⚠️ Commento bloccato: contiene linguaggio offensivo o non consono.");
+        return;
+    }
+
+    const nomeCombinato = `${nomeInput} - ${ruolo}`;
+
+    const { error } = await supabaseClient.from('recensioni').insert([{ 
+        school_id: schoolId, 
+        nome: nomeCombinato, 
+        testo: testo, 
+        stelle: parseInt(stelle) 
+    }]);
+
+    if (error) {
+        console.error("Errore Supabase:", error);
+        alert("Errore nell'invio del commento.");
+    } else {
+        document.getElementById('rev-text').value = "";
+        document.getElementById('rev-name').value = "";
+        // Ricarica per aggiornare lista commenti e la Media Voti in tempo reale
+        await caricaRecensioni();
+        alert("✅ Commento pubblicato correttamente!");
+    }
+}
+
+// Event Listener
+window.addEventListener('DOMContentLoaded', inizializzaPagina);
     </script>
 </body>
 </html>
