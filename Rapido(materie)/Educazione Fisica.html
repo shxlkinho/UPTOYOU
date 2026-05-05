@@ -1,52 +1,136 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Educazione Fisica - Up to You</title>
-<link rel="stylesheet" href="../style.css">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="materie.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+    
+    <style>
+        /* RESET E BASI */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background-color: #000000; color: #f8fafc; line-height: 1.6; }
+
+        .materia-title-outer { padding: 60px 5% 20px; text-align: center; background-color: #000000; }
+        .materia-title-outer h1 { font-size: 4.5rem; color: #38bdf8; font-weight: 800; text-transform: uppercase; letter-spacing: 6px; text-shadow: 0 0 30px rgba(56, 189, 248, 0.4); padding-top: 50px; }
+        
+        .hero-materia { padding: 60px 5%; background: linear-gradient(135deg, #0f172a 0%, #020617 100%); border-top: 1px solid #1e293b; border-bottom: 1px solid #1e293b; }
+        .hero-container { display: flex; align-items: center; gap: 60px; max-width: 1300px; margin: 0 auto; }
+        
+        .hero-image-side { flex: 1.5; }
+        .hero-image-side img { width: 100%; height: 450px; object-fit: cover; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid #334155; }
+        
+        .hero-text-side { flex: 1; }
+        .hero-text-side p { font-size: 0.95rem; color: #cbd5e1; text-align: left; font-weight: 400; line-height: 1.8; margin-bottom: 15px; }
+
+        .info-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; padding: 30px 5%; max-width: 1300px; margin: 0 auto; }
+        .info-card { background: #000000; border: 1px solid #1e293b; border-radius: 24px; overflow: hidden; text-align: center; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .info-card:hover { transform: translateY(-12px); border-color: #38bdf8; box-shadow: 0 15px 40px rgba(56, 189, 248, 0.15); }
+        
+        .card-image img { width: 100%; height: 220px; object-fit: cover; filter: grayscale(20%); }
+        .card-content { padding: 35px; }
+        .card-content h3 { color: #ffffff; font-size: 1.6rem; margin-bottom: 15px; font-weight: 700; }
+        .card-content p { color: #94a3b8; margin-bottom: 30px; font-size: 0.9rem; }
+        
+        .card-btn { background: transparent; color: #38bdf8; border: 2px solid #38bdf8; padding: 12px 35px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+        .card-btn:hover { background: #38bdf8; color: #000000; }
+
+        .section-divider { text-align: center; padding-top: 70px; background-color: #000000; }
+        .section-divider h2 { font-family: 'Montserrat', sans-serif; font-size: 2.5rem; color: #38bdf8; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; }
+
+        @media (max-width: 1024px) {
+            .section-divider h2 { font-size: 2rem; }
+            .hero-container { flex-direction: column; gap: 40px; }
+            .hero-image-side, .hero-text-side { flex: none; width: 100%; }
+            .materia-title-outer h1 { font-size: 3.5rem; }
+        }
+    </style>
 </head>
 <body>
+
 <header>
     <nav class="navbar">
-        <div class="logo"><a href="../index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
+        <div class="logo"><a href="../index.html" style="text-decoration: none; color: inherit;">UP<span>TOYOU</span></a></div>
         <ul class="nav-links">
             <li><a href="../index.html">Home</a></li>
             <li class="dropdown">
                 <a href="#">Lezioni ▾</a>
                 <ul class="dropdown-menu">
-                    <li><a href="elementari.html">Elementari</a></li>
-                    <li><a href="medie.html">Medie</a></li>
-                    <li><a href="superiori.html">Superiori</a></li>
+                    <li><a href="../Lezioni/elementari.html">Elementari</a></li>
+                    <li><a href="../Lezioni/medie.html">Medie</a></li>
+                    <li><a href="../Lezioni/superiori.html">Superiori</a></li>
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#">Orientati ▾</a>
+                <a href="#">Orientamento ▾</a>
                 <ul class="dropdown-menu">
-                    <li><a href="../rapido.html">Orientamento Rapido</a></li>
                     <li><a href="../guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="../rapido.html">Orientamento Rapido</a></li>
                 </ul>
             </li>
             <li><a href="../contact.html">Contatti</a></li>
+            <li id="auth-nav-item" class="nav-auth-container"></li>
         </ul>
     </nav>
 </header>
-    <main class="materia-page">
-        <div class="img-container"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200" class="materia-img-header"></div>
-        <div class="hero-text-top"><h1>Educazione Fisica</h1><p class="subtitle-desc">L'educazione fisica mette al centro il benessere globale, ricordando che la salute della mente non prescinde da quella del corpo. Attraverso lo sport, imparerai a conoscere e superare i tuoi limiti, sviluppando coordinazione e forza. Insegna il valore del gioco di squadra e del rispetto delle regole. Studierai nozioni di fisiologia e alimentazione per uno stile di vita attivo. Alle superiori, permette di esplorare management sportivo, fisioterapia e scienze motorie. Lo sport e scuola di vita che insegna a gestire vittoria e sconfitta. In una societa sedentaria, e un pilastro per crescere sani e consapevoli. La cura del proprio corpo e l'attivita motoria sono i migliori investimenti a lungo termine che puoi fare per la tua produttivita e felicita: una mente scattante ha bisogno di un corpo sano, e le competenze apprese in palestra ti serviranno per gestire lo stress e mantenere la concentrazione in ogni sfida lavorativa futura.</p></div>
-        <div class="info-container">
-            <div class="info-card"><div class="card-image"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200"></div><div class="card-content"><h3>Liceo Sportivo</h3><p>Percorso formativo.</p></div><button class="card-btn">Scopri di piu<div class="tooltip">Discipline sportive.</div></button></div>
-            <div class="info-card"><div class="card-image"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200"></div><div class="card-content"><h3>Socio-Sanitario</h3><p>Percorso tecnico.</p></div><button class="card-btn">Scopri di piu<div class="tooltip">Riabilitazione.</div></button></div>
-            <div class="info-card"><div class="card-image"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200"></div><div class="card-content"><h3>Enogastronomia</h3><p>Percorso professionale.</p></div><button class="card-btn">Scopri di piu<div class="tooltip">Nutrizione.</div></button></div>
+
+<main class="materia-page">
+    <div class="materia-title-outer">
+        <h1>Ed. Fisica</h1>
+    </div>
+
+    <section class="hero-materia">
+        <div class="hero-container">
+            <div class="hero-image-side">
+                <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=1200" alt="Sport">
+            </div>
+            
+            <div class="hero-text-side">
+                <p>
+                    L'educazione fisica non è solo sport, ma educazione al benessere, al rispetto delle regole e al lavoro di squadra. Questa materia ti insegna a conoscere il tuo corpo, a superare i tuoi limiti fisici e mentali e a collaborare con gli altri per raggiungere un obiettivo comune.
+                </p>
+                <p>
+                    Alle superiori, queste competenze sono valorizzate nel Liceo Scientifico Sportivo e sono fondamentali per qualsiasi professione che richieda resistenza, disciplina e capacità di team building. Lo sport forma il carattere, ti prepara alle sfide della vita e ti educa a uno stile di vita sano e duraturo.
+                </p>
+            </div>
         </div>
-        <div class="bottom-nav">
-            <a href="rapido.html" class="btn-bottom">&larr; Altre Materie</a>
-            <a href="contact.html" class="help-link">Serve aiuto?</a>
-            <a href="guidato.html" class="btn-bottom">Orientamento Guidato</a>
+    </section>
+
+    <div class="section-divider">
+        <h2>Scelta Consigliata</h2>
+    </div>
+
+    <div class="info-container">
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Liceo Sportivo</h3>
+                <p>Approfondimento delle scienze motorie, fisiologia e discipline sportive.</p>
+                <button class="card-btn">Scopri di più</button>
+            </div>
         </div>
-    </main>
+
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Servizi Sanità</h3>
+                <p>Percorso orientato al benessere fisico e all'assistenza alla persona.</p>
+                <button class="card-btn">Scopri di più</button>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1540829016269-e05670f88adb?auto=format&fit=crop&q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Tecnico Turistico</h3>
+                <p>Gestione di eventi sportivi, turismo attivo e animazione territoriale.</p>
+                <button class="card-btn">Scopri di più</button>
+            </div>
+        </div>
+    </div>
+</main>
+
 <footer>
 <div class="footer-grid">
     <div class="footer-col">
@@ -80,8 +164,9 @@
     <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
     <p>Designed with Excellence</p>
 </div>
- </footer>
+</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../script.js"></script>
 </body>
 </html>
-
