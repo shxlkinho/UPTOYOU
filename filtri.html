@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ricerca Scuole UpToYou</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root { --bg: #080808; --accent: #ff6600; --card: #161616; --text: #ffffff; --dim: #a0a0a0; }
+        body { background: var(--bg); color: var(--text); font-family: 'Poppins', sans-serif; margin: 0; padding: 20px; text-align: center; }
+        
+        .filter-header { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; justify-content: center; }
+        
+        select {
+            background: #222; color: white; border: 1px solid #444; padding: 12px;
+            border-radius: 10px; min-width: 200px; outline: none; cursor: pointer; transition: 0.3s;
+        }
+        select:focus { border-color: var(--accent); }
+        select:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; text-align: left; }
+        
+        .school-card {
+            background: var(--card); border: 1px solid #333; padding: 20px; border-radius: 15px;
+            transition: 0.3s; cursor: pointer;
+        }
+        .school-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .school-card h3 { margin: 0 0 10px; color: var(--accent); font-size: 1.1rem; text-transform: uppercase; }
+        .school-card p { margin: 5px 0; font-size: 0.9rem; color: var(--dim); }
+
+        .loader { display: none; color: var(--accent); padding: 20px; width: 100%; font-weight: bold; }
+        .error-msg { color: #ff4444; margin: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="filter-header">
+        <select id="regioneSelect">
+            <option value="">Scegli Regione...</option>
+        </select>
+        <select id="provinciaSelect" disabled>
+            <option value="">Scegli Provincia...</option>
+        </select>
+        <select id="comuneSelect" disabled>
+            <option value="">Scegli Comune...</option>
+        </select>
+    </div>
+
+    <div id="loader" class="loader">Caricamento in corso...</div>
+    <div id="error-container" class="error-msg"></div>
+    <div id="results" class="results-grid"></div>
+
+    <script>
+        const databaseTerritoriale = {
+            "ABRUZZO": ["CHIETI", "L'AQUILA", "PESCARA", "TERAMO"],
+            "BASILICATA": ["MATERA", "POTENZA"],
+            "CALABRIA": ["CATANZARO", "COSENZA", "CROTONE", "REGGIO CALABRIA", "VIBO VALENTIA"],
+            "CAMPANIA": ["AVELLINO", "BENEVENTO", "CASERTA", "NAPOLI", "SALERNO"],
+            "EMILIA-ROMAGNA": ["BOLOGNA", "FERRARA", "FORLI' CESENA", "MODENA", "PARMA", "PIACENZA", "RAVENNA", "REGGIO EMILIA", "RIMINI"],
+            "FRIULI-VENEZIA GIULIA": ["GORIZIA", "PORDENONE", "TRIESTE", "UDINE"],
+            "LAZIO": ["FROSINONE", "LATINA", "RIETI", "ROMA", "VITERBO"],
+            "LIGURIA": ["GENOVA", "IMPERIA", "LA SPEZIA", "SAVONA"],
+            "LOMBARDIA": ["BERGAMO", "BRESCIA", "COMO", "CREMONA", "LECCO", "LODI", "MANTOVA", "MILANO", "MONZA E DELLA BRIANZA", "PAVIA", "SONDRIO", "VARESE"],
+            "MARCHE": ["ANCONA", "ASCOLI PICENO", "FERMO", "MACERATA", "PESARO E URBINO"],
+            "MOLISE": ["CAMPOBASSO", "ISERNIA"],
+            "PIEMONTE": ["ALESSANDRIA", "ASTI", "BIELLA", "CUNEO", "NOVARA", "TORINO", "VERBANO-CUSIO-OSSOLA", "VERCELLI"],
+            "PUGLIA": ["BARI", "BARLETTA-ANDRIA-TRANI", "BRINDISI", "FOGGIA", "LECCE", "TARANTO"],
+            "SARDEGNA": ["CAGLIARI", "NUORO", "ORISTANO", "SASSARI", "SUD SARDEGNA"],
+            "SICILIA": ["AGRIGENTO", "CALTANISSETTA", "CATANIA", "ENNA", "MESSINA", "PALERMO", "RAGUSA", "SIRACUSA", "TRAPANI"],
+            "TOSCANA": ["AREZZO", "FIRENZE", "GROSSETO", "LIVORNO", "LUCCA", "MASSA CARRARA", "PISA", "PISTOIA", "PRATO", "SIENA"],
+            "TRENTINO-ALTO ADIGE": ["BOLZANO", "TRENTO"],
+            "UMBRIA": ["PERUGIA", "TERNI"],
+            "VALLE D'AOSTA": ["AOSTA"],
+            "VENETO": ["BELLUNO", "PADOVA", "ROVIGO", "TREVISO", "VENEZIA", "VERONA", "VICENZA"]
+        };
+
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const _supabase = supabase.createClient(SB_URL, SB_KEY);
+
+        const regSel = document.getElementById('regioneSelect');
+        const provSel = document.getElementById('provinciaSelect');
+        const comSel = document.getElementById('comuneSelect');
+        const resDiv = document.getElementById('results');
+        const loader = document.getElementById('loader');
+        const errDiv = document.getElementById('error-container');
+
+        window.onload = () => {
+            Object.keys(databaseTerritoriale).sort().forEach(r => regSel.add(new Option(r, r)));
+        };
+
+        regSel.onchange = () => {
+            provSel.innerHTML = '<option value="">Scegli Provincia...</option>';
+            comSel.innerHTML = '<option value="">Scegli Comune...</option>';
+            provSel.disabled = !regSel.value;
+            comSel.disabled = true;
+            resDiv.innerHTML = '';
+            if (regSel.value) {
+                databaseTerritoriale[regSel.value].sort().forEach(p => provSel.add(new Option(p, p)));
+            }
+        };
+
+        // Carica i comuni dalla provincia selezionata tramite query al DB
+        provSel.onchange = async () => {
+            const prov = provSel.value;
+            comSel.innerHTML = '<option value="">Caricamento comuni...</option>';
+            comSel.disabled = true;
+            resDiv.innerHTML = '';
+            
+            if (!prov) return;
+
+            try {
+                // Recuperiamo i comuni unici per quella provincia
+                const { data, error } = await _supabase
+                    .from('schools')
+                    .select('DESCRIZIONECOMUNE')
+                    .eq('PROVINCIA', prov)
+                    .order('DESCRIZIONECOMUNE', { ascending: true });
+
+                if (error) throw error;
+
+                // Rimuoviamo i duplicati dei comuni
+                const comuniUnici = [...new Set(data.map(item => item.DESCRIZIONECOMUNE))];
+                
+                comSel.innerHTML = '<option value="">Tutti i Comuni...</option>';
+                comuniUnici.forEach(c => comSel.add(new Option(c, c)));
+                comSel.disabled = false;
+                
+                // Carichiamo subito tutte le scuole della provincia
+                cercaScuole();
+            } catch (err) {
+                errDiv.innerText = "Errore comuni: " + err.message;
+            }
+        };
+
+        comSel.onchange = () => cercaScuole();
+
+        async function cercaScuole() {
+            const prov = provSel.value;
+            const comune = comSel.value;
+            if (!prov) return;
+
+            resDiv.innerHTML = '';
+            loader.style.display = 'block';
+
+            try {
+                let query = _supabase
+                    .from('schools')
+                    .select('id, DENOMINAZIONESCUOLA, DESCRIZIONECOMUNE, INDIRIZZOSCUOLA')
+                    .eq('PROVINCIA', prov);
+
+                if (comune) {
+                    query = query.eq('DESCRIZIONECOMUNE', comune);
+                }
+
+                const { data, error } = await query.order('DENOMINAZIONESCUOLA', { ascending: true });
+
+                if (error) throw error;
+
+                if (data.length === 0) {
+                    resDiv.innerHTML = `<p style="grid-column: 1/-1; text-align:center;">Nessuna scuola trovata.</p>`;
+                } else {
+                    resDiv.innerHTML = data.map(s => `
+                        <div class="school-card" onclick="parent.vaiAllaScuola('${s.id}')">
+                            <h3>${s.DENOMINAZIONESCUOLA}</h3>
+                            <p>📍 Comune: ${s.DESCRIZIONECOMUNE}</p>
+                            <p>🏠 Indirizzo: ${s.INDIRIZZOSCUOLA || 'N/D'}</p>
+                        </div>
+                    `).join('');
+                }
+            } catch (err) {
+                errDiv.innerText = "Errore ricerca: " + err.message;
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
