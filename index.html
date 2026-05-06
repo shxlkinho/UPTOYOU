@@ -210,7 +210,7 @@
         </div>
     </section>
 
-    <!-- SEZIONE RICERCA -->
+  <!-- SEZIONE RICERCA -->
     <section class="search-section">
         <h1 style="color: #ff00ff; margin-bottom: 20px;">Cerca la tua scuola</h1>
         
@@ -221,6 +221,16 @@
         </div>
         <div id="debug">In attesa di digitazione...</div>
         <small style="color: #777; margin-top: 10px; font-size: 0.85rem; display: none;">* Scrivi il nome della scuola e clicca sulla lente per cercare.</small>
+
+        <!-- NUOVO PULSANTE FILTRI -->
+        <button id="btn-apri-filtri" onclick="toggleFiltri()" style="margin-top: 25px; background: transparent; border: 2px solid #ff00ff; color: #ff00ff; padding: 12px 25px; border-radius: 20px; font-size: 1rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: 0.3s; font-weight: 600;">
+            Fai la ricerca per filtri ⚙️
+        </button>
+
+        <!-- IFRAME FILTRI NASCOSTO -->
+        <div id="container-filtri" style="display: none; width: 100%; max-width: 900px; margin-top: 30px; height: 500px; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255, 0, 255, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <iframe src="filtri.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
     </section>
 
     <!-- SEZIONE CARDS AGGIORNATA -->
@@ -379,6 +389,22 @@
             });
         }
 
+
+function toggleFiltri() {
+            const container = document.getElementById('container-filtri');
+            const btn = document.getElementById('btn-apri-filtri');
+            if (container.style.display === 'none') {
+                container.style.display = 'block';
+                btn.innerHTML = 'Chiudi filtri ❌';
+                btn.style.background = '#ff00ff';
+                btn.style.color = '#fff';
+            } else {
+                container.style.display = 'none';
+                btn.innerHTML = 'Fai la ricerca per filtri ⚙️';
+                btn.style.background = 'transparent';
+                btn.style.color = '#ff00ff';
+            }
+        }
         function vaiAllaScuola(id) { window.location.href = `scuola.html?id=${id}`; }
 
         document.addEventListener('click', (e) => {
@@ -431,7 +457,7 @@ async function sendAiMessage() {
             body: JSON.stringify({
                 // Qui passiamo le istruzioni che hai configurato nel Playground
                 system_instruction: {
-                    parts: [{ text: "Sei il Mentor AI di UpToYou. Regole: 1. NO YAPPING: Per domande semplici, chiuse o calcoli rispondi in modo diretto e secco senza preamboli. 2. ORIENTATORE ESPERTO: Per consigli su scuole/carriera sii esaustivo, empatico e proponi 2-3 alternative. 3. ASSISTENTE: Aiuta in ogni task (compiti, coding, riassunti) spiegando semplicemente. 4. FORMATTAZIONE: Usa grassetto e liste puntate, evita muri di testo. 5. DOMANDA GUIDA: Chiudi con una domanda solo in fase di orientamento, mai dopo risposte secche."}]
+                    parts: { text: "Agisci come un Orientatore Scolastico esperto e cauto per UpToYou. Proponi 2-3 percorsi diversi, sii empatico e fai domande sulle attitudini dello studente prima di dare consigli definitivi. Rispondi in italiano in modo sintetico." }
                 },
                 contents: [{ parts: [{ text: text }] }]
             })

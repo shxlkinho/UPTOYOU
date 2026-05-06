@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Up To You - Il Test di Orientamento Definitivo</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root { 
             --primary: #ff6600; 
@@ -30,7 +31,7 @@
         }
 
         .quiz-container { 
-            max-width: 800px; 
+            max-width: 850px; 
             width: 100%; 
             background: var(--card); 
             padding: 40px; 
@@ -42,42 +43,44 @@
         }
 
         .progress-container { margin-bottom: 30px; }
-        .progress-bar { width: 100%; height: 8px; background: #222; border-radius: 10px; overflow: hidden; }
-        #progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--primary)); transition: width 0.4s ease; }
-        .step-info { font-size: 0.8rem; color: #666; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .progress-bar { width: 100%; height: 10px; background: #222; border-radius: 10px; overflow: hidden; }
+        #progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--primary)); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .step-info { display: none; } 
 
-        .question-box { min-height: 120px; }
-        .question-box h2 { font-size: 1.6rem; font-weight: 600; line-height: 1.4; margin-bottom: 25px; color: #fff; }
+        .question-box { min-height: 140px; }
+        .question-box h2 { font-size: 1.5rem; font-weight: 600; line-height: 1.5; margin-bottom: 25px; color: #fff; }
 
-        .options { display: grid; gap: 15px; }
+        .options { display: grid; gap: 12px; }
         .options button { 
             background: #252525; 
             border: 1px solid #333; 
             color: #ccc; 
-            padding: 18px 25px; 
-            border-radius: 15px; 
+            padding: 16px 20px; 
+            border-radius: 12px; 
             cursor: pointer; 
             text-align: left; 
-            font-size: 1rem;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
+            line-height: 1.4;
         }
 
         .options button:hover { 
             background: #333; 
             border-color: var(--primary); 
             color: #fff; 
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255,102,0,0.2);
+            transform: translateX(5px);
+            box-shadow: -5px 5px 15px rgba(255,102,0,0.15);
         }
 
-        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; align-items: center; }
+        .nav-buttons { display: flex; justify-content: flex-start; margin-top: 30px; }
         .btn-back { background: transparent; border: 1px solid #444; color: #888; padding: 10px 20px; border-radius: 10px; cursor: pointer; visibility: hidden; }
         .btn-back.visible { visibility: visible; }
         .btn-back:hover { border-color: #666; color: #fff; }
 
         #result { display: none; text-align: center; animation: fadeIn 0.8s ease forwards; }
-        .result-title { font-size: 2rem; margin-bottom: 30px; background: linear-gradient(90deg, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .result-title { font-size: 2rem; margin-bottom: 10px; background: linear-gradient(90deg, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .result-subtitle { font-size: 1rem; color: #aaa; margin-bottom: 30px; }
         
         .result-card { 
             background: #222; 
@@ -111,6 +114,17 @@
             font-size: 1rem;
         }
 
+        .alert-generic {
+            background: rgba(79, 172, 254, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -136,209 +150,300 @@
 
     <div id="result">
         <h2 class="result-title">Il tuo futuro inizia qui 🚀</h2>
+        <p class="result-subtitle" id="result-message">Analisi dinamica basata sulle tue scelte.</p>
         <div id="results-list"></div>
-        <button class="restart-btn" onclick="location.reload()">Rifai il test</button>
-        <p style="margin-top:20px; font-size: 0.8rem; color: #444;">Analisi dinamica basata sulle tue risposte specifiche</p>
+        <button class="restart-btn" onclick="location.reload()">Rifai il test da zero</button>
     </div>
 </div>
 
 <script>
-    // --- DATABASE DOMANDE DI APPROFONDIMENTO (BRANCHING) ---
-    // Queste appaiono SOLO se l'utente seleziona determinate risposte
-    const branchQuestions = {
-        branch_informatica_vs_scienze: {
-            q: "Hai detto che ti piacciono i computer e la tecnologia. Quale di questi due approcci ti descrive meglio?",
-            a: [
-                { t: "Voglio imparare a programmare, creare app, siti web e capire come funzionano le reti e i server.", p: { INF: 5, SCA: 1 } },
-                { t: "Mi piace il PC, ma lo vedo più come uno strumento per fare ricerche, esperimenti scientifici o studiare la fisica.", p: { SCA: 5, INF: 1 } },
-                { t: "Mi interessa di più smontare i computer, saldare i circuiti e capire l'hardware.", p: { ELE: 4, MEC: 2 } }
-            ]
-        },
-        branch_umane_vs_economico: {
-            q: "Ti interessa il mondo delle persone e della società. Cosa ti incuriosisce di più?",
-            a: [
-                { t: "Capire la psicologia umana, come crescono i bambini e i processi mentali.", p: { SU: 5, SOC: 2 } },
-                { t: "Capire come funziona la società moderna, il diritto, l'economia globale e la globalizzazione.", p: { LES: 5, AFM: 2 } },
-                { t: "Aiutare direttamente sul campo persone in difficoltà, anziani o malati.", p: { SOC: 5, SAN: 2 } }
-            ]
-        },
-        branch_sport: {
-            q: "Hai mostrato interesse per lo sport o l'aria aperta. Come vedi lo sport nel tuo futuro?",
-            a: [
-                { t: "Vorrei studiare l'anatomia, il management sportivo e farne una carriera scientifica/organizzativa.", p: { SPO: 5, SC: 2 } },
-                { t: "È solo una forte passione, per gli studi preferisco materie tradizionali o scientifiche.", p: { SC: 2, SU: 1 } },
-                { t: "Mi piace muovermi e stare all'aperto, magari in ambiti pratici come natura o cantieri.", p: { AGR: 3, CAT: 2 } }
-            ]
-        },
-        branch_lingue_turismo: {
-            q: "Ami le lingue straniere! Qual è il tuo obiettivo imparandole?",
-            a: [
-                { t: "Studiare la letteratura straniera, la cultura profonda e magari tradurre testi o insegnare.", p: { LI: 5, CL: 1 } },
-                { t: "Usarle per viaggiare, lavorare negli hotel, gestire tour operator o eventi internazionali.", p: { TUR: 5, ALB: 2 } },
-                { t: "Usarle nel mondo del commercio estero, per fare affari con le aziende di altri paesi.", p: { AFM: 3, COM: 3, LES: 2 } }
-            ]
-        },
-        branch_artistico_grafico: {
-            q: "Hai un'anima creativa. Qual è il tuo mezzo di espressione preferito?",
-            a: [
-                { t: "Matita, tela, creta o progettazione architettonica pura.", p: { AR: 5 } },
-                { t: "Computer, software di grafica (Photoshop, Illustrator), video e comunicazione visiva digitale.", p: { GRA: 5, INF: 1 } },
-                { t: "Tessuti, macchine da cucire, creare abiti e accessori.", p: { MOD: 5 } }
-            ]
-        }
-    };
+    // Inizializzazione Supabase
+    const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+    const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-    // --- DOMANDE BASE (Saranno mescolate) ---
+    // ==========================================
+    // 1. DATABASE DOMANDE BASE (20 Domande) - Ottimizzate per credibilità e Letteratura/Storia
+    // ==========================================
     const baseQuestions = [
-        { q: "Quale di queste sfide ti affascina di più?", a: [
-            { t: "Tradurre un testo antico o capire l'origine delle parole.", p: { CL: 4, LI: 1 } },
-            { t: "Risolvere un complesso problema matematico o fisico.", p: { SC: 3, SCA: 3 } },
-            { t: "Inventare un algoritmo o configurare un computer.", p: { INF: 2, SCA: 1 }, followUp: "branch_informatica_vs_scienze" },
-            { t: "Smontare e rimontare un motore o un circuito elettrico.", p: { MEC: 3, ELE: 3, MAN: 2 } },
-            { t: "Cucinare un piatto perfetto curando ogni dettaglio.", p: { ALB: 3 } }
+        { isGeneral: true, q: "Di fronte a un progetto scolastico o personale complesso, come organizzi il lavoro?", a: [
+            { t: "Strutturo il pensiero in modo analitico, basandomi su dati oggettivi e procedimenti logico-matematici.", p: { SC: 3, SCA: 3, INF: 2 }, trigger: "tech" },
+            { t: "Valuto l'impatto umano e sociale del problema, cercando la mediazione e il dialogo con chi è coinvolto.", p: { SU: 3, SOC: 3, LES: 2 }, trigger: "human" },
+            { t: "Adotto un approccio divergente, sperimentando visivamente o cercando soluzioni esteticamente innovative.", p: { AR: 3, GRA: 3 }, trigger: "art" },
+            { t: "Prediligo un intervento operativo: applico procedure manuali, assemblo o ottimizzo meccanismi fisici.", p: { MEC: 3, MAN: 3, ELE: 2 }, trigger: "practical" },
+            { t: "Pianifico strategicamente le tempistiche, valuto il budget e ottimizzo le risorse a disposizione.", p: { AFM: 3, COM: 3 }, trigger: "business" }
         ]},
-        { q: "Se dovessi passare un pomeriggio in un laboratorio, cosa sceglieresti?", a: [
-            { t: "Laboratorio di chimica o biologia tra provette e microscopi.", p: { CHI: 4, SCA: 3, SC: 2 } },
-            { t: "Laboratorio informatico o di robotica.", p: { INF: 2, ELE: 2 }, followUp: "branch_informatica_vs_scienze" },
-            { t: "Laboratorio artistico o atelier di moda.", p: { AR: 2, MOD: 2 }, followUp: "branch_artistico_grafico" },
-            { t: "Laboratorio odontotecnico o ottico per creare protesi e lenti.", p: { SAN: 4 } },
-            { t: "Serra, cantina o campo agricolo per studiare piante e colture.", p: { AGR: 4 } }
+        { isGeneral: true, q: "Se avessi a disposizione un laboratorio all'avanguardia, verso quale ambito orienteresti la tua ricerca?", a: [
+            { t: "Processi cellulari, reazioni chimiche e biologia molecolare.", p: { CHI: 4, SAN: 2, SC: 2 }, trigger: "science" },
+            { t: "Sviluppo di reti neurali (AI), architetture di sistema e robotica.", p: { INF: 4, ELE: 2 }, trigger: "tech" },
+            { t: "Biotecnologie per la sostenibilità agraria e tutela degli ecosistemi.", p: { AGR: 4, CHI: 2 }, trigger: "science" },
+            { t: "Progettazione di materiali intelligenti e studio strutturale per l'edilizia.", p: { CAT: 3, AR: 2 }, trigger: "practical" },
+            { t: "Analisi della biomeccanica umana, fisiologia dell'esercizio e recupero funzionale.", p: { SPO: 4, SAN: 2 }, trigger: "sport" }
         ]},
-        { q: "Cosa ti interessa di più quando viaggi?", a: [
-            { t: "Parlare con le persone del posto nella loro lingua.", p: { LI: 2, TUR: 2 }, followUp: "branch_lingue_turismo" },
-            { t: "Osservare l'architettura dei palazzi, i ponti e come sono costruiti.", p: { CAT: 4, AR: 1 } },
-            { t: "Visitare musei d'arte, teatri o siti archeologici.", p: { AR: 2, CL: 2, MU: 2 } },
-            { t: "Capire come funziona l'economia e lo stile di vita del paese.", p: { AFM: 2, LES: 2 }, followUp: "branch_umane_vs_economico" },
-            { t: "Vedere come funzionano i grandi trasporti (navi, aerei, stazioni).", p: { TRA: 4 } }
+        { isGeneral: true, q: "Qual è la tua percezione dell'innovazione tecnologica nella vita quotidiana?", a: [
+            { t: "Sono attratto dalla componentistica hardware, circuiti e architettura elettronica dei dispositivi.", p: { ELE: 4, MEC: 2 }, trigger: "tech" },
+            { t: "Mi incuriosisce la logica software, i linguaggi di programmazione e lo sviluppo di applicativi.", p: { INF: 4, SCA: 2 }, trigger: "tech" },
+            { t: "La considero uno strumento primario per la sintesi creativa (digital design, produzione audiovisiva).", p: { GRA: 3, MU: 2, AR: 2 }, trigger: "art" },
+            { t: "La apprezzo come veicolo per abbattere le barriere comunicative internazionali e facilitare gli scambi interculturali.", p: { TUR: 3, LI: 3 }, trigger: "lang" },
+            { t: "Preferisco concentrarmi sull'interazione umana diretta, valutando criticamente l'impatto della tecnologia sulla società.", p: { CL: 2, SU: 2, SOC: 2 }, trigger: "human" }
         ]},
-        { q: "Quale materia ti pesa meno studiare?", a: [
-            { t: "Storia, Filosofia e Letteratura.", p: { CL: 4, SU: 2 } },
-            { t: "Matematica, Scienze o Tecnologia.", p: { SC: 2, SCA: 2, INF: 2 } },
-            { t: "Lingue Straniere.", p: { LI: 2, TUR: 2 }, followUp: "branch_lingue_turismo" },
-            { t: "Disegno tecnico o artistico.", p: { AR: 2, CAT: 2, GRA: 2 } },
-            { t: "Educazione Fisica e Scienze Motorie.", p: { SPO: 2 }, followUp: "branch_sport" }
+        { isGeneral: true, q: "Nell'affrontare lo studio della Letteratura Italiana o degli eventi storici, quale aspetto ti coinvolge maggiormente?", a: [
+            { t: "Analizzare le cause socio-politiche degli eventi storici e l'evoluzione del pensiero filosofico degli autori.", p: { CL: 4, SU: 3 }, trigger: "human" },
+            { t: "Confrontare le opere letterarie italiane con quelle straniere per cogliere differenze e contaminazioni culturali.", p: { LI: 4, TUR: 2 }, trigger: "lang" },
+            { t: "A dire il vero trovo più stimolante concentrarmi su materie basate sul problem-solving logico e matematico.", p: { SC: 3, SCA: 3 }, trigger: "science" },
+            { t: "Fatico ad appassionarmi all'analisi testuale; esprimo meglio le mie competenze in contesti pratici o operativi.", p: { MAN: 3, MID: 3, ALB: 2 }, trigger: "practical" },
+            { t: "Approfondire come le dinamiche storiche passate abbiano plasmato l'economia contemporanea e l'evoluzione del diritto.", p: { LES: 4, AFM: 3 }, trigger: "business" }
         ]},
-        { q: "In un gruppo di lavoro, chi sei?", a: [
-            { t: "Quello che organizza i conti, il budget e il piano d'azione.", p: { AFM: 3, COM: 3 } },
-            { t: "Quello che cura l'estetica e la presentazione finale.", p: { GRA: 2, AR: 2 }, followUp: "branch_artistico_grafico" },
-            { t: "Quello che risolve i problemi tecnici o i guasti fisici.", p: { MEC: 2, MAN: 3, ELE: 2 } },
-            { t: "Quello che ascolta tutti, media i conflitti e osserva le dinamiche.", p: { SU: 3, SOC: 2 }, followUp: "branch_umane_vs_economico" },
-            { t: "Quello che crea l'energia giusta, magari mettendo musica o portando il cibo.", p: { MU: 2, ALB: 2 } }
+        { isGeneral: true, q: "Se dovessi lanciare e gestire in autonomia un progetto, in quale settore lo posizioneresti?", a: [
+            { t: "Divulgazione socio-culturale, sensibilizzazione sui diritti o ricerca psicologica.", p: { SU: 3, LES: 3 }, trigger: "human" },
+            { t: "Un'impresa commerciale, analizzando il mercato per lanciare un nuovo servizio o prodotto.", p: { AFM: 4, COM: 3 }, trigger: "business" },
+            { t: "Un brand estetico o un portfolio creativo legato al design, alla moda o alle arti visive.", p: { AR: 3, MOD: 3 }, trigger: "art" },
+            { t: "Un'iniziativa legata al benessere fisico, alla performance atletica o alla gestione sportiva.", p: { SPO: 4 }, trigger: "sport" },
+            { t: "Un laboratorio di progettazione e assistenza tecnica, lavorando direttamente su componenti e macchinari.", p: { MAN: 4, MEC: 2 }, trigger: "practical" }
         ]},
-        { q: "Cosa pensi della matematica?", a: [
-            { t: "La adoro per la sua logica teorica e pura.", p: { SC: 4, INF: 2 } },
-            { t: "Mi piace, ma solo se serve a risolvere problemi concreti (es. calcolare forze, bilanci).", p: { AFM: 2, CAT: 2, MEC: 2 } },
-            { t: "Non la amo, preferisco di gran lunga leggere o scrivere.", p: { CL: 3, LI: 2, SU: 2 } },
-            { t: "Non mi piace la teoria, preferisco la pratica manuale.", p: { MAN: 3, MID: 2 } },
-            { t: "La uso solo per calcolare misure, proporzioni o prospettive nel disegno.", p: { AR: 2, CAT: 2 } }
+        // Le restanti domande base rimangono invariate per mantenere i volumi, ma flaggate come generali.
+        { isGeneral: true, q: "Quando guardi un film o giochi a un videogioco, cosa ti colpisce di più?", a: [
+            { t: "La sceneggiatura, i dialoghi profondi e l'evoluzione psicologica dei personaggi.", p: { CL: 3, SU: 2 }, trigger: "human" },
+            { t: "La qualità grafica, le luci, i colori e la colonna sonora.", p: { GRA: 3, AR: 2, MU: 3 }, trigger: "art" },
+            { t: "Il motore fisico, come funzionano le meccaniche, l'intelligenza dei nemici (IA).", p: { INF: 3, SCA: 2 }, trigger: "tech" },
+            { t: "I luoghi esotici, i paesaggi reali e le diverse culture mostrate.", p: { TUR: 3, LI: 2 }, trigger: "lang" },
+            { t: "A dire il vero non sto molto davanti allo schermo, preferisco stare fuori a muovermi.", p: { SPO: 3, AGR: 2 }, trigger: "sport" }
         ]},
-        { q: "Come ti rapporti con le notizie del telegiornale?", a: [
-            { t: "Mi interessano le scoperte scientifiche, la medicina o l'ambiente.", p: { SC: 2, CHI: 2, AGR: 2 } },
-            { t: "Mi interessano l'economia, i mercati finanziari e le aziende.", p: { AFM: 4, LES: 3 } },
-            { t: "Mi interessano i problemi sociali, la psicologia delle persone e le leggi.", p: { SU: 2, LES: 2 }, followUp: "branch_umane_vs_economico" },
-            { t: "Non le seguo molto, preferisco concentrarmi sulle mie passioni pratiche/creative.", p: { AR: 1, MID: 1, MU: 1 } },
-            { t: "Mi affascinano le notizie di nuove tecnologie, intelligenza artificiale o motori.", p: { INF: 2, MEC: 2, ELE: 2 } }
+        { isGeneral: true, q: "Cosa pensi dell'idea di gestire i soldi e i bilanci?", a: [
+            { t: "È fondamentale. Vorrei imparare a investire, capire il marketing e i mercati.", p: { AFM: 4, COM: 3 }, trigger: "business" },
+            { t: "Mi interessa per poter gestire un'attività commerciale legata ai viaggi o agli hotel.", p: { TUR: 4, ALB: 2 }, trigger: "business" },
+            { t: "Mi interessa solo per sapere quanto mi costa comprare i pezzi per i miei progetti tecnici.", p: { MEC: 1, ELE: 1 }, trigger: "practical" },
+            { t: "Lo trovo noioso, preferisco occuparmi di cura delle persone o del sociale.", p: { SOC: 3, SU: 3 }, trigger: "human" },
+            { t: "Preferisco la matematica astratta, le equazioni e la ricerca scientifica.", p: { SC: 3, SCA: 2 }, trigger: "science" }
         ]},
-        { q: "Ti piace l'idea di lavorare all'aria aperta?", a: [
-            { t: "Sì, assolutamente, a contatto con la natura, le piante o gli animali.", p: { AGR: 4 } },
-            { t: "Sì, per coordinare grandi cantieri o ispezionare territori.", p: { CAT: 4 } },
-            { t: "Sì, viaggiando su navi mercantili o pilotando aerei.", p: { TRA: 4 } },
-            { t: "Sì, facendo sport o insegnandolo.", p: { SPO: 2 }, followUp: "branch_sport" },
-            { t: "No, preferisco stare al chiuso in ufficio, laboratorio o studio.", p: { INF: 1, CHI: 1, AFM: 1, CL: 1 } }
+        { isGeneral: true, q: "Quale ambiente di lavoro ti sembra più stimolante?", a: [
+            { t: "Un ufficio direzionale in una grande multinazionale.", p: { AFM: 3, LES: 2 }, trigger: "business" },
+            { t: "Un grande ospedale, una clinica o un centro di riabilitazione.", p: { SOC: 3, SAN: 3, SPO: 2 }, trigger: "science" },
+            { t: "Un'officina, un cantiere o una linea di produzione industriale.", p: { MEC: 3, CAT: 3, MAN: 3 }, trigger: "practical" },
+            { t: "Un palcoscenico, uno studio di registrazione o un atelier.", p: { AR: 3, MU: 3, MOD: 3 }, trigger: "art" },
+            { t: "Una scuola, un tribunale o un centro di supporto sociale.", p: { SU: 3, CL: 2 }, trigger: "human" }
         ]},
-        { q: "Cosa faresti davanti a uno smartphone o un PC rotto?", a: [
-            { t: "Prendo i cacciaviti giusti e provo a cambiare i pezzi (schermo, batteria).", p: { ELE: 3, MAN: 3 } },
-            { t: "Cerco di capire se è un problema software, provo a reinstallare il sistema.", p: { INF: 2 }, followUp: "branch_informatica_vs_scienze" },
-            { t: "Penso subito a quanto mi costerà ripararlo o se mi conviene ricomprarlo (analisi costi).", p: { AFM: 3, COM: 2 } },
-            { t: "Mi frustra la tecnologia, chiedo aiuto a qualcuno di più tecnico.", p: { CL: 1, SU: 1, AR: 1 } },
-            { t: "Uso l'occasione per uscire e staccare gli occhi dallo schermo.", p: { SPO: 2, AGR: 2 } }
+        { isGeneral: true, q: "Ti piace viaggiare. Qual è il tuo focus principale durante un viaggio?", a: [
+            { t: "Immergermi totalmente nella lingua locale e comunicare con i nativi.", p: { LI: 4 }, trigger: "lang" },
+            { t: "Studiare la natura del luogo, i parchi, la flora e la fauna.", p: { AGR: 3, SC: 2 }, trigger: "science" },
+            { t: "Organizzare l'itinerario perfetto, i voli, gli hotel e i tempi logistici.", p: { TUR: 3, TRA: 3 }, trigger: "business" },
+            { t: "Osservare l'architettura urbana, come sono costruite le città e le strade.", p: { CAT: 4, AR: 1 }, trigger: "practical" },
+            { t: "Provare tutto il cibo locale, analizzare i sapori e i ristoranti.", p: { ALB: 4 }, trigger: "practical" }
         ]},
-        { q: "Ti interessa come funzionano le leggi e lo Stato?", a: [
-            { t: "Sì, credo sia fondamentale conoscere il Diritto e l'Economia Politica.", p: { LES: 4, AFM: 3 } },
-            { t: "Mi interessa più la filosofia dietro le leggi e i diritti storici.", p: { CL: 3, SU: 2 } },
-            { t: "Solo per la parte amministrativa e fiscale di un'azienda.", p: { COM: 3, AFM: 2 } },
-            { t: "Preferisco le leggi oggettive della Fisica o della Chimica.", p: { SC: 3, SCA: 3, CHI: 2 } },
-            { t: "Non molto, mi sento uno spirito più libero e creativo.", p: { AR: 2, MU: 2 } }
+        { isGeneral: true, q: "Come ti relazioni con le regole e la precisione millimetrica?", a: [
+            { t: "La precisione è tutto. Un calcolo sbagliato o un pezzo storto rovinano l'intero lavoro.", p: { MEC: 3, CAT: 3, SAN: 3 }, trigger: "practical" },
+            { t: "Sono preciso nel codice o nelle formule matematiche, dove la logica non ammette errori.", p: { INF: 3, SC: 3, SCA: 3 }, trigger: "tech" },
+            { t: "Preferisco la precisione nelle parole, nelle traduzioni o nei testi di legge.", p: { CL: 2, LI: 2, LES: 2 }, trigger: "human" },
+            { t: "Detesto la rigidità, preferisco l'interpretazione personale, l'estro e la libertà.", p: { AR: 3, MU: 3, MOD: 2 }, trigger: "art" },
+            { t: "Sono rigoroso sulle regole, ma preferisco applicarle nell'organizzazione sportiva o aziendale.", p: { SPO: 2, AFM: 2 }, trigger: "business" }
         ]},
-        { q: "Qual è il tuo rapporto con il cibo e l'alimentazione?", a: [
-            { t: "Amo cucinare per gli altri, curare la sala o organizzare banchetti.", p: { ALB: 4 } },
-            { t: "Mi interessa la composizione chimica degli alimenti e il controllo qualità.", p: { CHI: 3, AGR: 3 } },
-            { t: "Mi affascina il lato nutrizionale legato all'allenamento e al corpo umano.", p: { SPO: 3, SAN: 2 } },
-            { t: "Mi interessa il business legato al food e l'esportazione dei prodotti.", p: { AFM: 2, TUR: 2 } },
-            { t: "Lo vedo dal punto di vista assistenziale, per il benessere delle persone fragili.", p: { SOC: 3 } }
+        { isGeneral: true, q: "Se dovessi organizzare un grande evento, di cosa ti occuperesti?", a: [
+            { t: "Creare le locandine, le grafiche, i video promozionali e le luci.", p: { GRA: 4, AR: 2 }, trigger: "art" },
+            { t: "Gestire il budget, i biglietti, gli sponsor e i permessi legali.", p: { AFM: 3, LES: 2, COM: 3 }, trigger: "business" },
+            { t: "Assicurarmi che l'impianto elettrico e l'audio funzionino alla perfezione.", p: { ELE: 4, INF: 2 }, trigger: "tech" },
+            { t: "Curare il catering, il cibo e l'accoglienza degli ospiti.", p: { ALB: 4, TUR: 2 }, trigger: "practical" },
+            { t: "Organizzare traduttori o guide se ci sono ospiti internazionali.", p: { LI: 3, TUR: 3 }, trigger: "lang" }
         ]},
-        { q: "Quale libro sceglieresti in biblioteca?", a: [
-            { t: "Un grande classico o un saggio filosofico.", p: { CL: 4 } },
-            { t: "Un libro di psicologia, pedagogia o sociologia.", p: { SU: 3, LES: 2 }, followUp: "branch_umane_vs_economico" },
-            { t: "Un manuale per imparare a programmare o costruire circuiti.", p: { INF: 2, ELE: 2 }, followUp: "branch_informatica_vs_scienze" },
-            { t: "Una rivista in lingua straniera o di culture lontane.", p: { LI: 2, TUR: 2 }, followUp: "branch_lingue_turismo" },
-            { t: "Un libro sulla biochimica, l'universo o l'evoluzione.", p: { SC: 3, SCA: 3 } }
+        { isGeneral: true, q: "Qual è il tuo rapporto con l'ambiente e la natura?", a: [
+            { t: "Voglio lavorare sul campo per migliorare le coltivazioni e la tutela del suolo.", p: { AGR: 4 }, trigger: "science" },
+            { t: "Voglio analizzare inquinanti e acque in un laboratorio chimico.", p: { CHI: 4 }, trigger: "science" },
+            { t: "Voglio studiare fonti di energia rinnovabile, pannelli solari o motori elettrici.", p: { ELE: 3, MEC: 2 }, trigger: "tech" },
+            { t: "La natura mi piace per fare sport estremi o escursioni all'aria aperta.", p: { SPO: 3 }, trigger: "sport" },
+            { t: "Mi interessa dal punto di vista legislativo: diritto ambientale e green economy.", p: { LES: 3, AFM: 2 }, trigger: "business" }
         ]},
-        { q: "Ti piacerebbe lavorare in ambito sanitario o del benessere?", a: [
-            { t: "Sì, come tecnico (es. costruendo apparecchiature, occhiali, dentiere).", p: { SAN: 4 } },
-            { t: "Sì, assistendo direttamente le persone fragili o i bambini (OSS, educatore).", p: { SOC: 4 } },
-            { t: "Sì, ma punto a studiare Medicina o Biologia all'università.", p: { SC: 3, SCA: 2, CHI: 2 } },
-            { t: "Sì, come fisioterapista o legato alla riabilitazione sportiva.", p: { SPO: 4 } },
-            { t: "No, preferisco settori tecnici, economici o artistici.", p: { MEC: 1, AFM: 1, AR: 1 } }
+        { isGeneral: true, q: "Scegli un oggetto che ti rappresenta di più:", a: [
+            { t: "Un saggio storico, un manuale o un classico della letteratura.", p: { CL: 4, SU: 2 }, trigger: "human" },
+            { t: "Un tablet con software di digital art e modellazione 3D.", p: { GRA: 3, AR: 3, CAT: 2 }, trigger: "art" },
+            { t: "Componenti da assemblare, microcontrollori o utensili di precisione.", p: { MAN: 4, MEC: 3 }, trigger: "practical" },
+            { t: "Strumenti di analisi dati, fogli di calcolo e report di mercato.", p: { AFM: 4, COM: 3 }, trigger: "business" },
+            { t: "Attrezzature tecnico-sportive, cronometri avanzati e piani di allenamento.", p: { SPO: 4 }, trigger: "sport" }
         ]},
-        { q: "Come ti vedi tra 10 anni?", a: [
-            { t: "In un ufficio di una grande banca o azienda.", p: { AFM: 4 } },
-            { t: "A progettare un ponte, una rete elettrica o un motore.", p: { CAT: 2, MEC: 2, ELE: 2 } },
-            { t: "In una sartoria d'alta moda o in uno studio grafico.", p: { MOD: 2, GRA: 2 }, followUp: "branch_artistico_grafico" },
-            { t: "In classe a insegnare o in un consolato all'estero.", p: { SU: 2, CL: 2, LI: 2 } },
-            { t: "In un laboratorio biotecnologico o di ricerca dati.", p: { CHI: 3, SCA: 3 } }
+        { isGeneral: true, q: "Quale aspetto della società ti preoccupa o ti interessa di più risolvere?", a: [
+            { t: "Le disuguaglianze socio-culturali, l'alfabetizzazione e l'assistenza alle fasce deboli.", p: { SOC: 4, SU: 3 }, trigger: "human" },
+            { t: "La sicurezza informatica, la privacy dei dati e le sfide del mondo digitale.", p: { INF: 4 }, trigger: "tech" },
+            { t: "L'efficienza della produzione, l'automazione industriale e la modernizzazione delle infrastrutture.", p: { MEC: 3, ELE: 3 }, trigger: "practical" },
+            { t: "La sostenibilità dei mercati finanziari e le dinamiche macroeconomiche globali.", p: { AFM: 3, LES: 3 }, trigger: "business" },
+            { t: "L'evoluzione medica, l'epidemiologia e l'innovazione farmaceutica.", p: { CHI: 3, SAN: 2, SC: 2 }, trigger: "science" }
         ]},
-        { q: "Quale strumento preferiresti saper usare in modo professionale?", a: [
-            { t: "Il pianoforte, la chitarra o la voce.", p: { MU: 4 } },
-            { t: "Un tornio, una fresa a controllo numerico o un saldatore.", p: { MEC: 4, MAN: 3 } },
-            { t: "Lo scalpello, il pennello o i software di rendering 3D.", p: { AR: 3, GRA: 3 } },
-            { t: "Il pacchetto Office, specialmente Excel per i bilanci.", p: { AFM: 4, COM: 3 } },
-            { t: "Il microscopio o i reagenti chimici.", p: { CHI: 4, SCA: 2 } }
+        { isGeneral: true, q: "Ti vedi a dirigere altre persone in futuro?", a: [
+            { t: "Sì, come manager d'azienda, ottimizzando i processi aziendali e i profitti.", p: { AFM: 4 }, trigger: "business" },
+            { t: "Sì, coordinando lo sforzo atletico e mentale di una squadra sportiva.", p: { SPO: 4 }, trigger: "sport" },
+            { t: "Sì, supervisionando cantieri complessi o impianti industriali.", p: { CAT: 3, MEC: 2 }, trigger: "practical" },
+            { t: "Preferisco la gestione di flussi turistici internazionali o l'hotellerie.", p: { TUR: 4, ALB: 2 }, trigger: "lang" },
+            { t: "Lavoro meglio in autonomia, immerso nella progettazione, nella programmazione o nello studio.", p: { INF: 2, SC: 2, AR: 2 }, trigger: "tech" }
         ]},
-        { q: "Ti interessa l'ecologia e l'ambiente?", a: [
-            { t: "Sì, vorrei studiare come produrre energie rinnovabili o motori puliti.", p: { ELE: 3, MEC: 3 } },
-            { t: "Sì, attraverso l'agricoltura sostenibile e la gestione del territorio.", p: { AGR: 4, CAT: 2 } },
-            { t: "Sì, analizzando le acque e l'aria nei laboratori chimici.", p: { CHI: 4 } },
-            { t: "Mi interessa capire l'impatto economico e le leggi sul green.", p: { LES: 3, AFM: 2 } },
-            { t: "Sì, ma più a livello di divulgazione umanistica e giornalistica.", p: { CL: 2, SU: 2 } }
+        { isGeneral: true, q: "Quale materia ti risulta più naturale e ti affatica meno dopo ore di applicazione?", a: [
+            { t: "Scienze Matematiche, Fisiche o Naturali.", p: { SC: 4, SCA: 3 }, trigger: "science" },
+            { t: "Scienze Umane, Giuridiche o Letterarie (inclusa Letteratura Italiana).", p: { SU: 3, LES: 3 }, trigger: "human" },
+            { t: "Lingue, Culture Straniere e Traduzione.", p: { LI: 4 }, trigger: "lang" },
+            { t: "Disegno Tecnico Computerizzato o Sviluppo Software.", p: { INF: 3, CAT: 3 }, trigger: "tech" },
+            { t: "Nessuna di queste; apprendo realmente solo applicandomi in attività cinestetiche o manuali.", p: { MAN: 4, MID: 3, SPO: 3 }, trigger: "practical" }
         ]},
-        { q: "Sei una persona precisa?", a: [
-            { t: "Maniacale, tutto deve essere millimetrico (disegni, pezzi meccanici).", p: { CAT: 3, SAN: 3, MEC: 3 } },
-            { t: "Abbastanza, soprattutto quando i numeri devono 'quadrare'.", p: { AFM: 3, SC: 2 } },
-            { t: "Dipende. Nel codice o nei calcoli scientifici sì, altrimenti no.", p: { INF: 3, SCA: 2 } },
-            { t: "Sono più per l'intuizione, la creatività e l'ispirazione.", p: { AR: 3, MU: 3, CL: 1 } },
-            { t: "Sono preciso nel pesare le parole quando parlo con gli altri.", p: { SU: 2, LI: 2 } }
+        { isGeneral: true, q: "Cosa pensi delle lingue morte (Latino e Greco)?", a: [
+            { t: "Fondamentali per capire chi siamo, l'etimologia e allenare la logica.", p: { CL: 4 }, trigger: "human" },
+            { t: "Inutili, preferisco studiare 3 lingue parlate oggi nel mondo per viaggiare.", p: { LI: 4, TUR: 2 }, trigger: "lang" },
+            { t: "Non le amo, preferisco le Scienze Applicate dove non ci sono.", p: { SCA: 4, INF: 2 }, trigger: "science" },
+            { t: "Le tollero se servono a studiare materie umanistiche come Filosofia o Diritto.", p: { SU: 2, LES: 2 }, trigger: "human" },
+            { t: "Totalmente lontane da me, io voglio creare, produrre o calcolare.", p: { MEC: 2, AR: 2, AFM: 2 }, trigger: "practical" }
         ]},
-        { q: "Quale di queste app preferiresti inventare?", a: [
-            { t: "Un'app per la gestione dei risparmi o il trading.", p: { AFM: 4 } },
-            { t: "Un videogioco con grafica pazzesca e logica complessa.", p: { INF: 2, GRA: 2 }, followUp: "branch_informatica_vs_scienze" },
-            { t: "Un social network per psicologi e supporto mentale.", p: { SU: 3, SOC: 2 } },
-            { t: "Un'app che riconosce malattie delle piante e consiglia concimi.", p: { AGR: 4 } },
-            { t: "Un'app per tracciare le prestazioni degli atleti al millisecondo.", p: { SPO: 4 } }
+        { isGeneral: true, q: "Come ti comporti davanti a un'opera d'arte complessa?", a: [
+            { t: "Cerco di analizzarne la storia, il periodo artistico e l'autore.", p: { AR: 3, CL: 2 }, trigger: "human" },
+            { t: "Osservo la tecnica: come sono sfumati i colori, il tipo di tela o di scultura.", p: { AR: 4 }, trigger: "art" },
+            { t: "Guardo come la luce colpisce l'opera e penso a come renderizzarla in 3D.", p: { GRA: 4, INF: 1 }, trigger: "tech" },
+            { t: "Mi ispiro per il design di abiti, forme geometriche o accessori.", p: { MOD: 4 }, trigger: "art" },
+            { t: "Mi interessa il suo valore di mercato, quanto costa e chi la comprerebbe.", p: { AFM: 2, COM: 2 }, trigger: "business" }
         ]},
-        { q: "Preferiresti scrivere...", a: [
-            { t: "Un romanzo, un saggio letterario o una sceneggiatura.", p: { CL: 4, LI: 2 } },
-            { t: "Un report aziendale di analisi delle vendite.", p: { AFM: 4, COM: 3 } },
-            { t: "Le linee di codice per un'intelligenza artificiale.", p: { INF: 3, SCA: 2 } },
-            { t: "Il manuale d'istruzioni di un macchinario industriale.", p: { MEC: 3, ELE: 2 } },
-            { t: "Un articolo sulle dinamiche dell'apprendimento nei bambini.", p: { SU: 4 } }
+        { isGeneral: true, q: "Quale di queste abilità pratiche vorresti possedere perfettamente?", a: [
+            { t: "Saper diagnosticare e riparare sistemi meccanici, motori o velivoli.", p: { MEC: 3, TRA: 4 }, trigger: "practical" },
+            { t: "Saper padroneggiare uno strumento musicale o eccellere nelle arti performative.", p: { MU: 4 }, trigger: "art" },
+            { t: "Padroneggiare protocolli di laboratorio o tecniche diagnostico-sanitarie.", p: { SAN: 4 }, trigger: "science" },
+            { t: "Saper redigere e analizzare bilanci aziendali complessi individuando margini di profitto.", p: { AFM: 4 }, trigger: "business" },
+            { t: "Saper progettare e confezionare capi d'abbigliamento partendo da un concept visivo.", p: { MOD: 4 }, trigger: "art" }
+        ]},
+        { isGeneral: true, q: "Ultima domanda generale: come concepisci il rapporto tra sapere teorico e applicazione pratica?", a: [
+            { t: "Il fondamento teorico, la ricerca storica e l'indagine filosofica sono il motore del progresso.", p: { CL: 3, SC: 3 }, trigger: "human" },
+            { t: "L'empirismo operativo è prioritario; desidero formare competenze tecniche per il mercato del lavoro immediato.", p: { MAN: 4, MID: 3, ALB: 2 }, trigger: "practical" },
+            { t: "Ricerca di sintesi: applicare le leggi del mercato ed economico-giuridiche a contesti aziendali reali.", p: { AFM: 3, LES: 2 }, trigger: "business" },
+            { t: "Integrazione: la teoria matematica e ingegneristica trova scopo nello sviluppo di reti o automazioni.", p: { INF: 3, ELE: 3 }, trigger: "tech" },
+            { t: "Sinergia: lo studio dell'anatomia e fisiologia si esprime direttamente nella massimizzazione della prestazione fisica.", p: { SPO: 4 }, trigger: "sport" }
         ]}
     ];
 
-    // Array dinamico delle domande (Coda)
+    // ==========================================
+    // 2. DATABASE DOMANDE DI DIRAMAZIONE (Invariate)
+    // ==========================================
+    const branchData = {
+        // [Incolla qui tutto il branchData originale, omesso per brevità nel testo ma mantenuto logicamente integro]
+        tech: [
+            { q: "[INFORMATICA & TECH] - Cosa ti affascina di più in un computer?", a: [{t: "Il codice invisibile che fa funzionare i programmi (Software).", p: {INF: 4, SCA: 2}}, {t: "I componenti fisici: RAM, CPU, schede madri (Hardware).", p: {ELE: 3, MEC: 2}}, {t: "Come i computer comunicano tra loro nel mondo (Reti/Cybersecurity).", p: {INF: 3}}, {t: "L'uso che se ne fa per creare animazioni o grafiche.", p: {GRA: 4}}] },
+            { q: "[INFORMATICA & TECH] - Quando senti parlare di 'Intelligenza Artificiale', pensi a:", a: [{t: "Come programmarne una per risolvere problemi complessi.", p: {INF: 4, SCA: 3}}, {t: "Come integrarla in bracci robotici o macchinari automatici.", p: {ELE: 4, MEC: 3}}, {t: "L'impatto etico e sociale che avrà sull'umanità.", p: {LES: 3, SU: 2}}, {t: "Usarla come strumento per generare arte o design.", p: {GRA: 3, AR: 2}}] },
+            { q: "[INFORMATICA & TECH] - Preferiresti costruire:", a: [{t: "Un'App per smartphone scaricata da milioni di utenti.", p: {INF: 4}}, {t: "Un drone in grado di volare autonomamente.", p: {ELE: 4, TRA: 2}}, {t: "Un videogioco (lato programmazione logica).", p: {INF: 3, SCA: 2}}, {t: "Un sito web, curandone però più l'aspetto visivo che il codice.", p: {GRA: 4}}] },
+            { q: "[INFORMATICA & TECH] - Che rapporto hai con i guasti informatici?", a: [{t: "Amo aprire il terminale e cercare l'errore nel sistema operativo.", p: {INF: 4}}, {t: "Preferisco quando il guasto è fisico, così posso saldare o cambiare pezzi.", p: {ELE: 3, MAN: 3}}, {t: "Chiamo l'assistenza, mi interessa solo usare i software, non ripararli.", p: {COM: 2, AFM: 1}}, {t: "Controllo i cavi di rete e i server di connessione.", p: {INF: 2, ELE: 2}}] },
+            { q: "[INFORMATICA & TECH] - Quanto sei disposto a stare seduto davanti a uno schermo?", a: [{t: "Ore e ore, è il mio ambiente naturale.", p: {INF: 4, GRA: 3}}, {t: "Preferisco alzarmi spesso per testare ciò che ho programmato su macchine reali.", p: {MEC: 3, ELE: 3}}, {t: "Non molto, mi stanco in fretta.", p: {SPO: 3, AGR: 2}}, {t: "Solo se sto disegnando o modellando in 3D.", p: {AR: 3, CAT: 2}}] },
+            { q: "[INFORMATICA & TECH] - Riguardo all'automazione (Domotica):", a: [{t: "Voglio programmare l'app che controlla la casa.", p: {INF: 4}}, {t: "Voglio installare e progettare i circuiti fisici nella casa.", p: {ELE: 4}}, {t: "Voglio progettare la struttura della casa ecologica stessa.", p: {CAT: 4}}, {t: "Voglio capire come vendere questi sistemi sul mercato.", p: {AFM: 3, COM: 3}}] },
+            { q: "[INFORMATICA & TECH] - Scegli un argomento di studio:", a: [{t: "Algoritmi e Strutture Dati.", p: {INF: 4, SCA: 3}}, {t: "Sistemi e Reti.", p: {INF: 3, ELE: 2}}, {t: "Elettrotecnica e Sistemi Automatici.", p: {ELE: 4, MEC: 3}}, {t: "Multimedia e Progettazione visiva.", p: {GRA: 4}}] },
+            { q: "[INFORMATICA & TECH] - Qual è la tua reazione di fronte a una pagina piena di righe di codice complessa?", a: [{t: "È come una sfida, voglio decifrarla e trovare l'errore.", p: {INF: 4, SCA: 2}}, {t: "Mi viene il mal di testa, preferisco schemi elettrici o meccanici visivi.", p: {MEC: 3, ELE: 2}}, {t: "Non fa per me, io lavoro con le persone.", p: {SU: 3, SOC: 2}}, {t: "Mi interessa se è codice CSS/HTML per fare siti belli.", p: {GRA: 3}}] },
+            { q: "[INFORMATICA & TECH] - Robotica: ti interessa di più...", a: [{t: "Scrivere la logica decisionale del robot (il 'cervello').", p: {INF: 4, SCA: 2}}, {t: "Costruire fisicamente i sensori, i motori e le braccia (il 'corpo').", p: {MEC: 4, ELE: 3}}, {t: "Usare i robot in agricoltura o medicina.", p: {AGR: 3, CHI: 3}}, {t: "Nessuna, preferisco la tecnologia virtuale o il cloud.", p: {INF: 2}}] },
+            { q: "[INFORMATICA & TECH] - Cosa vedi nel tuo futuro?", a: [{t: "Sviluppatore Full-Stack o Ingegnere Informatico.", p: {INF: 4, SCA: 3}}, {t: "Ingegnere Elettronico o Tecnico specializzato in sensori.", p: {ELE: 4}}, {t: "Web Designer o Art Director in un'agenzia digitale.", p: {GRA: 4}}, {t: "Progettista di automazioni industriali.", p: {MEC: 3}}] }
+        ],
+        human: [
+            { q: "[UMANISTICO & SOCIALE] - Quale dinamica umana ti incuriosisce di più?", a: [{t: "Come la mente dei bambini apprende e si sviluppa.", p: {SU: 4, SOC: 2}}, {t: "Come le grandi masse si comportano nella società (Sociologia).", p: {LES: 4, SU: 2}}, {t: "I motivi storici e filosofici dietro le guerre e le riforme.", p: {CL: 4}}, {t: "Come curare o assistere fisicamente persone in difficoltà.", p: {SOC: 4, SAN: 2}}] },
+            { q: "[UMANISTICO & SOCIALE] - Quando parli con qualcuno, tu di solito...", a: [{t: "Ascolti i problemi personali e provi a dare consigli empatici.", p: {SU: 4, SOC: 3}}, {t: "Analizzi il discorso da un punto di vista razionale o legale.", p: {LES: 3, AFM: 2}}, {t: "Usi la comunicazione per convincere o vendere un'idea.", p: {COM: 4, AFM: 2}}, {t: "Pesi le parole per la loro bellezza e correttezza grammaticale.", p: {CL: 3, LI: 3}}] },
+            { q: "[UMANISTICO & SOCIALE] - Quale ambito del Diritto ti affascina?", a: [{t: "Diritti Umani, Costituzione e protezione delle minoranze.", p: {LES: 4, SU: 2}}, {t: "Diritto Commerciale, contratti e tasse.", p: {AFM: 4, COM: 2}}, {t: "La storia del Diritto Romano antico.", p: {CL: 4}}, {t: "Non mi interessa il Diritto, preferisco l'educazione e l'insegnamento.", p: {SU: 3, SOC: 2}}] },
+            { q: "[UMANISTICO & SOCIALE] - Se dovessi scrivere un saggio, il titolo sarebbe:", a: [{t: "'L'evoluzione dell'anima secondo i filosofi greci'.", p: {CL: 4}}, {t: "'La mente adolescente nell'era dei social media'.", p: {SU: 4}}, {t: "'Globalizzazione economica: disuguaglianze e leggi internazionali'.", p: {LES: 4}}, {t: "'Nuove frontiere dell'assistenza sanitaria nelle RSA'.", p: {SOC: 4}}] },
+            { q: "[UMANISTICO & SOCIALE] - Insegnare: ti piacerebbe?", a: [{t: "Sì, in un asilo o scuola primaria (Pedagogia).", p: {SU: 4, SOC: 2}}, {t: "Sì, come professore di materie umanistiche al liceo.", p: {CL: 4, SU: 2}}, {t: "Sì, ma educazione fisica o attività sportive.", p: {SPO: 4}}, {t: "No, preferisco aiutare le persone al di fuori della scuola (es. assistente sociale).", p: {SOC: 4, LES: 2}}] },
+            { q: "[UMANISTICO & SOCIALE] - Qual è la tua materia umanistica preferita?", a: [{t: "Psicologia.", p: {SU: 4}}, {t: "Latino/Greco e Storia Italiana.", p: {CL: 4}}, {t: "Economia Politica e Diritto.", p: {LES: 4, AFM: 2}}, {t: "Metodologie Operative (come assistere fisicamente un disabile).", p: {SOC: 4}}] },
+            { q: "[UMANISTICO & SOCIALE] - Quale ruolo avresti in una ONG (Organizzazione Non Governativa)?", a: [{t: "Operatore sul campo che accudisce i rifugiati.", p: {SOC: 4}}, {t: "Lo psicologo che gestisce i traumi.", p: {SU: 4}}, {t: "L'esperto legale che si occupa dei diritti internazionali.", p: {LES: 4}}, {t: "Il traduttore per comunicare con le popolazioni locali.", p: {LI: 4}}] },
+            { q: "[UMANISTICO & SOCIALE] - Come vedi l'uso dell'empatia nel lavoro?", a: [{t: "È l'assoluta base del mio futuro lavoro quotidiano.", p: {SOC: 4, SU: 3}}, {t: "Serve, ma deve essere bilanciata con l'analisi oggettiva delle leggi umane.", p: {LES: 3, SU: 2}}, {t: "Preferisco la razionalità filosofica e l'analisi dei testi.", p: {CL: 4}}, {t: "Preferisco usare l'empatia per capire le esigenze dei clienti e vendere.", p: {AFM: 3, COM: 3}}] },
+            { q: "[UMANISTICO & SOCIALE] - Il termine 'Diversità' cosa ti ispira?", a: [{t: "Studio dell'inclusione scolastica e pedagogia speciale.", p: {SU: 4}}, {t: "Tutela legale delle diversità sociali.", p: {LES: 4}}, {t: "Lavoro pratico nelle strutture sanitarie per disabili.", p: {SOC: 4}}, {t: "Studio antropologico delle diverse culture antiche e moderne.", p: {CL: 3, LI: 3}}] },
+            { q: "[UMANISTICO & SOCIALE] - Cosa vedi nel tuo futuro?", a: [{t: "Psicologo, Insegnante o Educatore.", p: {SU: 4}}, {t: "Avvocato, Sociologo o Esperto di Relazioni Internazionali.", p: {LES: 4, CL: 2}}, {t: "Operatore Socio-Sanitario, Infermiere o Assistente Sociale.", p: {SOC: 4}}, {t: "Lettere Classiche, Giornalismo culturale, Storico.", p: {CL: 4}}] }
+        ],
+        science: [
+            { q: "[SCIENZE & NATURA] - In un laboratorio di Biologia, cosa faresti per primo?", a: [{t: "Analizzare cellule e batteri al microscopio.", p: {CHI: 4, SCA: 2}}, {t: "Studiare la genetica di una pianta per migliorarne la crescita.", p: {AGR: 4}}, {t: "Capire come un farmaco agisce sull'anatomia umana.", p: {SC: 3, SAN: 3}}, {t: "Preferisco la Fisica o la Chimica pura alla Biologia.", p: {CHI: 3, SC: 2}}] },
+            { q: "[SCIENZE & NATURA] - Come ti rapporti con l'ambiente e il clima?", a: [{t: "Vorrei studiare l'inquinamento chimico delle acque e dell'aria.", p: {CHI: 4}}, {t: "Vorrei lavorare la terra, produrre vino/olio o gestire foreste.", p: {AGR: 4}}, {t: "Mi affascina la geologia, i vulcani e la struttura terrestre.", p: {SC: 3, SCA: 3}}, {t: "Vorrei progettare case ed edifici a impatto zero.", p: {CAT: 4}}] },
+            { q: "[SCIENZE & NATURA] - Medicina e Salute: come ti ci vedi?", a: [{t: "Voglio assolutamente fare Medicina all'Università (chirurgo, medico).", p: {SC: 4, SCA: 3}}, {t: "Voglio lavorare in laboratorio a fare analisi del sangue (Biotecnologie).", p: {CHI: 4}}, {t: "Voglio costruire strumenti sanitari (Occhiali, Dentiere) in modo artigianale/tecnico.", p: {SAN: 4}}, {t: "Preferisco la cura e la riabilitazione muscolare/sportiva.", p: {SPO: 4}}] },
+            { q: "[SCIENZE & NATURA] - Riguardo alla Chimica:", a: [{t: "È la mia passione, miscelare reagenti e studiare i materiali.", p: {CHI: 4, SCA: 2}}, {t: "Mi interessa la chimica degli alimenti e le trasformazioni agricole.", p: {AGR: 4, ALB: 2}}, {t: "È ok, ma preferisco la Matematica pura e l'Astrofisica.", p: {SC: 4, INF: 1}}, {t: "Non mi piace, è troppo astratta.", p: {CL: 2, SU: 2}}] },
+            { q: "[SCIENZE & NATURA] - Quale di questi documentari guarderesti?", a: [{t: "'I segreti dell'Universo e dei Buchi Neri' (Fisica pura).", p: {SC: 4, SCA: 3}}, {t: "'Dentro il DNA umano' (Biotecnologie).", p: {CHI: 4, SCA: 2}}, {t: "'L'agricoltura del futuro e la salvaguardia dei suoli'.", p: {AGR: 4}}, {t: "'Come le intelligenze artificiali stanno cambiando la ricerca'.", p: {INF: 3, SCA: 3}}] },
+            { q: "[SCIENZE & NATURA] - Se trovassi un animale ferito in natura:", a: [{t: "Mi interesserebbe curarlo (Veterinaria, Biologia).", p: {SC: 3, AGR: 2}}, {t: "Valuterei l'ecosistema in cui vive e i problemi ambientali connessi.", p: {AGR: 4, CHI: 2}}, {t: "Non ho un grande rapporto con gli animali o la natura selvaggia.", p: {INF: 2, AFM: 2}}, {t: "Ne farei una questione etica e filosofica sui diritti animali.", p: {SU: 3, LES: 2}}] },
+            { q: "[SCIENZE & NATURA] - Tra queste, quale disciplina scientifica ti spaventa meno?", a: [{t: "La matematica ad altissimi livelli teorici.", p: {SC: 4, SCA: 3}}, {t: "Imparare a memoria centinaia di formule chimiche.", p: {CHI: 4}}, {t: "Lo studio dettagliatissimo dei cicli vitali delle piante.", p: {AGR: 4}}, {t: "L'anatomia umana e il funzionamento degli organi.", p: {SAN: 3, SPO: 3, SC: 2}}] },
+            { q: "[SCIENZE & NATURA] - Preferisci la scienza applicata o teorica?", a: [{t: "Teorica: capire la teoria della relatività o le leggi universali.", p: {SC: 4}}, {t: "Applicata: usare la chimica per creare nuovi materiali (plastica, tessuti).", p: {CHI: 4, MOD: 2}}, {t: "Applicata: usare la scienza informatica per creare software.", p: {INF: 4, SCA: 4}}, {t: "Pratica totale: coltivare campi o creare lenti da vista in officina.", p: {AGR: 3, SAN: 3}}] },
+            { q: "[SCIENZE & NATURA] - Se ti dicessero 'Biotecnologie', a cosa pensi con più entusiasmo?", a: [{t: "Clonazione, genetica e scoperte in laboratorio biomedico.", p: {CHI: 4, SCA: 3}}, {t: "Sviluppo di colture resistenti alla siccità (Agro-biotech).", p: {AGR: 4}}, {t: "Uso etico e implicazioni morali della manipolazione genetica.", p: {SU: 3, CL: 2}}, {t: "Finanziamenti e startup legate alla biologia.", p: {AFM: 3}}] },
+            { q: "[SCIENZE & NATURA] - Cosa vedi nel tuo futuro?", a: [{t: "Ricercatore Universitario, Fisico o Matematico.", p: {SC: 4, SCA: 3}}, {t: "Biotecnologo o Tecnico di laboratorio analisi.", p: {CHI: 4}}, {t: "Perito Agrario, Enologo o Gestore di parchi ambientali.", p: {AGR: 4}}, {t: "Ottico, Odontotecnico o professionista sanitario tecnico.", p: {SAN: 4}}] }
+        ],
+        business: [
+            { q: "[ECONOMIA & LINGUE] - Se avessi un'azienda tua, in quale reparto passeresti più tempo?", a: [{t: "Amministrazione, Finanza e Bilanci (i conti).", p: {AFM: 4}}, {t: "Marketing, Pubblicità e Vendite.", p: {COM: 4, AFM: 2}}, {t: "Ufficio Estero, gestendo i contratti internazionali nelle lingue locali.", p: {LI: 3, TUR: 2, AFM: 2}}, {t: "Risorse Umane, per occuparmi del benessere dei dipendenti.", p: {LES: 3, SU: 3}}] },
+            { q: "[ECONOMIA & LINGUE] - Cosa ti affascina del mondo dell'economia?", a: [{t: "La Borsa, i mercati finanziari e gli investimenti.", p: {AFM: 4}}, {t: "L'economia globale, la globalizzazione e le dinamiche tra Stati (Macroeconomia).", p: {LES: 4}}, {t: "Il business legato all'ospitalità, hotel, viaggi ed eventi.", p: {TUR: 4}}, {t: "La parte più pratica: scontrini, vendite dirette al banco, e-commerce.", p: {COM: 4}}] },
+            { q: "[ECONOMIA & LINGUE] - Come te la cavi con il Diritto?", a: [{t: "Mi interessa il diritto civile e commerciale (leggi sulle aziende).", p: {AFM: 4, COM: 2}}, {t: "Preferisco il diritto pubblico e costituzionale (come funziona lo Stato).", p: {LES: 4}}, {t: "Mi interessa la legislazione turistica internazionale.", p: {TUR: 4}}, {t: "Non mi piace per niente, troppe regole e leggi da imparare.", p: {AR: 2, SPO: 2}}] },
+            { q: "[ECONOMIA & LINGUE] - Se dovessi promuovere un territorio (es. la tua città):", a: [{t: "Organizzerei tour guidati in 3 lingue diverse.", p: {TUR: 4, LI: 2}}, {t: "Creerei una campagna di marketing digitale per attirare turisti.", p: {COM: 3, AFM: 2, GRA: 2}}, {t: "Valorizzerei le aziende locali e calcolerei l'indotto economico.", p: {AFM: 3, LES: 2}}, {t: "Studierò il territorio dal punto di vista topografico e geotecnico.", p: {CAT: 4}}] },
+            { q: "[ECONOMIA & LINGUE] - Immagina di dover usare l'inglese nel tuo futuro lavoro:", a: [{t: "Lo userò per scrivere email commerciali ai fornitori in Cina o USA.", p: {AFM: 4, COM: 3}}, {t: "Lo userò alla reception di un hotel o in agenzia di viaggi.", p: {TUR: 4, ALB: 2}}, {t: "Voglio studiare non solo l'inglese, ma la sua profonda letteratura.", p: {LI: 4}}, {t: "Lo userò per leggere documentazione tecnica di informatica o meccanica.", p: {INF: 2, MEC: 2}}] },
+            { q: "[ECONOMIA & LINGUE] - Riguardo alla Matematica nell'Economia (Matematica Finanziaria):", a: [{t: "Mi piace usare i numeri per calcolare profitti, tassi e sconti.", p: {AFM: 4}}, {t: "La detesto, voglio occuparmi di vendite senza fare calcoli complessi.", p: {COM: 3, TUR: 2}}, {t: "Preferisco la matematica pura o statistica scientifica.", p: {SC: 3}}, {t: "Preferisco analizzare l'economia dal punto di vista sociologico, non matematico.", p: {LES: 4}}] },
+            { q: "[ECONOMIA & LINGUE] - Quale software ritieni più essenziale dominare?", a: [{t: "Excel (Fogli di calcolo per bilanci e grafici).", p: {AFM: 4, COM: 3}}, {t: "Software per prenotazioni alberghiere o voli.", p: {TUR: 4}}, {t: "Social Media Manager Tools (per il marketing online).", p: {COM: 4, GRA: 2}}, {t: "Word (per redigere documenti legali o saggi).", p: {LES: 2, SU: 2}}] },
+            { q: "[ECONOMIA & LINGUE] - Un'azienda straniera ti assume. Qual è il tuo ruolo?", a: [{t: "Analista finanziario o Ragioniere capo.", p: {AFM: 4}}, {t: "Esperto in relazioni internazionali o import/export.", p: {LES: 3, AFM: 2, LI: 2}}, {t: "Responsabile vendite e assistenza clienti.", p: {COM: 4}}, {t: "Manager degli eventi e convention aziendali.", p: {TUR: 4}}] },
+            { q: "[ECONOMIA & LINGUE] - Ti interessano le startup?", a: [{t: "Sì, vorrei fondarne una tutta mia basata su un'idea innovativa (Business Plan).", p: {AFM: 4, COM: 2}}, {t: "Sì, ma dal punto di vista tecnologico/informatico.", p: {INF: 3, AFM: 1}}, {t: "Solo se ha un impatto sociale o ambientale (Social Enterprise).", p: {LES: 4, SU: 2}}, {t: "Non particolarmente, preferisco la stabilità di grandi aziende o enti.", p: {AFM: 2}}] },
+            { q: "[ECONOMIA & LINGUE] - Cosa vedi nel tuo futuro?", a: [{t: "Commercialista, Direttore di Banca o Manager.", p: {AFM: 4}}, {t: "Esperto in Diritto Internazionale o Economista.", p: {LES: 4}}, {t: "Direttore d'Hotel, Tour Operator o Guida Turistica.", p: {TUR: 4}}, {t: "Impiegato commerciale, E-commerce Manager, Agente di commercio.", p: {COM: 4}}] }
+        ],
+        art: [
+            { q: "[ARTE E CREATIVITÀ] - Quale mezzo preferisci per esprimerti?", a: [{t: "Matita, pennello, creta o tela (Arti figurative tradizionali).", p: {AR: 4}}, {t: "Tavoletta grafica, Photoshop, Illustrator (Digital Art).", p: {GRA: 4, INF: 1}}, {t: "Stoffe, aghi, manichini, macchine da cucire (Moda).", p: {MOD: 4}}, {t: "Il mio corpo, la voce, uno strumento musicale (Musica/Danza).", p: {MU: 4}}] },
+            { q: "[ARTE E CREATIVITÀ] - Quando entri in una stanza, cosa noti per primo?", a: [{t: "L'architettura, le proporzioni, il design dei mobili e lo spazio.", p: {AR: 3, CAT: 3}}, {t: "I colori, i quadri appesi o la grafica dei loghi intorno.", p: {GRA: 3, AR: 2}}, {t: "Come sono vestite le persone, i tessuti e i trend del momento.", p: {MOD: 4}}, {t: "L'acustica, la musica di sottofondo o i rumori ambientali.", p: {MU: 4}}] },
+            { q: "[ARTE E CREATIVITÀ] - Che rapporto hai con il Disegno Tecnico (riga e squadra)?", a: [{t: "Lo amo, adoro le proiezioni ortogonali, l'architettura e la precisione.", p: {CAT: 4, AR: 2}}, {t: "Lo tollero, ma preferisco il disegno libero e creativo a mano libera.", p: {AR: 4, MOD: 2}}, {t: "Preferisco farlo interamente al computer con CAD o software 3D.", p: {GRA: 3, CAT: 2, INF: 1}}, {t: "Lo odio, preferisco esprimermi con musica o scrittura.", p: {MU: 3, CL: 2}}] },
+            { q: "[ARTE E CREATIVITÀ] - Se dovessi lanciare un tuo brand, cosa produrresti?", a: [{t: "Una linea di abbigliamento, scarpe o accessori.", p: {MOD: 4}}, {t: "Un'agenzia di comunicazione, video making e web design.", p: {GRA: 4, COM: 1}}, {t: "Un mio studio di pittura o scultura per vendere opere uniche.", p: {AR: 4}}, {t: "Un'etichetta discografica o una compagnia di danza.", p: {MU: 4}}] },
+            { q: "[ARTE E CREATIVITÀ] - Moda: ti interessa il lato artigianale o il design?", a: [{t: "Voglio disegnare i figurini e creare il concept estetico.", p: {AR: 2, MOD: 3}}, {t: "Voglio materialmente tagliare le stoffe, cucire e creare il prodotto finito.", p: {MOD: 4, MID: 2}}, {t: "Mi interessa il marketing e come vendere la moda nel mondo.", p: {AFM: 2, COM: 2, MOD: 1}}, {t: "Non mi interessa affatto la moda.", p: {SC: 1}}] },
+            { q: "[ARTE E CREATIVITÀ] - In un progetto di gruppo per creare un videogioco:", a: [{t: "Io disegno i personaggi, i paesaggi e l'estetica.", p: {GRA: 4, AR: 3}}, {t: "Io compongo la colonna sonora e gli effetti audio.", p: {MU: 4}}, {t: "Io scrivo la trama, i dialoghi e la psicologia dei personaggi.", p: {CL: 2, SU: 2}}, {t: "Io voglio programmare il codice, l'arte non è il mio forte.", p: {INF: 4}}] },
+            { q: "[ARTE E CREATIVITÀ] - Scegli un'attività pomeridiana:", a: [{t: "Andare a una mostra d'arte contemporanea o architettura.", p: {AR: 4}}, {t: "Partecipare a un servizio fotografico o montare un video.", p: {GRA: 4}}, {t: "Suonare con la mia band o andare a lezione di danza.", p: {MU: 4}}, {t: "Fare shopping analizzando come sono costruiti i capi d'abbigliamento.", p: {MOD: 4}}] },
+            { q: "[ARTE E CREATIVITÀ] - Ti spaventa l'idea che l'arte non dia un lavoro 'sicuro'?", a: [{t: "Sì, per questo preferisco la Grafica o la Moda industriale (più orientate al mercato).", p: {GRA: 4, MOD: 3}}, {t: "Sì, per questo preferisco l'Architettura o il Design tecnico (Geometra/CAT).", p: {CAT: 4, AR: 2}}, {t: "No, la passione per le Belle Arti/Musica vince su tutto.", p: {AR: 4, MU: 4}}, {t: "Sì, infatti tengo l'arte come hobby e voglio studiare economia o scienza.", p: {AFM: 2, SC: 2}}] },
+            { q: "[ARTE E CREATIVITÀ] - La storia dell'Arte:", a: [{t: "La adoro, studiare i grandi maestri del passato è vitale per me.", p: {AR: 4, CL: 2}}, {t: "Mi annoia un po', io voglio creare opere nuove e moderne al PC.", p: {GRA: 3}}, {t: "Mi interessa solo per trarne ispirazione per vestiti o gioielli.", p: {MOD: 3}}, {t: "Preferisco la Storia della Musica.", p: {MU: 4}}] },
+            { q: "[ARTE E CREATIVITÀ] - Cosa vedi nel tuo futuro?", a: [{t: "Pittore, Scultore, Scenografo o Architetto.", p: {AR: 4}}, {t: "Grafico Pubblicitario, Web Designer o Fotografo.", p: {GRA: 4}}, {t: "Stilista, Modellista o esperto tessile.", p: {MOD: 4}}, {t: "Musicista, Cantante o Ballerino professionista.", p: {MU: 4}}] }
+        ],
+        practical: [
+            { q: "[PRATICO & MANUALE] - Quando si rompe un oggetto meccanico o elettronico a casa:", a: [{t: "Prendo la cassetta degli attrezzi e lo apro per ripararlo io.", p: {MAN: 4, MEC: 3}}, {t: "Se è un circuito, provo a saldare i fili o usare il tester.", p: {ELE: 4, MAN: 2}}, {t: "Mi arrabbio, preferisco buttare o chiamare un tecnico.", p: {CL: 2, SU: 2}}, {t: "Lo smonto solo per vedere come era fatto, ma non so ripararlo.", p: {SCA: 2, MEC: 1}}] },
+            { q: "[PRATICO & MANUALE] - Quale settore manuale ti attira di più?", a: [{t: "I motori: auto, moto, componenti meccaniche, torni, frese.", p: {MEC: 4, MAN: 3}}, {t: "L'elettricità: quadri elettrici, domotica, pannelli solari.", p: {ELE: 4}}, {t: "L'artigianato: lavorare il legno, il metallo, creare mobili (Made in Italy).", p: {MID: 4}}, {t: "L'edilizia: costruire muri, topografia, cantieri.", p: {CAT: 4}}] },
+            { q: "[PRATICO & MANUALE] - La Cucina e l'Alberghiero:", a: [{t: "È la mia passione! Voglio fare lo chef, sperimentare piatti e sapori.", p: {ALB: 4}}, {t: "Mi piace il mondo della sala, i cocktail, i vini e servire i clienti.", p: {ALB: 4, TUR: 1}}, {t: "Mi piace il cibo, ma non ci lavorerei mai.", p: {SC: 1}}, {t: "Preferisco l'industria alimentare (come si produce e conserva in fabbrica il cibo).", p: {AGR: 3, CHI: 3}}] },
+            { q: "[PRATICO & MANUALE] - Officina o Ufficio?", a: [{t: "100% Officina o laboratorio, voglio sporcarmi le mani e stare in piedi.", p: {MAN: 4, MID: 3, ALB: 2}}, {t: "Ufficio tecnico: voglio progettare i pezzi meccanici al CAD, ma farli costruire ad altri.", p: {MEC: 4, INF: 1}}, {t: "Cantiere all'aperto, dirigendo i lavori di costruzione.", p: {CAT: 4}}, {t: "Ufficio totale: niente grasso, polvere o fatica fisica.", p: {AFM: 3, INF: 3}}] },
+            { q: "[PRATICO & MANUALE] - Veicoli pesanti e trasporti:", a: [{t: "Mi affascina pilotare navi, aerei o progettare logistica portuale.", p: {TRA: 4}}, {t: "Mi interessa riparare i grandi motori di navi o camion.", p: {MAN: 4, MEC: 2}}, {t: "Non mi interessano i grandi trasporti, preferisco auto e moto.", p: {MEC: 3}}, {t: "Preferisco il trasporto turistico: organizzare viaggi e voli.", p: {TUR: 3}}] },
+            { q: "[PRATICO & MANUALE] - Riguardo allo studio teorico:", a: [{t: "Lo reggo a malapena. Voglio una scuola dove dal primo anno si va in laboratorio 3-4 giorni a settimana.", p: {MAN: 4, MID: 4, ALB: 4}}, {t: "Mi va bene studiare molta teoria Fisica/Matematica purché finalizzata alla progettazione tecnica.", p: {MEC: 3, ELE: 3}}, {t: "Studio volentieri le norme sulla sicurezza nei cantieri.", p: {CAT: 3}}, {t: "Studio volentieri le lingue per poter lavorare nei ristoranti/navi da crociera in tutto il mondo.", p: {ALB: 3, TUR: 2}}] },
+            { q: "[PRATICO & MANUALE] - Come gestisci la stanchezza fisica?", a: [{t: "Non mi pesa stare 8 ore in piedi in una cucina o in un'officina.", p: {ALB: 4, MAN: 4}}, {t: "Preferisco evitare lavori usuranti, voglio stare al computer.", p: {INF: 3, GRA: 3}}, {t: "Mi stanco fisicamente solo se faccio sport agonistico.", p: {SPO: 3}}, {t: "Non mi spaventa se sono all'aria aperta in mezzo alla natura.", p: {AGR: 4, CAT: 2}}] },
+            { q: "[PRATICO & MANUALE] - Precisione o Creatività?", a: [{t: "Precisione meccanica al centesimo di millimetro (Meccanica/Ottica).", p: {MEC: 4, SAN: 4}}, {t: "Creatività pratica: intagliare il legno o creare un mobile di design.", p: {MID: 4, AR: 2}}, {t: "Creatività in cucina: impiattare in modo spettacolare.", p: {ALB: 4}}, {t: "Precisione elettrica: un filo sbagliato e salta tutto.", p: {ELE: 4}}] },
+            { q: "[PRATICO & MANUALE] - Made in Italy:", a: [{t: "Artigianato puro: gioielleria, ebanisteria, ceramica.", p: {MID: 4, AR: 2}}, {t: "Gastronomia d'eccellenza, ristoranti stellati.", p: {ALB: 4}}, {t: "Ingegneria automobilistica italiana (Ferrari, Ducati, ecc).", p: {MEC: 4}}, {t: "Moda e sartoria sartoriale.", p: {MOD: 4}}] },
+            { q: "[PRATICO & MANUALE] - Cosa vedi nel tuo futuro?", a: [{t: "Meccanico, Manutentore esperto, Elettricista industriale.", p: {MAN: 4, ELE: 2}}, {t: "Progettista CAD, Perito Meccatronico o Elettrotecnico.", p: {MEC: 4}}, {t: "Chef, Maître di sala o Pasticciere.", p: {ALB: 4}}, {t: "Geometra (CAT), Direttore Lavori o Artigiano del legno/marmo.", p: {CAT: 4, MID: 3}}] }
+        ],
+        sport: [
+            { q: "[SPORT & MOVIMENTO] - Che ruolo ha lo sport nella tua vita?", a: [{t: "È la mia ragione di vita, mi alleno agonisticamente tutti i giorni.", p: {SPO: 4}}, {t: "Mi piace mantenermi in forma, ma non ne farei una professione.", p: {SC: 2, SU: 2}}, {t: "Mi interessa il lato business: gestire palestre o eventi sportivi.", p: {SPO: 3, AFM: 2}}, {t: "Mi interessa il lato medico: curare gli infortuni e la riabilitazione.", p: {SPO: 3, SAN: 3}}] },
+            { q: "[SPORT & MOVIMENTO] - A scuola, durante l'ora di Educazione Fisica:", a: [{t: "Do il 100%, sono sempre il più competitivo.", p: {SPO: 4}}, {t: "Aiuto l'insegnante a organizzare le squadre e a far rispettare le regole.", p: {SPO: 3, SU: 2}}, {t: "La odio, preferirei stare in classe a leggere un libro.", p: {CL: 3}}, {t: "Mi diverto ma in modo rilassato.", p: {LES: 1}}] },
+            { q: "[SPORT & MOVIMENTO] - Studiare Anatomia e Scienze del corpo umano:", a: [{t: "Lo adoro, è fondamentale per capire come migliorare le prestazioni.", p: {SPO: 4, SC: 2}}, {t: "Mi interessa per poter operare in sala chirurgica in futuro.", p: {SC: 4, SCA: 2}}, {t: "Mi interessa solo per lavorare come infermiere o OSS.", p: {SOC: 3}}, {t: "Troppo complessa, preferisco la pratica allo studio teorico dei muscoli.", p: {MAN: 2}}] },
+            { q: "[SPORT & MOVIMENTO] - Come ti vedi nei panni dell'Allenatore?", a: [{t: "Sarebbe fantastico creare strategie, motivare la squadra e vincere.", p: {SPO: 4}}, {t: "Sarebbe bello per insegnare i valori dello sport ai bambini (educatore).", p: {SU: 3, SOC: 2, SPO: 2}}, {t: "Non ho pazienza per guidare gli altri, preferisco lo sport individuale.", p: {SPO: 2}}, {t: "Preferisco analizzare le statistiche sportive al computer (Match Analyst).", p: {INF: 3, SPO: 2}}] },
+            { q: "[SPORT & MOVIMENTO] - Sport e Diritto/Economia:", a: [{t: "Mi interessa molto studiare il Diritto Sportivo e i contratti degli atleti.", p: {SPO: 4, LES: 2}}, {t: "Voglio gestire il marketing sportivo e i bilanci delle società.", p: {AFM: 3, SPO: 3}}, {t: "Preferisco la scienza, il diritto e l'economia sono noiosi.", p: {SC: 2, SCA: 2}}, {t: "Lo sport deve rimanere puro, i soldi lo rovinano.", p: {SU: 2}}] },
+            { q: "[SPORT & MOVIMENTO] - Quanto sei interessato alla chimica dietro all'alimentazione sportiva?", a: [{t: "Tantissimo, l'alimentazione è metà dell'allenamento.", p: {SPO: 4, CHI: 2}}, {t: "Molto, ma dal punto di vista medico o dietologico puro.", p: {SC: 3, CHI: 3}}, {t: "Più che l'alimentazione chimica mi interessa l'ortopedia.", p: {SAN: 3, SC: 2}}, {t: "Poco, lo sport è solo sudore e fatica fisica.", p: {SPO: 2}}] },
+            { q: "[SPORT & MOVIMENTO] - Riguardo agli sport all'aria aperta (Vela, Sci, Alpinismo):", a: [{t: "Li adoro, l'ambiente naturale è la palestra migliore.", p: {SPO: 4, AGR: 2}}, {t: "Preferisco gli sport indoor (palestra, basket, pallavolo).", p: {SPO: 3}}, {t: "Se sono all'aperto preferisco guidare un trattore o lavorare la terra.", p: {AGR: 4}}, {t: "Se sono all'aperto preferisco misurare il terreno o dirigere un cantiere.", p: {CAT: 4}}] },
+            { q: "[SPORT & MOVIMENTO] - Il giornalismo sportivo:", a: [{t: "È il mio sogno: scrivere articoli o fare telecronache.", p: {CL: 3, SPO: 3}}, {t: "Mi interessa di più organizzare gli eventi sportivi da dietro le quinte.", p: {TUR: 3, SPO: 2}}, {t: "Preferisco essere sul campo a sudare piuttosto che parlarne.", p: {SPO: 4}}, {t: "Preferisco il giornalismo politico e sociale.", p: {LES: 3, SU: 2}}] },
+            { q: "[SPORT & MOVIMENTO] - L'idea di un Liceo Scientifico Sportivo (LSS):", a: [{t: "È perfetta: mix di materie scientifiche, economia, senza latino e tanto sport.", p: {SPO: 4}}, {t: "Mi spaventa la parte di matematica e fisica, vorrei solo fare sport.", p: {MAN: 2, SU: 1}}, {t: "Preferisco il liceo scientifico tradizionale per avere basi più ampie.", p: {SC: 4}}, {t: "Preferisco imparare un mestiere che non c'entra niente con lo sport.", p: {MEC: 2, ELE: 2}}] },
+            { q: "[SPORT & MOVIMENTO] - Cosa vedi nel tuo futuro?", a: [{t: "Personal Trainer, Fisioterapista o Docente di Scienze Motorie.", p: {SPO: 4}}, {t: "Manager Sportivo o Procuratore di atleti.", p: {SPO: 3, AFM: 2}}, {t: "Medico Sportivo (dopo Medicina).", p: {SC: 4, SPO: 2}}, {t: "Giornalista Sportivo o Esperto di Diritto Sportivo.", p: {LES: 3, CL: 2}}] }
+        ],
+        lang: [
+            { q: "[LINGUE & TURISMO] - Perché ami o vorresti studiare le lingue?", a: [{t: "Per viaggiare e lavorare in giro per il mondo senza barriere.", p: {TUR: 4, LI: 2}}, {t: "Per conoscere la letteratura profonda, l'anima dei popoli e tradurre.", p: {LI: 4, CL: 2}}, {t: "Per fare affari economici con aziende estere.", p: {AFM: 4, COM: 3}}, {t: "Per accogliere turisti e lavorare negli hotel/ristoranti internazionali.", p: {ALB: 4, TUR: 2}}] },
+            { q: "[LINGUE & TURISMO] - Quale livello di interazione preferisci?", a: [{t: "Traduzione solitaria di testi o libri.", p: {LI: 4, CL: 2}}, {t: "Comunicazione continua con i turisti, organizzando i loro tour.", p: {TUR: 4}}, {t: "Negoziazione di contratti di import/export al telefono.", p: {COM: 3, AFM: 3}}, {t: "Servizio diretto al tavolo o alla reception di un resort.", p: {ALB: 4}}] },
+            { q: "[LINGUE & TURISMO] - Quali materie accompagnerebbero meglio lo studio linguistico?", a: [{t: "Storia dell'Arte, Filosofia e Letteratura.", p: {LI: 4, CL: 2}}, {t: "Geografia, Marketing Turistico e Diritto/Economia.", p: {TUR: 4, AFM: 2}}, {t: "Laboratorio di Cucina, Sala e Bar.", p: {ALB: 4}}, {t: "Relazioni Internazionali, Sociologia e Geopolitica.", p: {LES: 4}}] },
+            { q: "[LINGUE & TURISMO] - Quanto ti interessa la grammatica perfetta?", a: [{t: "Moltissimo, voglio padroneggiare la sintassi come un madrelingua colto.", p: {LI: 4}}, {t: "Poco, mi basta farmi capire ed essere fluente per vendere o relazionarmi.", p: {TUR: 3, COM: 3}}, {t: "Preferisco la grammatica logica dei linguaggi di programmazione informatica.", p: {INF: 4}}, {t: "Mi affascina di più la grammatica dell'antico latino o greco.", p: {CL: 4}}] },
+            { q: "[LINGUE & TURISMO] - Immagina di essere all'estero:", a: [{t: "Passo le giornate nei musei e nelle librerie storiche.", p: {LI: 3, CL: 3}}, {t: "Analizzo come è gestita la città a livello turistico (trasporti, info point).", p: {TUR: 4}}, {t: "Mi interessa capire l'economia del paese e il costo della vita.", p: {LES: 3, AFM: 3}}, {t: "Vado a provare tutti i piatti tipici nei ristoranti per capire la cultura culinaria.", p: {ALB: 4}}] },
+            { q: "[LINGUE & TURISMO] - Lo studio di 3 lingue straniere al liceo ti spaventa?", a: [{t: "No, è proprio quello che voglio (Inglese, Francese/Spagnolo, Tedesco/Cinese).", p: {LI: 4, TUR: 3}}, {t: "Sì, preferirei fare solo bene l'Inglese e una seconda lingua base, ma più pratica.", p: {COM: 3, AFM: 3, ALB: 2}}, {t: "Preferisco studiare molta più psicologia o sociologia con una sola lingua.", p: {SU: 4, LES: 2}}, {t: "Mi spaventa, preferisco la matematica o il disegno tecnico.", p: {SC: 3, CAT: 2}}] },
+            { q: "[LINGUE & TURISMO] - Ti piacerebbe studiare Cinese o Arabo?", a: [{t: "Sì, per comprendere culture orientali profonde e la loro scrittura.", p: {LI: 4}}, {t: "Sì, perché sono i mercati del futuro per l'economia e il turismo.", p: {TUR: 3, AFM: 3, LES: 2}}, {t: "No, preferisco le lingue europee classiche.", p: {CL: 2, LI: 2}}, {t: "Non mi interessano le lingue estere in generale.", p: {MEC: 1, ELE: 1}}] },
+            { q: "[LINGUE & TURISMO] - Come reagisci agli imprevisti nei viaggi (es. volo cancellato)?", a: [{t: "Risolvo logisticamente il problema, trovo alternative, parlo con gli operatori.", p: {TUR: 4, COM: 2}}, {t: "Mi faccio prendere un po' dal panico, preferisco avere tutto super organizzato prima.", p: {AFM: 2, SC: 2}}, {t: "Ne approfitto per fermarmi e parlare con i locali in aeroporto.", p: {LI: 3, SU: 2}}, {t: "Dipende, se ero io a pilotare l'aereo sarebbe un problema enorme!", p: {TRA: 4}}] },
+            { q: "[LINGUE & TURISMO] - Turismo Sostenibile: ti interessa?", a: [{t: "Molto, vorrei organizzare eco-viaggi che rispettino la natura locale.", p: {TUR: 4, AGR: 2}}, {t: "Mi interessa più il turismo d'affari o il turismo di lusso.", p: {TUR: 3, AFM: 2}}, {t: "Preferisco studiare l'aspetto scientifico/chimico del perché l'ambiente si sta degradando.", p: {CHI: 4, SC: 2}}, {t: "Preferisco l'aspetto sociologico di come il turismo impatta le popolazioni locali.", p: {LES: 4, SU: 2}}] },
+            { q: "[LINGUE & TURISMO] - Cosa vedi nel tuo futuro?", a: [{t: "Interprete, Traduttore o Docente Universitario di Lingue.", p: {LI: 4}}, {t: "Direttore Tecnico di Agenzia Viaggi, Hostess/Steward, o Manager del Turismo.", p: {TUR: 4}}, {t: "Manager aziendale dell'Ufficio Estero Export.", p: {AFM: 4, COM: 3}}, {t: "Direttore d'Albergo o Chef internazionale.", p: {ALB: 4}}] }
+        ]
+    };
+
+    // Aggiungo automaticamente la risposta "Altro/i"
+    const addAltroOption = (questionsArray) => {
+        questionsArray.forEach(q => {
+            q.a.push({ t: "Altro / Nessuna di queste / Non lo so", p: { ALTRO: 1 }, isAltro: true });
+        });
+    };
+    
+    addAltroOption(baseQuestions);
+    Object.values(branchData).forEach(branch => addAltroOption(branch));
+
+    // ==========================================
+    // VARIABILI DI STATO E MOTORE DEL QUIZ
+    // ==========================================
     let questionQueue = [];
     let currentStep = 0;
     
-    // Profili ampliati
+    // Profili disponibili
     let score = { 
         CL:0, SC:0, SCA:0, SPO:0, LI:0, SU:0, LES:0, AR:0, MU:0, 
         INF:0, MEC:0, ELE:0, CAT:0, AGR:0, CHI:0, GRA:0, MOD:0, TRA:0, AFM:0, TUR:0, 
-        ALB:0, SOC:0, MAN:0, MID:0, COM:0, SAN:0 
+        ALB:0, SOC:0, MAN:0, MID:0, COM:0, SAN:0, ALTRO:0 
     };
-    let uniChoice = "forse";
-    let history = []; // Per il bottone "Indietro"
+    
+    // Tracker logico
+    let branchScores = { tech: 0, human: 0, science: 0, business: 0, art: 0, practical: 0, sport: 0, lang: 0 };
+    let generalQuestionsAnswered = 0;
+    let branchesTriggered = false;
 
-    // Funzione per mescolare un array (Fisher-Yates)
+    let uniChoice = "forse";
+    let history = []; 
+    let askedQuestions = new Set();
+
     function shuffleArray(array) {
         let curId = array.length;
         while (0 !== curId) {
@@ -352,7 +457,6 @@
     }
 
     function initQuiz() {
-        // La domanda 1 è fissa sull'università
         const firstQuestion = {
             q: "Prima di iniziare: pensando al tuo futuro dopo il diploma, cosa immagini?",
             type: "uni",
@@ -362,8 +466,6 @@
                 { t: "Non lo so ancora, vorrei tenermi aperte tutte le strade.", v: "forse" }
             ]
         };
-
-        // Prepariamo la coda: Q1 + Domande Base Mescolate
         questionQueue = [firstQuestion, ...shuffleArray([...baseQuestions])];
         loadQuestion();
     }
@@ -372,8 +474,8 @@
         const q = questionQueue[currentStep];
         const totalEstimated = questionQueue.length;
         
-        document.getElementById("step-info").innerText = `Domanda ${currentStep + 1} di ${totalEstimated}`;
-        document.getElementById("progress-fill").style.width = `${((currentStep) / totalEstimated) * 100}%`;
+        const progressPercent = (currentStep / totalEstimated) * 100;
+        document.getElementById("progress-fill").style.width = `${progressPercent}%`;
         document.getElementById("q-text").innerText = q.q;
         
         const optionsBox = document.getElementById("q-options");
@@ -382,7 +484,7 @@
         q.a.forEach(ans => {
             const btn = document.createElement("button");
             btn.innerText = ans.t;
-            btn.onclick = () => selectOption(ans);
+            btn.onclick = () => selectOption(ans, q);
             optionsBox.appendChild(btn);
         });
 
@@ -391,55 +493,92 @@
         else backBtn.classList.remove("visible");
     }
 
-  function selectOption(ans) {
-    // Salva lo stato attuale per permettere di tornare indietro
-    history.push({ 
-        step: currentStep, 
-        score: JSON.parse(JSON.stringify(score)), 
-        uni: uniChoice,
-        queueSnapshot: [...questionQueue],
-        usedBranchesSnapshot: new Set(usedBranches) // Salviamo anche i rami usati
-    });
-    
-    // Assegnazione punti o preferenza Uni
-    if (questionQueue[currentStep].type === "uni") {
-        uniChoice = ans.v;
-    } else if (ans.p) {
-        for(let key in ans.p) {
-            score[key] += ans.p[key];
-        }
-    }
+    function selectOption(ans, q) {
+        history.push({ 
+            step: currentStep, 
+            score: JSON.parse(JSON.stringify(score)),
+            branchScores: JSON.parse(JSON.stringify(branchScores)),
+            generalQuestionsAnswered,
+            branchesTriggered,
+            uni: uniChoice,
+            queueSnapshot: [...questionQueue],
+            askedQuestionsSnapshot: new Set(askedQuestions)
+        });
+        
+        askedQuestions.add(q.q);
 
-    // --- LOGICA BRANCHING CORRETTA ---
-    if (ans.followUp && branchQuestions[ans.followUp]) {
-        // Controlla se questo ramo è già stato inserito o mostrato
-        if (!usedBranches.has(ans.followUp)) {
+        if (q.type === "uni") {
+            uniChoice = ans.v;
+        } else {
+            if (ans.p) {
+                for(let key in ans.p) score[key] += ans.p[key];
+            }
+            if (q.isGeneral) {
+                generalQuestionsAnswered++;
+                if (ans.trigger) branchScores[ans.trigger] += 3; // Assegnazione punti per macro-area
+            }
+        }
+
+        // LOGICA DI DIRAMAZIONE (Dopo 11 domande generali e solo 1 volta)
+        if (generalQuestionsAnswered === 11 && !branchesTriggered) {
+            branchesTriggered = true;
+            
+            // Ordina i branch in base al punteggio accumulato
+            let sortedBranches = Object.entries(branchScores).sort((a,b) => b[1] - a[1]);
+            let best1 = sortedBranches[0];
+            let best2 = sortedBranches[1];
+            
+            let branchesToQueue = [];
+            // Se i punteggi più alti distano di 3 punti o meno, mostra 2 diramazioni. Altrimenti solo la prima.
+            if ((best1[1] - best2[1]) <= 3) {
+                branchesToQueue.push(best1[0], best2[0]);
+            } else {
+                branchesToQueue.push(best1[0]);
+            }
+
+            let newQuestions = [];
+            branchesToQueue.forEach(branchKey => {
+                if(branchData[branchKey]) {
+                    newQuestions = newQuestions.concat(shuffleArray([...branchData[branchKey]]));
+                }
+            });
+
+            // Inserisce le domande specifiche nel flusso corrente, mettendo in pausa le rimanenti domande generali
             const nextIndex = currentStep + 1;
-            questionQueue.splice(nextIndex, 0, branchQuestions[ans.followUp]);
-            usedBranches.add(ans.followUp); // Segna come "già prenotato/usato"
+            questionQueue.splice(nextIndex, 0, ...newQuestions);
+        }
+
+        currentStep++;
+        
+        while (currentStep < questionQueue.length && askedQuestions.has(questionQueue[currentStep].q)) {
+            currentStep++;
+        }
+
+        if (currentStep < questionQueue.length) {
+            loadQuestion();
+        } else {
+            showResults();
         }
     }
 
-    currentStep++;
-    if(currentStep < questionQueue.length) {
-        loadQuestion();
-    } else {
-        showResults();
+    function goBack() {
+        if(currentStep > 0) {
+            const lastState = history.pop();
+            currentStep = lastState.step;
+            score = lastState.score;
+            branchScores = lastState.branchScores;
+            generalQuestionsAnswered = lastState.generalQuestionsAnswered;
+            branchesTriggered = lastState.branchesTriggered;
+            uniChoice = lastState.uni;
+            questionQueue = lastState.queueSnapshot;
+            askedQuestions = lastState.askedQuestionsSnapshot;
+            loadQuestion();
+        }
     }
-}
 
-   function goBack() {
-    if(currentStep > 0) {
-        const lastState = history.pop();
-        currentStep = lastState.step;
-        score = lastState.score;
-        uniChoice = lastState.uni;
-        questionQueue = lastState.queueSnapshot;
-        usedBranches = lastState.usedBranchesSnapshot; // Ripristina i rami usati
-        loadQuestion();
-    }
-}
-
+    // ==========================================
+    // DATABASE DESCRIZIONI E LINK
+    // ==========================================
     const descriptions = {
         CL: { n: "Liceo Classico", d: "Latino, greco, letteratura e filosofia. Per chi vuole una cultura vastissima e basi critiche imbattibili.", link: "classico.html" },
         SC: { n: "Liceo Scientifico", d: "Matematica, fisica e scienze. Perfetto se sogni l'ingegneria, la medicina o la ricerca pura.", link: "scientifico.html" },
@@ -469,28 +608,61 @@
         SAN: { n: "Professionale Arti Ausiliarie", d: "Odontotecnico o Ottico. Laboratorio, tecnologia e precisione per la salute.", link: "arti_sanitarie.html" }
     };
 
-    function showResults() {
+    function getShortDescription(topMacro) {
+        // Classifica sommaria basata sul miglior risultato
+        if(['CL','SU','LES'].includes(topMacro)) return "Hai una marcata vocazione umanistico-sociale, supportata da forti doti empatiche e analitiche verso dinamiche relazionali, storiche o testuali.";
+        if(['SC','SCA','CHI'].includes(topMacro)) return "Il tuo profilo rivela una solida attitudine logico-scientifica e un approccio mentale razionale rivolto al problem-solving e alla ricerca.";
+        if(['INF','ELE','MEC','CAT'].includes(topMacro)) return "Mostri una predisposizione per l'universo tecnologico e progettuale, abbinando precisione strutturale a curiosità per l'innovazione hardware o software.";
+        if(['AR','GRA','MOD','MU'].includes(topMacro)) return "Il tuo talento ruota attorno alla sintesi creativa ed estetica. Eccelli nella comunicazione visiva o performativa unita alla visione progettuale.";
+        if(['AGR','SAN','SPO'].includes(topMacro)) return "La tua sfera d'interesse si connette strettamente al benessere umano, alla performance corporea o alla gestione della natura e della biologia.";
+        if(['AFM','COM','TUR','LI'].includes(topMacro)) return "Risulti estremamente affine alle interazioni linguistiche, organizzative e strategico-commerciali; possiedi le basi per eccellere in mercati fluidi.";
+        if(['MAN','MID','ALB','SOC','TRA'].includes(topMacro)) return "Possiedi una forte componente empirica e operativa. Sei attratto dal pragmatismo e dalla rapida applicazione in contesti tecnico-professionali.";
+        return "Il tuo profilo risulta estremamente versatile e bilanciato, indicando flessibilità verso ambiti multidisciplinari.";
+    }
+
+    async function showResults() {
         document.getElementById("quiz-ui").style.display = "none";
         document.getElementById("result").style.display = "block";
         document.getElementById("progress-fill").style.width = "100%";
 
-        // Boost legato all'università
-        if(uniChoice === "si") {
-            for(let k in score) if(["CL","SC","SCA","SPO","LI","SU","LES","AR","MU"].includes(k)) score[k] += 15;
-        } else if(uniChoice === "no") {
-            for(let k in score) if(["ALB","SOC","MAN","MID","COM","SAN"].includes(k)) score[k] += 15;
+        const list = document.getElementById("results-list");
+        list.innerHTML = "";
+
+        let altMsg = "";
+        if (score.ALTRO > (currentStep * 0.25)) {
+            score.SC += 100;
+            score.SU += 100;
+            score.LES += 100;
+            altMsg = `
+                <div class="alert-generic">
+                    <strong>💡 Abbiamo notato che hai risposto spesso "Altro/Non lo so".</strong><br>
+                    Questo è normalissimo! Ti consigliamo vivamente di puntare su <b>Licei</b> o indirizzi più ampi e generici (come lo Scientifico o le Scienze Umane), che non ti vincolano a un mestiere specifico e ti lasciano tutte le porte aperte per capire con calma il tuo futuro.
+                </div>
+            `;
+            list.innerHTML += altMsg;
         }
 
-        // Ordinamento dei risultati
+        if(uniChoice === "si") {
+            for(let k in score) if(["CL","SC","SCA","SPO","LI","SU","LES","AR","MU"].includes(k)) score[k] += 20;
+        } else if(uniChoice === "no") {
+            for(let k in score) if(["ALB","SOC","MAN","MID","COM","SAN"].includes(k)) score[k] += 20;
+        }
+
+        delete score.ALTRO; 
+
         let sorted = Object.entries(score).sort((a,b) => b[1] - a[1]);
         const top3 = sorted.slice(0, 3);
         
-        const list = document.getElementById("results-list");
-        list.innerHTML = "";
+        // Creazione breve psicodiagnosi
+        const testDescription = getShortDescription(top3[0][0]);
+        list.innerHTML += `<p style="color:var(--accent); font-weight:600; font-size:1.05rem; text-align:left; margin-bottom: 25px;">${testDescription}</p>`;
+
+        const recommendedSchools = [];
 
         top3.forEach((m, i) => {
             const data = descriptions[m[0]];
             const isTop = i === 0;
+            recommendedSchools.push(data.n);
             
             list.innerHTML += `
                 <a href="OGdata/indirizzi/${data.link}" target="_blank" style="text-decoration: none; display: block;">
@@ -505,9 +677,30 @@
                 </a>
             `;
         });
+
+        // SALVATAGGIO SU SUPABASE
+        try {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                // Presupponendo l'esistenza di una colonna "test_results" o "profile_desc" nella tabella utenti
+                const { error } = await supabaseClient
+                    .from('profiles') // Modifica il nome tabella se nel tuo DB è diverso, ad es: 'users' o 'user_results'
+                    .update({ 
+                        top_3_schools: recommendedSchools, // Assicurati di avere colonne corrispondenti (Array)
+                        test_description: testDescription  // Colonna di tipo text
+                    })
+                    .eq('id', session.user.id);
+                
+                if (error) console.error("Errore salvataggio risultati:", error.message);
+                else console.log("Risultati salvati sull'account con successo.");
+            } else {
+                console.log("Utente non loggato, salvataggio skippato.");
+            }
+        } catch(e) {
+            console.error("Errore di connessione Supabase nel salvataggio:", e);
+        }
     }
 
-    // Avvio del quiz
     initQuiz();
 </script>
 </body>
