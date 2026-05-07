@@ -163,10 +163,6 @@
 
             <div class="divider"><span>oppure</span></div>
 
-            <button class="btn-google" id="googleBtn">
-                <img src="https://www.google.com/favicon.ico" alt="Google"> Continua con Google
-            </button>
-
             <p class="footer-text">
                 Hai già un account? <a href="login.html">Accedi</a>
             </p>
@@ -215,14 +211,6 @@
             } else {
                 msg.innerHTML = `<span style="color:var(--primary)">Perfetto! Clicca sul link inviato alla tua mail.</span>`;
             }
-        };
-
-        // Google Login
-        document.getElementById('googleBtn').onclick = async () => {
-            await supabaseClient.auth.signInWithOAuth({
-                provider: 'google',
-                options: { redirectTo: REDIRECT_URL }
-            });
         };
     </script>
 </body>
