@@ -53,10 +53,6 @@
 
             <div class="divider"><span>oppure</span></div>
 
-            <button class="btn-google" id="googleBtn">
-                <img src="https://www.google.com/favicon.ico" alt="Google"> Accedi con Google
-            </button>
-
             <p class="footer-text">
                 Non hai un account? <a href="register.html">Registrati ora</a>
             </p>
@@ -82,12 +78,6 @@
             else window.location.href = 'index.html';
         };
 
-        document.getElementById('googleBtn').onclick = async () => {
-            await supabaseClient.auth.signInWithOAuth({
-                provider: 'google',
-                options: { redirectTo: REDIRECT_URL }
-            });
-        };
     </script>
 </body>
 </html>
