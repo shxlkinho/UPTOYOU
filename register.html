@@ -134,12 +134,15 @@
         };
 
         // Logica Google
-        document.getElementById('googleBtn').onclick = async () => {
-            await supabaseClient.auth.signInWithOAuth({
-                provider: 'google',
-                options: { redirectTo: window.location.origin }
-            });
-        };
+      // Cambia la logica Google con questa:
+document.getElementById('googleBtn').onclick = async () => {
+    await supabaseClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: { 
+            redirectTo: window.location.href // Ti riporta esattamente qui
+        }
+    });
+};
     </script>
 </body>
 </html>
