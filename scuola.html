@@ -11,39 +11,228 @@
         :root { --fucsia: #ff00ff; --fucsia-glow: rgba(255, 0, 255, 0.4); }
         body { background-color: #080808; color: white; margin: 0; }
 
-        /* Layout Fix */
         .scuola-hero { padding: 160px 5% 40px; text-align: center; }
         .scuola-header h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; color: #4facfe; text-transform: uppercase; margin-bottom: 10px; }
-        .main-photo-container { max-width: 1000px; margin: 30px auto; border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); position: relative; }
-        
-        /* Aggiunta animazione morbida per il caricamento dell'immagine */
-        .main-photo-container img { width: 100%; height: auto; max-height: 500px; object-fit: cover; display: block; transition: opacity 0.5s ease-in-out; }
 
-        .scuola-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto 80px; padding: 0 5%; }
-        .info-card { background: #151515; padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px; }
+        /* Carosello foto ufficiali */
+        .main-photo-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        .main-photo-container img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.55);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: none;
+            z-index: 2;
+        }
+        .carousel-btn:hover { background: rgba(0,0,0,0.85); }
+        #prev-btn { left: 14px; }
+        #next-btn { right: 14px; }
+        .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: rgba(255,255,255,0.4);
+            transition: background 0.2s;
+        }
+        .dot.active { background: white; }
 
-        /* Sezione Recensioni */
+        /* Upload foto ufficiali */
+        .upload-official-area {
+            max-width: 1000px;
+            margin: 0 auto 10px;
+            padding: 0 0;
+            text-align: right;
+        }
+
+        /* Sezione problemi */
+        .problems-section {
+            max-width: 1200px;
+            margin: 50px auto 40px;
+            padding: 0 5%;
+        }
+        .problems-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .problem-thumb {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: #111;
+        }
+        .problem-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            filter: brightness(0.85);
+            transition: transform 0.3s, filter 0.3s;
+        }
+        .problem-thumb img:hover { transform: scale(1.04); filter: brightness(1); }
+        .problem-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.72);
+            padding: 6px 8px;
+        }
+        .problem-caption p { margin: 0; font-size: 0.75rem; color: #eee; }
+        .report-btn {
+            position: absolute;
+            top: 6px; right: 6px;
+            background: rgba(0,0,0,0.5);
+            border: none; color: #ccc;
+            padding: 3px 7px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: background 0.2s;
+        }
+        .report-btn:hover { background: rgba(200,0,0,0.6); }
+
+        /* Form upload generico */
+        .upload-form {
+            background: #151515;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 10px;
+        }
+        .upload-form h4 { margin: 0 0 15px; }
+        .upload-form input[type="text"] {
+            width: 100%;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .upload-form .preview-box {
+            display: none;
+            margin-bottom: 15px;
+        }
+        .upload-form .preview-box img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        .upload-form .btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-cancel:hover { border-color: #888; color: #ccc; }
+        .upload-status { color: #888; font-size: 0.85rem; margin-top: 10px; }
+
+        /* Grid layout */
+        .scuola-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 5%;
+        }
+        .info-card {
+            background: #151515;
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 25px;
+        }
+
+        /* Recensioni */
         .reviews-wrapper { grid-column: span 2; padding-top: 50px; border-top: 1px solid rgba(255, 0, 255, 0.2); }
         .comment-box { background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 15px; border: 1px solid var(--fucsia); margin-bottom: 30px; }
-        
         .input-group { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
-        .comment-box input, .comment-box select { 
-            background: #222; border: 1px solid #444; color: white; 
+        .comment-box input, .comment-box select {
+            background: #222; border: 1px solid #444; color: white;
             padding: 10px; border-radius: 8px; outline: none;
         }
-        .comment-box textarea { 
-            width: 100%; background: transparent; border: none; 
-            border-bottom: 1px solid #444; color: white; padding: 10px 0; 
+        .comment-box textarea {
+            width: 100%; background: transparent; border: none;
+            border-bottom: 1px solid #444; color: white; padding: 10px 0;
             outline: none; margin-bottom: 20px; resize: none;
         }
-
         .btn-fucsia { background: var(--fucsia); color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.3s; }
         .btn-fucsia:hover { box-shadow: 0 0 20px var(--fucsia); transform: translateY(-2px); }
-
         .review-card { background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: 15px; border: 1px solid rgba(255, 0, 255, 0.1); margin-bottom: 20px; }
-        .review-role { color: var(--fucsia); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; margin-left: 10px; }
 
-        @media (max-width: 900px) { .scuola-grid { grid-template-columns: 1fr; } .reviews-wrapper { grid-column: 1; } }
+        /* Lightbox */
+        .lightbox-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.93);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+            padding: 20px;
+        }
+        .lightbox-overlay img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+        .lightbox-caption {
+            color: #ccc;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .scuola-grid { grid-template-columns: 1fr; }
+            .reviews-wrapper { grid-column: 1; }
+            .problems-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+        }
     </style>
 </head>
 <body>
@@ -55,7 +244,6 @@
                 UP<span>TOYOU</span>
             </a>
         </div>
-        
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li class="dropdown">
@@ -79,128 +267,186 @@
     </nav>
 </header>
 
-    <section class="scuola-hero">
-        <span id="school-type" style="color:var(--accent); text-transform:uppercase; letter-spacing:2px; font-size:0.9rem;">Caricamento...</span>
-        <h1 id="school-name">Nome Scuola</h1>
-        <p style="color:#888;">
-            📍 <span id="display-address">Indirizzo...</span>
-            <a id="maps-url" href="#" target="_blank" style="color:#4facfe; text-decoration:none; margin-left:10px; font-weight:600;">Vedi su Maps →</a>
-        </p>
+<!-- ===== HERO ===== -->
+<section class="scuola-hero">
+    <span id="school-type" style="color:var(--accent); text-transform:uppercase; letter-spacing:2px; font-size:0.9rem;">Caricamento...</span>
+    <h1 id="school-name">Nome Scuola</h1>
+    <p style="color:#888;">
+        📍 <span id="display-address">Indirizzo...</span>
+        <a id="maps-url" href="#" target="_blank" style="color:#4facfe; text-decoration:none; margin-left:10px; font-weight:600;">Vedi su Maps →</a>
+    </p>
 
-        <div class="main-photo-container">
-            <!-- Immagine con segnaposto iniziale in attesa del caricamento dinamico -->
-            <img id="school-image" style="opacity: 0.6;" src="https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&q=80&w=1200" alt="Scuola">
-        </div>
-    </section>
-
-    <div class="scuola-grid">
-        <main>
-            <div class="info-card">
-                <h2 style="color:#4facfe;">L'Offerta Formativa</h2>
-                <p id="school-description">Recupero informazioni...</p>
-            </div>
-            <div class="info-card">
-                <h2 style="color:#4facfe;">Profilo dello Studente</h2>
-                <p id="school-profile">Caricamento profilo...</p>
-            </div>
-        </main>
-
-        <aside>
-            <div class="info-card">
-                <h4 style="color:var(--fucsia); margin-bottom:15px;">CONTATTI</h4>
-                <p id="school-email" style="font-weight:600;">Email: --</p>
-                <div id="school-website-container" style="margin-top:20px;"></div>
-            </div>
-        </aside>
-
- <div class="reviews-wrapper">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px;">
-        <h2 style="color: var(--fucsia); margin: 0;">Recensioni degli Studenti</h2>
-        <!-- Contenitore dinamico per la media delle stelle -->
-        <div id="average-rating" style="background: rgba(255, 255, 255, 0.05); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255, 0, 255, 0.3);">
-            Calcolo media...
+    <!-- CAROSELLO FOTO UFFICIALI -->
+    <div class="main-photo-container">
+        <img id="school-image" src="https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&q=80&w=1200" alt="Scuola">
+        <button class="carousel-btn" id="prev-btn" onclick="cambiaFoto(-1)">&#8249;</button>
+        <button class="carousel-btn" id="next-btn" onclick="cambiaFoto(1)">&#8250;</button>
+        <div id="foto-dots" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:6px;"></div>
+        <div id="official-badge" style="display:none; position:absolute; top:15px; left:15px; background:var(--fucsia); color:white; font-size:0.75rem; font-weight:700; padding:4px 12px; border-radius:20px;">
+            ✓ FOTO UFFICIALI
         </div>
     </div>
-    
-    <!-- Messaggio per chi non è loggato (visibile solo ai non loggati) -->
-    <div id="auth-comment-placeholder" style="display: none; margin-bottom: 30px;">
-        <p style="color: #bbb; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; border: 1px dashed var(--fucsia); text-align: center;">
-            Effettua il Login per poter lasciare una recensione sulla scuola. <br>
-            <a href="login.html" style="color: var(--fucsia); text-decoration: none; font-weight: bold; margin-top: 10px; display: inline-block;">Accedi o Registrati ora →</a>
-        </p>
+
+    <!-- Bottone upload foto ufficiali (solo loggati) -->
+    <div class="upload-official-area" style="max-width:1000px; margin:10px auto 0; text-align:right;">
+        <div id="upload-official-btn-container"></div>
     </div>
 
-    <!-- Box recensioni (visibile solo ai loggati) -->
-    <div id="comment-box-logged" class="comment-box" style="display: none;">
-        <div class="input-group">
-            <input type="text" id="rev-name" placeholder="Tuo Nome">
-            <select id="rev-status">
-                <option value="Studente 1° Anno">1° Anno</option>
-                <option value="Studente 2° Anno">2° Anno</option>
-                <option value="Studente 3° Anno">3° Anno</option>
-                <option value="Studente 4° Anno">4° Anno</option>
-                <option value="Studente 5° Anno">5° Anno</option>
-                <option value="Ex Studente">Ex Studente</option>
-            </select>
-            <select id="rev-stars">
-                <option value="5">⭐⭐⭐⭐⭐</option>
-                <option value="4">⭐⭐⭐⭐</option>
-                <option value="3">⭐⭐⭐</option>
-                <option value="2">⭐⭐</option>
-                <option value="1">⭐</option>
-            </select>
+    <!-- Form upload foto ufficiali -->
+    <div id="upload-official-form" class="upload-form" style="display:none; max-width:1000px; margin:10px auto 0; border:1px dashed var(--fucsia);">
+        <h4 style="color:var(--fucsia);">Aggiungi Foto Ufficiale <span style="color:#666; font-weight:400; font-size:0.85rem;">(max 5 per scuola)</span></h4>
+        <input type="file" id="official-input" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleOfficialSelected(this)">
+        <div class="preview-box" id="official-preview-box">
+            <img id="official-preview-img" src="" alt="preview">
         </div>
-        <textarea id="rev-text" rows="2" placeholder="Scrivi la tua esperienza qui..."></textarea>
-        <button class="btn-fucsia" onclick="inviaRecensione()">Pubblica Commento</button>
+        <div class="btn-row">
+            <button class="btn-fucsia" onclick="document.getElementById('official-input').click()">Scegli Foto</button>
+            <button id="btn-official-confirm" class="btn-fucsia" style="display:none; background:#4facfe;" onclick="confermaUploadUfficiale()">✓ Pubblica</button>
+            <button class="btn-cancel" onclick="chiudiUploadUfficiale()">Annulla</button>
+        </div>
+        <p class="upload-status" id="official-upload-status"></p>
+    </div>
+</section>
+
+<!-- ===== SEZIONE SEGNALAZIONI STUDENTI ===== -->
+<div class="problems-section">
+    <div class="problems-header">
+        <div>
+            <h3 style="color:#ff6b6b; margin:0;">⚠️ Segnalazioni Studenti</h3>
+            <p style="color:#666; font-size:0.85rem; margin:4px 0 0;">
+                Foto caricate dagli studenti — <span id="problems-count">0</span>/20
+            </p>
+        </div>
+        <div id="upload-problem-btn-container"></div>
     </div>
 
-    <!-- La griglia dei commenti rimane sempre visibile -->
-    <div id="reviews-grid"></div>
+    <!-- Griglia foto problemi -->
+    <div id="problems-grid" class="problems-grid"></div>
+
+    <!-- Form upload problema -->
+    <div id="upload-problem-form" class="upload-form" style="display:none; border:1px dashed #ff6b6b;">
+        <h4 style="color:#ff6b6b;">Segnala un problema</h4>
+        <input type="file" id="problem-input" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleProblemSelected(this)">
+        <div class="preview-box" id="problem-preview-box">
+            <img id="problem-preview-img" src="" alt="preview">
+        </div>
+        <input type="text" id="problem-didascalia" placeholder="Descrivi brevemente il problema (es. Bagni rotti, Aula senza riscaldamento...)" maxlength="100">
+        <div class="btn-row">
+            <button class="btn-fucsia" style="background:#ff6b6b;" onclick="document.getElementById('problem-input').click()">Scegli Foto</button>
+            <button id="btn-problem-confirm" class="btn-fucsia" style="display:none; background:#4facfe;" onclick="confermaUploadProblema()">✓ Pubblica Segnalazione</button>
+            <button class="btn-cancel" onclick="chiudiUploadProblema()">Annulla</button>
+        </div>
+        <p class="upload-status" id="problem-upload-status"></p>
+    </div>
 </div>
-    </div>
 
+<!-- ===== GRID INFO + RECENSIONI ===== -->
+<div class="scuola-grid">
+    <main>
+        <div class="info-card">
+            <h2 style="color:#4facfe;">L'Offerta Formativa</h2>
+            <p id="school-description">Recupero informazioni...</p>
+        </div>
+        <div class="info-card">
+            <h2 style="color:#4facfe;">Profilo dello Studente</h2>
+            <p id="school-profile">Caricamento profilo...</p>
+        </div>
+    </main>
+
+    <aside>
+        <div class="info-card">
+            <h4 style="color:var(--fucsia); margin-bottom:15px;">CONTATTI</h4>
+            <p id="school-email" style="font-weight:600;">Email: --</p>
+            <div id="school-website-container" style="margin-top:20px;"></div>
+        </div>
+    </aside>
+
+    <!-- RECENSIONI -->
+    <div class="reviews-wrapper">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; flex-wrap:wrap; gap:10px;">
+            <h2 style="color:var(--fucsia); margin:0;">Recensioni degli Studenti</h2>
+            <div id="average-rating" style="background:rgba(255,255,255,0.05); padding:10px 15px; border-radius:10px; border:1px solid rgba(255,0,255,0.3);">
+                Calcolo media...
+            </div>
+        </div>
+
+        <div id="auth-comment-placeholder" style="display:none; margin-bottom:30px;">
+            <p style="color:#bbb; background:rgba(255,255,255,0.05); padding:20px; border-radius:10px; border:1px dashed var(--fucsia); text-align:center;">
+                Effettua il Login per poter lasciare una recensione sulla scuola.<br>
+                <a href="login.html" style="color:var(--fucsia); text-decoration:none; font-weight:bold; margin-top:10px; display:inline-block;">Accedi o Registrati ora →</a>
+            </p>
+        </div>
+
+        <div id="comment-box-logged" class="comment-box" style="display:none;">
+            <div class="input-group">
+                <input type="text" id="rev-name" placeholder="Tuo Nome">
+                <select id="rev-status">
+                    <option value="Studente 1° Anno">1° Anno</option>
+                    <option value="Studente 2° Anno">2° Anno</option>
+                    <option value="Studente 3° Anno">3° Anno</option>
+                    <option value="Studente 4° Anno">4° Anno</option>
+                    <option value="Studente 5° Anno">5° Anno</option>
+                    <option value="Ex Studente">Ex Studente</option>
+                </select>
+                <select id="rev-stars">
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐</option>
+                    <option value="3">⭐⭐⭐</option>
+                    <option value="2">⭐⭐</option>
+                    <option value="1">⭐</option>
+                </select>
+            </div>
+            <textarea id="rev-text" rows="2" placeholder="Scrivi la tua esperienza qui..."></textarea>
+            <button class="btn-fucsia" onclick="inviaRecensione()">Pubblica Commento</button>
+        </div>
+
+        <div id="reviews-grid"></div>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
 <footer>
-<div class="footer-grid">
-    <div class="footer-col">
-        <div class="logo">UP<span>TOYOU</span></div>
-        <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Link Utili</h4>
+            <ul>
+                <li><a href="../guidato.html">Orientamento Guidato</a></li>
+                <li><a href="../rapido.html">Orientamento Rapido</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Supporto</h4>
+            <ul>
+                <li>Privacy Policy</li>
+                <li>Termini di Servizio</li>
+                <li><a href="../contact.html">Contattaci</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Contatti</h4>
+            <ul>
+                <li>Email: info@uptoyou.it</li>
+                <li>Roma, Italia</li>
+            </ul>
+        </div>
     </div>
-    <div class="footer-col">
-        <h4>Link Utili</h4>
-        <ul>
-            <li><a href="../guidato.html">Orientamento Guidato</a></li>
-            <li><a href="../rapido.html">Orientamento Rapido</a></li>
-        </ul>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
+        <p>Designed with Excellence</p>
     </div>
-    <div class="footer-col">
-        <h4>Supporto</h4>
-        <ul>
-            <li>Privacy Policy</li>
-            <li>Termini di Servizio</li>
-            <li><a href="../contact.html">Contattaci</a></li>
-        </ul>
-    </div>
-    <div class="footer-col">
-        <h4>Contatti</h4>
-        <ul>
-            <li>Email: info@uptoyou.it</li>
-            <li>Roma, Italia</li>
-        </ul>
-    </div>
-</div>
-<div class="footer-bottom">
-    <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
-    <p>Designed with Excellence</p>
-</div>
- </footer>
+</footer>
 
- <!-- 1. Libreria Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- 2. Il tuo nuovo file logica -->
 <script src="script.js"></script>
 
-    <script>
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
 const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -208,197 +454,489 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const urlParams = new URLSearchParams(window.location.search);
 const schoolId = urlParams.get('id');
 
-// Variabile globale per memorizzare l'utente loggato
 let currentUser = null;
 
-// ---> NUOVA FUNZIONE: Estrazione Dinamica Foto (Wikipedia API / Fallback) <---
-// ---> FUNZIONE MIGLIORATA: Estrazione Foto con Filtro Anti-Omonimia <---
-async function cercaFotoScuola(nomeScuola, citta) {
-    const imgElement = document.getElementById('school-image');
-
-    // === STEP 1: Wikipedia API con query precisa ===
-    try {
-        const query = encodeURIComponent(`${nomeScuola} ${citta}`);
-        const url = `https://it.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${query}&gsrlimit=3&prop=pageimages|extracts&piprop=original&exintro&explaintext&format=json&origin=*`;
-        
-        const res = await fetch(url);
-        const json = await res.json();
-        
-        if (json.query?.pages) {
-            for (const page of Object.values(json.query.pages)) {
-                const testo = (page.extract || "").toLowerCase();
-                const keywords = ["scuola", "istituto", "liceo", "istruzione", "accademia", "edificio scolastico"];
-                
-                if (keywords.some(k => testo.includes(k)) && page.original?.source) {
-                    return page.original.source;
-                }
-            }
-        }
-    } catch (e) { console.warn("Wikipedia fallita:", e); }
-
-    // === STEP 2: Wikimedia Commons con query specifica ===
-    try {
-        const query = encodeURIComponent(`${nomeScuola} ${citta} scuola`);
-        const url = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrsearch=${query}&gsrlimit=3&prop=imageinfo&iiprop=url|mediatype&format=json&origin=*`;
-        
-        const res = await fetch(url);
-        const json = await res.json();
-        
-        if (json.query?.pages) {
-            for (const page of Object.values(json.query.pages)) {
-                const info = page.imageinfo?.[0];
-                // Prende solo immagini reali (JPG/PNG), esclude SVG e loghi
-                if (info?.mediatype === "BITMAP" && info.url && !info.url.includes("logo")) {
-                    return info.url;
-                }
-            }
-        }
-    } catch (e) { console.warn("Wikimedia Commons fallita:", e); }
-
-    // === STEP 3: Fallback — foto generica scuola italiana ===
-    return "https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&q=80&w=1200";
+// ============================================================
+// FOTO PLACEHOLDER PER TIPO SCUOLA (zero API, zero costi)
+// ============================================================
+function getFotoPerTipo(tipologia) {
+    const t = (tipologia || '').toLowerCase();
+    const mappa = {
+        'liceo scientifico':            'https://images.unsplash.com/photo-1532094349884-543559563c8b?w=1200&q=80',
+        'liceo classico':               'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80',
+        'liceo artistico':              'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1200&q=80',
+        'liceo linguistico':            'https://images.unsplash.com/photo-1543165796-5426273eaab3?w=1200&q=80',
+        'liceo musicale':               'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=1200&q=80',
+        'liceo delle scienze umane':    'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=80',
+        'istituto tecnico tecnologico': 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&q=80',
+        'istituto tecnico economico':   'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1200&q=80',
+        'istituto tecnico agrario':     'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1200&q=80',
+        'istituto professionale':       'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1200&q=80',
+        'istituto professionale alberghiero': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80',
+        'scuola primaria':              'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200&q=80',
+        'scuola secondaria di primo grado': 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&q=80',
+        'istituto comprensivo':         'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&q=80',
+    };
+    for (const [chiave, url] of Object.entries(mappa)) {
+        if (t.includes(chiave)) return url;
+    }
+    return 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?w=1200&q=80';
 }
-// 1. Funzione per controllare se l'utente è loggato
-async function controllaSessione() {
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    
-    const placeholder = document.getElementById('auth-comment-placeholder');
-    const commentBox = document.getElementById('comment-box-logged');
 
-    if (session) {
-        currentUser = session.user;
-        if(placeholder) placeholder.style.display = 'none';
-        if(commentBox) commentBox.style.display = 'block';
+// ============================================================
+// CAROSELLO FOTO UFFICIALI
+// ============================================================
+let fotoUfficiali = [];
+let fotoIndex = 0;
+
+async function caricaFotoUfficiali(tipologiaScuola) {
+    const { data } = await supabaseClient
+        .from('school_photos_official')
+        .select('*')
+        .eq('school_id', schoolId)
+        .order('ordine', { ascending: true })
+        .limit(5);
+
+    fotoUfficiali = data || [];
+
+    const img        = document.getElementById('school-image');
+    const prevBtn    = document.getElementById('prev-btn');
+    const nextBtn    = document.getElementById('next-btn');
+    const badge      = document.getElementById('official-badge');
+    const dotsWrap   = document.getElementById('foto-dots');
+
+    if (fotoUfficiali.length === 0) {
+        img.src = getFotoPerTipo(tipologiaScuola);
+        img.style.opacity = '1';
+        return;
+    }
+
+    img.src = fotoUfficiali[0].url;
+    img.style.opacity = '1';
+    badge.style.display = 'block';
+
+    // Dots
+    dotsWrap.innerHTML = fotoUfficiali.map((_, i) =>
+        `<div class="dot ${i === 0 ? 'active' : ''}" onclick="vaiAFoto(${i})"></div>`
+    ).join('');
+
+    if (fotoUfficiali.length > 1) {
+        prevBtn.style.display = 'block';
+        nextBtn.style.display = 'block';
+    }
+
+    // Bottone aggiungi foto ufficiale (solo loggati, max 5)
+    const container = document.getElementById('upload-official-btn-container');
+    if (currentUser) {
+        if (fotoUfficiali.length >= 5) {
+            container.innerHTML = `<span style="color:#555; font-size:0.85rem;">Limite 5 foto ufficiali raggiunto</span>`;
+        } else {
+            container.innerHTML = `<button class="btn-fucsia" onclick="toggleUploadUfficiale()">+ Aggiungi Foto</button>`;
+        }
     } else {
-        currentUser = null;
-        if(placeholder) placeholder.style.display = 'block';
-        if(commentBox) commentBox.style.display = 'none';
+        container.innerHTML = `<a href="login.html" style="color:var(--fucsia); font-size:0.85rem; text-decoration:none;">Accedi per aggiungere foto →</a>`;
     }
 }
 
-// 2. Inizializzazione pagina
+function vaiAFoto(index) {
+    fotoIndex = index;
+    document.getElementById('school-image').src = fotoUfficiali[fotoIndex].url;
+    document.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('active', i === fotoIndex);
+    });
+}
+
+function cambiaFoto(direzione) {
+    const nuovoIndex = (fotoIndex + direzione + fotoUfficiali.length) % fotoUfficiali.length;
+    vaiAFoto(nuovoIndex);
+}
+
+// ============================================================
+// UPLOAD FOTO UFFICIALI
+// ============================================================
+let selectedOfficialFile = null;
+
+function toggleUploadUfficiale() {
+    const form = document.getElementById('upload-official-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function chiudiUploadUfficiale() {
+    document.getElementById('upload-official-form').style.display = 'none';
+    document.getElementById('official-preview-box').style.display = 'none';
+    document.getElementById('btn-official-confirm').style.display = 'none';
+    document.getElementById('official-upload-status').textContent = '';
+    selectedOfficialFile = null;
+}
+
+function handleOfficialSelected(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { alert('⚠️ Max 5MB per le foto ufficiali'); return; }
+    selectedOfficialFile = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        document.getElementById('official-preview-img').src = e.target.result;
+        document.getElementById('official-preview-box').style.display = 'block';
+        document.getElementById('btn-official-confirm').style.display = 'inline-block';
+    };
+    reader.readAsDataURL(file);
+}
+
+async function confermaUploadUfficiale() {
+    if (!selectedOfficialFile || !currentUser) return;
+    const status = document.getElementById('official-upload-status');
+    const btn    = document.getElementById('btn-official-confirm');
+    status.textContent = '⏳ Caricamento...';
+    btn.disabled = true;
+
+    try {
+        const ext  = selectedOfficialFile.name.split('.').pop();
+        const path = `${currentUser.id}/${schoolId}/${Date.now()}.${ext}`;
+
+        const { error: uploadError } = await supabaseClient.storage
+            .from('school-photos-official')
+            .upload(path, selectedOfficialFile, { cacheControl: '3600', upsert: false });
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabaseClient.storage
+            .from('school-photos-official')
+            .getPublicUrl(path);
+
+        const { error: dbError } = await supabaseClient
+            .from('school_photos_official')
+            .insert({
+                school_id:    schoolId,
+                user_id:      currentUser.id,
+                storage_path: path,
+                url:          publicUrl,
+                ordine:       fotoUfficiali.length
+            });
+        if (dbError) throw dbError;
+
+        status.textContent = '✅ Foto pubblicata!';
+        setTimeout(async () => {
+            chiudiUploadUfficiale();
+            await caricaFotoUfficiali(window._tipologiaScuola);
+        }, 1000);
+    } catch (err) {
+        console.error(err);
+        status.textContent = '❌ Errore nel caricamento. Riprova.';
+        btn.disabled = false;
+    }
+}
+
+// ============================================================
+// FOTO PROBLEMI STUDENTI
+// ============================================================
+let selectedProblemFile = null;
+
+async function caricaFotoProblemi() {
+    const grid     = document.getElementById('problems-grid');
+    const countEl  = document.getElementById('problems-count');
+
+    const { data } = await supabaseClient
+        .from('school_photos_problems')
+        .select('*')
+        .eq('school_id', schoolId)
+        .lt('reports', 5)
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+    const foto = data || [];
+    countEl.textContent = foto.length;
+
+    if (foto.length === 0) {
+        grid.innerHTML = `<p style="color:#555; grid-column:1/-1;">Nessuna segnalazione. Ottimo segno! 👍</p>`;
+    } else {
+        grid.innerHTML = foto.map(f => `
+            <div class="problem-thumb">
+                <img src="${f.url}" loading="lazy"
+                    onclick="apriLightbox('${f.url}', '${(f.didascalia || '').replace(/'/g, "\\'")}')">
+                ${f.didascalia ? `<div class="problem-caption"><p>${f.didascalia}</p></div>` : ''}
+                <button class="report-btn" onclick="event.stopPropagation(); segnalaProblema('${f.id}')">🚩</button>
+            </div>
+        `).join('');
+    }
+
+    // Bottone upload
+    const container = document.getElementById('upload-problem-btn-container');
+    if (currentUser) {
+        if (foto.length >= 20) {
+            container.innerHTML = `<span style="color:#555; font-size:0.85rem;">Limite 20 segnalazioni raggiunto</span>`;
+        } else {
+            container.innerHTML = `<button class="btn-fucsia" style="background:#ff6b6b;" onclick="toggleUploadProblema()">⚠️ Segnala Problema</button>`;
+        }
+    } else {
+        container.innerHTML = `<a href="login.html" style="color:#ff6b6b; font-size:0.85rem; text-decoration:none;">Accedi per segnalare →</a>`;
+    }
+}
+
+function toggleUploadProblema() {
+    const form = document.getElementById('upload-problem-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function chiudiUploadProblema() {
+    document.getElementById('upload-problem-form').style.display = 'none';
+    document.getElementById('problem-preview-box').style.display = 'none';
+    document.getElementById('btn-problem-confirm').style.display = 'none';
+    document.getElementById('problem-upload-status').textContent = '';
+    document.getElementById('problem-didascalia').value = '';
+    selectedProblemFile = null;
+}
+
+function handleProblemSelected(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { alert('⚠️ Max 2MB per le foto segnalazioni'); return; }
+    selectedProblemFile = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        document.getElementById('problem-preview-img').src = e.target.result;
+        document.getElementById('problem-preview-box').style.display = 'block';
+        document.getElementById('btn-problem-confirm').style.display = 'inline-block';
+    };
+    reader.readAsDataURL(file);
+}
+
+// Compressione lato client — riduce le foto problema a ~100-150KB
+function comprimiImmagine(file, maxWidth, quality) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+            const scale  = Math.min(1, maxWidth / img.width);
+            const canvas = document.createElement('canvas');
+            canvas.width  = img.width * scale;
+            canvas.height = img.height * scale;
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            canvas.toBlob(resolve, 'image/jpeg', quality);
+            URL.revokeObjectURL(url);
+        };
+        img.src = url;
+    });
+}
+
+async function confermaUploadProblema() {
+    if (!selectedProblemFile || !currentUser) return;
+    const didascalia = document.getElementById('problem-didascalia').value.trim();
+    const status     = document.getElementById('problem-upload-status');
+    const btn        = document.getElementById('btn-problem-confirm');
+    status.textContent = '⏳ Caricamento...';
+    btn.disabled = true;
+
+    try {
+        // Comprimi a max 800px larghezza, qualità 60%
+        const blob = await comprimiImmagine(selectedProblemFile, 800, 0.6);
+        const path = `${currentUser.id}/${schoolId}/${Date.now()}.jpg`;
+
+        const { error: uploadError } = await supabaseClient.storage
+            .from('school-photos-problems')
+            .upload(path, blob, { contentType: 'image/jpeg', cacheControl: '3600' });
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabaseClient.storage
+            .from('school-photos-problems')
+            .getPublicUrl(path);
+
+        const { error: dbError } = await supabaseClient
+            .from('school_photos_problems')
+            .insert({
+                school_id:    schoolId,
+                user_id:      currentUser.id,
+                storage_path: path,
+                url:          publicUrl,
+                didascalia:   didascalia || null
+            });
+        if (dbError) throw dbError;
+
+        status.textContent = '✅ Segnalazione pubblicata!';
+        setTimeout(async () => {
+            chiudiUploadProblema();
+            await caricaFotoProblemi();
+        }, 1000);
+    } catch (err) {
+        console.error(err);
+        status.textContent = '❌ Errore. Riprova.';
+        btn.disabled = false;
+    }
+}
+
+async function segnalaProblema(fotoId) {
+    if (!confirm('Segnalare questa foto come inappropriata?')) return;
+    const { data } = await supabaseClient
+        .from('school_photos_problems')
+        .select('reports').eq('id', fotoId).single();
+    await supabaseClient
+        .from('school_photos_problems')
+        .update({ reports: (data?.reports || 0) + 1 })
+        .eq('id', fotoId);
+    alert('✅ Segnalazione inviata. Grazie!');
+    caricaFotoProblemi();
+}
+
+// Lightbox con didascalia
+function apriLightbox(url, didascalia) {
+    const overlay = document.createElement('div');
+    overlay.className = 'lightbox-overlay';
+    overlay.innerHTML = `
+        <img src="${url}" alt="Foto segnalazione">
+        ${didascalia ? `<p class="lightbox-caption">${didascalia}</p>` : ''}
+    `;
+    overlay.onclick = () => overlay.remove();
+    document.body.appendChild(overlay);
+}
+
+// ============================================================
+// SESSIONE
+// ============================================================
+async function controllaSessione() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const placeholder  = document.getElementById('auth-comment-placeholder');
+    const commentBox   = document.getElementById('comment-box-logged');
+
+    if (session) {
+        currentUser = session.user;
+        if (placeholder) placeholder.style.display = 'none';
+        if (commentBox)  commentBox.style.display  = 'block';
+    } else {
+        currentUser = null;
+        if (placeholder) placeholder.style.display = 'block';
+        if (commentBox)  commentBox.style.display  = 'none';
+    }
+}
+
+// ============================================================
+// INIZIALIZZAZIONE PAGINA
+// ============================================================
 async function inizializzaPagina() {
     if (!schoolId) return;
 
-    // Controllo sessione per abilitare/disabilitare il form di scrittura
     await controllaSessione();
 
     try {
-        // Caricamento Info Scuola
-        const { data: scuola } = await supabaseClient.from('schools').select('*').eq('id', schoolId).single();
+        const { data: scuola } = await supabaseClient
+            .from('schools').select('*').eq('id', schoolId).single();
+
         if (scuola) {
-            document.getElementById('school-name').innerText = scuola.DENOMINAZIONESCUOLA;
-            document.getElementById('school-type').innerText = scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA;
+            document.getElementById('school-name').innerText  = scuola.DENOMINAZIONESCUOLA;
+            document.getElementById('school-type').innerText  = scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA;
             const indirizzo = `${scuola.INDIRIZZOSCUOLA}, ${scuola.DESCRIZIONECOMUNE}`;
             document.getElementById('display-address').innerText = indirizzo;
-            document.getElementById('maps-url').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(scuola.DENOMINAZIONESCUOLA + " " + indirizzo)}`;
+            document.getElementById('maps-url').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(scuola.DENOMINAZIONESCUOLA + ' ' + indirizzo)}`;
             document.getElementById('school-description').innerText = `L'istituto ${scuola.DENOMINAZIONESCUOLA} è un punto di riferimento a ${scuola.DESCRIZIONECOMUNE}.`;
             document.getElementById('school-email').innerText = `Email: ${scuola.INDIRIZZOEMAILSCUOLA || 'N/A'}`;
-            if(scuola.SITOWEBSCUOLA) {
-                document.getElementById('school-website-container').innerHTML = `<a href="${scuola.SITOWEBSCUOLA}" target="_blank" class="btn-fucsia" style="text-decoration:none;">Sito Ufficiale</a>`;
+
+            if (scuola.SITOWEBSCUOLA) {
+                document.getElementById('school-website-container').innerHTML =
+                    `<a href="${scuola.SITOWEBSCUOLA}" target="_blank" class="btn-fucsia" style="text-decoration:none;">Sito Ufficiale</a>`;
             }
 
-            // ---> TRIGGER RICERCA FOTO DINAMICA <---
-            const imgElement = document.getElementById('school-image');
-            const urlFotoDinamica = await cercaFotoScuola(scuola.DENOMINAZIONESCUOLA, scuola.DESCRIZIONECOMUNE);
-            imgElement.src = urlFotoDinamica;
-            imgElement.style.opacity = "1"; // Effetto transizione fluida
+            // Salva tipologia per il placeholder immagine
+            window._tipologiaScuola = scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA;
+
+            // Carica foto ufficiali (con fallback per tipo)
+            await caricaFotoUfficiali(scuola.DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA);
         }
-        
-        // Carica e mostra i commenti a prescindere dal login
-        await caricaRecensioni();
-        
+
+        // Carica segnalazioni e recensioni in parallelo
+        await Promise.all([
+            caricaFotoProblemi(),
+            caricaRecensioni()
+        ]);
+
     } catch (err) { console.error(err); }
 }
 
-// 3. Caricamento recensioni e calcolo media
+// ============================================================
+// RECENSIONI
+// ============================================================
 async function caricaRecensioni() {
-    const grid = document.getElementById('reviews-grid');
+    const grid           = document.getElementById('reviews-grid');
     const mediaContainer = document.getElementById('average-rating');
-    
-    const { data } = await supabaseClient.from('recensioni').select('*').eq('school_id', schoolId).order('created_at', { ascending: false });
 
-    // Se non ci sono recensioni
+    const { data } = await supabaseClient
+        .from('recensioni').select('*')
+        .eq('school_id', schoolId)
+        .order('created_at', { ascending: false });
+
     if (!data || data.length === 0) {
         grid.innerHTML = "<p style='color:#555;'>Nessun commento. Sii il primo a recensire!</p>";
         if (mediaContainer) mediaContainer.innerHTML = "Media: <strong>N/A</strong>";
         return;
     }
 
-    // Calcolo della media delle stelle
-    const sommaStelle = data.reduce((acc, recensione) => acc + recensione.stelle, 0);
-    const media = (sommaStelle / data.length).toFixed(1); // Arrotonda a 1 decimale (es. 4.3)
-    const stelleIntere = Math.round(media); // Per disegnare le stelline visive
+    const sommaStelle = data.reduce((acc, r) => acc + r.stelle, 0);
+    const media       = (sommaStelle / data.length).toFixed(1);
+    const stelleIntere = Math.round(media);
 
     if (mediaContainer) {
-        mediaContainer.innerHTML = `Media: <strong style="color: white; font-size: 1.2rem;">${media} / 5</strong> <span style="color:var(--fucsia); margin-left: 5px;">${'★'.repeat(stelleIntere)}</span> <span style="font-size:0.8rem; color:#888; margin-left: 5px;">(${data.length} recensioni)</span>`;
+        mediaContainer.innerHTML = `Media: <strong style="color:white; font-size:1.2rem;">${media} / 5</strong> <span style="color:var(--fucsia); margin-left:5px;">${'★'.repeat(stelleIntere)}</span> <span style="font-size:0.8rem; color:#888; margin-left:5px;">(${data.length} recensioni)</span>`;
     }
 
-    // Stampa le recensioni nella griglia (visibili a tutti)
     grid.innerHTML = data.map(r => `
         <div class="review-card">
             <div style="color:var(--fucsia); margin-bottom:10px;">${'★'.repeat(r.stelle)}</div>
             <p style="color:#eee; font-style:italic;">"${r.testo}"</p>
             <div style="margin-top:10px; font-size:0.9rem;">
-                <strong style="color:#fff;">${r.nome}</strong> 
+                <strong style="color:#fff;">${r.nome}</strong>
                 <span style="color:#555; margin-left:10px;">• ${new Date(r.created_at).toLocaleDateString()}</span>
             </div>
         </div>
     `).join('');
 }
 
-// 4. Invio recensione (protetto da login)
 async function inviaRecensione() {
     if (!currentUser) {
         alert("⚠️ Devi effettuare l'accesso per poter lasciare una recensione.");
         return;
     }
 
-    const nomeInput = document.getElementById('rev-name').value.trim() || "Anonimo";
-    const ruolo = document.getElementById('rev-status').value;
-    const testo = document.getElementById('rev-text').value;
-    const stelle = document.getElementById('rev-stars').value;
+    const nomeInput = document.getElementById('rev-name').value.trim() || 'Anonimo';
+    const ruolo     = document.getElementById('rev-status').value;
+    const testo     = document.getElementById('rev-text').value;
+    const stelle    = document.getElementById('rev-stars').value;
 
-    if (!testo.trim()) return alert("Scrivi un commento!");
+    if (!testo.trim()) return alert('Scrivi un commento!');
 
-    // BLACKLIST FILTRO
     const blacklist = [
-        "negro", "negri", "negre", "negra", "frocio", "froci", "ricchione", "mongoloide", "handicappato", "spastico",
-        "coglione", "coglioni", "cogliona", "zoccola", "stronzo", "stronza", "stronzi", "puttana", "troia", "merda", 
-        "bastardo", "bastarda", "bastardi", "mignotta", "baldracca", "cornuto", "cagna",
-        "vaffanculo", "testa di cazzo", "cazzo", "figa", "minchia", "porca",
-        "cretino", "deficiente", "scemo", "idiota", "imbecille", "rincoglionito", "sfigato"
+        'negro','negri','negre','negra','frocio','froci','ricchione','mongoloide','handicappato','spastico',
+        'coglione','coglioni','cogliona','zoccola','stronzo','stronza','stronzi','puttana','troia','merda',
+        'bastardo','bastarda','bastardi','mignotta','baldracca','cornuto','cagna',
+        'vaffanculo','testa di cazzo','cazzo','figa','minchia','porca',
+        'cretino','deficiente','scemo','idiota','imbecille','rincoglionito','sfigato'
     ];
-    
-    const testoMinuscolo = testo.toLowerCase();
-    if (blacklist.some(p => testoMinuscolo.includes(p))) {
-        alert("⚠️ Commento bloccato: contiene linguaggio offensivo o non consono.");
+
+    if (blacklist.some(p => testo.toLowerCase().includes(p))) {
+        alert('⚠️ Commento bloccato: contiene linguaggio offensivo o non consono.');
         return;
     }
 
-    const nomeCombinato = `${nomeInput} - ${ruolo}`;
-
-    const { error } = await supabaseClient.from('recensioni').insert([{ 
-        school_id: schoolId, 
-        nome: nomeCombinato, 
-        testo: testo, 
-        stelle: parseInt(stelle) 
+    const { error } = await supabaseClient.from('recensioni').insert([{
+        school_id: schoolId,
+        nome:      `${nomeInput} - ${ruolo}`,
+        testo:     testo,
+        stelle:    parseInt(stelle)
     }]);
 
     if (error) {
-        console.error("Errore Supabase:", error);
+        console.error('Errore Supabase:', error);
         alert("Errore nell'invio del commento.");
     } else {
-        document.getElementById('rev-text').value = "";
-        document.getElementById('rev-name').value = "";
-        // Ricarica per aggiornare lista commenti e la Media Voti in tempo reale
+        document.getElementById('rev-text').value = '';
+        document.getElementById('rev-name').value = '';
         await caricaRecensioni();
-        alert("✅ Commento pubblicato correttamente!");
+        alert('✅ Commento pubblicato correttamente!');
     }
 }
 
-// Event Listener
+// ============================================================
+// START
+// ============================================================
 window.addEventListener('DOMContentLoaded', inizializzaPagina);
-    </script>
+</script>
 </body>
 </html>
