@@ -4,10 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accedi - Up to You</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* (Stesso CSS di sopra, copiato per coerenza) */
+        :root { --primary: #8b5cf6; --primary-hover: #7c3aed; --bg: #0f172a; --card-bg: rgba(30, 41, 59, 0.7); --text: #f8fafc; }
+        body { font-family: 'Poppins', sans-serif; background: radial-gradient(circle at top left, #1e1b4b, #0f172a); color: var(--text); margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
+        .navbar { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+        .logo span { color: var(--primary); }
+        .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; opacity: 0.8; }
+        .auth-container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 2rem; }
+        .auth-card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; border-radius: 24px; width: 100%; max-width: 400px; text-align: center; }
+        .input-group { margin-bottom: 1.2rem; text-align: left; }
+        input { width: 100%; padding: 0.8rem 1rem; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; box-sizing: border-box; }
+        .btn-primary { width: 100%; padding: 1rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 1rem; }
+        .divider { margin: 1.5rem 0; display: flex; align-items: center; opacity: 0.3; }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: white; margin: 0 10px; }
+        .btn-google { width: 100%; padding: 0.8rem; background: white; color: #1e293b; border: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; }
+        .footer-text { margin-top: 1.5rem; font-size: 0.85rem; }
+        .footer-text a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    </style>
 </head>
-<body class="auth-page">
+<body>
 
     <header>
         <nav class="navbar">
@@ -21,13 +39,14 @@
     <main class="auth-container">
         <div class="auth-card">
             <h2>Bentornato</h2>
-            <p>Accedi per gestire il tuo profilo</p>
+            <p>Accedi per continuare il tuo viaggio.</p>
 
             <div class="input-group">
-                <input type="email" id="email" placeholder="Email" required>
+                <input type="email" id="email" placeholder="Email">
             </div>
+
             <div class="input-group">
-                <input type="password" id="password" placeholder="Password" required>
+                <input type="password" id="password" placeholder="Password">
             </div>
             
             <button class="btn-primary" id="loginBtn">ACCEDI</button>
@@ -39,7 +58,7 @@
             </button>
 
             <p class="footer-text">
-                Non hai un account? <a href="register.html">Registrati</a>
+                Non hai un account? <a href="register.html">Registrati ora</a>
             </p>
             <div id="status-msg"></div>
         </div>
@@ -51,28 +70,24 @@
         const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-        // Login Classico
+        const REDIRECT_URL = 'https://shxlkinho.github.io/UPTOYOU/index.html';
+
         document.getElementById('loginBtn').onclick = async () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const msg = document.getElementById('status-msg');
 
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if (error) msg.innerHTML = `<span style="color:red">${error.message}</span>`;
+            if (error) msg.innerHTML = `<span style="color:#f87171">${error.message}</span>`;
             else window.location.href = 'index.html';
         };
 
-    // Login Google
-// Login Google
-document.getElementById('googleBtn').onclick = async () => {
-    await supabaseClient.auth.signInWithOAuth({
-        provider: 'google',
-        options: { 
-            // Ti riporta sempre alla home del progetto
-            redirectTo: 'https://shxlkinho.github.io/UPTOYOU/index.html' 
-        }
-    });
-};
+        document.getElementById('googleBtn').onclick = async () => {
+            await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: REDIRECT_URL }
+            });
+        };
     </script>
 </body>
 </html>
