@@ -63,12 +63,13 @@
         };
 
     // Login Google
+// Login Google
 document.getElementById('googleBtn').onclick = async () => {
     await supabaseClient.auth.signInWithOAuth({
         provider: 'google',
         options: { 
-            // Usiamo l'URL completo della pagina corrente invece del solo dominio
-            redirectTo: window.location.href 
+            // Ti riporta sempre alla home del progetto
+            redirectTo: 'https://shxlkinho.github.io/UPTOYOU/index.html' 
         }
     });
 };
