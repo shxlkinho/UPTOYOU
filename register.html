@@ -133,13 +133,13 @@
             }
         };
 
-        // Logica Google
-      // Cambia la logica Google con questa:
+// Login Google
 document.getElementById('googleBtn').onclick = async () => {
     await supabaseClient.auth.signInWithOAuth({
         provider: 'google',
         options: { 
-            redirectTo: window.location.href // Ti riporta esattamente qui
+            // Ti riporta sempre alla home del progetto
+            redirectTo: 'https://shxlkinho.github.io/UPTOYOU/index.html' 
         }
     });
 };
