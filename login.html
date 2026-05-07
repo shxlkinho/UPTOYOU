@@ -62,13 +62,16 @@
             else window.location.href = 'index.html';
         };
 
-        // Login Google
-        document.getElementById('googleBtn').onclick = async () => {
-            await supabaseClient.auth.signInWithOAuth({
-                provider: 'google',
-                options: { redirectTo: window.location.origin }
-            });
-        };
+    // Login Google
+document.getElementById('googleBtn').onclick = async () => {
+    await supabaseClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: { 
+            // Usiamo l'URL completo della pagina corrente invece del solo dominio
+            redirectTo: window.location.href 
+        }
+    });
+};
     </script>
 </body>
 </html>
