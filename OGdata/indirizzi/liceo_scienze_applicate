@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ist. Tecnico AFM - Sbocchi Futuri</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="indirizzi.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo"><a href="../../index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
+        <ul class="nav-links">
+            <li><a href="../../index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Lezioni ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="../../Lezioni/elementari.html">Elementari</a></li>
+                    <li><a href="../../Lezioni/medie.html">Medie</a></li>
+                    <li><a href="../../Lezioni/superiori.html">Superiori</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Orientati ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="../../rapido.html">Orientamento Rapido</a></li>
+                    <li><a href="../../guidato.html">Orientamento Guidato</a></li>
+                </ul>
+            </li>
+            <li><a href="../../contact.html">Contatti</a></li>
+            <li id="auth-nav-item" class="nav-auth-container"></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <!-- TITOLO TOP -->
+    <div class="materia-title-outer">
+        <h1>Istituto AFM</h1>
+    </div>
+
+    <!-- STRISCIA HERO CON IMMAGINE E TESTO -->
+    <section class="hero-materia">
+        <div class="hero-container">
+            <div class="hero-image-side">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200" alt="Economia e Finanza">
+            </div>
+            
+            <div class="hero-text-side">
+                <p>
+                    L'Istituto Tecnico Amministrazione, Finanza e Marketing (l'ex "Ragioneria") ti prepara per il mondo del business e dell'economia moderna. Qui imparerai come funziona un'azienda dall'interno: dal calcolo dei bilanci all'analisi dei mercati internazionali, dalla giurisprudenza commerciale fino alle strategie di marketing digitale per il posizionamento dei brand.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTENITORE SBOCCHI RIPRISTINATO -->
+    <div class="sbocchi-intro">
+        <h2>Possibili Sbocchi Futuri</h2>
+        <p>
+            Il diploma AFM garantisce un inserimento rapido nel mondo del lavoro in banche, assicurazioni, studi di commercialisti e uffici amministrativi di qualsiasi azienda. Se vuoi proseguire gli studi, fornisce basi imbattibili per le facoltà di Economia, Scienze Bancarie, Giurisprudenza e Management. È inoltre la rampa di lancio perfetta per chi sogna di diventare un imprenditore e lanciare la propria start-up.
+        </p>
+    </div>
+    
+    <!-- GRID DELLE CARD -->
+    <div class="info-container">
+        <!-- Card 1 -->
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Finanza & Contabilità</h3>
+                <p>Sbocchi in Banche, Studi Contabili e Assicurazioni.</p>
+            </div>
+            <button class="card-btn">Settori Chiave
+                <div class="tooltip">Carriere strutturate come contabile aziendale, consulente finanziario o analista dei mercati.</div>
+            </button>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Marketing & Sales</h3>
+                <p>Sbocchi in Pubblicità, Vendite e Strategia Brand.</p>
+            </div>
+            <button class="card-btn">Settori Chiave
+                <div class="tooltip">Perfetto per diventare Marketing Manager, specialista E-commerce e responsabile commerciale.</div>
+            </button>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="info-card">
+            <div class="card-image"><img src="https://images.unsplash.com/photo-1507099985932-87a4520ed1d5?q=80&w=800"></div>
+            <div class="card-content">
+                <h3>Management Globale</h3>
+                <p>Sbocchi in Imprenditoria e Commercio Estero.</p>
+            </div>
+            <button class="card-btn">Settori Chiave
+                <div class="tooltip">Basi solide per avviare una start-up, gestire l'import/export o occuparsi di logistica internazionale.</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- BOTTONI DI NAVIGAZIONE -->
+    <div class="bottom-nav">
+        <a href="../../rapido.html" class="btn-bottom">&larr; Altri Indirizzi</a>
+        <a href="../../contact.html" class="help-link">Domande?</a>
+        <a href="../../guidato.html" class="btn-bottom">Test Attitudinale</a>
+    </div>
+</main>
+
+   <footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="logo">UP<span>TOYOU</span></div>
+            <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Link Utili</h4>
+            <ul>
+                <li><a href="../../guidato.html">Orientamento Guidato</a></li>
+                <li><a href="../../rapido.html">Orientamento Rapido</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Supporto</h4>
+            <ul>
+                <li>Privacy Policy</li>
+                <li>Termini di Servizio</li>
+                <li><a href="../../contact.html">Contattaci</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Contatti</h4>
+            <ul>
+                <li>Email: info@uptoyou.it</li>
+                <li>Roma, Italia</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
+        <p>Designed with Excellence</p>
+    </div>
+</footer>
+</body>
+     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+     <script src="../../script.js"></script>
+</html>
