@@ -3,11 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrati - Up to You</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Crea Account - Up to You</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text: #f8fafc;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top left, #1e1b4b, #0f172a);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+        .logo span { color: var(--primary); }
+        .nav-links { list-style: none; margin: 0; padding: 0; }
+        .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; opacity: 0.8; transition: 0.3s; }
+        .nav-links a:hover { opacity: 1; color: var(--primary); }
+
+        .auth-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .auth-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2.5rem;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+        p { opacity: 0.6; margin-bottom: 2rem; font-size: 0.9rem; }
+
+        .input-group { margin-bottom: 1.2rem; text-align: left; }
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+
+        .divider {
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            opacity: 0.3;
+        }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: white; margin: 0 10px; }
+
+        .btn-google {
+            width: 100%;
+            padding: 0.8rem;
+            background: white;
+            color: #1e293b;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-google img { width: 20px; }
+        .btn-google:hover { background: #f1f5f9; transform: translateY(-2px); }
+
+        .footer-text { margin-top: 1.5rem; font-size: 0.85rem; }
+        .footer-text a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        #status-msg { margin-top: 1rem; font-weight: 500; }
+    </style>
 </head>
-<body class="auth-page">
+<body>
 
     <header>
         <nav class="navbar">
@@ -21,54 +140,27 @@
     <main class="auth-container">
         <div class="auth-card">
             <h2>Crea Account</h2>
-            <p>Costruisci oggi il tuo domani.</p>
+            <p>Inizia il tuo percorso di orientamento.</p>
 
             <div class="input-group">
-                <input type="text" id="fullname" placeholder="Nome e Cognome" required>
+                <input type="text" id="fullname" placeholder="Nome e Cognome">
             </div>
 
             <div class="input-group">
-                <input type="email" id="email" placeholder="Email" required>
+                <input type="email" id="email" placeholder="Email">
             </div>
 
             <div class="input-group">
-                <select id="school-choice" required>
-                    <option value="" disabled selected>Che scuola frequenti / vorresti frequentare?</option>
-                    <optgroup label="Licei">
-                        <option value="Liceo Scientifico">Liceo Scientifico</option>
-                        <option value="Liceo Classico">Liceo Classico</option>
-                        <option value="Liceo Linguistico">Liceo Linguistico</option>
-                        <option value="Liceo delle Scienze Umane">Liceo delle Scienze Umane</option>
-                        <option value="Liceo Artistico">Liceo Artistico</option>
-                        <option value="Liceo Musicale e Coreutico">Liceo Musicale e Coreutico</option>
-                    </optgroup>
-                    <optgroup label="Istituti Tecnici (ITI / ITE)">
-                        <option value="Tecnico - Informatica e Telecomunicazioni">Informatica e Telecomunicazioni</option>
-                        <option value="Tecnico - Chimica, Materiali e Biotecnologie">Chimica, Materiali e Biotecnologie</option>
-                        <option value="Tecnico - Meccanica, Meccatronica ed Energia">Meccanica, Meccatronica ed Energia</option>
-                        <option value="Tecnico - Elettronica ed Elettrotecnica">Elettronica ed Elettrotecnica</option>
-                        <option value="Tecnico - Amministrazione, Finanza e Marketing (AFM)">Amministrazione, Finanza e Marketing (AFM/SIA)</option>
-                        <option value="Tecnico - Turismo">Turismo</option>
-                        <option value="Tecnico - Agraria e Agroindustria">Agraria e Agroindustria</option>
-                        <option value="Tecnico - Costruzioni, Ambiente e Territorio (Geometra)">Costruzioni, Ambiente e Territorio (Geometra)</option>
-                    </optgroup>
-                    <optgroup label="Istituti Professionali">
-                        <option value="Professionale - Enogastronomia e Ospitalità Alberghiera">Enogastronomia e Ospitalità (Alberghiero)</option>
-                        <option value="Professionale - Manutenzione e Assistenza Tecnica">Manutenzione e Assistenza Tecnica</option>
-                        <option value="Professionale - Servizi Commerciali">Servizi Commerciali</option>
-                        <option value="Professionale - Sanità e Assistenza Sociale">Sanità e Assistenza Sociale</option>
-                        <option value="Professionale - Industria e Artigianato (Moda, ecc.)">Industria e Artigianato</option>
-                    </optgroup>
-                    <option value="Altro / Non lo so ancora">Altro / Non lo so ancora</option>
+                <select id="school-choice">
+                    <option value="" disabled selected>Scuola di interesse</option>
+                    <option value="Liceo Scientifico">Liceo Scientifico</option>
+                    <option value="Tecnico Informatica">Tecnico Informatica</option>
+                    <option value="Altro">Altro...</option>
                 </select>
             </div>
 
             <div class="input-group">
-                <input type="password" id="password" placeholder="Password (min. 6 caratteri)" required>
-            </div>
-
-            <div class="input-group">
-                <input type="password" id="confirm-password" placeholder="Conferma Password" required>
+                <input type="password" id="password" placeholder="Password (min. 6 caratteri)">
             </div>
             
             <button class="btn-primary" id="regBtn">REGISTRATI</button>
@@ -80,10 +172,10 @@
             </button>
 
             <p class="footer-text">
-                Hai già un account? <a href="login.html">Accedi qui</a>
+                Hai già un account? <a href="login.html">Accedi</a>
             </p>
             
-            <div id="status-msg" style="margin-top: 15px; font-size: 0.9rem;"></div>
+            <div id="status-msg"></div>
         </div>
     </main>
 
@@ -93,56 +185,38 @@
         const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-        const msg = document.getElementById('status-msg');
+        const REDIRECT_URL = 'https://shxlkinho.github.io/UPTOYOU/index.html';
 
-        // Logica Registrazione
+        // Registrazione Classica
         document.getElementById('regBtn').onclick = async () => {
-            const fullname = document.getElementById('fullname').value;
             const email = document.getElementById('email').value;
-            const schoolChoice = document.getElementById('school-choice').value;
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
+            const fullname = document.getElementById('fullname').value;
+            const school = document.getElementById('school-choice').value;
+            const msg = document.getElementById('status-msg');
 
-            // Controlli base
-            if(!fullname || !email || !password || !confirmPassword || !schoolChoice) {
-                msg.innerHTML = `<span style="color:#ffcc00;">Per favore, compila tutti i campi.</span>`;
-                return;
-            }
+            if(!email || !password) return msg.innerHTML = "Compila i campi!";
 
-            if(password !== confirmPassword) {
-                msg.innerHTML = `<span style="color:#ff4444;">Le password non coincidono!</span>`;
-                return;
-            }
-
-            // Invia a Supabase (salvando anche la scuola scelta)
             const { error } = await supabaseClient.auth.signUp({
-                email: email,
-                password: password,
-                options: { 
-                    data: { 
-                        full_name: fullname,
-                        school_path: schoolChoice
-                    } 
+                email,
+                password,
+                options: {
+                    emailRedirectTo: REDIRECT_URL, // FIX: Rimanda qui dopo il click sulla mail
+                    data: { full_name: fullname, school_path: school }
                 }
             });
 
-            if (error) {
-                msg.innerHTML = `<span style="color:#ff4444;">${error.message}</span>`;
-            } else {
-                msg.innerHTML = `<span style="color:#10b981;">Registrazione riuscita! Controlla la tua email per confermare l'account.</span>`;
-            }
+            if (error) msg.innerHTML = `<span style="color:#f87171">${error.message}</span>`;
+            else msg.innerHTML = `<span style="color:#34d399">Controlla la tua email per confermare!</span>`;
         };
 
-// Login Google
-document.getElementById('googleBtn').onclick = async () => {
-    await supabaseClient.auth.signInWithOAuth({
-        provider: 'google',
-        options: { 
-            // Ti riporta sempre alla home del progetto
-            redirectTo: 'https://shxlkinho.github.io/UPTOYOU/index.html' 
-        }
-    });
-};
+        // Google Login
+        document.getElementById('googleBtn').onclick = async () => {
+            await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: REDIRECT_URL }
+            });
+        };
     </script>
 </body>
 </html>
