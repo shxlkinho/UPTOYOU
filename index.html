@@ -446,25 +446,17 @@ async function sendAiMessage() {
     const text = aiInput.value.trim();
     if (!text) return;
 
-    // Aggiungi messaggio utente a schermo
     appendAiMessage(text, 'user');
     aiInput.value = "";
 
     try {
-        const response = await fetch(GEMINI_ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                // Qui passiamo le istruzioni che hai configurato nel Playground
-                system_instruction: {
-                    parts: { text: "Agisci come un Orientatore Scolastico esperto e cauto per UpToYou. Proponi 2-3 percorsi diversi, sii empatico e fai domande sulle attitudini dello studente prima di dare consigli definitivi. Rispondi in italiano in modo sintetico." }
-                },
-                contents: [{ parts: [{ text: text }] }]
-            })
+        // Chiamiamo la Edge Function di Supabase invece di Google direttamente
+        const { data, error } = await supabaseClient.functions.invoke('orientatore-ai', {
+            body: { message: text }
         });
 
-        const data = await response.json();
-        
+        if (error) throw error;
+
         if (data.candidates && data.candidates[0].content) {
             const aiText = data.candidates[0].content.parts[0].text;
             appendAiMessage(aiText, 'ai');
@@ -472,7 +464,8 @@ async function sendAiMessage() {
             appendAiMessage("Scusa, ho avuto un problema tecnico. Riprova più tardi.", 'ai');
         }
     } catch (error) {
-        appendAiMessage("Errore di connessione con il server.", 'ai');
+        console.error("Errore AI:", error);
+        appendAiMessage("Errore di connessione con il Mentor.", 'ai');
     }
 }
 
