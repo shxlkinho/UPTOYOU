@@ -451,7 +451,7 @@ async function sendAiMessage() {
 
     try {
         // Chiamiamo la Edge Function di Supabase invece di Google direttamente
-        const { data, error } = await supabaseClient.functions.invoke('orientatore-ai', {
+        const { data, error } = await supabaseClient.functions.invoke('AI-api', {
             body: { message: text }
         });
 
