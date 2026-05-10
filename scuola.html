@@ -504,29 +504,27 @@ async function caricaFotoUfficiali(tipologiaScuola) {
     const nextBtn    = document.getElementById('next-btn');
     const badge      = document.getElementById('official-badge');
     const dotsWrap   = document.getElementById('foto-dots');
+    const container  = document.getElementById('upload-official-btn-container'); // ← spostato fuori dall'if
 
     if (fotoUfficiali.length === 0) {
         img.src = getFotoPerTipo(tipologiaScuola);
         img.style.opacity = '1';
-        return;
+    } else {
+        img.src = fotoUfficiali[0].url;
+        img.style.opacity = '1';
+        badge.style.display = 'block';
+
+        dotsWrap.innerHTML = fotoUfficiali.map((_, i) =>
+            `<div class="dot ${i === 0 ? 'active' : ''}" onclick="vaiAFoto(${i})"></div>`
+        ).join('');
+
+        if (fotoUfficiali.length > 1) {
+            prevBtn.style.display = 'block';
+            nextBtn.style.display = 'block';
+        }
     }
 
-    img.src = fotoUfficiali[0].url;
-    img.style.opacity = '1';
-    badge.style.display = 'block';
-
-    // Dots
-    dotsWrap.innerHTML = fotoUfficiali.map((_, i) =>
-        `<div class="dot ${i === 0 ? 'active' : ''}" onclick="vaiAFoto(${i})"></div>`
-    ).join('');
-
-    if (fotoUfficiali.length > 1) {
-        prevBtn.style.display = 'block';
-        nextBtn.style.display = 'block';
-    }
-
-    // Bottone aggiungi foto ufficiale (solo loggati, max 5)
-    const container = document.getElementById('upload-official-btn-container');
+    // ✅ Bottone sempre renderizzato, indipendentemente dal numero di foto
     if (currentUser) {
         if (fotoUfficiali.length >= 5) {
             container.innerHTML = `<span style="color:#555; font-size:0.85rem;">Limite 5 foto ufficiali raggiunto</span>`;
