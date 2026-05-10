@@ -430,10 +430,6 @@ const aiMessages = document.getElementById('ai-messages');
 const aiInput = document.getElementById('ai-input');
 const aiSend = document.getElementById('ai-send');
 
-// 1. Inserisci qui la tua API KEY e l'URL visto nel Playground
-const GEMINI_API_KEY = "AIzaSyCbmFLEVzj1fIKJTprH0f9NUHJK2nbbHTw"; 
-const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
-
 // Toggle apertura/chiusura finestra
 if(aiBtn && aiWindow) {
     aiBtn.addEventListener('click', () => {
