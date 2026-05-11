@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Istituti Tecnici - Up to You</title>
+    <title>Mappa Interattiva - Up to You</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
@@ -304,7 +304,8 @@
     </style>
 </head>
 <body>
-    <header>
+
+<header>
     <nav class="navbar">
         <div class="logo"><a href="../index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
         <ul class="nav-links">
@@ -333,85 +334,59 @@
 <div class="page-wrapper">
     
     <section class="hero-container card-dynamic">
-        <h1 class="section-title">Istituti Tecnici</h1>
+        <h1 class="section-title">Costruire le basi del pensiero critico</h1>
         <div class="content-wrapper">
             <div class="left-side">
-                <p>Gli istituti tecnici offrono una formazione che unisce <span class="highlight">sapere teorico e competenze pratiche</span>, preparando gli studenti sia al mondo del lavoro che all'università.</p>
+                <i class="fa-solid fa-atom"></i>
+                <p>Il percorso liceale rappresenta l'indirizzo orientato alla <span class="highlight">formazione teorica</span>. Abbraccia un metodo di apprendimento che privilegia l'astrazione e la comprensione profonda dei fenomeni scientifici. L'obiettivo è creare una <span class="highlight">forma mentis</span> capace di decodificare la complessità del mondo.</p>
             </div>
             <div class="right-side">
-                <p>Attraverso laboratori all'avanguardia e stage aziendali, forniscono gli strumenti per diventare i <span class="highlight">professionisti dell'innovazione</span> tecnologica ed economica.</p>
+                <div class="feature-item">
+                    <i class="fa-solid fa-book-open"></i>
+                    <p>Sviluppa il <span class="highlight">pensiero laterale</span>: un equilibrio tra scienze e cultura che si muove su un piano accademico d'eccellenza.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-microscope"></i>
+                    <p>Impara a studiare e a ricercare fonti, competenze che diventano un <span class="highlight">vantaggio strategico</span> in qualsiasi carriera futura.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="info-percorsi-wide">
-        <h2>Il Valore del Diploma Tecnico</h2>
+<section class="info-percorsi-wide">
+        <h2>L'Identità del Liceo</h2>
         <p>
-            A differenza dei licei, gli <b>Istituti Tecnici</b> si concentrano sull'applicazione concreta delle scienze e delle tecnologie. Questo percorso permette di acquisire una mentalità operativa, fondamentale per gestire processi complessi in settori chiave come l'informatica, la meccanica, la chimica e l'economia aziendale.
+            Mentre i <b>Licei</b> si focalizzano su una formazione teorica e umanistico-scientifica propedeutica all'università, gli <b>Istituti Tecnici</b> offrono un mix tra teoria e applicazioni pratiche, ideali per chi vuole entrare nel mondo del lavoro tecnico o proseguire con studi specialistici. Gli <b>Istituti Professionali</b>, invece, sono orientati all'apprendimento pratico e all'acquisizione immediata di competenze operative in settori specifici dell'economia e dell'artigianato.
         </p>
     </section>
 
-    <section class="sbocchi-futuri card-dynamic" style="padding: 40px; border: 2px solid var(--neon-blue); margin-bottom: 50px;">
-        <h2 style="color: var(--neon-blue); text-align: center; text-transform: uppercase; margin-bottom: 30px;">Sbocchi Futuri</h2>
-        <div class="sbocchi-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
-            <div class="sbocco-item">
-                <h3 style="color: var(--neon-blue);">Università</h3>
-                <p>Accesso a tutte le facoltà, con particolare affinità per i corsi STEM, Economia e Ingegneria.</p>
+    <section class="sbocchi-container card-dynamic">
+        <h2 class="section-title">Sbocchi Futuri</h2>
+        <div class="sbocchi-grid">
+            <div class="sbocchi-item">
+                <i class="fa-solid fa-university"></i>
+                <p>La naturale prosecuzione è l' <span class="hl-purple">Università</span> o l'Alta Formazione. Ogni studente è pronto per facoltà come Medicina o Ingegneria.</p>
             </div>
-            <div class="sbocco-item">
-                <h3 style="color: var(--neon-blue);">ITS Academy</h3>
-                <p>Percorsi di alta specializzazione tecnologica post-diploma per un inserimento rapido nel lavoro.</p>
-            </div>
-            <div class="sbocco-item">
-                <h3 style="color: var(--neon-blue);">Lavoro Diretto</h3>
-                <p>Competenze immediatamente spendibili in aziende, studi professionali e pubblica amministrazione.</p>
+            <div class="sbocchi-item">
+                <i class="fa-solid fa-briefcase"></i>
+                <p>I diplomati sono apprezzati per la flessibilità <span class="hl-purple">intellettuale</span>. Saper imparare velocemente è oggi più prezioso di una singola competenza.</p>
             </div>
         </div>
     </section>
 
     <div class="bottom-split-grid">
         <section class="small-card card-indirizzi card-dynamic" onclick="openIndirizzi()">
-            <i class="fa-solid fa-gears main-icon"></i>
+            <i class="fa-solid fa-layer-group main-icon"></i>
             <h3>Indirizzi</h3>
-            <p>ESPLORA LE SPECIALIZZAZIONI TECNICHE</p>
+            <p>ESPLORA TUTTI I LICEI</p>
         </section>
 
         <section class="small-card card-map-active card-dynamic">
-            <h3 style="color: var(--neon-blue); font-size: 1.8rem; margin-top: 20px; text-transform: uppercase;">Mappa Tecnici</h3>
+            <h3 style="color: var(--neon-blue); font-size: 2.2rem; font-weight: 900; text-transform: uppercase; margin: 0; text-align: center;">Mappa Licei</h3>
             <div id="map-container">
-                <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
+<svg baseprofile="tiny" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
                     <g id="features">
-                        </g>
-                </svg>
-            </div>
-            <p class="click-text">CLICCA UNA REGIONE</p>
-        </section>
-    </div>
-</div>
-
-<div id="indirizziOverlay" onclick="if(event.target.id=='indirizziOverlay') closeIndirizzi()">
-    <div class="close-overlay" onclick="closeIndirizzi()">&times;</div>
-    <div class="overlay-content">
-        <a href="indirizzi/tecnico_afm.html" class="mini-card-overlay"><i class="fa-solid fa-chart-line"></i><span>Amministrazione Finanza e Marketing</span></a>
-        <a href="indirizzi/tecnico_agraria.html" class="mini-card-overlay"><i class="fa-solid fa-leaf"></i><span>Agraria e Agroindustria</span></a>
-        <a href="indirizzi/tecnico_chimica.html" class="mini-card-overlay"><i class="fa-solid fa-vial"></i><span>Chimica e Materiali</span></a>
-        <a href="indirizzi/tecnico_costruzione_ambiente.html" class="mini-card-overlay"><i class="fa-solid fa-compass-drafting"></i><span>Costruzioni Ambiente e Territorio</span></a>
-        <a href="indirizzi/tecnico_elettronica.html" class="mini-card-overlay"><i class="fa-solid fa-microchip"></i><span>Elettronica ed Elettrotecnica</span></a>
-        <a href="indirizzi/tecnico_grafica.html" class="mini-card-overlay"><i class="fa-solid fa-palette"></i><span>Grafica e Comunicazione</span></a>
-        <a href="indirizzi/tecnico_informatica.html" class="mini-card-overlay"><i class="fa-solid fa-code"></i><span>Informatica e Telecomunicazioni</span></a>
-        <a href="indirizzi/tecnico_meccanica.html" class="mini-card-overlay"><i class="fa-solid fa-gear"></i><span>Meccanica e Meccatronica</span></a>
-        <a href="indirizzi/tecnico_moda.html" class="mini-card-overlay"><i class="fa-solid fa-shirt"></i><span>Sistema Moda</span></a>
-        <a href="indirizzi/tecnico_trasporti.html" class="mini-card-overlay"><i class="fa-solid fa-plane"></i><span>Trasporti e Logistica</span></a>
-        <a href="indirizzi/tecnico_turismo.html" class="mini-card-overlay"><i class="fa-solid fa-earth-americas"></i><span>Turismo</span></a>
-    </div>
-</div>
-
-        <section class="small-card card-map-active card-dynamic">
-            <h3 style="color: var(--neon-green); font-size: 1.8rem; margin-top: 20px; text-transform: uppercase;">Mappa Tecnici</h3>
-            <div id="map-container">
-                <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
-                    <g id="features">
-                          <path d="M223.7 143.1l0.4 1.7-0.4 0.1-0.1 0.3 0 0.6 0.7 4.7 0.2 2.5 0 1.4 0.3 1.7 0.2 0.4 0.2 1.4 0.1 0.4 0.2 0.3 0.1 0.2 0.5 0.4 1.3 0.7 0.2 0.1 0 0.8 0 1.1-0.3 2.7 0 1.1 0.1 0.8 0.3 0.5 0.1 0.2 0 0.3-0.4 1.1-1.9 2.8-5.6 1.8-1.6 1.2-0.5 0.3-0.4 0.1-0.6 0.1-3.4-0.2-0.6-0.2-0.7-0.5-0.2-0.1-0.3-0.1-5.7-1.3-0.5 0.1-0.5 0.2-0.8 0.4-0.5 0.2-0.5 0.2-1.1-0.1-0.5 0.1-0.4 0.2-1.1 1.1-0.7 0.9-0.4 0.4-1.2 0.7-0.2 0.1-0.8 0.8-0.2 0.2-8.6 2.9-0.4 0.3-0.4 0.1-0.8 0.1-2.8-0.4-1-0.3-0.2-0.1-0.2-0.2 0-0.2-0.1-0.1 0-0.1 0.3-0.7 0-0.3-0.3 0-0.4 0.2-2.5 2.7-0.8 0.9-0.2-0.3-2.5-1.9-2.7-1.5-0.5-1.2-0.3-3.5-0.2-0.6-0.7-1-0.1-0.7 0.2-0.7 0.7-1.4 0.1-0.5-0.4-1.3-0.7-0.5-1.9-0.5-0.8-0.6-1.3-1.3-0.8-0.3-1.5-0.3-1.6-1.2-1.2-1.8-0.6-3.4-0.1-0.5-0.1-1.1 0-1.4 0.4-1.4 0.7-1.3 0.9-0.5 1.6-0.5 0.5 0.2 0.4 0.2 0.3 0.6 0.4-0.1 0.1-0.4 0-0.6 0.1-0.4 0.4-0.1 1.4 0 1.3-0.3 1.3-0.7 1.2-1 0.8-1.4 0.4-1.1 0.4-1 0.6-0.8 0.9-0.4 2.6 3 1.4 0.8 1.8 0.3 1.9 0 1.8-0.3 3.6-1.5 1.6-1 0.8-0.3 4.4 0.5 1.9-0.7 3.5-2.5 1.7-0.8 1.2-0.1 0.7-0.9 0.5-1 1-0.5 6 1.5 0.9 0.6 0.9 0.8 1.1 1.6 0.1 0.2 0.7 0.3 0.5-0.2 0.4-0.2 0.6 0 2.8 1 1.7 0 1 0.3 0.3 0 0.8-0.4 0.1-0.3 0-0.4 0.2-0.9 0-0.1z" id="IT23" name="VALLE D'AOSTA">
+<path d="M223.7 143.1l0.4 1.7-0.4 0.1-0.1 0.3 0 0.6 0.7 4.7 0.2 2.5 0 1.4 0.3 1.7 0.2 0.4 0.2 1.4 0.1 0.4 0.2 0.3 0.1 0.2 0.5 0.4 1.3 0.7 0.2 0.1 0 0.8 0 1.1-0.3 2.7 0 1.1 0.1 0.8 0.3 0.5 0.1 0.2 0 0.3-0.4 1.1-1.9 2.8-5.6 1.8-1.6 1.2-0.5 0.3-0.4 0.1-0.6 0.1-3.4-0.2-0.6-0.2-0.7-0.5-0.2-0.1-0.3-0.1-5.7-1.3-0.5 0.1-0.5 0.2-0.8 0.4-0.5 0.2-0.5 0.2-1.1-0.1-0.5 0.1-0.4 0.2-1.1 1.1-0.7 0.9-0.4 0.4-1.2 0.7-0.2 0.1-0.8 0.8-0.2 0.2-8.6 2.9-0.4 0.3-0.4 0.1-0.8 0.1-2.8-0.4-1-0.3-0.2-0.1-0.2-0.2 0-0.2-0.1-0.1 0-0.1 0.3-0.7 0-0.3-0.3 0-0.4 0.2-2.5 2.7-0.8 0.9-0.2-0.3-2.5-1.9-2.7-1.5-0.5-1.2-0.3-3.5-0.2-0.6-0.7-1-0.1-0.7 0.2-0.7 0.7-1.4 0.1-0.5-0.4-1.3-0.7-0.5-1.9-0.5-0.8-0.6-1.3-1.3-0.8-0.3-1.5-0.3-1.6-1.2-1.2-1.8-0.6-3.4-0.1-0.5-0.1-1.1 0-1.4 0.4-1.4 0.7-1.3 0.9-0.5 1.6-0.5 0.5 0.2 0.4 0.2 0.3 0.6 0.4-0.1 0.1-0.4 0-0.6 0.1-0.4 0.4-0.1 1.4 0 1.3-0.3 1.3-0.7 1.2-1 0.8-1.4 0.4-1.1 0.4-1 0.6-0.8 0.9-0.4 2.6 3 1.4 0.8 1.8 0.3 1.9 0 1.8-0.3 3.6-1.5 1.6-1 0.8-0.3 4.4 0.5 1.9-0.7 3.5-2.5 1.7-0.8 1.2-0.1 0.7-0.9 0.5-1 1-0.5 6 1.5 0.9 0.6 0.9 0.8 1.1 1.6 0.1 0.2 0.7 0.3 0.5-0.2 0.4-0.2 0.6 0 2.8 1 1.7 0 1 0.3 0.3 0 0.8-0.4 0.1-0.3 0-0.4 0.2-0.9 0-0.1z" id="IT23" name="VALLE D'AOSTA">
   </path>
   <path d="M275.3 128.9l0.3 5.2 0 0.4-0.1 0.6-0.2 1-0.3 0.5-0.2 0.4-7.5 8-0.1 0.2-0.1 0.4 0 0.6 0.1 1.3 0.4 1.6 0.3 2.5 0 0.5-0.1 0.3-0.2 0.3-0.1 0.2-0.2 0.3-1.2 1-0.1 0.3-0.2 0.2-0.1 0.3 0.2 0.7 0.4 1.2 1.3 2.5 0.7 1 0.5 0.5 1.2 0.4 0.4 0.2 0.2 0.3 0.1 0.4 0 0.8-0.1 0.5-0.2 0.7 0.1 0.3 0.1 0.4 0.4 0.3 0.3 0.1 0.6-0.1 0.2 0 0.1 0.3 0 0.6 0 0.5 0.1 0.5 0.2 0.5 0.1 0.3-0.3 0.4-0.2 0-0.3 0-0.3 0 0 0.4 0.2 0.5 1.6 1.9 0.1 0.3 0.1 0.4-0.1 1.5 0.5 0.7-0.1 0.9 0.1 0.4 0.2 0.5 0.3 0.9 0.1 0.6 0.1 0.8 0.2 0.4 0.4 0.5 1.2 1 1.2 0.4 0.2 0.2 0.4 0.5 0.4 0.9 1.5 4.1 0.2 0.3 1 1.3-3.9 1.5-1.7 1.2-0.1 0.3 0.3 0.2 0.7 0.4 0.2 0.2 0.1 0.2 0.1 0.3-0.1 0.2-0.3 0.2-1.6 1-0.4 0.3-0.1 0.3-0.2 0.2-0.1 0.3-0.1 0.3-0.1 1-0.1 0.3-0.1 0.2-0.4 0.1-0.4-0.1-1.1-0.3-0.4-0.3-0.3-0.3-1-2.1-0.2-0.5-0.3-0.5-0.2-0.2-0.3-0.1-0.5-0.2-2.6-0.6-0.9 0-0.4 0.1-0.2 0.1-0.3 0.4-0.2 0.5-0.4 1.3-0.4 1.2-0.7 0.8-0.1 0.1-0.3 0.6-0.3 0.6-0.1 0.2 0 0.3 0.1 0.4 0.3 0.3 0.3 0.2 0.3 0.3 0.1 0.5 0.1 1.6 0.3 0.5 0.3 0.2 0.2 0.2 0.1 0.3-0.1 0.6 0 0.5 0.1 0.6 0.5 0.9 0.4 0.3 0.3 0.3 0.2 0.3 0 0.2-0.4 1.2 0.2 0.8 0.1 0.4 0.4 0.7 0.1 0.2 0.5 1.4 2 2.4 1.4 3.9 0.8 1.7 1.4 1.3 0.8-0.5 0.6 0 1.2 0.5 2.2 0 1.3-0.2 3.5-2.1 1-0.5 1.6 0.4 0.2 0.1 0 0.5-0.3 2.1 0 0.3 0.1 0.3 0 0.4 0.1 0.2 0.1 0.3 0.1 0.2 0.1 0.1 0.8 0.6 0.4 0.2 0.4 0.1 1.8 0.2 0.5 0.2 0.4 0.2 0.1 0.1 0.3 0.4 0.2 0.3 0.1 0.4 0.2 0.8 0 0.4-0.2 0.7 0.2 0.4 0.3 0.5 1.1 1.3 3.1 2.8 0.2 0.3 0.1 0.3 0 0.5-0.1 0.3-0.2 0.6-0.1 0.3 0 0.3 0 0.3 0.3 0.4 0.4 0.6 0.9 1 0.6 0.4 0.5 0.1 1.4 0 1.3 0.3 0.3 0.1 0.2 0.1 0.3 0.2 0.2 0.3 0.2 0.4 0.6 1.3 1.1 3.3 0.3 0.6 0.3 0.4 0.2 0.1 0.2 1-0.3 3.2 0.1 5.6-0.2 1.2-0.5 0.5-0.7 0.5-0.5 0.3-0.9 0.2-0.4 0-0.8-0.2-0.8-0.3-0.3-0.2-0.2-0.2-0.2-0.2-0.1-0.2-0.1-0.4 0-0.7-0.4-0.4-0.6-0.3-2.8-1.1-0.8-0.7-0.9-1.1-0.8-0.5-1-0.5-0.4-0.2-0.4-0.3-0.5-0.9-0.4-0.1-0.5 0-1.2 0.1-0.3 0.2-0.2 0.1-0.1 0.2-0.2 1.1-0.1 0.2-0.1 0.1-0.7 0.8-1 0.8-0.1 0.3 0 0.2 0.1 0.3 0.1 0.1 0.7 0.5 0.7 0.5 0.1 0.2 0.1 0.3 0.1 0.3 0 0.3 0 1.1 0.1 0.7 0 0.3 0 0.4-0.1 0.4-0.2 0.3-0.5 0.4-0.3 0.1-1.2-0.2-1.5 0-0.7 0.1-0.4 0.1-0.2 0.3-0.3 1.2-0.1 0.3-0.1 0.2-0.2 0.3-0.1 0.1-0.9 0.7-0.2 0.2-0.3 0.5-0.5 0.8-0.2 0.2-0.1 0-0.2-0.1-0.1-0.2-0.1-0.3 0-0.3 0.1-0.9 0-0.3-0.1-0.3-0.5-0.6-0.2-0.5-0.4-0.8-0.5-0.6-0.2-0.5-0.3-0.5-0.1-0.3-0.2-0.2-0.3-0.2-0.5-0.1-4.6-0.5-0.6 0-0.5 0.1-0.2 0.2-0.1 0.2-0.3 0.5 0 0.3-0.3 0.6 0 0.3 0 0.2 0 0.3 0.1 0.2 0.1 0.3 0 0.3-0.1 0.3-0.1 0.2-0.5 0.7-0.4 0.5-1.1 0.7-5.1-0.1-1.7 0.2-0.6 0.3-0.4 0-0.5-0.1-0.5-0.3-0.3 0.1-0.2 0.1-0.9 0.6-0.2 0.2-0.1 0.2-0.1 0.1-0.1 0.2-0.1 0.3-0.2 0.3-0.3 0.4-0.7 0.4-0.3 0.1-0.3-0.2-0.2-0.2-0.1-0.2-0.2-0.2-0.5-0.2-1.1-0.4-0.3-0.1-0.4-0.4-0.6-0.5-0.9-0.5-0.5-0.4-0.1-0.1-0.3-0.5-0.6-0.6-0.8 0.2-0.9 1.2-0.2 0.3-0.4 1-0.2 0.9-0.5 0.8-0.2 0.6-0.1 0.4 0.1 0.3 0.1 0.3 0.2 0.2 0.3 0.4 0.2 0.3 0.1 0.4 0 0.9-0.1 0.5-0.2 0.5-0.4 0.7-0.2 0.2-0.2 0.2-0.2 0.1-0.9 0.3-0.2 0.1-0.3 0.3-0.3 0.5-0.7 1.3-0.2 0.8-0.2 0.9-0.1 0.3-0.2 0.3-1.1 0.8-0.4 0.4-0.4 0.6-0.4 0.4-0.4 0.3-0.6 0.3-0.5 0.4-0.1 0.3 0 0.2 0.2 0.3 0.2 0.1 0.1 0.4 0 0.6-0.4 2-0.1 0.6 0.1 0.3 0 0.3 0.1 0.4 0 0.6-0.2 0.9 0.1 0.5 0.1 0.3 0.2 0.2 0.2 0.3 0.1 0.4 0 0.7-0.1 0.5-0.1 0.3-0.6 1-0.6 0.8-0.4 0.4-0.1 0.1-0.2 0-0.3 0-0.6-0.1-0.8-0.3-0.6-0.1-0.3 0.1-0.3 0.2-0.6 0.7-0.2 0.4 0 0.4 0.1 0.3 0.1 0.2 0.3 0.2 0.4 0.2 0.2 0.1 0.1 0.2 0 0.5 0 0.2-0.1 0.2-0.4 0.2-0.4 0.1-4-0.5-1.1-0.4-3.9-0.1-1.6-0.3-0.1-0.2-0.9-0.5-0.9-0.4-0.6-0.1-0.4 0-0.2 0.1-0.2 0.1-0.4 0.4-0.2 0.2-0.4 0.7-0.1 0.3-0.1 0.3-0.1 0.2 0.1 0.3 0.1 0.3 0.1 0.2 0.3 0.2 0 0.2 0 0.1-1.7 0.6-1.3 0.1-0.6-1.5-1.3-1.3-0.8-1.5 0.8-2.7-1.8-0.3-2.4 1.6-1.7 0.1-10.2 3-2.3-0.1-0.6-0.1-0.5-0.5-0.4-0.7-0.4-0.6-0.7-0.3-1.6-0.3-1.1-0.5-6.2-3.8-2.4-0.9-3.4-1.8-0.7-0.2-0.8 0-0.7 0.3-0.7 0.1-0.8-0.3-0.6-0.7-0.2-0.7-0.2-0.7-0.4-0.9-0.5-0.6-1.2-0.8-0.5-0.6-0.4-0.6-0.6-1.7-0.5-0.8-1-1.2-0.3-0.3-0.2-0.4-0.3-0.7 0.1-0.4 0.1-0.5 0.5-2.6 0.4-0.7 2-1.1-1.6-1.3-1.7-1.9-1.4-2.3-0.1-2.5 0.6-1.1 3-2.3 2-3.5 0.8-0.7-0.7-1.7 0.3-0.9 0.2-0.8 1-1.3 1.4-0.8 1.1 0 2.1 0.7 1-0.1-0.3-1-0.6-1.2-1.2-2.2-0.2-0.7-0.3-2.1-0.7-1.7 0-0.1 0.3-1.4 0.1 0 0-0.4 0.1-0.2 0-0.3-0.1-0.5-0.3-0.4-1-1.1-3-1.3-1 0-2.9 0.5-1.1-0.2-4-2.4-1.9-1.7-1.1-1.7 0.1-4.6-0.3-2.4-1.6-1.2-2-0.1-0.6-0.6-0.7-1.2-0.2-0.8 0.1-0.6-0.1-0.6-1-0.8-1-1.6 0.7-0.9 0.9-0.8 0.1-0.1 2.1-1.2 0.5-0.1 1.1 0 0.4 0 0.5-0.3 1.1-0.9 0.4-0.2 2.1 0.4 2.1 1.1 2.1 0.8 2-0.9 0.1-0.6-0.4-0.3-0.2-0.5 0.3-0.7 0.4-0.2 1.4 0 0.5-0.2 0.9-0.7 1-1.8 0.8-0.8 2.1-0.9 2-0.6 0.5 0.2 0.7 0.9 0.3 0.1 0.4-0.4 1.2-2 1.5-1.4 0-1.3-0.6-1.6-0.3-2.5 0.3-0.5 1.9-2.2 1.2-2.2 0.6-1.3 0-1-0.4-0.4-2.5-1.1-0.8-0.6-0.5-0.9-0.4-1.1-0.4-0.6 0.8-0.9 2.5-2.7 0.4-0.2 0.3 0 0 0.3-0.3 0.7 0 0.1 0.1 0.1 0 0.2 0.2 0.2 0.2 0.1 1 0.3 2.8 0.4 0.8-0.1 0.4-0.1 0.4-0.3 8.6-2.9 0.2-0.2 0.8-0.8 0.2-0.1 1.2-0.7 0.4-0.4 0.7-0.9 1.1-1.1 0.4-0.2 0.5-0.1 1.1 0.1 0.5-0.2 0.5-0.2 0.8-0.4 0.5-0.2 0.5-0.1 5.7 1.3 0.3 0.1 0.2 0.1 0.7 0.5 0.6 0.2 3.4 0.2 0.6-0.1 0.4-0.1 0.5-0.3 1.6-1.2 5.6-1.8 1.9-2.8 0.4-1.1 0-0.3-0.1-0.2-0.3-0.5-0.1-0.8 0-1.1 0.3-2.7 0-1.1 0-0.8-0.2-0.1-1.3-0.7-0.5-0.4-0.1-0.2-0.2-0.3-0.1-0.4-0.2-1.4-0.2-0.4-0.3-1.7 0-1.4-0.2-2.5-0.7-4.7 0-0.6 0.1-0.3 0.4-0.1-0.4-1.7 1.2-0.1 0.2-1.6 0.6-1.2 0.9-0.7 4.1-0.9 0.6-0.2 0.4-0.3 0.7-1 0.1-0.2 0.6-1.2 0.1-0.2 0.3-2.4 0-1 0.1-0.9 0.4-0.9 0.6-0.5 1.2-0.1 0.7-0.2 2.5-2.2 1.3-2.8-0.2-3.1-1.7-3.3-1.4-1.2-0.2-0.4 0.3-0.7 0.6-0.8 1.1-1.2 1.3-0.6 2.5-0.5 1.2-0.9 2.9-3.8 1.7-0.8 0.7-0.6 0.5-0.7 0.4-0.7 0-0.9-0.4-0.3-0.2-0.4 0.4-1 1.3-1.4 1.6-0.8 2.5-0.6 0.8-0.1 1.6 0.3 0.8 1.1 0.3 2 0 2.5-0.2 2.5-0.9 4.4-0.2 2.2 0.2 2 0.6 1.4 1.1 0.9 1.6 0.6 1.6 0.8 1.6 1.7 3.7 5.5 0.6 0.3 1.1 0.4 2.8 1.6 1 0.1 0.4-0.3 0.9-0.8 0.4-0.2 0.3 0.2z" id="IT21" name="PIEMONTE">
   </path>
@@ -451,18 +426,35 @@
   </path>
   <path d="M491 307.5l-0.6 0.6-0.6 2 0.2 0.5 0.6 1.2 1.2 0.7 0.5 0.2 0.7-0.1 1.2-0.2 0.2-0.3 0.8-1.4 0-0.3 0-0.2 0.1-0.2 0.1-0.2 0.1-0.1 0.8 0.5 2.4 1.3 0.3 0.3 0.3 0.4 0 0.3-0.1 0.4 0.1 0.4 0.2 0.6 0.2 0.2 0.2 0 0.2-0.2 0.2-0.2 0.1-0.2 0.1-0.3 0.2-0.3 0.2-0.3 0.5-0.2 0.2 0 0.2 0.2 0.3 0.5 0.4 0.7 0.3 0.5 0.3 1.2 0.2 0.4 0.3 0.5 0.3 0.2 0.4 0.1 2.1 0 0.3 0 0.3-0.2 0.2-0.2 0.1-0.2 0.2-0.6 0.2-0.2 0.1-0.2 0.2-0.2 0.2-0.2 1.3-0.6 0.2-0.1 0.2-0.2 0.1-0.3 0.6-1.3 0.1-0.3 0-0.3-0.1-0.2-0.1-0.6-0.1-0.2 0-0.4 0-0.3 0-0.3 0.1-0.7 0.6-1.8 0.3-0.8 0-0.1 0.1 0 2.8 0.4 1.1 0.7 2.3 1.9 3.9 1.6 0.6 0.9 0.5 0.6 13.5 11.8 4.5 4 6.8 4.2 1.2 0.5 0.5 0.7 2.8 1 1.6 0.9 0.5-0.3 0.5-0.6 0.3-0.3 0.2-0.1 0.1-0.2 0.2-0.1 0.3-0.1 0.4 0.1 0.1 0.4 0.2 0.4 0.1 0.1 1.2 0.6 0.8 1.4 0.7 1.3 0.6 0.6 1.1 0.3 1 0.7 0.5 1.1-0.4 1.3 1.7 4.5 5.8 14.8 0.9 2.3 0.9 1.6 0.3 0.6 0.3 2.9 0.3 0.6 0.7 1.2 1.9 4.1 0.8 2.8 0.3 2 0.7 4.8 2.3 8.5-1 0.1-4.2 1-3.3 1.5-1.2 0.4-0.9-0.1-0.3 0.1-0.4 0.3-0.5 0.6-0.2 0.4-0.2 0.3 0 0.8-0.1 0.3-0.1 0.3-0.1 0.2-0.2 0.2-0.4 0.3-1 0.5-1.6 0.3-0.4 0-0.3-0.1-0.6-0.2-0.3 0-0.3 0-1.6 0.6-0.4 0.1-0.3 0-0.3-0.1-0.2-0.1-0.4-0.4-0.2-0.1-0.3-0.1-0.3 0.1-0.4 0.3-0.5 0.7-0.6 1.4-0.2 0.2-0.5 0.7-0.1 0.2-0.1 0.3-0.1 0.3-0.1 0.6-0.1 0.4-0.1 0.3-0.2 0.2-0.5 0.2-0.9 0.3-0.6 0.2-0.5 0.3-0.4 0.6-0.2 0.5-0.1 0.4-0.1 0.6-0.6 0.4-0.5 0.2-4.3 0.6-1.5-2.6-0.5-0.5-1.2-1.1-0.5-0.3-0.4-0.1-0.2 0-0.1 0.1-0.6 0.5-0.3 0.1-0.3 0-2.8 0.1 0-1.1 0.3-0.6 0.2-0.3 0.4-0.1 0.2 0.1 0.4 0.1 0.4 0 0.7-0.2 0.4-0.3 0.2-0.2 0.1-0.3 0.3-1.7 0-0.4 0-0.4 0-0.3-0.1-0.6-0.4-1-0.5-1-0.1-0.2-0.2-0.2-0.1-0.1-0.4-0.2-3.4 1.8-1 0.1-0.1-0.2-0.1-0.3-0.1-0.6-0.1-0.3-0.1-0.2-0.2-0.5-1.9-2.1-0.3-0.4-0.6-0.6-1.2-1-0.8-0.9-0.4-0.4-0.4-0.2-0.2 0.1-0.4 0.1-0.5 0.1-1.7-0.1-0.4 0.1-0.1 0.3 0 0.2 0.1 0.3 0.2 0.5 0 0.3-0.1 0.3-0.2 0.2-0.6 0.2-0.2-0.1-0.2-0.3 0-0.2 0-1.4 0-0.3-0.1-0.3 0-0.3-0.2-0.3-0.1-0.2-1.6-1-0.3-0.4-1-1.3-0.3-0.6-0.2-0.6 0-0.7 0-0.3-0.1-0.3-0.3-0.5-0.1-0.2 0-0.3 0-0.3 0.1-0.7 0-0.3 0-0.3 0-0.1-0.3-1-0.1-0.9 0-0.8 0.2-1.3 0.1-0.7-0.2-0.6-0.3-0.6-0.7-1.1-0.5-0.5-0.4-0.3-0.9-0.1-0.3-0.2-0.1-0.3-0.2-0.8 0-0.3 0-0.2 0.2-0.2 0.4-0.4 0.3-0.4 0.1-0.3 0.2-0.2 0-0.3 0.1-0.3 0-0.4 0-0.3 0-0.6-0.3-1.2 0-0.2-2.9-4.9-0.4-0.7-0.1-0.6 0.1-1.1-0.1-1.2-0.1-0.4-0.2-0.4-2-3.3-0.3-0.6-0.2-0.5 0-0.3 0.4-2 0.1-0.7 0-0.3 0-0.6 0.2-1.1 0-0.3 0-1.4-1.5 0.1-1.1 0.5-0.3 0.3-0.2 0.1-0.5 0.8-0.3 0.4-0.3 0.1-0.3-0.1-0.7-0.4-0.7-0.2-0.7-0.1-0.4 0-0.2 0-0.2 0.2-0.5 0.5-0.5 0.4-0.3 0.1-0.3-0.2-5.5-6.6-1.3-0.8-2.7-1.1-0.6-0.2-0.3 0.1-0.3 0.1-0.2 0.1-0.3 0.5-0.3 0.2-0.3 0.2-0.6 0.1-0.7-0.2-3.6-1.7-0.4-0.3-0.2-0.2-0.2-0.2-0.1-0.3 0-0.3 0.1-0.2 0.2-0.2 0.3-0.1 0.3 0.1 0.9 0.1 0.3 0 0.2-0.1 0.3-0.1 0.1-0.2 0.2-0.3 0.1-0.2 0.1-0.3 0-0.3 0-0.3-0.2-0.4 0-0.3 0.1-0.3 0.2-0.5 0.1-0.3 0-0.4-0.1-0.4-0.2 0-0.3 0-2.3 0.9-0.2 0.1-0.3 0.2-0.1 0.2-0.2 0.6-0.2 0.2-0.5 0.1-0.3-0.1-1.2-0.8-0.9-0.3-0.5-0.1-0.7 0-0.7-0.1-0.2-0.2-0.2-0.4-0.7-2.3 0-0.3 0.1-0.4 0.3-0.1 0.8-0.3 0.3-0.2 0.5-0.4 1-1.1 0.3-0.3 1.1-0.2 0.5-0.3 0.3-0.3 0.2-0.4 0.3-1.1 0.4-1 0.3-0.4 0.2-0.1 0.1 0.2 0.1 0.3 0.2 2.5 0.2 0.3 0.2 0.3 0.3 0.2 0.2-0.1 0.3-0.4 0.4-0.6 0.8-1.2 0.2-0.5 0-0.4-3-2.9-0.9-0.7-0.3-0.2-0.2-0.1-0.2-0.1-0.3 0-0.3 0-0.3 0.1-0.5 0.6-0.3 0.1-0.3 0-1.2-0.2-0.3 0-0.3 0.1-0.2 0.2-0.2 0.1-0.6 0.9-0.2 0.2-0.2 0.2-0.3 0-0.3 0-0.3-0.1-0.2-0.2-0.8-0.7-0.4-0.3-0.6-0.3-0.6-0.1-0.3 0-0.6 0.1-0.8 0.3 0.7-2.8 0.4-0.9 1.1-1.4 0.3-0.8 1.1-5.1 0-0.3-0.2-1.2 0.1-0.7 0-0.3 0.2-0.2 0.2-0.1 0.2 0 0.2 0.1 0.7 0.4 0.3 0 2 0.1 0.3 0.1 0.4 0 0.4-0.1 2.6-1.6 1.2-0.9 0.6-0.3 0.4-0.2 0.2-0.4 0.4 0.2 0.8 0.7 0.6-0.5 0.7-0.8 0.9 0.2 0.8 0.6 0.3 0.2z m-13.8 12.3l0.3 0.7 0.3 0.6 0.5 0.5 0.5 0.2 0-0.1 0.2-0.1 1.4-1.1 0.5-0.2 0.2 0 0.1-0.1 0-0.1 0-0.1 0-0.3 0-0.1-0.1-0.1 0-0.1-0.1-0.1-0.2-0.1-0.4-0.2-2.4-0.3-0.4-0.2 0-0.1-0.4 1.1 0 0.3z m14.2 17.1l0.5 0.4 0.5 0 0.5-0.4 0.3-0.6 0.1-0.8-0.2-0.7-0.3-0.6-0.4-0.3-0.4 0-0.4 0.3-0.4 0.5-0.1 0.9 0 0.7 0.3 0.6z" id="IT57" name="MARCHE">
   </path>
-                        </g>
-                 </svg>
+                </svg>
             </div>
-            <p class="click-text">CLICCA UNA REGIONE</p>
+            <p style="color: var(--neon-blue); font-weight: 700; letter-spacing: 1px;">CLICCA UNA REGIONE</p>
         </section>
     </div>
+
 </div>
 
 <div id="details">
-    <span style="font-size: 2rem; color: #fff; cursor: pointer;" onclick="closeDetails()">&times;</span>
-    <h2 id="region-name" style="color: var(--neon-green);">Regione</h2>
+    <span class="close-btn" onclick="closeDetails()">&times;</span>
+    <h2 id="region-name" style="color: var(--neon-blue); text-transform: uppercase;">Seleziona Regione</h2>
     <div id="schools-list"></div>
+</div>
+
+<div id="indirizziOverlay" onclick="closeOverlay(event)">
+    <span class="close-overlay" onclick="closeIndirizzi()">&times;</span>
+<div class="overlay-content">
+        <a href="indirizzi/tecnico_afm.html" class="mini-card-overlay"><i class="fa-solid fa-chart-line"></i><span>Amministrazione Finanza e Marketing</span></a>
+        <a href="indirizzi/tecnico_agraria.html" class="mini-card-overlay"><i class="fa-solid fa-leaf"></i><span>Agraria e Agroindustria</span></a>
+        <a href="indirizzi/tecnico_chimica.html" class="mini-card-overlay"><i class="fa-solid fa-vial"></i><span>Chimica e Materiali</span></a>
+        <a href="indirizzi/tecnico_costruzione_ambiente.html" class="mini-card-overlay"><i class="fa-solid fa-compass-drafting"></i><span>Costruzioni Ambiente e Territorio</span></a>
+        <a href="indirizzi/tecnico_elettronica.html" class="mini-card-overlay"><i class="fa-solid fa-microchip"></i><span>Elettronica ed Elettrotecnica</span></a>
+        <a href="indirizzi/tecnico_grafica.html" class="mini-card-overlay"><i class="fa-solid fa-palette"></i><span>Grafica e Comunicazione</span></a>
+        <a href="indirizzi/tecnico_informatica.html" class="mini-card-overlay"><i class="fa-solid fa-code"></i><span>Informatica e Telecomunicazioni</span></a>
+        <a href="indirizzi/tecnico_meccanica.html" class="mini-card-overlay"><i class="fa-solid fa-gear"></i><span>Meccanica e Meccatronica</span></a>
+        <a href="indirizzi/tecnico_moda.html" class="mini-card-overlay"><i class="fa-solid fa-shirt"></i><span>Sistema Moda</span></a>
+        <a href="indirizzi/tecnico_trasporti.html" class="mini-card-overlay"><i class="fa-solid fa-plane"></i><span>Trasporti e Logistica</span></a>
+        <a href="indirizzi/tecnico_turismo.html" class="mini-card-overlay"><i class="fa-solid fa-earth-americas"></i><span>Turismo</span></a>
+    </div>
 </div>
 
  <footer>
@@ -500,24 +492,28 @@
     </div>
 </footer>
 
+<!-- 1. Libreria Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- 2. Il tuo nuovo file logica (assicurati che il percorso sia giusto) -->
 <script src="../script.js"></script>
 <script>
-// 1. Configurazione Supabase
-const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-function openIndirizzi() {
+    // Gestione Indirizzi
+    function openIndirizzi() {
         document.getElementById('indirizziOverlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
-}
-function closeIndirizzi() {
+    }
+    function closeIndirizzi() {
         document.getElementById('indirizziOverlay').style.display = 'none';
         document.body.style.overflow = 'auto';
-}
-function closeDetails() { document.getElementById('details').classList.remove('active'); }
-
+    }
+    function closeOverlay(event) {
+        if (event.target.id === 'indirizziOverlay') closeIndirizzi();
+    }
 
 // 2. Funzione per caricare i licei
 async function caricaLiceiRegionali(nomeRegione) {
