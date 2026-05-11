@@ -378,11 +378,28 @@
         <section class="small-card card-indirizzi card-dynamic" onclick="openIndirizzi()">
             <i class="fa-solid fa-layer-group main-icon"></i>
             <h3>Indirizzi</h3>
-            <p>ESPLORA TUTTI I LICEI</p>
+            <p>ESPLORA TUTTI I TECNICI</p>
         </section>
 
+        <div id="indirizziOverlay" onclick="closeOverlay(event)">
+    <span class="close-overlay" onclick="closeIndirizzi()">&times;</span>
+<div class="overlay-content">
+        <a href="indirizzi/tecnico_afm.html" class="mini-card-overlay"><i class="fa-solid fa-chart-line"></i><span>Amministrazione Finanza e Marketing</span></a>
+        <a href="indirizzi/tecnico_agraria.html" class="mini-card-overlay"><i class="fa-solid fa-leaf"></i><span>Agraria e Agroindustria</span></a>
+        <a href="indirizzi/tecnico_chimica.html" class="mini-card-overlay"><i class="fa-solid fa-vial"></i><span>Chimica e Materiali</span></a>
+        <a href="indirizzi/tecnico_costruzione_ambiente.html" class="mini-card-overlay"><i class="fa-solid fa-compass-drafting"></i><span>Costruzioni Ambiente e Territorio</span></a>
+        <a href="indirizzi/tecnico_elettronica.html" class="mini-card-overlay"><i class="fa-solid fa-microchip"></i><span>Elettronica ed Elettrotecnica</span></a>
+        <a href="indirizzi/tecnico_grafica.html" class="mini-card-overlay"><i class="fa-solid fa-palette"></i><span>Grafica e Comunicazione</span></a>
+        <a href="indirizzi/tecnico_informatica.html" class="mini-card-overlay"><i class="fa-solid fa-code"></i><span>Informatica e Telecomunicazioni</span></a>
+        <a href="indirizzi/tecnico_meccanica.html" class="mini-card-overlay"><i class="fa-solid fa-gear"></i><span>Meccanica e Meccatronica</span></a>
+        <a href="indirizzi/tecnico_moda.html" class="mini-card-overlay"><i class="fa-solid fa-shirt"></i><span>Sistema Moda</span></a>
+        <a href="indirizzi/tecnico_trasporti.html" class="mini-card-overlay"><i class="fa-solid fa-plane"></i><span>Trasporti e Logistica</span></a>
+        <a href="indirizzi/tecnico_turismo.html" class="mini-card-overlay"><i class="fa-solid fa-earth-americas"></i><span>Turismo</span></a>
+    </div>
+</div>
+
         <section class="small-card card-map-active card-dynamic">
-            <h3 style="color: var(--neon-blue); font-size: 2.2rem; font-weight: 900; text-transform: uppercase; margin: 0; text-align: center;">Mappa Licei</h3>
+            <h3 style="color: var(--neon-blue); font-size: 2.2rem; font-weight: 900; text-transform: uppercase; margin: 0; text-align: center;">Mappa Tecnici</h3>
             <div id="map-container">
 <svg baseprofile="tiny" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
                     <g id="features">
@@ -438,23 +455,6 @@
     <span class="close-btn" onclick="closeDetails()">&times;</span>
     <h2 id="region-name" style="color: var(--neon-blue); text-transform: uppercase;">Seleziona Regione</h2>
     <div id="schools-list"></div>
-</div>
-
-<div id="indirizziOverlay" onclick="closeOverlay(event)">
-    <span class="close-overlay" onclick="closeIndirizzi()">&times;</span>
-<div class="overlay-content">
-        <a href="indirizzi/tecnico_afm.html" class="mini-card-overlay"><i class="fa-solid fa-chart-line"></i><span>Amministrazione Finanza e Marketing</span></a>
-        <a href="indirizzi/tecnico_agraria.html" class="mini-card-overlay"><i class="fa-solid fa-leaf"></i><span>Agraria e Agroindustria</span></a>
-        <a href="indirizzi/tecnico_chimica.html" class="mini-card-overlay"><i class="fa-solid fa-vial"></i><span>Chimica e Materiali</span></a>
-        <a href="indirizzi/tecnico_costruzione_ambiente.html" class="mini-card-overlay"><i class="fa-solid fa-compass-drafting"></i><span>Costruzioni Ambiente e Territorio</span></a>
-        <a href="indirizzi/tecnico_elettronica.html" class="mini-card-overlay"><i class="fa-solid fa-microchip"></i><span>Elettronica ed Elettrotecnica</span></a>
-        <a href="indirizzi/tecnico_grafica.html" class="mini-card-overlay"><i class="fa-solid fa-palette"></i><span>Grafica e Comunicazione</span></a>
-        <a href="indirizzi/tecnico_informatica.html" class="mini-card-overlay"><i class="fa-solid fa-code"></i><span>Informatica e Telecomunicazioni</span></a>
-        <a href="indirizzi/tecnico_meccanica.html" class="mini-card-overlay"><i class="fa-solid fa-gear"></i><span>Meccanica e Meccatronica</span></a>
-        <a href="indirizzi/tecnico_moda.html" class="mini-card-overlay"><i class="fa-solid fa-shirt"></i><span>Sistema Moda</span></a>
-        <a href="indirizzi/tecnico_trasporti.html" class="mini-card-overlay"><i class="fa-solid fa-plane"></i><span>Trasporti e Logistica</span></a>
-        <a href="indirizzi/tecnico_turismo.html" class="mini-card-overlay"><i class="fa-solid fa-earth-americas"></i><span>Turismo</span></a>
-    </div>
 </div>
 
  <footer>
