@@ -1,27 +1,93 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <link rel="icon" type="image/png" href="icon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accedi - Up to You</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* (Stesso CSS di sopra, copiato per coerenza) */
-        :root { --primary: #8b5cf6; --primary-hover: #7c3aed; --bg: #0f172a; --card-bg: rgba(30, 41, 59, 0.7); --text: #f8fafc; }
-        body { font-family: 'Poppins', sans-serif; background: radial-gradient(circle at top left, #1e1b4b, #0f172a); color: var(--text); margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
-        .navbar { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        :root { 
+            /* Colore primario azzurro come stabilito precedentemente */
+            --primary: #5db9ff; 
+            --primary-hover: #ffffff; 
+            
+            /* Sfondo generale leggermente meno scuro (blu notte invece che quasi nero) */
+            --bg: #111827; 
+            
+            /* Contenitore leggermente più trasparente per far passare la luce */
+            --card-bg: rgba(31, 41, 55, 0.6); 
+            --text: #f8fafc; 
+        }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            
+            /* --- MODIFICA SFONDO --- */
+            /* Gradient radiale più chiaro al centro per schiarire l'ambiente generale */
+            background: radial-gradient(circle at center, #1e3a8a, #0f172a); 
+            
+            color: var(--text); 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            position: relative; /* Per posizionare la luce di sfondo */
+            overflow-x: hidden; /* Evita scorrimenti indesiderati dovuti alla luce */
+        }
+
+        /* Navbar invariata come richiesto (struttura e posizionamento) */
+        .navbar { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
         .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
         .logo span { color: var(--primary); }
+        .nav-links {list-style: none; margin: 0; padding: 0; display: flex; /* Se vuoi i link sulla stessa linea */
+}
         .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; opacity: 0.8; }
-        .auth-container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 2rem; }
-        .auth-card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; border-radius: 24px; width: 100%; max-width: 400px; text-align: center; }
+        
+        .auth-container { 
+            flex: 1; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 2rem; 
+            position: relative; /* Contesto per la luce */
+            z-index: 5;
+        }
+
+        /* --- EFFETTO LUCE DIFFUSA (NON NEON) --- */
+        /* Questo elemento crea un alone morbido e ampio dietro la card */
+        .auth-container::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            /* Colore luce azzurro molto tenue e sfocato */
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, rgba(59, 130, 246, 0) 70%);
+            border-radius: 50%;
+            /* Forte sfocatura per eliminare bordi definiti (effetto neon) */
+            filter: blur(80px); 
+            z-index: -1; /* Dietro la card */
+        }
+
+        .auth-card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(16px); /* Blur aumentato per effetto vetro */
+            border: 1px solid rgba(255,255,255,0.08); 
+            padding: 2.5rem; 
+            border-radius: 24px; 
+            width: 100%; 
+            max-width: 400px; 
+            text-align: center; 
+            /* Leggerissima ombra proiettata per dare profondità rispetto alla luce posteriore */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); 
+        }
+
+        /* Input, bottoni, divider e footer invariati come richiesto */
         .input-group { margin-bottom: 1.2rem; text-align: left; }
         input { width: 100%; padding: 0.8rem 1rem; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; box-sizing: border-box; }
-        .btn-primary { width: 100%; padding: 1rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 1rem; }
+        .btn-primary { width: 100%; padding: 1rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: background 0.3s ease; }
+        .btn-primary:hover { background: var(--primary-hover); }
         .divider { margin: 1.5rem 0; display: flex; align-items: center; opacity: 0.3; }
         .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: white; margin: 0 10px; }
-        .btn-google { width: 100%; padding: 0.8rem; background: white; color: #1e293b; border: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; }
         .footer-text { margin-top: 1.5rem; font-size: 0.85rem; }
         .footer-text a { color: var(--primary); text-decoration: none; font-weight: 600; }
     </style>
@@ -67,8 +133,6 @@
         const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-        const REDIRECT_URL = 'https://shxlkinho.github.io/UPTOYOU/index.html';
-
         document.getElementById('loginBtn').onclick = async () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -78,7 +142,12 @@
             if (error) msg.innerHTML = `<span style="color:#f87171">${error.message}</span>`;
             else window.location.href = 'index.html';
         };
-
+        // --- AGGIUNTA TASTO INVIO ---
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            document.getElementById('loginBtn').click();
+        }
+    });
     </script>
 </body>
 </html>
