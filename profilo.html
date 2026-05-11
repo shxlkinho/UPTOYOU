@@ -1,187 +1,206 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <link rel="icon" type="image/png" href="icon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Il Mio Profilo - Up to You</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-blue: #1e62ff;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 120px auto 60px;
+            padding: 0 20px;
+            align-items: stretch;
+        }
+
+        .profile-sidebar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 32px;
+            padding: 50px 30px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .avatar-circle {
+            width: 110px; height: 110px;
+            background: #151515; border-radius: 38px;
+            margin: 0 auto 25px; display: flex;
+            align-items: center; justify-content: center;
+            font-size: 2.8rem; border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .badge-school {
+            display: inline-block; background: rgba(30, 98, 255, 0.12);
+            color: var(--accent-blue); padding: 6px 18px; border-radius: 14px;
+            font-size: 0.85rem; font-weight: 600; margin-top: 15px;
+            border: 1px solid rgba(30, 98, 255, 0.3);
+        }
+
+        .edit-link {
+            display: block; margin-top: 35px; padding: 15px;
+            background: var(--accent-blue); color: #ffffff;
+            text-decoration: none; border-radius: 18px; font-weight: 600;
+        }
+
+        .profile-main {
+            display: flex; flex-direction: column; gap: 20px; height: 600px;
+        }
+
+        .content-card {
+            background: var(--glass-bg); border-radius: 32px;
+            padding: 30px 35px; border: 1px solid var(--glass-border);
+            flex: 1; display: flex; flex-direction: column; min-height: 0;
+        }
+
+        .content-card h3 { font-size: 1.2rem; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .content-card h3 i { color: var(--accent-blue); }
+
+        .scroll-area { overflow-y: auto; flex-grow: 1; padding-right: 10px; }
+        .scroll-area::-webkit-scrollbar { width: 5px; }
+        .scroll-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+        /* Stile Commenti nel Profilo */
+        .comment-box {
+            background: rgba(255, 255, 255, 0.015);
+            padding: 20px; border-radius: 20px;
+            border-left: 4px solid var(--accent-blue);
+            margin-bottom: 15px;
+        }
+
+        .comment-text {
+            color: var(--text-dim); font-size: 0.9rem; margin: 0;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        .comment-text.expanded { -webkit-line-clamp: unset; display: block; }
+
+        .show-more-btn {
+            background: none; border: none; color: var(--accent-blue);
+            font-size: 0.8rem; font-weight: 600; cursor: pointer; padding-top: 5px;
+        }
+
+        .empty-msg { color: var(--text-dim); font-size: 0.9rem; font-style: italic; opacity: 0.6; }
+
+        @media (max-width: 950px) {
+            .profile-grid, .profile-main { height: auto; display: block; }
+            .profile-sidebar { margin-bottom: 20px; height: auto; }
+            .content-card { height: 400px; margin-bottom: 20px; }
+        }
+    </style>
 </head>
-<body class="auth-page">
-<header>
-    <nav class="navbar">
-        <div class="logo">
-            <a href="index.html" style="text-decoration: none; color: inherit;">
-                UP<span>TOYOU</span>
-            </a>
-        </div>
-        
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li class="dropdown">
-                <a href="#">Lezioni ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="Lezioni/elementari.html">Elementari</a></li>
-                    <li><a href="Lezioni/medie.html">Medie</a></li>
-                    <li><a href="Lezioni/superiori.html">Superiori</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">Orientamento ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="guidato.html">Orientamento Guidato</a></li>
-                    <li><a href="rapido.html">Orientamento Rapido</a></li>
-                </ul>
-            </li>
-            <li><a href="contact.html">Contatti</a></li>
-            <li id="auth-nav-item" class="nav-auth-container"></li>
-        </ul>
-    </nav>
-</header>
-
-   <!-- profilo.html -->
-<style>
-    .profile-grid {
-        display: grid;
-        grid-template-columns: 300px 1fr;
-        gap: 30px;
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 20px;
-    }
-
-    .profile-sidebar {
-        background: rgba(22, 22, 22, 0.6);
-        backdrop-filter: blur(20px);
-        border-radius: 24px;
-        padding: 30px;
-        text-align: center;
-        border: 1px solid rgba(79, 172, 254, 0.2);
-        height: fit-content;
-    }
-
-    .profile-main {
-        display: flex;
-        flex-direction: column;
-        gap: 25px;
-    }
-
-    .content-card {
-        background: rgba(255, 255, 255, 0.03);
-        border-radius: 20px;
-        padding: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .content-card h3 {
-        color: var(--accent);
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .badge-school {
-        background: var(--accent);
-        color: white;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 700;
-    }
-
-    .comment-item {
-        border-left: 2px solid var(--accent-sec);
-        padding-left: 15px;
-        margin-bottom: 15px;
-        font-size: 0.9rem;
-    }
-</style>
+<body>
 
 <main class="profile-grid">
-    <!-- Sidebar con Info Base -->
     <aside class="profile-sidebar">
-        <div style="font-size: 5rem; margin-bottom: 15px;">👤</div>
-        <h2 id="prof-name">Nome Utente</h2>
-        <p id="prof-email" style="color: var(--text-dim); font-size: 0.9rem;">email@esempio.it</p>
-        <div style="margin-top: 20px;">
-            <span class="badge-school" id="prof-school-badge">Liceo Scientifico</span>
-        </div>
-        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 25px 0;">
-        <a href="settings.html" class="edit-link">Modifica Profilo</a>
+        <div class="avatar-circle"><i class="fa-solid fa-user-graduate"></i></div>
+        <h2 id="prof-name">Caricamento...</h2>
+        <p id="prof-email" style="color: var(--text-dim); font-size: 0.9rem;">---</p>
+        <div><span class="badge-school" id="prof-school-badge">---</span></div>
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 30px 0;">
+        <a href="settings.html" class="edit-link">Gestisci Profilo</a>
+        <button onclick="logout()" style="margin-top: 20px; background: none; border: none; color: #ff5555; cursor: pointer; font-size: 0.85rem;">Esci</button>
     </aside>
 
-    <!-- Main Content -->
     <div class="profile-main">
-        <!-- Scuole Preferite -->
         <section class="content-card">
-            <h3>⭐ Scuole Preferite</h3>
-            <div id="favorites-list" style="color: var(--text-dim);">
-                Non hai ancora salvato scuole nei preferiti.
+            <h3><i class="fa-solid fa-bookmark"></i> Percorsi Salvati</h3>
+            <div class="scroll-area" id="favorites-list">
+                <p class="empty-msg">Nessun percorso salvato.</p>
             </div>
         </section>
 
-        <!-- Ultimi Commenti -->
         <section class="content-card">
-            <h3>💬 I tuoi Commenti</h3>
-            <div id="comments-list">
-                <div class="comment-item">
+            <h3><i class="fa-solid fa-message"></i> I tuoi Commenti</h3>
+            <div class="scroll-area" id="comments-list">
                 </div>
-            </div>
         </section>
     </div>
 </main>
-   <footer>
-    <div class="footer-grid">
-        <div class="footer-col">
-            <div class="logo">UP<span>TOYOU</span></div>
-            <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
-        </div>
-        <div class="footer-col">
-            <h4>Link Utili</h4>
-            <ul>
-                <li><a href="guidato.html">Orientamento Guidato</a></li>
-                <li><a href="rapido.html">Orientamento Rapido</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h4>Supporto</h4>
-            <ul>
-                <li>Privacy Policy</li>
-                <li>Termini di Servizio</li>
-                <li><a href="contact.html">Contattaci</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h4>Contatti</h4>
-            <ul>
-                <li>Email: info@uptoyou.it</li>
-                <li>Roma, Italia</li>
-            </ul>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
-        <p>Designed with Excellence</p>
-    </div>
-</footer>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="script.js"></script>
-    <script>
-        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
-        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-        window.onload = async () => {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if(!session) { window.location.href = "login.html"; return; }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+    const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-            const u = session.user;
-            document.getElementById('prof-name').innerText = u.user_metadata.full_name || "Studente";
-            document.getElementById('prof-email').innerText = u.email;
-            document.getElementById('prof-school').innerText = u.user_metadata.school_path || "Non specificata";
-        };
-    </script>
+    window.onload = async () => {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if(!session) { window.location.href = "login.html"; return; }
+
+        const u = session.user;
+        document.getElementById('prof-name').innerText = u.user_metadata.full_name || "Studente";
+        document.getElementById('prof-email').innerText = u.email;
+        document.getElementById('prof-school-badge').innerText = u.user_metadata.school_path || "Non specificata";
+        
+        caricaMieiCommenti(u.id);
+    };
+
+    async function caricaMieiCommenti(Id) {
+        const container = document.getElementById('comments-list');
+
+        const { data, error } = await supabaseClient
+            .from('recensioni')
+            .select('*')
+            .eq('id', Id)
+            .order('created_at', { ascending: false });
+
+        if (error || !data || data.length === 0) {
+            container.innerHTML = '<p class="empty-msg">Non hai ancora scritto commenti.</p>';
+            return;
+        }
+
+        container.innerHTML = data.map(r => `
+            <div class="comment-box">
+                <div style="color:var(--accent-blue); font-size: 0.7rem; margin-bottom: 5px;">
+                    ${'★'.repeat(r.stelle)}
+                </div>
+                <p class="comment-text" id="text-${r.id}">${r.testo}</p>
+                <button class="show-more-btn" onclick="toggleComment('text-${r.id}', this)">Mostra più</button>
+                <span style="font-size:0.7rem; color:#444; display:block; margin-top:8px;">
+                    Postato il ${new Date(r.created_at).toLocaleDateString()}
+                </span>
+            </div>
+        `).join('');
+    }
+
+    function toggleComment(id, btn) {
+        const p = document.getElementById(id);
+        p.classList.toggle('expanded');
+        btn.innerText = p.classList.contains('expanded') ? "Mostra meno" : "Mostra più";
+    }
+
+    async function logout() {
+        await supabaseClient.auth.signOut();
+        window.location.href = "login.html";
+    }
+</script>
 </body>
 </html>
