@@ -264,25 +264,20 @@
     </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-    const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
-    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+    <script>
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-    window.onload = async () => {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if(!session) { window.location.href = "login.html"; return; }
+        window.onload = async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if(!session) { window.location.href = "login.html"; return; }
 
-        const u = session.user;
-        document.getElementById('prof-name').innerText = u.user_metadata.full_name || "Studente";
-        document.getElementById('prof-email').innerText = u.email;
-        document.getElementById('prof-school-badge').innerText = u.user_metadata.school_path || "Percorso non impostato";
-    };
-
-    async function logout() {
-        await supabaseClient.auth.signOut();
-        window.location.href = "login.html";
-    }
-</script>
+            const u = session.user;
+            document.getElementById('prof-name').innerText = u.user_metadata.full_name || "Studente";
+            document.getElementById('prof-email').innerText = u.email;
+            document.getElementById('prof-school').innerText = u.user_metadata.school_path || "Non specificata";
+        };
+    </script>
 </body>
 </html>
