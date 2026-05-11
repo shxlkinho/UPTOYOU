@@ -11,7 +11,7 @@
         :root {
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --accent-blue: #1e62ff; /* Blu moderno e saturo */
+            --accent-blue: #1e62ff;
             --text-main: #ffffff;
             --text-dim: #a0a0a0;
         }
@@ -50,7 +50,7 @@
             width: 110px;
             height: 110px;
             background: #151515;
-            border-radius: 38px; /* Squircle design */
+            border-radius: 38px;
             margin: 0 auto 25px;
             display: flex;
             align-items: center;
@@ -97,21 +97,15 @@
         .edit-link:hover {
             transform: translateY(-3px);
             background: #1652d9;
-            box-shadow: 0 8px 25px rgba(30, 98, 255, 0.35);
         }
 
         /* --- MAIN CONTENT --- */
-        .profile-main {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
         .content-card {
             background: var(--glass-bg);
             border-radius: 35px;
             padding: 40px;
             border: 1px solid var(--glass-border);
+            margin-bottom: 30px;
         }
 
         .content-card h3 {
@@ -124,12 +118,8 @@
             color: #fff;
         }
 
-        .content-card h3 i {
-            color: var(--accent-blue);
-            font-size: 1.1rem;
-        }
+        .content-card h3 i { color: var(--accent-blue); }
 
-        /* LIST ITEMS */
         .list-item {
             display: flex;
             align-items: center;
@@ -138,53 +128,19 @@
             padding: 22px 28px;
             border-radius: 22px;
             margin-bottom: 12px;
-            border: 1px solid transparent;
             transition: 0.3s ease;
         }
 
         .list-item:hover {
             background: rgba(30, 98, 255, 0.04);
-            border-color: rgba(30, 98, 255, 0.2);
             transform: translateX(5px);
         }
 
-        .list-item span {
-            font-weight: 500;
-            font-size: 1rem;
-        }
-
-        .list-item i {
-            color: var(--accent-blue);
-            opacity: 0.7;
-        }
-
-        /* COMMENT BOX */
         .comment-box {
             background: rgba(255, 255, 255, 0.015);
             padding: 25px 30px;
             border-radius: 25px;
             border-left: 4px solid var(--accent-blue);
-            margin-bottom: 20px;
-            transition: 0.3s;
-        }
-
-        .comment-box:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .comment-text {
-            font-size: 0.98rem;
-            line-height: 1.6;
-            color: var(--text-dim);
-            margin-bottom: 12px;
-        }
-
-        .comment-date {
-            font-size: 0.78rem;
-            color: #555;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         @media (max-width: 950px) {
@@ -218,31 +174,24 @@
         <h2 id="prof-name">Caricamento...</h2>
         <p id="prof-email" style="color: var(--text-dim); font-size: 0.9rem;">---</p>
         
-        <div id="prof-school-container">
+        <div>
             <span class="badge-school" id="prof-school-badge">Liceo Scientifico</span>
         </div>
 
         <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 35px 0;">
-        
         <a href="settings.html" class="edit-link">Gestisci Profilo</a>
         
-        <button onclick="logout()" style="margin-top: 25px; background: none; border: none; color: #ff5555; cursor: pointer; font-size: 0.85rem; font-weight: 600; opacity: 0.8; transition: 0.3s;">
+        <button onclick="logout()" style="margin-top: 25px; background: none; border: none; color: #ff5555; cursor: pointer; font-size: 0.85rem; font-weight: 600; opacity: 0.8;">
             <i class="fa-solid fa-arrow-right-from-bracket"></i> Disconnetti
         </button>
     </aside>
 
     <div class="profile-main">
-        
         <section class="content-card">
             <h3><i class="fa-solid fa-bookmark"></i> Percorsi Salvati</h3>
             <div id="favorites-list">
                 <div class="list-item">
-                    <span>Liceo Scientifico Scienze Applicate</span>
-                    <i class="fa-solid fa-chevron-right"></i>
-                </div>
-                <div class="list-item">
-                    <span>Tecnico Informatica e Telecomunicazioni</span>
-                    <i class="fa-solid fa-chevron-right"></i>
+                    <span>Non hai ancora salvato percorsi.</span>
                 </div>
             </div>
         </section>
@@ -251,33 +200,40 @@
             <h3><i class="fa-solid fa-message"></i> I tuoi Commenti</h3>
             <div id="comments-list">
                 <div class="comment-box">
-                    <p class="comment-text">"I laboratori di questa scuola sono tra i migliori della regione, consigliatissimo per chi ama la pratica."</p>
-                    <span class="comment-date">Inviato il 10 Maggio 2026</span>
+                    <p style="color: var(--text-dim);">Non hai ancora scritto commenti.</p>
                 </div>
             </div>
         </section>
-        
     </div>
 </main>
 
-<footer>
-    </footer>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
-        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+<script>
+    const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+    const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-        window.onload = async () => {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if(!session) { window.location.href = "login.html"; return; }
+    window.onload = async () => {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        
+        // Se non c'è sessione, torna al login
+        if(!session) { 
+            window.location.href = "login.html"; 
+            return; 
+        }
 
-            const u = session.user;
-            document.getElementById('prof-name').innerText = u.user_metadata.full_name || "Studente";
-            document.getElementById('prof-email').innerText = u.email;
-            document.getElementById('prof-school').innerText = u.user_metadata.school_path || "Non specificata";
-        };
-    </script>
+        const u = session.user;
+        
+        // Carica i dati esattamente come nel tuo vecchio script
+        document.getElementById('prof-name').innerText = u.user_metadata.full_name || "Studente";
+        document.getElementById('prof-email').innerText = u.email;
+        document.getElementById('prof-school-badge').innerText = u.user_metadata.school_path || "Non specificata";
+    };
+
+    async function logout() {
+        await supabaseClient.auth.signOut();
+        window.location.href = "login.html";
+    }
+</script>
 </body>
 </html>
