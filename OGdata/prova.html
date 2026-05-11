@@ -529,7 +529,7 @@ async function caricaLiceiRegionali(nomeRegione) {
         let query = supabaseClient
             .from('schools')
             .select('id, "DENOMINAZIONESCUOLA", "DESCRIZIONECOMUNE", "PROVINCIA"')
-            .ilike('"DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA"', '%TECNICO%');
+            .ilike('"DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA"', '%PROF%');
 
         const nomeUpper = nomeRegione.toUpperCase();
 
@@ -592,6 +592,7 @@ async function caricaLiceiRegionali(nomeRegione) {
         listaContenitore.innerHTML = `<p style="color: red; padding: 20px;">Errore nel caricamento.</p>`;
     }
 }
+
 // 3. Gestione del click sulla mappa SVG
 document.querySelectorAll('path, circle').forEach(el => {
     el.style.cursor = "pointer";
@@ -617,5 +618,6 @@ document.querySelectorAll('path, circle').forEach(el => {
 function closeDetails() {
     document.getElementById('details').classList.remove('active');
 }
+</script>
 </body>
 </html>
