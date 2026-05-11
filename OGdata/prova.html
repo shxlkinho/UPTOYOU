@@ -513,7 +513,7 @@
     }
     function closeOverlay(event) {
         if (event.target.id === 'indirizziOverlay') closeIndirizzi();
-    }
+
 
 // 2. Funzione per caricare i licei
 async function caricaLiceiRegionali(nomeRegione) {
@@ -549,7 +549,7 @@ async function caricaLiceiRegionali(nomeRegione) {
         if (error) throw error;
 
         if (!scuole || scuole.length === 0) {
-            listaContenitore.innerHTML = `<p style="padding: 20px;">Nessun tecnico trovato.</p>`;
+            listaContenitore.innerHTML = `<p style="padding: 20px;">Nessun professionale trovato.</p>`;
             return;
         }
 
@@ -617,6 +617,5 @@ document.querySelectorAll('path, circle').forEach(el => {
 function closeDetails() {
     document.getElementById('details').classList.remove('active');
 }
-</script>
 </body>
 </html>
