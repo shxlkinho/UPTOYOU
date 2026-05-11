@@ -5,86 +5,303 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mappa Interattiva - Up to You</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
     <style>
-
-/* --- NUOVO TESTO INTRODUTTIVO --- */
-.article-section {
-    padding: 0px 10% 40px 10%;
-    max-width: 900px;
-    margin: 0 auto;
-}
-.article-section h1 {
-    font-size: 3rem;
-    background: linear-gradient(to right, #4facfe, #00c6ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 30px;
-    font-weight: 800;
-}
-.article-content {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #ccc;
-}
-.article-content h2 { color: #4facfe; font-size: 1.8rem; margin: 35px 0 15px 0; }
-.article-content p { margin-bottom: 20px; }
-.article-content strong { color: #fff; }
-        /* RESET E STILE BASE */
-        html, body { height: 100%; margin: 0; scroll-behavior: smooth; background-color: #0b0b0b; color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
-        /* RESET E STILE BASE */
-        html, body { height: 100%; margin: 0; scroll-behavior: smooth; background-color: #0b0b0b; color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
-
-        /* TITOLO E LAYOUT */
-        .main-content { padding-top: 120px; text-align: center; min-height: calc(100vh - 180px); display: flex; flex-direction: column; align-items: center; }
-        h1.map-title { font-size: 2.5rem; font-weight: 800; color: #4facfe; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px; }
-        
-        /* CONTENITORE MAPPA */
-        #map-container { 
-            width: 90%; 
-            max-width: 800px; 
-            background: #161616; 
-            padding: 40px; 
-            border-radius: 30px; 
-            border: 1px solid rgba(255,255,255,0.05); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-            margin-bottom: 60px;
-            position: relative;
+        :root {
+            --neon-blue: #008cff;
+            --neon-blue-bright: #4dabff;
+            --neon-green: #7de2d1;
+            --bg-black: #000000;
+            --neon-purple: #9333ea;
+            --neon-purple-bright: #c084fc;
         }
 
-        /* SVG MAPPA */
-        svg { width: 100%; height: auto; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)); }
-        path { fill: #333; stroke: #0b0b0b; stroke-width: 0.8; cursor: pointer; transition: 0.3s; }
-        path:hover { fill: #4facfe; transform: translateY(-2px); }
-        circle { fill: #4facfe; cursor: pointer; transition: 0.3s; }
-        circle:hover { r: 10; fill: #fff; }
+        body {
+            background-color: var(--bg-black);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-        /* DETTAGLI LATERALE (Se necessario) */
-        #details { 
-            position: fixed; right: -400px; top: 0; width: 350px; height: 100%; 
-            background: #161616; border-left: 1px solid #4facfe; 
-            transition: 0.5s; padding: 100px 30px; z-index: 2000;
+        .page-wrapper {
+            max-width: 1200px;
+            width: 100%;
+            padding: 120px 20px 80px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            margin: 0 auto; 
+            box-sizing: border-box;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 42px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        /* --- CARD DINAMICHE --- */
+        .card-dynamic {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            position: relative;
+            box-sizing: border-box;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+        }
+
+        .card-dynamic:hover {
+            transform: scale(1.03);
+        }
+
+        /* --- BLOCCO 1: HERO (BLU) --- */
+        .hero-container {
+            width: 100%;
+            padding: 50px 40px;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 140, 255, 0.3);
+        }
+        .hero-container h1 { color: var(--neon-blue); margin-bottom: 40px; }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .left-side { display: flex; gap: 20px; }
+        .left-side i { font-size: 45px; color: var(--neon-blue); filter: drop-shadow(0 0 10px var(--neon-blue)); }
+        .left-side p { font-size: 17px; line-height: 1.8; color: #ffffff; margin: 0; }
+
+        .right-side { display: flex; flex-direction: column; gap: 25px; }
+        .feature-item { display: flex; gap: 15px; align-items: flex-start; }
+        .feature-item i { font-size: 28px; color: var(--neon-blue); filter: drop-shadow(0 0 8px var(--neon-blue)); width: 40px; text-align: center; }
+        .feature-item p { font-size: 16px; line-height: 1.6; color: #ffffff; margin: 0; }
+
+        .highlight { color: #00f2ff; font-weight: 700; text-shadow: 0 0 8px rgba(0, 242, 255, 0.7); }
+
+        /* --- BLOCCO 2: SBOCCHI (VIOLA) --- */
+        .sbocchi-container {
+            width: 100%;
+            padding: 50px 40px;
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.2);
+        }
+        .sbocchi-container h2 { color: var(--neon-purple); }
+
+        .sbocchi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .sbocchi-item { display: flex; align-items: center; gap: 25px; }
+        .sbocchi-item i { font-size: 3.5rem; color: var(--neon-purple-bright); filter: drop-shadow(0 0 12px var(--neon-purple)); min-width: 70px; text-align: center; }
+        .sbocchi-item p { font-size: 1.1rem; line-height: 1.7; margin: 0; color: #e2e8f0; }
+        .hl-purple { color: var(--neon-purple-bright); font-weight: 700; }
+
+        /* --- GRIGLIA INFERIORE (INGRANDITA) --- */
+        .bottom-split-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 35px; 
+        }
+        
+        .small-card { 
+            padding: 50px 40px; 
+            min-height: 480px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+        
+        .card-indirizzi { 
+            border: 2px solid var(--neon-green); 
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .card-indirizzi h3 { color: var(--neon-green); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; margin: 0; }
+        .card-indirizzi p { color: var(--neon-green); font-weight: 700; font-size: 1.1rem; letter-spacing: 2px; margin: 0; }
+        .card-indirizzi i.main-icon { font-size: 5.5rem; color: var(--neon-green); filter: drop-shadow(0 0 15px var(--neon-green)); }
+
+
+        /* --- SEZIONE TESTO PERCORSI (Licei, Tecnici, Professionali) --- */
+.info-percorsi-wide {
+            max-width: 900px; /* Più stretto del contenitore principale per eleganza */
+            margin: 0 auto 40px auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .info-percorsi-wide h2 {
+            color: var(--neon-blue);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-percorsi-wide p {
+            line-height: 1.6;
+            font-size: 1.1rem;
+            color: #d1d1d1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* CARD MAPPA */
+        .card-map-active { 
+            border: 2px solid var(--neon-blue); 
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #map-container { 
+            width: 100%; 
+            /* Aumentiamo l'altezza per riempire la card */
+            flex-grow: 1; 
+            height: 600px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            /* Riduciamo il margine superiore per avvicinarlo al titolo */
+            margin-top: -10px; 
+            /* Spazio quasi nullo sotto per toccare il bordo o la scritta */
+            margin-bottom: 5px; 
+        }
+
+        #map-container svg { 
+            /* Fondamentale: fa sì che l'SVG usi tutto lo spazio del div */
+            width: 95%; 
+            height: 95%; 
+            filter: drop-shadow(0 0 5px rgba(0, 140, 255, 0.3));
+        }
+        
+        #map-container path { 
+            fill: #1a1a1a !important; 
+            stroke: var(--neon-blue) !important;
+            stroke-width: 1;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        #map-container path:hover { 
+            fill: var(--neon-blue) !important; 
+            stroke: #fff !important;
+        }
+
+        /* PANNELLO DETTAGLI LATERALE */
+        #details {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 450px; height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 10001;
+            padding: 40px 25px;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            border-left: 3px solid var(--neon-blue);
+            backdrop-filter: blur(15px);
         }
         #details.active { right: 0; }
-        #details h2 { color: #4facfe; margin-top: 0; }
-       .close-btn { position: absolute; top: 30px; right: 20px; cursor: pointer; font-size: 1.5rem; z-index: 2100; }
+        .close-btn { font-size: 2.5rem; color: #fff; cursor: pointer; position: absolute; top: 15px; right: 25px; }
 
-#details {
-    max-height: 100vh; /* Limita l'altezza all'80% dello schermo */
-    overflow-y: auto; /* Attiva la rotellina del mouse */
-    padding-right: 10px; /* Spazio per la barra di scorrimento */
-}
+  /* OVERLAY INDIRIZZI (Base per PC - Invariata) */
+/* OVERLAY INDIRIZZI (Base per PC - Invariata) */
+        #indirizziOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+            /* Abilita lo scroll verticale se il contenuto eccede l'altezza */
+            overflow-y: auto; 
+        }
 
-/* Opzionale: rende la barra dello scroll più bella (stile moderno) */
-#details::-webkit-scrollbar {
-    width: 8px;
-}
-#details::-webkit-scrollbar-thumb {
-    background: #3498db; 
-    border-radius: 10px;
-}
+        .overlay-content {
+            width: 90%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .close-overlay {
+            position: absolute;
+            top: 40px; right: 40px;
+            font-size: 3rem; color: #fff; cursor: pointer;
+        }
+
+        .mini-card-overlay {
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--neon-green);
+            border-radius: 15px;
+            padding: 35px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        /* RIPRISTINO ICONE E TESTO ORIGINALE */
+        .mini-card-overlay i { 
+            font-size: 3rem; 
+            color: var(--neon-green); 
+            margin-bottom: 15px; 
+        }
+        .mini-card-overlay span { 
+            color: #fff; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            font-size: 1rem; 
+            text-align: center; 
+        }
+
+        .mini-card-overlay:hover { 
+            background: rgba(125, 226, 209, 0.2); 
+            transform: scale(1.05); 
+        }
+
+        /* --- MEDIA QUERY CORRETTA --- */
+        @media (max-width: 900px) {
+            .content-wrapper, .sbocchi-grid, .bottom-split-grid { 
+                grid-template-columns: 1fr; 
+            }
+            
+            #details { width: 100%; }
+
+            /* FIX PER MOBILE: Scroll e Colonna singola */
+            #indirizziOverlay {
+                align-items: flex-start; /* Permette di scorrere dall'inizio */
+                padding-top: 100px; 
+                padding-bottom: 50px;
+            }
+
+            .overlay-content { 
+                grid-template-columns: 1fr; /* Colonna singola su mobile */
+                margin: 0 auto;
+            }
+
+            .close-overlay {
+                position: fixed; /* La X rimane ferma in alto mentre scorri */
+                top: 20px; 
+                right: 20px;
+                z-index: 10000;
+            }
+        }
     </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -96,13 +313,13 @@
             <li class="dropdown">
                 <a href="#">Lezioni ▾</a>
                 <ul class="dropdown-menu">
-                    <li><a href="elementari.html">Elementari</a></li>
-                    <li><a href="medie.html">Medie</a></li>
-                    <li><a href="superiori.html">Superiori</a></li>
+                    <li><a href="../Lezioni/elementari.html">Elementari</a></li>
+                    <li><a href="../Lezioni/medie.html">Medie</a></li>
+                    <li><a href="../Lezioni/superiori.html">Superiori</a></li>
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#">Orientati ▾</a>
+                <a href="#">Orientamento ▾</a>
                 <ul class="dropdown-menu">
                     <li><a href="../rapido.html">Orientamento Rapido</a></li>
                     <li><a href="../guidato.html">Orientamento Guidato</a></li>
@@ -114,50 +331,79 @@
     </nav>
 </header>
 
-    <main class="main-content">
-<article class="article-section">
-    <h1>Istituti Tecnici: L'anello di congiunzione tra Scienza e Innovazione</h1>
+<div class="page-wrapper">
     
-    <div class="article-content">
-        <p>
-            L'Istituto Tecnico rappresenta oggi uno dei percorsi più completi e moderni del sistema scolastico italiano. Scegliere un tecnico significa puntare su una formazione che unisce una <strong>solida base teorica scientifica</strong> alla capacità di applicarla in contesti reali. È il percorso ideale per chi possiede una mentalità analitica e desidera non solo conoscere le leggi della natura e della tecnica, ma anche capire come utilizzarle per innovare processi, prodotti e servizi.
-        </p>
+    <section class="hero-container card-dynamic">
+        <h1 class="section-title">Ingegno e Innovazione Tecnologica</h1>
+        <div class="content-wrapper">
+            <div class="left-side">
+                <i class="fa-solid fa-gears" style="font-size: 30px;"></i>
+                <p>Il percorso tecnico rappresenta l'indirizzo orientato alla <span class="highlight">formazione applicata</span>. Unisce un solido metodo scientifico alla capacità di tradurre le idee in <span class="highlight">soluzioni concrete</span>. L'obiettivo è formare professionisti capaci di governare l'innovazione e i processi produttivi.</p>
+            </div>
+            <div class="right-side">
+                <div class="feature-item">
+                    <i class="fa-solid fa-microchip"></i>
+                    <p>Sviluppa la <span class="highlight">cultura tecnica</span>: un equilibrio tra teoria e laboratori che permette di comprendere e progettare sistemi tecnologici avanzati.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-diagram-project"></i>
+                    <p>Impara il <span class="highlight">problem solving</span> operativo, una competenza strategica per gestire la digitalizzazione e le sfide dell'industria moderna.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <h2>L'Equilibrio Perfetto: Sapere e Saper Fare</h2>
+    <section class="info-percorsi-wide">
+        <h2>Il Valore del Diploma Tecnico</h2>
         <p>
-            A differenza dei licei, dove lo studio rimane prevalentemente astratto, e dei professionali, dove l'attenzione è rivolta all'esecuzione pratica, il tecnico occupa uno spazio intermedio strategico. Qui si studiano le materie di indirizzo (dall'informatica all'elettronica, dall'amministrazione al turismo) con un rigore accademico che permette però di entrare subito nei <strong>laboratori specializzati</strong>. 
+            Mentre i <b>Licei</b> puntano su una formazione prettamente teorica, gli <b>Istituti Tecnici</b> si distinguono per un approccio dove la conoscenza diventa azione. Attraverso l'uso di software specifici, laboratori e stage, gli studenti acquisiscono una preparazione polivalente. È il percorso ideale per chi desidera una carriera dinamica nei settori chiave dell'economia, della tecnologia e dei servizi.
         </p>
-        <p>
-            L'obiettivo è formare figure che sappiano progettare, gestire e controllare sistemi complessi. Lo studente tecnico non è solo un esperto di settore, ma un profilo capace di dialogare con gli ingegneri e con gli operai specializzati, diventando il vero <strong>motore dell'innovazione</strong> all'interno delle imprese.
-        </p>
+    </section>
 
-        <h2>Due strade dopo il diploma: Università o Alta Specializzazione</h2>
-        <p>
-            Uno dei grandi punti di forza del diploma tecnico è la sua <strong>estrema versatilità</strong>. Al termine dei cinque anni, lo studente ha davanti a sé due percorsi di successo: può iscriversi all'Università (ottenendo ottimi risultati specialmente nelle facoltà scientifiche, economiche e ingegneristiche) oppure può entrare direttamente in un mercato del lavoro che richiede disperatamente queste competenze.
-        </p>
-        <p>
-            Inoltre, il diploma tecnico è il trampolino di lancio perfetto per gli <strong>ITS Academy</strong>, percorsi biennali post-diploma che garantiscono un'altissima specializzazione tecnologica e un impiego immediato. È la scelta di chi vuole un futuro concreto, basato sulla competenza e sulla capacità di rispondere alle sfide tecnologiche e green della nostra epoca.
-        </p>
-        
-        <div class="map-label">Geografia dell'Innovazione</div>
-        <p style="color: #888; font-size: 1rem;">
-            Esplora la mappa interattiva qui sotto per identificare i poli tecnologici e gli Istituti Tecnici del territorio. Seleziona una regione per scoprire le specializzazioni attive.
-        </p>
+    <section class="sbocchi-container card-dynamic">
+        <h2 class="section-title">Sbocchi Futuri</h2>
+        <div class="sbocchi-grid">
+            <div class="sbocchi-item">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <p>Accesso a tutte le <span class="hl-purple">Università</span> (specialmente Ingegneria ed Economia) e ai corsi <span class="hl-purple">ITS Academy</span> di alta specializzazione.</p>
+            </div>
+            <div class="sbocchi-item">
+                <i class="fa-solid fa-laptop-code"></i>
+                <p>Inserimento immediato in <span class="hl-purple">Aziende e Studi Professionali</span>. Le imprese cercano tecnici specializzati in grado di operare fin da subito.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="bottom-split-grid">
+        <section class="small-card card-indirizzi card-dynamic" onclick="openIndirizzi()">
+            <i class="fa-solid fa-layer-group main-icon"></i>
+            <h3>Indirizzi</h3>
+            <p>ESPLORA TUTTI I TECNICI</p>
+        </section>
+
+        <div id="indirizziOverlay" onclick="closeOverlay(event)">
+    <span class="close-overlay" onclick="closeIndirizzi()">&times;</span>
+<div class="overlay-content">
+        <a href="indirizzi/tecnico_afm.html" class="mini-card-overlay"><i class="fa-solid fa-chart-line"></i><span>Amministrazione Finanza e Marketing</span></a>
+        <a href="indirizzi/tecnico_agraria.html" class="mini-card-overlay"><i class="fa-solid fa-leaf"></i><span>Agraria e Agroindustria</span></a>
+        <a href="indirizzi/tecnico_chimica.html" class="mini-card-overlay"><i class="fa-solid fa-vial"></i><span>Chimica e Materiali</span></a>
+        <a href="indirizzi/tecnico_costruzione_ambiente.html" class="mini-card-overlay"><i class="fa-solid fa-compass-drafting"></i><span>Costruzioni Ambiente e Territorio</span></a>
+        <a href="indirizzi/tecnico_elettronica.html" class="mini-card-overlay"><i class="fa-solid fa-microchip"></i><span>Elettronica ed Elettrotecnica</span></a>
+        <a href="indirizzi/tecnico_grafica.html" class="mini-card-overlay"><i class="fa-solid fa-palette"></i><span>Grafica e Comunicazione</span></a>
+        <a href="indirizzi/tecnico_informatica.html" class="mini-card-overlay"><i class="fa-solid fa-code"></i><span>Informatica e Telecomunicazioni</span></a>
+        <a href="indirizzi/tecnico_meccanica.html" class="mini-card-overlay"><i class="fa-solid fa-gear"></i><span>Meccanica e Meccatronica</span></a>
+        <a href="indirizzi/tecnico_moda.html" class="mini-card-overlay"><i class="fa-solid fa-shirt"></i><span>Sistema Moda</span></a>
+        <a href="indirizzi/tecnico_trasporti.html" class="mini-card-overlay"><i class="fa-solid fa-plane"></i><span>Trasporti e Logistica</span></a>
+        <a href="indirizzi/tecnico_turismo.html" class="mini-card-overlay"><i class="fa-solid fa-earth-americas"></i><span>Turismo</span></a>
     </div>
-</article>
-        <h1 class="map-title">Seleziona la tua regione</h1>
-        
-        <div id="map-container">
-            <svg viewBox="0 0 800 1000" xmlns="http://www.w3.org/2000/svg">
-               <?xml version="1.0"?>
-    
-<!--********* Copyright (c) 2024 Pareto Softare, LLC DBA Simplemaps.com ***************************************
-************* Free for Commercial Use, full terms at  https://simplemaps.com/resources/svg-license ************
-************* Attribution is appreciated! https://simplemaps.com *******************************************-->
+</div>
 
-<svg baseprofile="tiny" fill="#6f9c76" height="1000" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5" version="1.2" viewbox="0 0 1000 1000" width="1000" xmlns="http://www.w3.org/2000/svg">
- <g id="features">
-  <path d="M223.7 143.1l0.4 1.7-0.4 0.1-0.1 0.3 0 0.6 0.7 4.7 0.2 2.5 0 1.4 0.3 1.7 0.2 0.4 0.2 1.4 0.1 0.4 0.2 0.3 0.1 0.2 0.5 0.4 1.3 0.7 0.2 0.1 0 0.8 0 1.1-0.3 2.7 0 1.1 0.1 0.8 0.3 0.5 0.1 0.2 0 0.3-0.4 1.1-1.9 2.8-5.6 1.8-1.6 1.2-0.5 0.3-0.4 0.1-0.6 0.1-3.4-0.2-0.6-0.2-0.7-0.5-0.2-0.1-0.3-0.1-5.7-1.3-0.5 0.1-0.5 0.2-0.8 0.4-0.5 0.2-0.5 0.2-1.1-0.1-0.5 0.1-0.4 0.2-1.1 1.1-0.7 0.9-0.4 0.4-1.2 0.7-0.2 0.1-0.8 0.8-0.2 0.2-8.6 2.9-0.4 0.3-0.4 0.1-0.8 0.1-2.8-0.4-1-0.3-0.2-0.1-0.2-0.2 0-0.2-0.1-0.1 0-0.1 0.3-0.7 0-0.3-0.3 0-0.4 0.2-2.5 2.7-0.8 0.9-0.2-0.3-2.5-1.9-2.7-1.5-0.5-1.2-0.3-3.5-0.2-0.6-0.7-1-0.1-0.7 0.2-0.7 0.7-1.4 0.1-0.5-0.4-1.3-0.7-0.5-1.9-0.5-0.8-0.6-1.3-1.3-0.8-0.3-1.5-0.3-1.6-1.2-1.2-1.8-0.6-3.4-0.1-0.5-0.1-1.1 0-1.4 0.4-1.4 0.7-1.3 0.9-0.5 1.6-0.5 0.5 0.2 0.4 0.2 0.3 0.6 0.4-0.1 0.1-0.4 0-0.6 0.1-0.4 0.4-0.1 1.4 0 1.3-0.3 1.3-0.7 1.2-1 0.8-1.4 0.4-1.1 0.4-1 0.6-0.8 0.9-0.4 2.6 3 1.4 0.8 1.8 0.3 1.9 0 1.8-0.3 3.6-1.5 1.6-1 0.8-0.3 4.4 0.5 1.9-0.7 3.5-2.5 1.7-0.8 1.2-0.1 0.7-0.9 0.5-1 1-0.5 6 1.5 0.9 0.6 0.9 0.8 1.1 1.6 0.1 0.2 0.7 0.3 0.5-0.2 0.4-0.2 0.6 0 2.8 1 1.7 0 1 0.3 0.3 0 0.8-0.4 0.1-0.3 0-0.4 0.2-0.9 0-0.1z" id="IT23" name="VALLE D'AOSTA">
+        <section class="small-card card-map-active card-dynamic">
+            <h3 style="color: var(--neon-blue); font-size: 2.2rem; font-weight: 900; text-transform: uppercase; margin: 0; text-align: center;">Mappa Tecnici</h3>
+            <div id="map-container">
+<svg baseprofile="tiny" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                    <g id="features">
+<path d="M223.7 143.1l0.4 1.7-0.4 0.1-0.1 0.3 0 0.6 0.7 4.7 0.2 2.5 0 1.4 0.3 1.7 0.2 0.4 0.2 1.4 0.1 0.4 0.2 0.3 0.1 0.2 0.5 0.4 1.3 0.7 0.2 0.1 0 0.8 0 1.1-0.3 2.7 0 1.1 0.1 0.8 0.3 0.5 0.1 0.2 0 0.3-0.4 1.1-1.9 2.8-5.6 1.8-1.6 1.2-0.5 0.3-0.4 0.1-0.6 0.1-3.4-0.2-0.6-0.2-0.7-0.5-0.2-0.1-0.3-0.1-5.7-1.3-0.5 0.1-0.5 0.2-0.8 0.4-0.5 0.2-0.5 0.2-1.1-0.1-0.5 0.1-0.4 0.2-1.1 1.1-0.7 0.9-0.4 0.4-1.2 0.7-0.2 0.1-0.8 0.8-0.2 0.2-8.6 2.9-0.4 0.3-0.4 0.1-0.8 0.1-2.8-0.4-1-0.3-0.2-0.1-0.2-0.2 0-0.2-0.1-0.1 0-0.1 0.3-0.7 0-0.3-0.3 0-0.4 0.2-2.5 2.7-0.8 0.9-0.2-0.3-2.5-1.9-2.7-1.5-0.5-1.2-0.3-3.5-0.2-0.6-0.7-1-0.1-0.7 0.2-0.7 0.7-1.4 0.1-0.5-0.4-1.3-0.7-0.5-1.9-0.5-0.8-0.6-1.3-1.3-0.8-0.3-1.5-0.3-1.6-1.2-1.2-1.8-0.6-3.4-0.1-0.5-0.1-1.1 0-1.4 0.4-1.4 0.7-1.3 0.9-0.5 1.6-0.5 0.5 0.2 0.4 0.2 0.3 0.6 0.4-0.1 0.1-0.4 0-0.6 0.1-0.4 0.4-0.1 1.4 0 1.3-0.3 1.3-0.7 1.2-1 0.8-1.4 0.4-1.1 0.4-1 0.6-0.8 0.9-0.4 2.6 3 1.4 0.8 1.8 0.3 1.9 0 1.8-0.3 3.6-1.5 1.6-1 0.8-0.3 4.4 0.5 1.9-0.7 3.5-2.5 1.7-0.8 1.2-0.1 0.7-0.9 0.5-1 1-0.5 6 1.5 0.9 0.6 0.9 0.8 1.1 1.6 0.1 0.2 0.7 0.3 0.5-0.2 0.4-0.2 0.6 0 2.8 1 1.7 0 1 0.3 0.3 0 0.8-0.4 0.1-0.3 0-0.4 0.2-0.9 0-0.1z" id="IT23" name="VALLE D'AOSTA">
   </path>
   <path d="M275.3 128.9l0.3 5.2 0 0.4-0.1 0.6-0.2 1-0.3 0.5-0.2 0.4-7.5 8-0.1 0.2-0.1 0.4 0 0.6 0.1 1.3 0.4 1.6 0.3 2.5 0 0.5-0.1 0.3-0.2 0.3-0.1 0.2-0.2 0.3-1.2 1-0.1 0.3-0.2 0.2-0.1 0.3 0.2 0.7 0.4 1.2 1.3 2.5 0.7 1 0.5 0.5 1.2 0.4 0.4 0.2 0.2 0.3 0.1 0.4 0 0.8-0.1 0.5-0.2 0.7 0.1 0.3 0.1 0.4 0.4 0.3 0.3 0.1 0.6-0.1 0.2 0 0.1 0.3 0 0.6 0 0.5 0.1 0.5 0.2 0.5 0.1 0.3-0.3 0.4-0.2 0-0.3 0-0.3 0 0 0.4 0.2 0.5 1.6 1.9 0.1 0.3 0.1 0.4-0.1 1.5 0.5 0.7-0.1 0.9 0.1 0.4 0.2 0.5 0.3 0.9 0.1 0.6 0.1 0.8 0.2 0.4 0.4 0.5 1.2 1 1.2 0.4 0.2 0.2 0.4 0.5 0.4 0.9 1.5 4.1 0.2 0.3 1 1.3-3.9 1.5-1.7 1.2-0.1 0.3 0.3 0.2 0.7 0.4 0.2 0.2 0.1 0.2 0.1 0.3-0.1 0.2-0.3 0.2-1.6 1-0.4 0.3-0.1 0.3-0.2 0.2-0.1 0.3-0.1 0.3-0.1 1-0.1 0.3-0.1 0.2-0.4 0.1-0.4-0.1-1.1-0.3-0.4-0.3-0.3-0.3-1-2.1-0.2-0.5-0.3-0.5-0.2-0.2-0.3-0.1-0.5-0.2-2.6-0.6-0.9 0-0.4 0.1-0.2 0.1-0.3 0.4-0.2 0.5-0.4 1.3-0.4 1.2-0.7 0.8-0.1 0.1-0.3 0.6-0.3 0.6-0.1 0.2 0 0.3 0.1 0.4 0.3 0.3 0.3 0.2 0.3 0.3 0.1 0.5 0.1 1.6 0.3 0.5 0.3 0.2 0.2 0.2 0.1 0.3-0.1 0.6 0 0.5 0.1 0.6 0.5 0.9 0.4 0.3 0.3 0.3 0.2 0.3 0 0.2-0.4 1.2 0.2 0.8 0.1 0.4 0.4 0.7 0.1 0.2 0.5 1.4 2 2.4 1.4 3.9 0.8 1.7 1.4 1.3 0.8-0.5 0.6 0 1.2 0.5 2.2 0 1.3-0.2 3.5-2.1 1-0.5 1.6 0.4 0.2 0.1 0 0.5-0.3 2.1 0 0.3 0.1 0.3 0 0.4 0.1 0.2 0.1 0.3 0.1 0.2 0.1 0.1 0.8 0.6 0.4 0.2 0.4 0.1 1.8 0.2 0.5 0.2 0.4 0.2 0.1 0.1 0.3 0.4 0.2 0.3 0.1 0.4 0.2 0.8 0 0.4-0.2 0.7 0.2 0.4 0.3 0.5 1.1 1.3 3.1 2.8 0.2 0.3 0.1 0.3 0 0.5-0.1 0.3-0.2 0.6-0.1 0.3 0 0.3 0 0.3 0.3 0.4 0.4 0.6 0.9 1 0.6 0.4 0.5 0.1 1.4 0 1.3 0.3 0.3 0.1 0.2 0.1 0.3 0.2 0.2 0.3 0.2 0.4 0.6 1.3 1.1 3.3 0.3 0.6 0.3 0.4 0.2 0.1 0.2 1-0.3 3.2 0.1 5.6-0.2 1.2-0.5 0.5-0.7 0.5-0.5 0.3-0.9 0.2-0.4 0-0.8-0.2-0.8-0.3-0.3-0.2-0.2-0.2-0.2-0.2-0.1-0.2-0.1-0.4 0-0.7-0.4-0.4-0.6-0.3-2.8-1.1-0.8-0.7-0.9-1.1-0.8-0.5-1-0.5-0.4-0.2-0.4-0.3-0.5-0.9-0.4-0.1-0.5 0-1.2 0.1-0.3 0.2-0.2 0.1-0.1 0.2-0.2 1.1-0.1 0.2-0.1 0.1-0.7 0.8-1 0.8-0.1 0.3 0 0.2 0.1 0.3 0.1 0.1 0.7 0.5 0.7 0.5 0.1 0.2 0.1 0.3 0.1 0.3 0 0.3 0 1.1 0.1 0.7 0 0.3 0 0.4-0.1 0.4-0.2 0.3-0.5 0.4-0.3 0.1-1.2-0.2-1.5 0-0.7 0.1-0.4 0.1-0.2 0.3-0.3 1.2-0.1 0.3-0.1 0.2-0.2 0.3-0.1 0.1-0.9 0.7-0.2 0.2-0.3 0.5-0.5 0.8-0.2 0.2-0.1 0-0.2-0.1-0.1-0.2-0.1-0.3 0-0.3 0.1-0.9 0-0.3-0.1-0.3-0.5-0.6-0.2-0.5-0.4-0.8-0.5-0.6-0.2-0.5-0.3-0.5-0.1-0.3-0.2-0.2-0.3-0.2-0.5-0.1-4.6-0.5-0.6 0-0.5 0.1-0.2 0.2-0.1 0.2-0.3 0.5 0 0.3-0.3 0.6 0 0.3 0 0.2 0 0.3 0.1 0.2 0.1 0.3 0 0.3-0.1 0.3-0.1 0.2-0.5 0.7-0.4 0.5-1.1 0.7-5.1-0.1-1.7 0.2-0.6 0.3-0.4 0-0.5-0.1-0.5-0.3-0.3 0.1-0.2 0.1-0.9 0.6-0.2 0.2-0.1 0.2-0.1 0.1-0.1 0.2-0.1 0.3-0.2 0.3-0.3 0.4-0.7 0.4-0.3 0.1-0.3-0.2-0.2-0.2-0.1-0.2-0.2-0.2-0.5-0.2-1.1-0.4-0.3-0.1-0.4-0.4-0.6-0.5-0.9-0.5-0.5-0.4-0.1-0.1-0.3-0.5-0.6-0.6-0.8 0.2-0.9 1.2-0.2 0.3-0.4 1-0.2 0.9-0.5 0.8-0.2 0.6-0.1 0.4 0.1 0.3 0.1 0.3 0.2 0.2 0.3 0.4 0.2 0.3 0.1 0.4 0 0.9-0.1 0.5-0.2 0.5-0.4 0.7-0.2 0.2-0.2 0.2-0.2 0.1-0.9 0.3-0.2 0.1-0.3 0.3-0.3 0.5-0.7 1.3-0.2 0.8-0.2 0.9-0.1 0.3-0.2 0.3-1.1 0.8-0.4 0.4-0.4 0.6-0.4 0.4-0.4 0.3-0.6 0.3-0.5 0.4-0.1 0.3 0 0.2 0.2 0.3 0.2 0.1 0.1 0.4 0 0.6-0.4 2-0.1 0.6 0.1 0.3 0 0.3 0.1 0.4 0 0.6-0.2 0.9 0.1 0.5 0.1 0.3 0.2 0.2 0.2 0.3 0.1 0.4 0 0.7-0.1 0.5-0.1 0.3-0.6 1-0.6 0.8-0.4 0.4-0.1 0.1-0.2 0-0.3 0-0.6-0.1-0.8-0.3-0.6-0.1-0.3 0.1-0.3 0.2-0.6 0.7-0.2 0.4 0 0.4 0.1 0.3 0.1 0.2 0.3 0.2 0.4 0.2 0.2 0.1 0.1 0.2 0 0.5 0 0.2-0.1 0.2-0.4 0.2-0.4 0.1-4-0.5-1.1-0.4-3.9-0.1-1.6-0.3-0.1-0.2-0.9-0.5-0.9-0.4-0.6-0.1-0.4 0-0.2 0.1-0.2 0.1-0.4 0.4-0.2 0.2-0.4 0.7-0.1 0.3-0.1 0.3-0.1 0.2 0.1 0.3 0.1 0.3 0.1 0.2 0.3 0.2 0 0.2 0 0.1-1.7 0.6-1.3 0.1-0.6-1.5-1.3-1.3-0.8-1.5 0.8-2.7-1.8-0.3-2.4 1.6-1.7 0.1-10.2 3-2.3-0.1-0.6-0.1-0.5-0.5-0.4-0.7-0.4-0.6-0.7-0.3-1.6-0.3-1.1-0.5-6.2-3.8-2.4-0.9-3.4-1.8-0.7-0.2-0.8 0-0.7 0.3-0.7 0.1-0.8-0.3-0.6-0.7-0.2-0.7-0.2-0.7-0.4-0.9-0.5-0.6-1.2-0.8-0.5-0.6-0.4-0.6-0.6-1.7-0.5-0.8-1-1.2-0.3-0.3-0.2-0.4-0.3-0.7 0.1-0.4 0.1-0.5 0.5-2.6 0.4-0.7 2-1.1-1.6-1.3-1.7-1.9-1.4-2.3-0.1-2.5 0.6-1.1 3-2.3 2-3.5 0.8-0.7-0.7-1.7 0.3-0.9 0.2-0.8 1-1.3 1.4-0.8 1.1 0 2.1 0.7 1-0.1-0.3-1-0.6-1.2-1.2-2.2-0.2-0.7-0.3-2.1-0.7-1.7 0-0.1 0.3-1.4 0.1 0 0-0.4 0.1-0.2 0-0.3-0.1-0.5-0.3-0.4-1-1.1-3-1.3-1 0-2.9 0.5-1.1-0.2-4-2.4-1.9-1.7-1.1-1.7 0.1-4.6-0.3-2.4-1.6-1.2-2-0.1-0.6-0.6-0.7-1.2-0.2-0.8 0.1-0.6-0.1-0.6-1-0.8-1-1.6 0.7-0.9 0.9-0.8 0.1-0.1 2.1-1.2 0.5-0.1 1.1 0 0.4 0 0.5-0.3 1.1-0.9 0.4-0.2 2.1 0.4 2.1 1.1 2.1 0.8 2-0.9 0.1-0.6-0.4-0.3-0.2-0.5 0.3-0.7 0.4-0.2 1.4 0 0.5-0.2 0.9-0.7 1-1.8 0.8-0.8 2.1-0.9 2-0.6 0.5 0.2 0.7 0.9 0.3 0.1 0.4-0.4 1.2-2 1.5-1.4 0-1.3-0.6-1.6-0.3-2.5 0.3-0.5 1.9-2.2 1.2-2.2 0.6-1.3 0-1-0.4-0.4-2.5-1.1-0.8-0.6-0.5-0.9-0.4-1.1-0.4-0.6 0.8-0.9 2.5-2.7 0.4-0.2 0.3 0 0 0.3-0.3 0.7 0 0.1 0.1 0.1 0 0.2 0.2 0.2 0.2 0.1 1 0.3 2.8 0.4 0.8-0.1 0.4-0.1 0.4-0.3 8.6-2.9 0.2-0.2 0.8-0.8 0.2-0.1 1.2-0.7 0.4-0.4 0.7-0.9 1.1-1.1 0.4-0.2 0.5-0.1 1.1 0.1 0.5-0.2 0.5-0.2 0.8-0.4 0.5-0.2 0.5-0.1 5.7 1.3 0.3 0.1 0.2 0.1 0.7 0.5 0.6 0.2 3.4 0.2 0.6-0.1 0.4-0.1 0.5-0.3 1.6-1.2 5.6-1.8 1.9-2.8 0.4-1.1 0-0.3-0.1-0.2-0.3-0.5-0.1-0.8 0-1.1 0.3-2.7 0-1.1 0-0.8-0.2-0.1-1.3-0.7-0.5-0.4-0.1-0.2-0.2-0.3-0.1-0.4-0.2-1.4-0.2-0.4-0.3-1.7 0-1.4-0.2-2.5-0.7-4.7 0-0.6 0.1-0.3 0.4-0.1-0.4-1.7 1.2-0.1 0.2-1.6 0.6-1.2 0.9-0.7 4.1-0.9 0.6-0.2 0.4-0.3 0.7-1 0.1-0.2 0.6-1.2 0.1-0.2 0.3-2.4 0-1 0.1-0.9 0.4-0.9 0.6-0.5 1.2-0.1 0.7-0.2 2.5-2.2 1.3-2.8-0.2-3.1-1.7-3.3-1.4-1.2-0.2-0.4 0.3-0.7 0.6-0.8 1.1-1.2 1.3-0.6 2.5-0.5 1.2-0.9 2.9-3.8 1.7-0.8 0.7-0.6 0.5-0.7 0.4-0.7 0-0.9-0.4-0.3-0.2-0.4 0.4-1 1.3-1.4 1.6-0.8 2.5-0.6 0.8-0.1 1.6 0.3 0.8 1.1 0.3 2 0 2.5-0.2 2.5-0.9 4.4-0.2 2.2 0.2 2 0.6 1.4 1.1 0.9 1.6 0.6 1.6 0.8 1.6 1.7 3.7 5.5 0.6 0.3 1.1 0.4 2.8 1.6 1 0.1 0.4-0.3 0.9-0.8 0.4-0.2 0.3 0.2z" id="IT21" name="PIEMONTE">
   </path>
@@ -197,66 +443,17 @@
   </path>
   <path d="M491 307.5l-0.6 0.6-0.6 2 0.2 0.5 0.6 1.2 1.2 0.7 0.5 0.2 0.7-0.1 1.2-0.2 0.2-0.3 0.8-1.4 0-0.3 0-0.2 0.1-0.2 0.1-0.2 0.1-0.1 0.8 0.5 2.4 1.3 0.3 0.3 0.3 0.4 0 0.3-0.1 0.4 0.1 0.4 0.2 0.6 0.2 0.2 0.2 0 0.2-0.2 0.2-0.2 0.1-0.2 0.1-0.3 0.2-0.3 0.2-0.3 0.5-0.2 0.2 0 0.2 0.2 0.3 0.5 0.4 0.7 0.3 0.5 0.3 1.2 0.2 0.4 0.3 0.5 0.3 0.2 0.4 0.1 2.1 0 0.3 0 0.3-0.2 0.2-0.2 0.1-0.2 0.2-0.6 0.2-0.2 0.1-0.2 0.2-0.2 0.2-0.2 1.3-0.6 0.2-0.1 0.2-0.2 0.1-0.3 0.6-1.3 0.1-0.3 0-0.3-0.1-0.2-0.1-0.6-0.1-0.2 0-0.4 0-0.3 0-0.3 0.1-0.7 0.6-1.8 0.3-0.8 0-0.1 0.1 0 2.8 0.4 1.1 0.7 2.3 1.9 3.9 1.6 0.6 0.9 0.5 0.6 13.5 11.8 4.5 4 6.8 4.2 1.2 0.5 0.5 0.7 2.8 1 1.6 0.9 0.5-0.3 0.5-0.6 0.3-0.3 0.2-0.1 0.1-0.2 0.2-0.1 0.3-0.1 0.4 0.1 0.1 0.4 0.2 0.4 0.1 0.1 1.2 0.6 0.8 1.4 0.7 1.3 0.6 0.6 1.1 0.3 1 0.7 0.5 1.1-0.4 1.3 1.7 4.5 5.8 14.8 0.9 2.3 0.9 1.6 0.3 0.6 0.3 2.9 0.3 0.6 0.7 1.2 1.9 4.1 0.8 2.8 0.3 2 0.7 4.8 2.3 8.5-1 0.1-4.2 1-3.3 1.5-1.2 0.4-0.9-0.1-0.3 0.1-0.4 0.3-0.5 0.6-0.2 0.4-0.2 0.3 0 0.8-0.1 0.3-0.1 0.3-0.1 0.2-0.2 0.2-0.4 0.3-1 0.5-1.6 0.3-0.4 0-0.3-0.1-0.6-0.2-0.3 0-0.3 0-1.6 0.6-0.4 0.1-0.3 0-0.3-0.1-0.2-0.1-0.4-0.4-0.2-0.1-0.3-0.1-0.3 0.1-0.4 0.3-0.5 0.7-0.6 1.4-0.2 0.2-0.5 0.7-0.1 0.2-0.1 0.3-0.1 0.3-0.1 0.6-0.1 0.4-0.1 0.3-0.2 0.2-0.5 0.2-0.9 0.3-0.6 0.2-0.5 0.3-0.4 0.6-0.2 0.5-0.1 0.4-0.1 0.6-0.6 0.4-0.5 0.2-4.3 0.6-1.5-2.6-0.5-0.5-1.2-1.1-0.5-0.3-0.4-0.1-0.2 0-0.1 0.1-0.6 0.5-0.3 0.1-0.3 0-2.8 0.1 0-1.1 0.3-0.6 0.2-0.3 0.4-0.1 0.2 0.1 0.4 0.1 0.4 0 0.7-0.2 0.4-0.3 0.2-0.2 0.1-0.3 0.3-1.7 0-0.4 0-0.4 0-0.3-0.1-0.6-0.4-1-0.5-1-0.1-0.2-0.2-0.2-0.1-0.1-0.4-0.2-3.4 1.8-1 0.1-0.1-0.2-0.1-0.3-0.1-0.6-0.1-0.3-0.1-0.2-0.2-0.5-1.9-2.1-0.3-0.4-0.6-0.6-1.2-1-0.8-0.9-0.4-0.4-0.4-0.2-0.2 0.1-0.4 0.1-0.5 0.1-1.7-0.1-0.4 0.1-0.1 0.3 0 0.2 0.1 0.3 0.2 0.5 0 0.3-0.1 0.3-0.2 0.2-0.6 0.2-0.2-0.1-0.2-0.3 0-0.2 0-1.4 0-0.3-0.1-0.3 0-0.3-0.2-0.3-0.1-0.2-1.6-1-0.3-0.4-1-1.3-0.3-0.6-0.2-0.6 0-0.7 0-0.3-0.1-0.3-0.3-0.5-0.1-0.2 0-0.3 0-0.3 0.1-0.7 0-0.3 0-0.3 0-0.1-0.3-1-0.1-0.9 0-0.8 0.2-1.3 0.1-0.7-0.2-0.6-0.3-0.6-0.7-1.1-0.5-0.5-0.4-0.3-0.9-0.1-0.3-0.2-0.1-0.3-0.2-0.8 0-0.3 0-0.2 0.2-0.2 0.4-0.4 0.3-0.4 0.1-0.3 0.2-0.2 0-0.3 0.1-0.3 0-0.4 0-0.3 0-0.6-0.3-1.2 0-0.2-2.9-4.9-0.4-0.7-0.1-0.6 0.1-1.1-0.1-1.2-0.1-0.4-0.2-0.4-2-3.3-0.3-0.6-0.2-0.5 0-0.3 0.4-2 0.1-0.7 0-0.3 0-0.6 0.2-1.1 0-0.3 0-1.4-1.5 0.1-1.1 0.5-0.3 0.3-0.2 0.1-0.5 0.8-0.3 0.4-0.3 0.1-0.3-0.1-0.7-0.4-0.7-0.2-0.7-0.1-0.4 0-0.2 0-0.2 0.2-0.5 0.5-0.5 0.4-0.3 0.1-0.3-0.2-5.5-6.6-1.3-0.8-2.7-1.1-0.6-0.2-0.3 0.1-0.3 0.1-0.2 0.1-0.3 0.5-0.3 0.2-0.3 0.2-0.6 0.1-0.7-0.2-3.6-1.7-0.4-0.3-0.2-0.2-0.2-0.2-0.1-0.3 0-0.3 0.1-0.2 0.2-0.2 0.3-0.1 0.3 0.1 0.9 0.1 0.3 0 0.2-0.1 0.3-0.1 0.1-0.2 0.2-0.3 0.1-0.2 0.1-0.3 0-0.3 0-0.3-0.2-0.4 0-0.3 0.1-0.3 0.2-0.5 0.1-0.3 0-0.4-0.1-0.4-0.2 0-0.3 0-2.3 0.9-0.2 0.1-0.3 0.2-0.1 0.2-0.2 0.6-0.2 0.2-0.5 0.1-0.3-0.1-1.2-0.8-0.9-0.3-0.5-0.1-0.7 0-0.7-0.1-0.2-0.2-0.2-0.4-0.7-2.3 0-0.3 0.1-0.4 0.3-0.1 0.8-0.3 0.3-0.2 0.5-0.4 1-1.1 0.3-0.3 1.1-0.2 0.5-0.3 0.3-0.3 0.2-0.4 0.3-1.1 0.4-1 0.3-0.4 0.2-0.1 0.1 0.2 0.1 0.3 0.2 2.5 0.2 0.3 0.2 0.3 0.3 0.2 0.2-0.1 0.3-0.4 0.4-0.6 0.8-1.2 0.2-0.5 0-0.4-3-2.9-0.9-0.7-0.3-0.2-0.2-0.1-0.2-0.1-0.3 0-0.3 0-0.3 0.1-0.5 0.6-0.3 0.1-0.3 0-1.2-0.2-0.3 0-0.3 0.1-0.2 0.2-0.2 0.1-0.6 0.9-0.2 0.2-0.2 0.2-0.3 0-0.3 0-0.3-0.1-0.2-0.2-0.8-0.7-0.4-0.3-0.6-0.3-0.6-0.1-0.3 0-0.6 0.1-0.8 0.3 0.7-2.8 0.4-0.9 1.1-1.4 0.3-0.8 1.1-5.1 0-0.3-0.2-1.2 0.1-0.7 0-0.3 0.2-0.2 0.2-0.1 0.2 0 0.2 0.1 0.7 0.4 0.3 0 2 0.1 0.3 0.1 0.4 0 0.4-0.1 2.6-1.6 1.2-0.9 0.6-0.3 0.4-0.2 0.2-0.4 0.4 0.2 0.8 0.7 0.6-0.5 0.7-0.8 0.9 0.2 0.8 0.6 0.3 0.2z m-13.8 12.3l0.3 0.7 0.3 0.6 0.5 0.5 0.5 0.2 0-0.1 0.2-0.1 1.4-1.1 0.5-0.2 0.2 0 0.1-0.1 0-0.1 0-0.1 0-0.3 0-0.1-0.1-0.1 0-0.1-0.1-0.1-0.2-0.1-0.4-0.2-2.4-0.3-0.4-0.2 0-0.1-0.4 1.1 0 0.3z m14.2 17.1l0.5 0.4 0.5 0 0.5-0.4 0.3-0.6 0.1-0.8-0.2-0.7-0.3-0.6-0.4-0.3-0.4 0-0.4 0.3-0.4 0.5-0.1 0.9 0 0.7 0.3 0.6z" id="IT57" name="MARCHE">
   </path>
- </g>
- <g id="points">
-  <circle class="36.06904243930791|7.1984631952682845" cx="185.5" cy="912.6" id="0">
-  </circle>
-  <circle class="40.70743086626166|13.155812027880252" cx="534.9" cy="565.3" id="1">
-  </circle>
-  <circle class="46.50541639995385|17.921691093969827" cx="814.5" cy="95.1" id="2">
-  </circle>
- </g>
- <g id="label_points">
-  <circle name="VALLE D'AOSTA" cx="191.7" cy="162.5" id="IT23">
-  </circle>
-  <circle name="PIEMONTE cx="222.1" cy="223.6" id="IT21">
-  </circle>
-  <circle name="LIGURIA" cx="303.6" cy="265.7" id="IT42">
-  </circle>
-  <circle name="LOMBARDIA" cx="335.3" cy="162.3" id="IT25">
-  </circle>
-  <circle name="TRENTINO ALTO ADIGE" cx="425.9" cy="103.4" id="IT32">
-  </circle>
-  <circle name="VENETO" cx="452.6" cy="177.5" id="IT34">
-  </circle>
-  <circle name="FRIULI VENEZIA GIULIA" cx="524.3" cy="119.2" id="IT36">
-  </circle>
-  <circle name="TOSCANA" cx="417.6" cy="348.5" id="IT52">
-  </circle>
-  <circle name="UMBRIA" cx="495.2" cy="388.3" id="IT55">
-  </circle>
-  <circle name="LAZIO" cx="505.4" cy="468" id="IT62">
-  </circle>
-  <circle name="ABRUZZO" cx="574.7" cy="445.8" id="IT65">
-  </circle>
-  <circle name="PUGLIA" cx="727.9" cy="543.2" id="IT75">
-  </circle>
-  <circle name="CAMPANIA" cx="632.7" cy="539.8" id="IT72">
-  </circle>
-  <circle name="MOLISE" cx="625.7" cy="490.6" id="IT67">
-  </circle>
-  <circle name="BASILICATA" cx="706.8" cy="582.9" id="IT77">
-  </circle>
-  <circle name="CALABRIA" cx="729.8" cy="677.6" id="IT78">
-  </circle>
-  <circle name="SICILIA" cx="593.5" cy="803" id="IT82">
-  </circle>
-  <circle name="SARDEGNA" cx="294" cy="610.8" id="IT88">
-  </circle>
-  <circle name="EMILIA ROMAGNA" cx="409.5" cy="260.7" id="IT45">
-  </circle>
-  <circle name="MARCHE" cx="541.6" cy="363.8" id="IT57">
-  </circle>
- </g>
-</svg>
                 </svg>
-        </div>
-    </main>
+            </div>
+            <p style="color: var(--neon-blue); font-weight: 700; letter-spacing: 1px;">CLICCA UNA REGIONE</p>
+        </section>
+    </div>
 
-   <div id="details">
+</div>
+
+<div id="details">
     <span class="close-btn" onclick="closeDetails()">&times;</span>
-    <h2 id="region-name">Seleziona Regione</h2>
-    <p id="region-info" style="color: #888;">Clicca su una regione per vedere i licei.</p>
+    <h2 id="region-name" style="color: var(--neon-blue); text-transform: uppercase;">Seleziona Regione</h2>
     <div id="schools-list"></div>
 </div>
 
@@ -295,17 +492,28 @@
     </div>
 </footer>
 
-    <!-- 1. Libreria Supabase -->
+<!-- 1. Libreria Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <!-- 2. Il tuo nuovo file logica (assicurati che il percorso sia giusto) -->
 <script src="../script.js"></script>
-
 <script>
-// 1. Configurazione Supabase
-const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Gestione Indirizzi
+    function openIndirizzi() {
+        document.getElementById('indirizziOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeIndirizzi() {
+        document.getElementById('indirizziOverlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    function closeOverlay(event) {
+        if (event.target.id === 'indirizziOverlay') closeIndirizzi();
+    }
 
 // 2. Funzione per caricare i licei
 async function caricaLiceiRegionali(nomeRegione) {
@@ -341,7 +549,7 @@ async function caricaLiceiRegionali(nomeRegione) {
         if (error) throw error;
 
         if (!scuole || scuole.length === 0) {
-            listaContenitore.innerHTML = `<p style="padding: 20px;">Nessun liceo trovato.</p>`;
+            listaContenitore.innerHTML = `<p style="padding: 20px;">Nessun tecnico trovato.</p>`;
             return;
         }
 
