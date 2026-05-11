@@ -213,7 +213,8 @@
         #details.active { right: 0; }
         .close-btn { font-size: 2.5rem; color: #fff; cursor: pointer; position: absolute; top: 15px; right: 25px; }
 
-        /* OVERLAY INDIRIZZI */
+  /* OVERLAY INDIRIZZI (Base per PC - Invariata) */
+/* OVERLAY INDIRIZZI (Base per PC - Invariata) */
         #indirizziOverlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -223,6 +224,8 @@
             align-items: center;
             z-index: 9999;
             backdrop-filter: blur(10px);
+            /* Abilita lo scroll verticale se il contenuto eccede l'altezza */
+            overflow-y: auto; 
         }
 
         .overlay-content {
@@ -251,14 +254,52 @@
             align-items: center;
             transition: all 0.3s ease;
         }
-        .mini-card-overlay i { font-size: 3rem; color: var(--neon-green); margin-bottom: 15px; }
-        .mini-card-overlay span { color: #fff; font-weight: 700; text-transform: uppercase; font-size: 1rem; text-align: center; }
-        .mini-card-overlay:hover { background: rgba(125, 226, 209, 0.2); transform: scale(1.05); }
 
+        /* RIPRISTINO ICONE E TESTO ORIGINALE */
+        .mini-card-overlay i { 
+            font-size: 3rem; 
+            color: var(--neon-green); 
+            margin-bottom: 15px; 
+        }
+        .mini-card-overlay span { 
+            color: #fff; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            font-size: 1rem; 
+            text-align: center; 
+        }
+
+        .mini-card-overlay:hover { 
+            background: rgba(125, 226, 209, 0.2); 
+            transform: scale(1.05); 
+        }
+
+        /* --- MEDIA QUERY CORRETTA --- */
         @media (max-width: 900px) {
-            .content-wrapper, .sbocchi-grid, .bottom-split-grid { grid-template-columns: 1fr; }
-            .overlay-content { grid-template-columns: repeat(2, 1fr); }
+            .content-wrapper, .sbocchi-grid, .bottom-split-grid { 
+                grid-template-columns: 1fr; 
+            }
+            
             #details { width: 100%; }
+
+            /* FIX PER MOBILE: Scroll e Colonna singola */
+            #indirizziOverlay {
+                align-items: flex-start; /* Permette di scorrere dall'inizio */
+                padding-top: 100px; 
+                padding-bottom: 50px;
+            }
+
+            .overlay-content { 
+                grid-template-columns: 1fr; /* Colonna singola su mobile */
+                margin: 0 auto;
+            }
+
+            .close-overlay {
+                position: fixed; /* La X rimane ferma in alto mentre scorri */
+                top: 20px; 
+                right: 20px;
+                z-index: 10000;
+            }
         }
     </style>
 </head>
