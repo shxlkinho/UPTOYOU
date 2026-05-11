@@ -3,24 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mappa Interattiva - Up to You</title>
+    <title>Istituti Tecnici - Up to You</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
     <style>
         :root {
             --neon-blue: #008cff;
-            --neon-blue-bright: #4dabff;
-            --neon-green: #7de2d1;
+            --neon-green: #7de2d1; /* Colore principale per Tecnici */
             --bg-black: #000000;
-            --neon-purple: #9333ea;
-            --neon-purple-bright: #c084fc;
         }
 
         body {
             background-color: var(--bg-black);
             color: #ffffff;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -33,7 +30,7 @@
             padding: 120px 20px 80px 20px;
             display: flex;
             flex-direction: column;
-            gap: 60px;
+            gap: 50px;
             margin: 0 auto; 
             box-sizing: border-box;
         }
@@ -43,350 +40,129 @@
             font-size: 42px;
             font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             letter-spacing: 2px;
         }
 
-        /* --- CARD DINAMICHE --- */
         .card-dynamic {
             background: rgba(255, 255, 255, 0.02);
             border-radius: 20px;
             position: relative;
-            box-sizing: border-box;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: default;
+            transition: transform 0.3s ease;
         }
 
-        .card-dynamic:hover {
-            transform: scale(1.03);
-        }
+        /* --- HERO SECTION --- */
+        .hero-container { padding: 50px 40px; border: 2px solid var(--neon-green); }
+        .content-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .highlight { color: var(--neon-green); font-weight: 700; }
 
-        /* --- BLOCCO 1: HERO (BLU) --- */
-        .hero-container {
-            width: 100%;
-            padding: 50px 40px;
-            border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 140, 255, 0.3);
-        }
-        .hero-container h1 { color: var(--neon-blue); margin-bottom: 40px; }
-
-        .content-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .left-side { display: flex; gap: 20px; }
-        .left-side i { font-size: 45px; color: var(--neon-blue); filter: drop-shadow(0 0 10px var(--neon-blue)); }
-        .left-side p { font-size: 17px; line-height: 1.8; color: #ffffff; margin: 0; }
-
-        .right-side { display: flex; flex-direction: column; gap: 25px; }
-        .feature-item { display: flex; gap: 15px; align-items: flex-start; }
-        .feature-item i { font-size: 28px; color: var(--neon-blue); filter: drop-shadow(0 0 8px var(--neon-blue)); width: 40px; text-align: center; }
-        .feature-item p { font-size: 16px; line-height: 1.6; color: #ffffff; margin: 0; }
-
-        .highlight { color: #00f2ff; font-weight: 700; text-shadow: 0 0 8px rgba(0, 242, 255, 0.7); }
-
-        /* --- BLOCCO 2: SBOCCHI (VIOLA) --- */
-        .sbocchi-container {
-            width: 100%;
-            padding: 50px 40px;
-            border: 2px solid var(--neon-purple);
-            box-shadow: 0 0 15px rgba(147, 51, 234, 0.2);
-        }
-        .sbocchi-container h2 { color: var(--neon-purple); }
-
-        .sbocchi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .sbocchi-item { display: flex; align-items: center; gap: 25px; }
-        .sbocchi-item i { font-size: 3.5rem; color: var(--neon-purple-bright); filter: drop-shadow(0 0 12px var(--neon-purple)); min-width: 70px; text-align: center; }
-        .sbocchi-item p { font-size: 1.1rem; line-height: 1.7; margin: 0; color: #e2e8f0; }
-        .hl-purple { color: var(--neon-purple-bright); font-weight: 700; }
-
-        /* --- GRIGLIA INFERIORE (INGRANDITA) --- */
-        .bottom-split-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 35px; 
-        }
-        
-        .small-card { 
-            padding: 50px 40px; 
-            min-height: 480px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
-        }
-        
-        .card-indirizzi { 
-            border: 2px solid var(--neon-green); 
-            text-align: center;
-            cursor: pointer;
-        }
-        
-        .card-indirizzi h3 { color: var(--neon-green); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; margin: 0; }
-        .card-indirizzi p { color: var(--neon-green); font-weight: 700; font-size: 1.1rem; letter-spacing: 2px; margin: 0; }
-        .card-indirizzi i.main-icon { font-size: 5.5rem; color: var(--neon-green); filter: drop-shadow(0 0 15px var(--neon-green)); }
-
-
-        /* --- SEZIONE TESTO PERCORSI (Licei, Tecnici, Professionali) --- */
-.info-percorsi-wide {
-            max-width: 900px; /* Più stretto del contenitore principale per eleganza */
+        /* --- INFO TESTO ORIZZONTALE --- */
+        .info-percorsi-wide {
+            max-width: 900px;
             margin: 0 auto 40px auto;
             text-align: center;
-            padding: 0 20px;
         }
+        .info-percorsi-wide h2 { color: var(--neon-green); font-size: 2rem; margin-bottom: 20px; text-transform: uppercase; }
+        .info-percorsi-wide p { line-height: 1.6; font-size: 1.1rem; color: #d1d1d1; }
 
-        .info-percorsi-wide h2 {
-            color: var(--neon-blue);
-            font-size: 2rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .info-percorsi-wide p {
-            line-height: 1.6;
-            font-size: 1.1rem;
-            color: #d1d1d1;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* CARD MAPPA */
-        .card-map-active { 
-            border: 2px solid var(--neon-blue); 
-            overflow: hidden;
-            position: relative;
+        /* --- GRID INFERIORE --- */
+        .bottom-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 35px; }
+        
+        .small-card { 
+            padding: 40px; 
+            min-height: 500px; 
             display: flex;
             flex-direction: column;
-        }
-        
-        #map-container { 
-            width: 100%; 
-            /* Aumentiamo l'altezza per riempire la card */
-            flex-grow: 1; 
-            height: 600px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            /* Riduciamo il margine superiore per avvicinarlo al titolo */
-            margin-top: -10px; 
-            /* Spazio quasi nullo sotto per toccare il bordo o la scritta */
-            margin-bottom: 5px; 
-        }
-
-        #map-container svg { 
-            /* Fondamentale: fa sì che l'SVG usi tutto lo spazio del div */
-            width: 95%; 
-            height: 95%; 
-            filter: drop-shadow(0 0 5px rgba(0, 140, 255, 0.3));
-        }
-        
-        #map-container path { 
-            fill: #1a1a1a !important; 
-            stroke: var(--neon-blue) !important;
-            stroke-width: 1;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        #map-container path:hover { 
-            fill: var(--neon-blue) !important; 
-            stroke: #fff !important;
-        }
-
-        /* PANNELLO DETTAGLI LATERALE */
-        #details {
-            position: fixed;
-            top: 0; right: -100%;
-            width: 450px; height: 100%;
-            background: rgba(0, 0, 0, 0.98);
-            z-index: 10001;
-            padding: 40px 25px;
-            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow-y: auto;
-            border-left: 3px solid var(--neon-blue);
-            backdrop-filter: blur(15px);
-        }
-        #details.active { right: 0; }
-        .close-btn { font-size: 2.5rem; color: #fff; cursor: pointer; position: absolute; top: 15px; right: 25px; }
-
-  /* OVERLAY INDIRIZZI (Base per PC - Invariata) */
-/* OVERLAY INDIRIZZI (Base per PC - Invariata) */
-        #indirizziOverlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            display: none;
-            justify-content: center;
             align-items: center;
-            z-index: 9999;
-            backdrop-filter: blur(10px);
-            /* Abilita lo scroll verticale se il contenuto eccede l'altezza */
-            overflow-y: auto; 
+        }
+        
+        /* CARD INDIRIZZI */
+        .card-indirizzi { border: 2px solid var(--neon-green); justify-content: center; cursor: pointer; }
+        .card-indirizzi h3 { color: var(--neon-green); font-size: 2.5rem; font-weight: 900; margin: 20px 0; }
+        .card-indirizzi i.main-icon { font-size: 5.5rem; color: var(--neon-green); filter: drop-shadow(0 0 15px var(--neon-green)); }
+
+        /* CARD MAPPA */
+        .card-map-active { border: 2px solid var(--neon-green); justify-content: space-between; padding-bottom: 0 !important; }
+        #map-container { width: 100%; flex-grow: 1; display: flex; align-items: center; justify-content: center; margin-top: -15px; overflow: hidden; }
+        #map-container svg { width: 110%; height: auto; max-height: 450px; transform: translateY(10px); }
+        #map-container path { fill: #1a1a1a !important; stroke: var(--neon-green) !important; stroke-width: 1.2; transition: 0.3s; cursor: pointer; }
+        #map-container path:hover { fill: var(--neon-green) !important; stroke: #fff !important; }
+        .click-text { margin-bottom: 15px; font-weight: 800; letter-spacing: 2px; color: var(--neon-green); }
+
+        /* --- OVERLAY INDIRIZZI --- */
+        #indirizziOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95); display: none; justify-content: center;
+            align-items: center; z-index: 9999; backdrop-filter: blur(10px); overflow-y: auto;
         }
 
         .overlay-content {
-            width: 90%;
-            max-width: 1000px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            padding: 20px;
+            width: 90%; max-width: 1000px; display: grid;
+            grid-template-columns: repeat(3, 1fr); gap: 25px; padding: 20px;
         }
 
-        .close-overlay {
-            position: absolute;
-            top: 40px; right: 40px;
-            font-size: 3rem; color: #fff; cursor: pointer;
-        }
+        .close-overlay { position: absolute; top: 40px; right: 40px; font-size: 3rem; color: #fff; cursor: pointer; }
 
         .mini-card-overlay {
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid var(--neon-green);
-            border-radius: 15px;
-            padding: 35px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: all 0.3s ease;
+            text-decoration: none; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--neon-green);
+            border-radius: 15px; padding: 35px 20px; display: flex; flex-direction: column; align-items: center; transition: all 0.3s ease;
         }
+        .mini-card-overlay i { font-size: 3rem; color: var(--neon-green); margin-bottom: 15px; }
+        .mini-card-overlay span { color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; text-align: center; }
+        .mini-card-overlay:hover { background: rgba(125, 226, 209, 0.2); transform: scale(1.05); }
 
-        /* RIPRISTINO ICONE E TESTO ORIGINALE */
-        .mini-card-overlay i { 
-            font-size: 3rem; 
-            color: var(--neon-green); 
-            margin-bottom: 15px; 
+        /* PANNELLO DETTAGLI REGIONE */
+        #details {
+            position: fixed; top: 0; right: -100%; width: 450px; height: 100%;
+            background: rgba(0,0,0,0.98); z-index: 10001; padding: 40px 25px;
+            transition: 0.5s ease; border-left: 3px solid var(--neon-green); overflow-y: auto;
         }
-        .mini-card-overlay span { 
-            color: #fff; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            font-size: 1rem; 
-            text-align: center; 
-        }
+        #details.active { right: 0; }
 
-        .mini-card-overlay:hover { 
-            background: rgba(125, 226, 209, 0.2); 
-            transform: scale(1.05); 
-        }
-
-        /* --- MEDIA QUERY CORRETTA --- */
         @media (max-width: 900px) {
-            .content-wrapper, .sbocchi-grid, .bottom-split-grid { 
-                grid-template-columns: 1fr; 
-            }
-            
+            .content-wrapper, .bottom-split-grid { grid-template-columns: 1fr; }
+            #indirizziOverlay { align-items: flex-start; padding-top: 100px; }
+            .overlay-content { grid-template-columns: 1fr; }
+            .close-overlay { position: fixed; top: 20px; right: 20px; }
             #details { width: 100%; }
-
-            /* FIX PER MOBILE: Scroll e Colonna singola */
-            #indirizziOverlay {
-                align-items: flex-start; /* Permette di scorrere dall'inizio */
-                padding-top: 100px; 
-                padding-bottom: 50px;
-            }
-
-            .overlay-content { 
-                grid-template-columns: 1fr; /* Colonna singola su mobile */
-                margin: 0 auto;
-            }
-
-            .close-overlay {
-                position: fixed; /* La X rimane ferma in alto mentre scorri */
-                top: 20px; 
-                right: 20px;
-                z-index: 10000;
-            }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <nav class="navbar">
-        <div class="logo"><a href="../index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
-        <ul class="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li class="dropdown">
-                <a href="#">Lezioni ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="../Lezioni/elementari.html">Elementari</a></li>
-                    <li><a href="../Lezioni/medie.html">Medie</a></li>
-                    <li><a href="../Lezioni/superiori.html">Superiori</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">Orientamento ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="../rapido.html">Orientamento Rapido</a></li>
-                    <li><a href="../guidato.html">Orientamento Guidato</a></li>
-                </ul>
-            </li>
-            <li><a href="../contact.html">Contatti</a></li>
-            <li id="auth-nav-item" class="nav-auth-container"></li>
-        </ul>
-    </nav>
-</header>
-
 <div class="page-wrapper">
-    
     <section class="hero-container card-dynamic">
-        <h1 class="section-title">Costruire le basi del pensiero critico</h1>
+        <h1 class="section-title">Istituti Tecnici</h1>
         <div class="content-wrapper">
             <div class="left-side">
-                <i class="fa-solid fa-atom"></i>
-                <p>Il percorso liceale rappresenta l'indirizzo orientato alla <span class="highlight">formazione teorica</span>. Abbraccia un metodo di apprendimento che privilegia l'astrazione e la comprensione profonda dei fenomeni scientifici. L'obiettivo è creare una <span class="highlight">forma mentis</span> capace di decodificare la complessità del mondo.</p>
+                <p>Gli istituti tecnici offrono una formazione che unisce <span class="highlight">sapere teorico e competenze pratiche</span>, preparando gli studenti sia al mondo del lavoro che all'università.</p>
             </div>
             <div class="right-side">
-                <div class="feature-item">
-                    <i class="fa-solid fa-book-open"></i>
-                    <p>Sviluppa il <span class="highlight">pensiero laterale</span>: un equilibrio tra scienze e cultura che si muove su un piano accademico d'eccellenza.</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fa-solid fa-microscope"></i>
-                    <p>Impara a studiare e a ricercare fonti, competenze che diventano un <span class="highlight">vantaggio strategico</span> in qualsiasi carriera futura.</p>
-                </div>
+                <p>Attraverso laboratori all'avanguardia e stage aziendali, forniscono gli strumenti per diventare i <span class="highlight">professionisti dell'innovazione</span> tecnologica ed economica.</p>
             </div>
         </div>
     </section>
 
-<section class="info-percorsi-wide">
-        <h2>L'Identità del Liceo</h2>
+    <section class="info-percorsi-wide">
+        <h2>Il Valore del Diploma Tecnico</h2>
         <p>
-            Mentre i <b>Licei</b> si focalizzano su una formazione teorica e umanistico-scientifica propedeutica all'università, gli <b>Istituti Tecnici</b> offrono un mix tra teoria e applicazioni pratiche, ideali per chi vuole entrare nel mondo del lavoro tecnico o proseguire con studi specialistici. Gli <b>Istituti Professionali</b>, invece, sono orientati all'apprendimento pratico e all'acquisizione immediata di competenze operative in settori specifici dell'economia e dell'artigianato.
+            A differenza dei licei, gli <b>Istituti Tecnici</b> si concentrano sull'applicazione concreta delle scienze e delle tecnologie. Questo percorso permette di acquisire una mentalità operativa, fondamentale per gestire processi complessi in settori chiave come l'informatica, la meccanica, la chimica e l'economia aziendale.
         </p>
-    </section>
-
-    <section class="sbocchi-container card-dynamic">
-        <h2 class="section-title">Sbocchi Futuri</h2>
-        <div class="sbocchi-grid">
-            <div class="sbocchi-item">
-                <i class="fa-solid fa-university"></i>
-                <p>La naturale prosecuzione è l' <span class="hl-purple">Università</span> o l'Alta Formazione. Ogni studente è pronto per facoltà come Medicina o Ingegneria.</p>
-            </div>
-            <div class="sbocchi-item">
-                <i class="fa-solid fa-briefcase"></i>
-                <p>I diplomati sono apprezzati per la flessibilità <span class="hl-purple">intellettuale</span>. Saper imparare velocemente è oggi più prezioso di una singola competenza.</p>
-            </div>
-        </div>
     </section>
 
     <div class="bottom-split-grid">
         <section class="small-card card-indirizzi card-dynamic" onclick="openIndirizzi()">
-            <i class="fa-solid fa-layer-group main-icon"></i>
+            <i class="fa-solid fa-gears main-icon"></i>
             <h3>Indirizzi</h3>
-            <p>ESPLORA TUTTI I LICEI</p>
+            <p>ESPLORA LE SPECIALIZZAZIONI TECNICHE</p>
         </section>
 
         <section class="small-card card-map-active card-dynamic">
-            <h3 style="color: var(--neon-blue); font-size: 2.2rem; font-weight: 900; text-transform: uppercase; margin: 0; text-align: center;">Mappa Licei</h3>
+            <h3 style="color: var(--neon-green); font-size: 1.8rem; margin-top: 20px; text-transform: uppercase;">Mappa Tecnici</h3>
             <div id="map-container">
-<svg baseprofile="tiny" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
                     <g id="features">
-<path d="M223.7 143.1l0.4 1.7-0.4 0.1-0.1 0.3 0 0.6 0.7 4.7 0.2 2.5 0 1.4 0.3 1.7 0.2 0.4 0.2 1.4 0.1 0.4 0.2 0.3 0.1 0.2 0.5 0.4 1.3 0.7 0.2 0.1 0 0.8 0 1.1-0.3 2.7 0 1.1 0.1 0.8 0.3 0.5 0.1 0.2 0 0.3-0.4 1.1-1.9 2.8-5.6 1.8-1.6 1.2-0.5 0.3-0.4 0.1-0.6 0.1-3.4-0.2-0.6-0.2-0.7-0.5-0.2-0.1-0.3-0.1-5.7-1.3-0.5 0.1-0.5 0.2-0.8 0.4-0.5 0.2-0.5 0.2-1.1-0.1-0.5 0.1-0.4 0.2-1.1 1.1-0.7 0.9-0.4 0.4-1.2 0.7-0.2 0.1-0.8 0.8-0.2 0.2-8.6 2.9-0.4 0.3-0.4 0.1-0.8 0.1-2.8-0.4-1-0.3-0.2-0.1-0.2-0.2 0-0.2-0.1-0.1 0-0.1 0.3-0.7 0-0.3-0.3 0-0.4 0.2-2.5 2.7-0.8 0.9-0.2-0.3-2.5-1.9-2.7-1.5-0.5-1.2-0.3-3.5-0.2-0.6-0.7-1-0.1-0.7 0.2-0.7 0.7-1.4 0.1-0.5-0.4-1.3-0.7-0.5-1.9-0.5-0.8-0.6-1.3-1.3-0.8-0.3-1.5-0.3-1.6-1.2-1.2-1.8-0.6-3.4-0.1-0.5-0.1-1.1 0-1.4 0.4-1.4 0.7-1.3 0.9-0.5 1.6-0.5 0.5 0.2 0.4 0.2 0.3 0.6 0.4-0.1 0.1-0.4 0-0.6 0.1-0.4 0.4-0.1 1.4 0 1.3-0.3 1.3-0.7 1.2-1 0.8-1.4 0.4-1.1 0.4-1 0.6-0.8 0.9-0.4 2.6 3 1.4 0.8 1.8 0.3 1.9 0 1.8-0.3 3.6-1.5 1.6-1 0.8-0.3 4.4 0.5 1.9-0.7 3.5-2.5 1.7-0.8 1.2-0.1 0.7-0.9 0.5-1 1-0.5 6 1.5 0.9 0.6 0.9 0.8 1.1 1.6 0.1 0.2 0.7 0.3 0.5-0.2 0.4-0.2 0.6 0 2.8 1 1.7 0 1 0.3 0.3 0 0.8-0.4 0.1-0.3 0-0.4 0.2-0.9 0-0.1z" id="IT23" name="VALLE D'AOSTA">
+                          <path d="M223.7 143.1l0.4 1.7-0.4 0.1-0.1 0.3 0 0.6 0.7 4.7 0.2 2.5 0 1.4 0.3 1.7 0.2 0.4 0.2 1.4 0.1 0.4 0.2 0.3 0.1 0.2 0.5 0.4 1.3 0.7 0.2 0.1 0 0.8 0 1.1-0.3 2.7 0 1.1 0.1 0.8 0.3 0.5 0.1 0.2 0 0.3-0.4 1.1-1.9 2.8-5.6 1.8-1.6 1.2-0.5 0.3-0.4 0.1-0.6 0.1-3.4-0.2-0.6-0.2-0.7-0.5-0.2-0.1-0.3-0.1-5.7-1.3-0.5 0.1-0.5 0.2-0.8 0.4-0.5 0.2-0.5 0.2-1.1-0.1-0.5 0.1-0.4 0.2-1.1 1.1-0.7 0.9-0.4 0.4-1.2 0.7-0.2 0.1-0.8 0.8-0.2 0.2-8.6 2.9-0.4 0.3-0.4 0.1-0.8 0.1-2.8-0.4-1-0.3-0.2-0.1-0.2-0.2 0-0.2-0.1-0.1 0-0.1 0.3-0.7 0-0.3-0.3 0-0.4 0.2-2.5 2.7-0.8 0.9-0.2-0.3-2.5-1.9-2.7-1.5-0.5-1.2-0.3-3.5-0.2-0.6-0.7-1-0.1-0.7 0.2-0.7 0.7-1.4 0.1-0.5-0.4-1.3-0.7-0.5-1.9-0.5-0.8-0.6-1.3-1.3-0.8-0.3-1.5-0.3-1.6-1.2-1.2-1.8-0.6-3.4-0.1-0.5-0.1-1.1 0-1.4 0.4-1.4 0.7-1.3 0.9-0.5 1.6-0.5 0.5 0.2 0.4 0.2 0.3 0.6 0.4-0.1 0.1-0.4 0-0.6 0.1-0.4 0.4-0.1 1.4 0 1.3-0.3 1.3-0.7 1.2-1 0.8-1.4 0.4-1.1 0.4-1 0.6-0.8 0.9-0.4 2.6 3 1.4 0.8 1.8 0.3 1.9 0 1.8-0.3 3.6-1.5 1.6-1 0.8-0.3 4.4 0.5 1.9-0.7 3.5-2.5 1.7-0.8 1.2-0.1 0.7-0.9 0.5-1 1-0.5 6 1.5 0.9 0.6 0.9 0.8 1.1 1.6 0.1 0.2 0.7 0.3 0.5-0.2 0.4-0.2 0.6 0 2.8 1 1.7 0 1 0.3 0.3 0 0.8-0.4 0.1-0.3 0-0.4 0.2-0.9 0-0.1z" id="IT23" name="VALLE D'AOSTA">
   </path>
   <path d="M275.3 128.9l0.3 5.2 0 0.4-0.1 0.6-0.2 1-0.3 0.5-0.2 0.4-7.5 8-0.1 0.2-0.1 0.4 0 0.6 0.1 1.3 0.4 1.6 0.3 2.5 0 0.5-0.1 0.3-0.2 0.3-0.1 0.2-0.2 0.3-1.2 1-0.1 0.3-0.2 0.2-0.1 0.3 0.2 0.7 0.4 1.2 1.3 2.5 0.7 1 0.5 0.5 1.2 0.4 0.4 0.2 0.2 0.3 0.1 0.4 0 0.8-0.1 0.5-0.2 0.7 0.1 0.3 0.1 0.4 0.4 0.3 0.3 0.1 0.6-0.1 0.2 0 0.1 0.3 0 0.6 0 0.5 0.1 0.5 0.2 0.5 0.1 0.3-0.3 0.4-0.2 0-0.3 0-0.3 0 0 0.4 0.2 0.5 1.6 1.9 0.1 0.3 0.1 0.4-0.1 1.5 0.5 0.7-0.1 0.9 0.1 0.4 0.2 0.5 0.3 0.9 0.1 0.6 0.1 0.8 0.2 0.4 0.4 0.5 1.2 1 1.2 0.4 0.2 0.2 0.4 0.5 0.4 0.9 1.5 4.1 0.2 0.3 1 1.3-3.9 1.5-1.7 1.2-0.1 0.3 0.3 0.2 0.7 0.4 0.2 0.2 0.1 0.2 0.1 0.3-0.1 0.2-0.3 0.2-1.6 1-0.4 0.3-0.1 0.3-0.2 0.2-0.1 0.3-0.1 0.3-0.1 1-0.1 0.3-0.1 0.2-0.4 0.1-0.4-0.1-1.1-0.3-0.4-0.3-0.3-0.3-1-2.1-0.2-0.5-0.3-0.5-0.2-0.2-0.3-0.1-0.5-0.2-2.6-0.6-0.9 0-0.4 0.1-0.2 0.1-0.3 0.4-0.2 0.5-0.4 1.3-0.4 1.2-0.7 0.8-0.1 0.1-0.3 0.6-0.3 0.6-0.1 0.2 0 0.3 0.1 0.4 0.3 0.3 0.3 0.2 0.3 0.3 0.1 0.5 0.1 1.6 0.3 0.5 0.3 0.2 0.2 0.2 0.1 0.3-0.1 0.6 0 0.5 0.1 0.6 0.5 0.9 0.4 0.3 0.3 0.3 0.2 0.3 0 0.2-0.4 1.2 0.2 0.8 0.1 0.4 0.4 0.7 0.1 0.2 0.5 1.4 2 2.4 1.4 3.9 0.8 1.7 1.4 1.3 0.8-0.5 0.6 0 1.2 0.5 2.2 0 1.3-0.2 3.5-2.1 1-0.5 1.6 0.4 0.2 0.1 0 0.5-0.3 2.1 0 0.3 0.1 0.3 0 0.4 0.1 0.2 0.1 0.3 0.1 0.2 0.1 0.1 0.8 0.6 0.4 0.2 0.4 0.1 1.8 0.2 0.5 0.2 0.4 0.2 0.1 0.1 0.3 0.4 0.2 0.3 0.1 0.4 0.2 0.8 0 0.4-0.2 0.7 0.2 0.4 0.3 0.5 1.1 1.3 3.1 2.8 0.2 0.3 0.1 0.3 0 0.5-0.1 0.3-0.2 0.6-0.1 0.3 0 0.3 0 0.3 0.3 0.4 0.4 0.6 0.9 1 0.6 0.4 0.5 0.1 1.4 0 1.3 0.3 0.3 0.1 0.2 0.1 0.3 0.2 0.2 0.3 0.2 0.4 0.6 1.3 1.1 3.3 0.3 0.6 0.3 0.4 0.2 0.1 0.2 1-0.3 3.2 0.1 5.6-0.2 1.2-0.5 0.5-0.7 0.5-0.5 0.3-0.9 0.2-0.4 0-0.8-0.2-0.8-0.3-0.3-0.2-0.2-0.2-0.2-0.2-0.1-0.2-0.1-0.4 0-0.7-0.4-0.4-0.6-0.3-2.8-1.1-0.8-0.7-0.9-1.1-0.8-0.5-1-0.5-0.4-0.2-0.4-0.3-0.5-0.9-0.4-0.1-0.5 0-1.2 0.1-0.3 0.2-0.2 0.1-0.1 0.2-0.2 1.1-0.1 0.2-0.1 0.1-0.7 0.8-1 0.8-0.1 0.3 0 0.2 0.1 0.3 0.1 0.1 0.7 0.5 0.7 0.5 0.1 0.2 0.1 0.3 0.1 0.3 0 0.3 0 1.1 0.1 0.7 0 0.3 0 0.4-0.1 0.4-0.2 0.3-0.5 0.4-0.3 0.1-1.2-0.2-1.5 0-0.7 0.1-0.4 0.1-0.2 0.3-0.3 1.2-0.1 0.3-0.1 0.2-0.2 0.3-0.1 0.1-0.9 0.7-0.2 0.2-0.3 0.5-0.5 0.8-0.2 0.2-0.1 0-0.2-0.1-0.1-0.2-0.1-0.3 0-0.3 0.1-0.9 0-0.3-0.1-0.3-0.5-0.6-0.2-0.5-0.4-0.8-0.5-0.6-0.2-0.5-0.3-0.5-0.1-0.3-0.2-0.2-0.3-0.2-0.5-0.1-4.6-0.5-0.6 0-0.5 0.1-0.2 0.2-0.1 0.2-0.3 0.5 0 0.3-0.3 0.6 0 0.3 0 0.2 0 0.3 0.1 0.2 0.1 0.3 0 0.3-0.1 0.3-0.1 0.2-0.5 0.7-0.4 0.5-1.1 0.7-5.1-0.1-1.7 0.2-0.6 0.3-0.4 0-0.5-0.1-0.5-0.3-0.3 0.1-0.2 0.1-0.9 0.6-0.2 0.2-0.1 0.2-0.1 0.1-0.1 0.2-0.1 0.3-0.2 0.3-0.3 0.4-0.7 0.4-0.3 0.1-0.3-0.2-0.2-0.2-0.1-0.2-0.2-0.2-0.5-0.2-1.1-0.4-0.3-0.1-0.4-0.4-0.6-0.5-0.9-0.5-0.5-0.4-0.1-0.1-0.3-0.5-0.6-0.6-0.8 0.2-0.9 1.2-0.2 0.3-0.4 1-0.2 0.9-0.5 0.8-0.2 0.6-0.1 0.4 0.1 0.3 0.1 0.3 0.2 0.2 0.3 0.4 0.2 0.3 0.1 0.4 0 0.9-0.1 0.5-0.2 0.5-0.4 0.7-0.2 0.2-0.2 0.2-0.2 0.1-0.9 0.3-0.2 0.1-0.3 0.3-0.3 0.5-0.7 1.3-0.2 0.8-0.2 0.9-0.1 0.3-0.2 0.3-1.1 0.8-0.4 0.4-0.4 0.6-0.4 0.4-0.4 0.3-0.6 0.3-0.5 0.4-0.1 0.3 0 0.2 0.2 0.3 0.2 0.1 0.1 0.4 0 0.6-0.4 2-0.1 0.6 0.1 0.3 0 0.3 0.1 0.4 0 0.6-0.2 0.9 0.1 0.5 0.1 0.3 0.2 0.2 0.2 0.3 0.1 0.4 0 0.7-0.1 0.5-0.1 0.3-0.6 1-0.6 0.8-0.4 0.4-0.1 0.1-0.2 0-0.3 0-0.6-0.1-0.8-0.3-0.6-0.1-0.3 0.1-0.3 0.2-0.6 0.7-0.2 0.4 0 0.4 0.1 0.3 0.1 0.2 0.3 0.2 0.4 0.2 0.2 0.1 0.1 0.2 0 0.5 0 0.2-0.1 0.2-0.4 0.2-0.4 0.1-4-0.5-1.1-0.4-3.9-0.1-1.6-0.3-0.1-0.2-0.9-0.5-0.9-0.4-0.6-0.1-0.4 0-0.2 0.1-0.2 0.1-0.4 0.4-0.2 0.2-0.4 0.7-0.1 0.3-0.1 0.3-0.1 0.2 0.1 0.3 0.1 0.3 0.1 0.2 0.3 0.2 0 0.2 0 0.1-1.7 0.6-1.3 0.1-0.6-1.5-1.3-1.3-0.8-1.5 0.8-2.7-1.8-0.3-2.4 1.6-1.7 0.1-10.2 3-2.3-0.1-0.6-0.1-0.5-0.5-0.4-0.7-0.4-0.6-0.7-0.3-1.6-0.3-1.1-0.5-6.2-3.8-2.4-0.9-3.4-1.8-0.7-0.2-0.8 0-0.7 0.3-0.7 0.1-0.8-0.3-0.6-0.7-0.2-0.7-0.2-0.7-0.4-0.9-0.5-0.6-1.2-0.8-0.5-0.6-0.4-0.6-0.6-1.7-0.5-0.8-1-1.2-0.3-0.3-0.2-0.4-0.3-0.7 0.1-0.4 0.1-0.5 0.5-2.6 0.4-0.7 2-1.1-1.6-1.3-1.7-1.9-1.4-2.3-0.1-2.5 0.6-1.1 3-2.3 2-3.5 0.8-0.7-0.7-1.7 0.3-0.9 0.2-0.8 1-1.3 1.4-0.8 1.1 0 2.1 0.7 1-0.1-0.3-1-0.6-1.2-1.2-2.2-0.2-0.7-0.3-2.1-0.7-1.7 0-0.1 0.3-1.4 0.1 0 0-0.4 0.1-0.2 0-0.3-0.1-0.5-0.3-0.4-1-1.1-3-1.3-1 0-2.9 0.5-1.1-0.2-4-2.4-1.9-1.7-1.1-1.7 0.1-4.6-0.3-2.4-1.6-1.2-2-0.1-0.6-0.6-0.7-1.2-0.2-0.8 0.1-0.6-0.1-0.6-1-0.8-1-1.6 0.7-0.9 0.9-0.8 0.1-0.1 2.1-1.2 0.5-0.1 1.1 0 0.4 0 0.5-0.3 1.1-0.9 0.4-0.2 2.1 0.4 2.1 1.1 2.1 0.8 2-0.9 0.1-0.6-0.4-0.3-0.2-0.5 0.3-0.7 0.4-0.2 1.4 0 0.5-0.2 0.9-0.7 1-1.8 0.8-0.8 2.1-0.9 2-0.6 0.5 0.2 0.7 0.9 0.3 0.1 0.4-0.4 1.2-2 1.5-1.4 0-1.3-0.6-1.6-0.3-2.5 0.3-0.5 1.9-2.2 1.2-2.2 0.6-1.3 0-1-0.4-0.4-2.5-1.1-0.8-0.6-0.5-0.9-0.4-1.1-0.4-0.6 0.8-0.9 2.5-2.7 0.4-0.2 0.3 0 0 0.3-0.3 0.7 0 0.1 0.1 0.1 0 0.2 0.2 0.2 0.2 0.1 1 0.3 2.8 0.4 0.8-0.1 0.4-0.1 0.4-0.3 8.6-2.9 0.2-0.2 0.8-0.8 0.2-0.1 1.2-0.7 0.4-0.4 0.7-0.9 1.1-1.1 0.4-0.2 0.5-0.1 1.1 0.1 0.5-0.2 0.5-0.2 0.8-0.4 0.5-0.2 0.5-0.1 5.7 1.3 0.3 0.1 0.2 0.1 0.7 0.5 0.6 0.2 3.4 0.2 0.6-0.1 0.4-0.1 0.5-0.3 1.6-1.2 5.6-1.8 1.9-2.8 0.4-1.1 0-0.3-0.1-0.2-0.3-0.5-0.1-0.8 0-1.1 0.3-2.7 0-1.1 0-0.8-0.2-0.1-1.3-0.7-0.5-0.4-0.1-0.2-0.2-0.3-0.1-0.4-0.2-1.4-0.2-0.4-0.3-1.7 0-1.4-0.2-2.5-0.7-4.7 0-0.6 0.1-0.3 0.4-0.1-0.4-1.7 1.2-0.1 0.2-1.6 0.6-1.2 0.9-0.7 4.1-0.9 0.6-0.2 0.4-0.3 0.7-1 0.1-0.2 0.6-1.2 0.1-0.2 0.3-2.4 0-1 0.1-0.9 0.4-0.9 0.6-0.5 1.2-0.1 0.7-0.2 2.5-2.2 1.3-2.8-0.2-3.1-1.7-3.3-1.4-1.2-0.2-0.4 0.3-0.7 0.6-0.8 1.1-1.2 1.3-0.6 2.5-0.5 1.2-0.9 2.9-3.8 1.7-0.8 0.7-0.6 0.5-0.7 0.4-0.7 0-0.9-0.4-0.3-0.2-0.4 0.4-1 1.3-1.4 1.6-0.8 2.5-0.6 0.8-0.1 1.6 0.3 0.8 1.1 0.3 2 0 2.5-0.2 2.5-0.9 4.4-0.2 2.2 0.2 2 0.6 1.4 1.1 0.9 1.6 0.6 1.6 0.8 1.6 1.7 3.7 5.5 0.6 0.3 1.1 0.4 2.8 1.6 1 0.1 0.4-0.3 0.9-0.8 0.4-0.2 0.3 0.2z" id="IT21" name="PIEMONTE">
   </path>
@@ -426,141 +202,158 @@
   </path>
   <path d="M491 307.5l-0.6 0.6-0.6 2 0.2 0.5 0.6 1.2 1.2 0.7 0.5 0.2 0.7-0.1 1.2-0.2 0.2-0.3 0.8-1.4 0-0.3 0-0.2 0.1-0.2 0.1-0.2 0.1-0.1 0.8 0.5 2.4 1.3 0.3 0.3 0.3 0.4 0 0.3-0.1 0.4 0.1 0.4 0.2 0.6 0.2 0.2 0.2 0 0.2-0.2 0.2-0.2 0.1-0.2 0.1-0.3 0.2-0.3 0.2-0.3 0.5-0.2 0.2 0 0.2 0.2 0.3 0.5 0.4 0.7 0.3 0.5 0.3 1.2 0.2 0.4 0.3 0.5 0.3 0.2 0.4 0.1 2.1 0 0.3 0 0.3-0.2 0.2-0.2 0.1-0.2 0.2-0.6 0.2-0.2 0.1-0.2 0.2-0.2 0.2-0.2 1.3-0.6 0.2-0.1 0.2-0.2 0.1-0.3 0.6-1.3 0.1-0.3 0-0.3-0.1-0.2-0.1-0.6-0.1-0.2 0-0.4 0-0.3 0-0.3 0.1-0.7 0.6-1.8 0.3-0.8 0-0.1 0.1 0 2.8 0.4 1.1 0.7 2.3 1.9 3.9 1.6 0.6 0.9 0.5 0.6 13.5 11.8 4.5 4 6.8 4.2 1.2 0.5 0.5 0.7 2.8 1 1.6 0.9 0.5-0.3 0.5-0.6 0.3-0.3 0.2-0.1 0.1-0.2 0.2-0.1 0.3-0.1 0.4 0.1 0.1 0.4 0.2 0.4 0.1 0.1 1.2 0.6 0.8 1.4 0.7 1.3 0.6 0.6 1.1 0.3 1 0.7 0.5 1.1-0.4 1.3 1.7 4.5 5.8 14.8 0.9 2.3 0.9 1.6 0.3 0.6 0.3 2.9 0.3 0.6 0.7 1.2 1.9 4.1 0.8 2.8 0.3 2 0.7 4.8 2.3 8.5-1 0.1-4.2 1-3.3 1.5-1.2 0.4-0.9-0.1-0.3 0.1-0.4 0.3-0.5 0.6-0.2 0.4-0.2 0.3 0 0.8-0.1 0.3-0.1 0.3-0.1 0.2-0.2 0.2-0.4 0.3-1 0.5-1.6 0.3-0.4 0-0.3-0.1-0.6-0.2-0.3 0-0.3 0-1.6 0.6-0.4 0.1-0.3 0-0.3-0.1-0.2-0.1-0.4-0.4-0.2-0.1-0.3-0.1-0.3 0.1-0.4 0.3-0.5 0.7-0.6 1.4-0.2 0.2-0.5 0.7-0.1 0.2-0.1 0.3-0.1 0.3-0.1 0.6-0.1 0.4-0.1 0.3-0.2 0.2-0.5 0.2-0.9 0.3-0.6 0.2-0.5 0.3-0.4 0.6-0.2 0.5-0.1 0.4-0.1 0.6-0.6 0.4-0.5 0.2-4.3 0.6-1.5-2.6-0.5-0.5-1.2-1.1-0.5-0.3-0.4-0.1-0.2 0-0.1 0.1-0.6 0.5-0.3 0.1-0.3 0-2.8 0.1 0-1.1 0.3-0.6 0.2-0.3 0.4-0.1 0.2 0.1 0.4 0.1 0.4 0 0.7-0.2 0.4-0.3 0.2-0.2 0.1-0.3 0.3-1.7 0-0.4 0-0.4 0-0.3-0.1-0.6-0.4-1-0.5-1-0.1-0.2-0.2-0.2-0.1-0.1-0.4-0.2-3.4 1.8-1 0.1-0.1-0.2-0.1-0.3-0.1-0.6-0.1-0.3-0.1-0.2-0.2-0.5-1.9-2.1-0.3-0.4-0.6-0.6-1.2-1-0.8-0.9-0.4-0.4-0.4-0.2-0.2 0.1-0.4 0.1-0.5 0.1-1.7-0.1-0.4 0.1-0.1 0.3 0 0.2 0.1 0.3 0.2 0.5 0 0.3-0.1 0.3-0.2 0.2-0.6 0.2-0.2-0.1-0.2-0.3 0-0.2 0-1.4 0-0.3-0.1-0.3 0-0.3-0.2-0.3-0.1-0.2-1.6-1-0.3-0.4-1-1.3-0.3-0.6-0.2-0.6 0-0.7 0-0.3-0.1-0.3-0.3-0.5-0.1-0.2 0-0.3 0-0.3 0.1-0.7 0-0.3 0-0.3 0-0.1-0.3-1-0.1-0.9 0-0.8 0.2-1.3 0.1-0.7-0.2-0.6-0.3-0.6-0.7-1.1-0.5-0.5-0.4-0.3-0.9-0.1-0.3-0.2-0.1-0.3-0.2-0.8 0-0.3 0-0.2 0.2-0.2 0.4-0.4 0.3-0.4 0.1-0.3 0.2-0.2 0-0.3 0.1-0.3 0-0.4 0-0.3 0-0.6-0.3-1.2 0-0.2-2.9-4.9-0.4-0.7-0.1-0.6 0.1-1.1-0.1-1.2-0.1-0.4-0.2-0.4-2-3.3-0.3-0.6-0.2-0.5 0-0.3 0.4-2 0.1-0.7 0-0.3 0-0.6 0.2-1.1 0-0.3 0-1.4-1.5 0.1-1.1 0.5-0.3 0.3-0.2 0.1-0.5 0.8-0.3 0.4-0.3 0.1-0.3-0.1-0.7-0.4-0.7-0.2-0.7-0.1-0.4 0-0.2 0-0.2 0.2-0.5 0.5-0.5 0.4-0.3 0.1-0.3-0.2-5.5-6.6-1.3-0.8-2.7-1.1-0.6-0.2-0.3 0.1-0.3 0.1-0.2 0.1-0.3 0.5-0.3 0.2-0.3 0.2-0.6 0.1-0.7-0.2-3.6-1.7-0.4-0.3-0.2-0.2-0.2-0.2-0.1-0.3 0-0.3 0.1-0.2 0.2-0.2 0.3-0.1 0.3 0.1 0.9 0.1 0.3 0 0.2-0.1 0.3-0.1 0.1-0.2 0.2-0.3 0.1-0.2 0.1-0.3 0-0.3 0-0.3-0.2-0.4 0-0.3 0.1-0.3 0.2-0.5 0.1-0.3 0-0.4-0.1-0.4-0.2 0-0.3 0-2.3 0.9-0.2 0.1-0.3 0.2-0.1 0.2-0.2 0.6-0.2 0.2-0.5 0.1-0.3-0.1-1.2-0.8-0.9-0.3-0.5-0.1-0.7 0-0.7-0.1-0.2-0.2-0.2-0.4-0.7-2.3 0-0.3 0.1-0.4 0.3-0.1 0.8-0.3 0.3-0.2 0.5-0.4 1-1.1 0.3-0.3 1.1-0.2 0.5-0.3 0.3-0.3 0.2-0.4 0.3-1.1 0.4-1 0.3-0.4 0.2-0.1 0.1 0.2 0.1 0.3 0.2 2.5 0.2 0.3 0.2 0.3 0.3 0.2 0.2-0.1 0.3-0.4 0.4-0.6 0.8-1.2 0.2-0.5 0-0.4-3-2.9-0.9-0.7-0.3-0.2-0.2-0.1-0.2-0.1-0.3 0-0.3 0-0.3 0.1-0.5 0.6-0.3 0.1-0.3 0-1.2-0.2-0.3 0-0.3 0.1-0.2 0.2-0.2 0.1-0.6 0.9-0.2 0.2-0.2 0.2-0.3 0-0.3 0-0.3-0.1-0.2-0.2-0.8-0.7-0.4-0.3-0.6-0.3-0.6-0.1-0.3 0-0.6 0.1-0.8 0.3 0.7-2.8 0.4-0.9 1.1-1.4 0.3-0.8 1.1-5.1 0-0.3-0.2-1.2 0.1-0.7 0-0.3 0.2-0.2 0.2-0.1 0.2 0 0.2 0.1 0.7 0.4 0.3 0 2 0.1 0.3 0.1 0.4 0 0.4-0.1 2.6-1.6 1.2-0.9 0.6-0.3 0.4-0.2 0.2-0.4 0.4 0.2 0.8 0.7 0.6-0.5 0.7-0.8 0.9 0.2 0.8 0.6 0.3 0.2z m-13.8 12.3l0.3 0.7 0.3 0.6 0.5 0.5 0.5 0.2 0-0.1 0.2-0.1 1.4-1.1 0.5-0.2 0.2 0 0.1-0.1 0-0.1 0-0.1 0-0.3 0-0.1-0.1-0.1 0-0.1-0.1-0.1-0.2-0.1-0.4-0.2-2.4-0.3-0.4-0.2 0-0.1-0.4 1.1 0 0.3z m14.2 17.1l0.5 0.4 0.5 0 0.5-0.4 0.3-0.6 0.1-0.8-0.2-0.7-0.3-0.6-0.4-0.3-0.4 0-0.4 0.3-0.4 0.5-0.1 0.9 0 0.7 0.3 0.6z" id="IT57" name="MARCHE">
   </path>
-                </svg>
+                        </g>
+                 </svg>
             </div>
-            <p style="color: var(--neon-blue); font-weight: 700; letter-spacing: 1px;">CLICCA UNA REGIONE</p>
+            <p class="click-text">CLICCA UNA REGIONE</p>
         </section>
     </div>
+</div>
 
+<div id="indirizziOverlay" onclick="if(event.target.id=='indirizziOverlay') closeIndirizzi()">
+    <div class="close-overlay" onclick="closeIndirizzi()">&times;</div>
+    <div class="overlay-content">
+        <a href="indirizzi/tecnico_afm.html" class="mini-card-overlay"><i class="fa-solid fa-chart-line"></i><span>Amministrazione Finanza e Marketing</span></a>
+        <a href="indirizzi/tecnico_agraria.html" class="mini-card-overlay"><i class="fa-solid fa-leaf"></i><span>Agraria e Agroindustria</span></a>
+        <a href="indirizzi/tecnico_chimica.html" class="mini-card-overlay"><i class="fa-solid fa-vial"></i><span>Chimica e Materiali</span></a>
+        <a href="indirizzi/tecnico_costruzione_ambiente.html" class="mini-card-overlay"><i class="fa-solid fa-compass-drafting"></i><span>Costruzioni Ambiente e Territorio</span></a>
+        <a href="indirizzi/tecnico_elettronica.html" class="mini-card-overlay"><i class="fa-solid fa-microchip"></i><span>Elettronica ed Elettrotecnica</span></a>
+        <a href="indirizzi/tecnico_grafica.html" class="mini-card-overlay"><i class="fa-solid fa-palette"></i><span>Grafica e Comunicazione</span></a>
+        <a href="indirizzi/tecnico_informatica.html" class="mini-card-overlay"><i class="fa-solid fa-code"></i><span>Informatica e Telecomunicazioni</span></a>
+        <a href="indirizzi/tecnico_meccanica.html" class="mini-card-overlay"><i class="fa-solid fa-gear"></i><span>Meccanica e Meccatronica</span></a>
+        <a href="indirizzi/tecnico_moda.html" class="mini-card-overlay"><i class="fa-solid fa-shirt"></i><span>Sistema Moda</span></a>
+        <a href="indirizzi/tecnico_trasporti.html" class="mini-card-overlay"><i class="fa-solid fa-plane"></i><span>Trasporti e Logistica</span></a>
+        <a href="indirizzi/tecnico_turismo.html" class="mini-card-overlay"><i class="fa-solid fa-earth-americas"></i><span>Turismo</span></a>
+    </div>
 </div>
 
 <div id="details">
-    <span class="close-btn" onclick="closeDetails()">&times;</span>
-    <h2 id="region-name" style="color: var(--neon-blue); text-transform: uppercase;">Seleziona Regione</h2>
+    <span style="font-size: 2rem; color: #fff; cursor: pointer;" onclick="closeDetails()">&times;</span>
+    <h2 id="region-name" style="color: var(--neon-green);">Regione</h2>
     <div id="schools-list"></div>
 </div>
 
-<div id="indirizziOverlay" onclick="closeOverlay(event)">
-    <span class="close-overlay" onclick="closeIndirizzi()">&times;</span>
-    <div class="overlay-content">
-        <a href="indirizzi/liceo_artistico.html" class="mini-card-overlay"><i class="fa-solid fa-palette"></i><span>Artistico</span></a>
-        <a href="indirizzi/liceo_classico.html" class="mini-card-overlay"><i class="fa-solid fa-scroll"></i><span>Classico</span></a>
-        <a href="indirizzi/liceo_linguistico.html" class="mini-card-overlay"><i class="fa-solid fa-language"></i><span>Linguistico</span></a>
-        <a href="indirizzi/liceo_musicale.html" class="mini-card-overlay"><i class="fa-solid fa-music"></i><span>Musicale</span></a>
-        <a href="indirizzi/liceo_scientifico.html" class="mini-card-overlay"><i class="fa-solid fa-flask"></i><span>Scientifico</span></a>
-        <a href="indirizzi/liceo_scienze_umane.html" class="mini-card-overlay"><i class="fa-solid fa-users"></i><span>Scienze Umane</span></a>
-        <a href="indirizzi/liceo_sportivo.html" class="mini-card-overlay"><i class="fa-solid fa-volleyball"></i><span>Sportivo</span></a>
-        <a href="indirizzi/liceo_scienze_applicate.html" class="mini-card-overlay"><i class="fa-solid fa-microchip"></i><span>Scienze App.</span></a>
-        <a href="indirizzi/liceo_economico_sociale.html" class="mini-card-overlay"><i class="fa-solid fa-chart-line"></i><span>Econ. Sociale</span></a>
-    </div>
-</div>
-
- <footer>
-    <div class="footer-grid">
-        <div class="footer-col">
-            <div class="logo">UP<span>TOYOU</span></div>
-            <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
-        </div>
-        <div class="footer-col">
-            <h4>Link Utili</h4>
-            <ul>
-                <li><a href="../guidato.html">Orientamento Guidato</a></li>
-                <li><a href="../rapido.html">Orientamento Rapido</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h4>Supporto</h4>
-            <ul>
-                <li>Privacy Policy</li>
-                <li>Termini di Servizio</li>
-                <li><a href="../contact.html">Contattaci</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h4>Contatti</h4>
-            <ul>
-                <li>Email: info@uptoyou.it</li>
-                <li>Roma, Italia</li>
-            </ul>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
-        <p>Designed with Excellence</p>
-    </div>
-</footer>
-
-<!-- 1. Libreria Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- 2. Il tuo nuovo file logica (assicurati che il percorso sia giusto) -->
-<script src="../script.js"></script>
 <script>
-    const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// 1. Configurazione Supabase
+const SUPABASE_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Gestione Indirizzi
-    function openIndirizzi() {
+function openIndirizzi() {
         document.getElementById('indirizziOverlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
-    }
-    function closeIndirizzi() {
+}
+function closeIndirizzi() {
         document.getElementById('indirizziOverlay').style.display = 'none';
         document.body.style.overflow = 'auto';
-    }
-    function closeOverlay(event) {
-        if (event.target.id === 'indirizziOverlay') closeIndirizzi();
-    }
+}
+function closeDetails() { document.getElementById('details').classList.remove('active'); }
 
-    // Gestione Dettagli Regione
-    function closeDetails() {
-        document.getElementById('details').classList.remove('active');
-    }
 
-    async function caricaLicei(regione) {
-        const lista = document.getElementById('schools-list');
-        document.getElementById('region-name').innerText = regione;
-        lista.innerHTML = `<p style="color:var(--neon-blue);">Caricamento scuole...</p>`;
-        
-        try {
-            let { data, error } = await supabaseClient
-                .from('schools')
-                .select('id, "DENOMINAZIONESCUOLA", "DESCRIZIONECOMUNE", "PROVINCIA"')
-                .ilike('"DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA"', '%LICEO%')
-                .ilike('"REGIONE"', `%${regione.toUpperCase()}%`)
-                .order('"PROVINCIA"');
+// 2. Funzione per caricare i licei
+async function caricaLiceiRegionali(nomeRegione) {
+    const listaContenitore = document.getElementById('schools-list');
+    const titoloPanel = document.getElementById('region-name');
+    const infoIniziale = document.getElementById('region-info');
 
-            if (error) throw error;
-            
-            let html = "";
-            let currentProv = "";
-            data.forEach(s => {
-                if(s.PROVINCIA !== currentProv) {
-                    currentProv = s.PROVINCIA;
-                    html += `<h3 style="color:var(--neon-blue); border-bottom:1px solid #333; margin-top:20px;">${currentProv}</h3>`;
-                }
-                html += `<div style="background:rgba(255,255,255,0.05); padding:10px; margin:5px 0; border-radius:5px;">
-                            <a href="../scuola.html?id=${s.id}" style="text-decoration:none; color:#fff;">
-                                🎓 ${s.DENOMINAZIONESCUOLA}<br>
-                                <small style="color:#888;">📍 ${s.DESCRIZIONECOMUNE}</small>
-                            </a>
-                         </div>`;
-            });
-            lista.innerHTML = html || "Nessun liceo trovato.";
-        } catch (e) { lista.innerHTML = "Errore nel caricamento dati."; }
-    }
+    if (infoIniziale) infoIniziale.style.display = 'none';
+    titoloPanel.innerText = nomeRegione;
+    listaContenitore.innerHTML = `<p style="color: #4facfe; padding: 20px;">🔍 Analisi dati per provincia...</p>`;
 
-    // Eventi Mappa
-    document.querySelectorAll('#map-container path').forEach(path => {
-        path.addEventListener('click', function() {
-            const nome = this.getAttribute('name');
-            if(nome) {
-                document.getElementById('details').classList.add('active');
-                caricaLicei(nome);
+    try {
+        let query = supabaseClient
+            .from('schools')
+            .select('id, "DENOMINAZIONESCUOLA", "DESCRIZIONECOMUNE", "PROVINCIA"')
+            .ilike('"DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA"', '%TECNICO%');
+
+        const nomeUpper = nomeRegione.toUpperCase();
+
+        if (nomeUpper.includes("TRENTINO") || nomeUpper.includes("ADIGE")) {
+            query = query.or('"REGIONE".ilike.%BOLZANO%, "REGIONE".ilike.%TRENTO%');
+        } else if (nomeUpper.includes("AOSTA")) {
+            query = query.ilike('"REGIONE"', '%AOSTA%');
+        } else {
+            query = query.ilike('"REGIONE"', `%${nomeUpper}%`);
+        }
+
+        // Ordiniamo prima per Provincia e poi per Nome Scuola
+        const { data: scuole, error } = await query
+            .order('"PROVINCIA"', { ascending: true })
+            .order('"DENOMINAZIONESCUOLA"', { ascending: true });
+
+        if (error) throw error;
+
+        if (!scuole || scuole.length === 0) {
+            listaContenitore.innerHTML = `<p style="padding: 20px;">Nessun liceo trovato.</p>`;
+            return;
+        }
+
+        // --- LOGICA DI RAGGRUPPAMENTO ---
+        const scuolePerProvincia = {};
+        scuole.forEach(s => {
+            const prov = s.PROVINCIA || "Altro";
+            if (!scuolePerProvincia[prov]) {
+                scuolePerProvincia[prov] = [];
             }
+            scuolePerProvincia[prov].push(s);
         });
+
+        // --- COSTRUZIONE HTML ---
+        let html = "";
+        for (const prov in scuolePerProvincia) {
+            html += `
+                <div class="provincia-group" style="margin-top: 25px;">
+                    <h3 style="color: #4facfe; font-size: 0.9rem; letter-spacing: 2px; border-bottom: 1px solid rgba(79, 172, 254, 0.3); padding-bottom: 5px; margin-bottom: 15px; padding-left: 15px;">
+                        PROVINCIA DI ${prov}
+                    </h3>
+                    <ul style="list-style: none; padding: 0 15px;">`;
+            
+            scuolePerProvincia[prov].forEach(s => {
+                html += `
+                    <li style="margin-bottom: 12px; border-left: 3px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); padding: 10px; border-radius: 0 6px 6px 0; transition: 0.3s;">
+                        <a href="../scuola.html?id=${s.id}" style="text-decoration: none; display: block;">
+                            <span style="color: #fff; font-weight: 500; font-size: 0.95rem;">🎓 ${s.DENOMINAZIONESCUOLA}</span><br>
+                            <small style="color: #888; font-size: 0.8rem;">📍 ${s.DESCRIZIONECOMUNE}</small>
+                        </a>
+                    </li>`;
+            });
+            html += `</ul></div>`;
+        }
+        
+        listaContenitore.innerHTML = html;
+
+    } catch (err) {
+        console.error("Errore:", err);
+        listaContenitore.innerHTML = `<p style="color: red; padding: 20px;">Errore nel caricamento.</p>`;
+    }
+}
+// 3. Gestione del click sulla mappa SVG
+document.querySelectorAll('path, circle').forEach(el => {
+    el.style.cursor = "pointer";
+    
+    el.addEventListener('click', function() {
+        let regionName = this.getAttribute('name'); 
+        const panel = document.getElementById('details');
+
+        if (regionName) {
+            // Pulisce eventuali doppi spazi dal nome SVG
+            let nomePulito = regionName.toUpperCase().replace(/'\s+/g, "'").trim();
+            
+            // Apre il pannello laterale
+            panel.classList.add('active');
+            
+            // Avvia la ricerca
+            caricaLiceiRegionali(nomePulito);
+        }
     });
+});
+
+// Funzione per chiudere il pannello
+function closeDetails() {
+    document.getElementById('details').classList.remove('active');
+}
 </script>
 </body>
 </html>
