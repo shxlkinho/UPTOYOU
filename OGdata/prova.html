@@ -10,14 +10,17 @@
     <style>
         :root {
             --neon-blue: #008cff;
-            --neon-green: #7de2d1; /* Colore principale per Tecnici */
+            --neon-blue-bright: #4dabff;
+            --neon-green: #7de2d1;
             --bg-black: #000000;
+            --neon-purple: #9333ea;
+            --neon-purple-bright: #c084fc;
         }
 
         body {
             background-color: var(--bg-black);
             color: #ffffff;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -30,7 +33,7 @@
             padding: 120px 20px 80px 20px;
             display: flex;
             flex-direction: column;
-            gap: 50px;
+            gap: 60px;
             margin: 0 auto; 
             box-sizing: border-box;
         }
@@ -40,91 +43,263 @@
             font-size: 42px;
             font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             letter-spacing: 2px;
         }
 
+        /* --- CARD DINAMICHE --- */
         .card-dynamic {
             background: rgba(255, 255, 255, 0.02);
             border-radius: 20px;
             position: relative;
-            transition: transform 0.3s ease;
+            box-sizing: border-box;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
         }
 
-        /* --- HERO SECTION --- */
-        .hero-container { padding: 50px 40px; border: 2px solid var(--neon-green); }
-        .content-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .highlight { color: var(--neon-green); font-weight: 700; }
-
-        /* --- INFO TESTO ORIZZONTALE --- */
-        .info-percorsi-wide {
-            max-width: 900px;
-            margin: 0 auto 40px auto;
-            text-align: center;
+        .card-dynamic:hover {
+            transform: scale(1.03);
         }
-        .info-percorsi-wide h2 { color: var(--neon-green); font-size: 2rem; margin-bottom: 20px; text-transform: uppercase; }
-        .info-percorsi-wide p { line-height: 1.6; font-size: 1.1rem; color: #d1d1d1; }
 
-        /* --- GRID INFERIORE --- */
-        .bottom-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 35px; }
+        /* --- BLOCCO 1: HERO (BLU) --- */
+        .hero-container {
+            width: 100%;
+            padding: 50px 40px;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 140, 255, 0.3);
+        }
+        .hero-container h1 { color: var(--neon-blue); margin-bottom: 40px; }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .left-side { display: flex; gap: 20px; }
+        .left-side i { font-size: 45px; color: var(--neon-blue); filter: drop-shadow(0 0 10px var(--neon-blue)); }
+        .left-side p { font-size: 17px; line-height: 1.8; color: #ffffff; margin: 0; }
+
+        .right-side { display: flex; flex-direction: column; gap: 25px; }
+        .feature-item { display: flex; gap: 15px; align-items: flex-start; }
+        .feature-item i { font-size: 28px; color: var(--neon-blue); filter: drop-shadow(0 0 8px var(--neon-blue)); width: 40px; text-align: center; }
+        .feature-item p { font-size: 16px; line-height: 1.6; color: #ffffff; margin: 0; }
+
+        .highlight { color: #00f2ff; font-weight: 700; text-shadow: 0 0 8px rgba(0, 242, 255, 0.7); }
+
+        /* --- BLOCCO 2: SBOCCHI (VIOLA) --- */
+        .sbocchi-container {
+            width: 100%;
+            padding: 50px 40px;
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.2);
+        }
+        .sbocchi-container h2 { color: var(--neon-purple); }
+
+        .sbocchi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .sbocchi-item { display: flex; align-items: center; gap: 25px; }
+        .sbocchi-item i { font-size: 3.5rem; color: var(--neon-purple-bright); filter: drop-shadow(0 0 12px var(--neon-purple)); min-width: 70px; text-align: center; }
+        .sbocchi-item p { font-size: 1.1rem; line-height: 1.7; margin: 0; color: #e2e8f0; }
+        .hl-purple { color: var(--neon-purple-bright); font-weight: 700; }
+
+        /* --- GRIGLIA INFERIORE (INGRANDITA) --- */
+        .bottom-split-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 35px; 
+        }
         
         .small-card { 
-            padding: 40px; 
-            min-height: 500px; 
+            padding: 50px 40px; 
+            min-height: 480px; 
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            gap: 25px;
         }
         
-        /* CARD INDIRIZZI */
-        .card-indirizzi { border: 2px solid var(--neon-green); justify-content: center; cursor: pointer; }
-        .card-indirizzi h3 { color: var(--neon-green); font-size: 2.5rem; font-weight: 900; margin: 20px 0; }
+        .card-indirizzi { 
+            border: 2px solid var(--neon-green); 
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .card-indirizzi h3 { color: var(--neon-green); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; margin: 0; }
+        .card-indirizzi p { color: var(--neon-green); font-weight: 700; font-size: 1.1rem; letter-spacing: 2px; margin: 0; }
         .card-indirizzi i.main-icon { font-size: 5.5rem; color: var(--neon-green); filter: drop-shadow(0 0 15px var(--neon-green)); }
 
-        /* CARD MAPPA */
-        .card-map-active { border: 2px solid var(--neon-green); justify-content: space-between; padding-bottom: 0 !important; }
-        #map-container { width: 100%; flex-grow: 1; display: flex; align-items: center; justify-content: center; margin-top: -15px; overflow: hidden; }
-        #map-container svg { width: 110%; height: auto; max-height: 450px; transform: translateY(10px); }
-        #map-container path { fill: #1a1a1a !important; stroke: var(--neon-green) !important; stroke-width: 1.2; transition: 0.3s; cursor: pointer; }
-        #map-container path:hover { fill: var(--neon-green) !important; stroke: #fff !important; }
-        .click-text { margin-bottom: 15px; font-weight: 800; letter-spacing: 2px; color: var(--neon-green); }
 
-        /* --- OVERLAY INDIRIZZI --- */
+        /* --- SEZIONE TESTO PERCORSI (Licei, Tecnici, Professionali) --- */
+.info-percorsi-wide {
+            max-width: 900px; /* Più stretto del contenitore principale per eleganza */
+            margin: 0 auto 40px auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .info-percorsi-wide h2 {
+            color: var(--neon-blue);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-percorsi-wide p {
+            line-height: 1.6;
+            font-size: 1.1rem;
+            color: #d1d1d1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* CARD MAPPA */
+        .card-map-active { 
+            border: 2px solid var(--neon-blue); 
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #map-container { 
+            width: 100%; 
+            /* Aumentiamo l'altezza per riempire la card */
+            flex-grow: 1; 
+            height: 600px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            /* Riduciamo il margine superiore per avvicinarlo al titolo */
+            margin-top: -10px; 
+            /* Spazio quasi nullo sotto per toccare il bordo o la scritta */
+            margin-bottom: 5px; 
+        }
+
+        #map-container svg { 
+            /* Fondamentale: fa sì che l'SVG usi tutto lo spazio del div */
+            width: 95%; 
+            height: 95%; 
+            filter: drop-shadow(0 0 5px rgba(0, 140, 255, 0.3));
+        }
+        
+        #map-container path { 
+            fill: #1a1a1a !important; 
+            stroke: var(--neon-blue) !important;
+            stroke-width: 1;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        #map-container path:hover { 
+            fill: var(--neon-blue) !important; 
+            stroke: #fff !important;
+        }
+
+        /* PANNELLO DETTAGLI LATERALE */
+        #details {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 450px; height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 10001;
+            padding: 40px 25px;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            border-left: 3px solid var(--neon-blue);
+            backdrop-filter: blur(15px);
+        }
+        #details.active { right: 0; }
+        .close-btn { font-size: 2.5rem; color: #fff; cursor: pointer; position: absolute; top: 15px; right: 25px; }
+
+  /* OVERLAY INDIRIZZI (Base per PC - Invariata) */
+/* OVERLAY INDIRIZZI (Base per PC - Invariata) */
         #indirizziOverlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95); display: none; justify-content: center;
-            align-items: center; z-index: 9999; backdrop-filter: blur(10px); overflow-y: auto;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+            /* Abilita lo scroll verticale se il contenuto eccede l'altezza */
+            overflow-y: auto; 
         }
 
         .overlay-content {
-            width: 90%; max-width: 1000px; display: grid;
-            grid-template-columns: repeat(3, 1fr); gap: 25px; padding: 20px;
+            width: 90%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 20px;
         }
 
-        .close-overlay { position: absolute; top: 40px; right: 40px; font-size: 3rem; color: #fff; cursor: pointer; }
+        .close-overlay {
+            position: absolute;
+            top: 40px; right: 40px;
+            font-size: 3rem; color: #fff; cursor: pointer;
+        }
 
         .mini-card-overlay {
-            text-decoration: none; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--neon-green);
-            border-radius: 15px; padding: 35px 20px; display: flex; flex-direction: column; align-items: center; transition: all 0.3s ease;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--neon-green);
+            border-radius: 15px;
+            padding: 35px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
         }
-        .mini-card-overlay i { font-size: 3rem; color: var(--neon-green); margin-bottom: 15px; }
-        .mini-card-overlay span { color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; text-align: center; }
-        .mini-card-overlay:hover { background: rgba(125, 226, 209, 0.2); transform: scale(1.05); }
 
-        /* PANNELLO DETTAGLI REGIONE */
-        #details {
-            position: fixed; top: 0; right: -100%; width: 450px; height: 100%;
-            background: rgba(0,0,0,0.98); z-index: 10001; padding: 40px 25px;
-            transition: 0.5s ease; border-left: 3px solid var(--neon-green); overflow-y: auto;
+        /* RIPRISTINO ICONE E TESTO ORIGINALE */
+        .mini-card-overlay i { 
+            font-size: 3rem; 
+            color: var(--neon-green); 
+            margin-bottom: 15px; 
         }
-        #details.active { right: 0; }
+        .mini-card-overlay span { 
+            color: #fff; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            font-size: 1rem; 
+            text-align: center; 
+        }
 
+        .mini-card-overlay:hover { 
+            background: rgba(125, 226, 209, 0.2); 
+            transform: scale(1.05); 
+        }
+
+        /* --- MEDIA QUERY CORRETTA --- */
         @media (max-width: 900px) {
-            .content-wrapper, .bottom-split-grid { grid-template-columns: 1fr; }
-            #indirizziOverlay { align-items: flex-start; padding-top: 100px; }
-            .overlay-content { grid-template-columns: 1fr; }
-            .close-overlay { position: fixed; top: 20px; right: 20px; }
+            .content-wrapper, .sbocchi-grid, .bottom-split-grid { 
+                grid-template-columns: 1fr; 
+            }
+            
             #details { width: 100%; }
+
+            /* FIX PER MOBILE: Scroll e Colonna singola */
+            #indirizziOverlay {
+                align-items: flex-start; /* Permette di scorrere dall'inizio */
+                padding-top: 100px; 
+                padding-bottom: 50px;
+            }
+
+            .overlay-content { 
+                grid-template-columns: 1fr; /* Colonna singola su mobile */
+                margin: 0 auto;
+            }
+
+            .close-overlay {
+                position: fixed; /* La X rimane ferma in alto mentre scorri */
+                top: 20px; 
+                right: 20px;
+                z-index: 10000;
+            }
         }
     </style>
 </head>
@@ -156,6 +331,7 @@
 </header>
 
 <div class="page-wrapper">
+    
     <section class="hero-container card-dynamic">
         <h1 class="section-title">Istituti Tecnici</h1>
         <div class="content-wrapper">
@@ -175,12 +351,60 @@
         </p>
     </section>
 
+    <section class="sbocchi-futuri card-dynamic" style="padding: 40px; border: 2px solid var(--neon-blue); margin-bottom: 50px;">
+        <h2 style="color: var(--neon-blue); text-align: center; text-transform: uppercase; margin-bottom: 30px;">Sbocchi Futuri</h2>
+        <div class="sbocchi-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+            <div class="sbocco-item">
+                <h3 style="color: var(--neon-blue);">Università</h3>
+                <p>Accesso a tutte le facoltà, con particolare affinità per i corsi STEM, Economia e Ingegneria.</p>
+            </div>
+            <div class="sbocco-item">
+                <h3 style="color: var(--neon-blue);">ITS Academy</h3>
+                <p>Percorsi di alta specializzazione tecnologica post-diploma per un inserimento rapido nel lavoro.</p>
+            </div>
+            <div class="sbocco-item">
+                <h3 style="color: var(--neon-blue);">Lavoro Diretto</h3>
+                <p>Competenze immediatamente spendibili in aziende, studi professionali e pubblica amministrazione.</p>
+            </div>
+        </div>
+    </section>
+
     <div class="bottom-split-grid">
         <section class="small-card card-indirizzi card-dynamic" onclick="openIndirizzi()">
             <i class="fa-solid fa-gears main-icon"></i>
             <h3>Indirizzi</h3>
             <p>ESPLORA LE SPECIALIZZAZIONI TECNICHE</p>
         </section>
+
+        <section class="small-card card-map-active card-dynamic">
+            <h3 style="color: var(--neon-blue); font-size: 1.8rem; margin-top: 20px; text-transform: uppercase;">Mappa Tecnici</h3>
+            <div id="map-container">
+                <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
+                    <g id="features">
+                        </g>
+                </svg>
+            </div>
+            <p class="click-text">CLICCA UNA REGIONE</p>
+        </section>
+    </div>
+</div>
+
+<div id="indirizziOverlay" onclick="if(event.target.id=='indirizziOverlay') closeIndirizzi()">
+    <div class="close-overlay" onclick="closeIndirizzi()">&times;</div>
+    <div class="overlay-content">
+        <a href="indirizzi/tecnico_afm.html" class="mini-card-overlay"><i class="fa-solid fa-chart-line"></i><span>Amministrazione Finanza e Marketing</span></a>
+        <a href="indirizzi/tecnico_agraria.html" class="mini-card-overlay"><i class="fa-solid fa-leaf"></i><span>Agraria e Agroindustria</span></a>
+        <a href="indirizzi/tecnico_chimica.html" class="mini-card-overlay"><i class="fa-solid fa-vial"></i><span>Chimica e Materiali</span></a>
+        <a href="indirizzi/tecnico_costruzione_ambiente.html" class="mini-card-overlay"><i class="fa-solid fa-compass-drafting"></i><span>Costruzioni Ambiente e Territorio</span></a>
+        <a href="indirizzi/tecnico_elettronica.html" class="mini-card-overlay"><i class="fa-solid fa-microchip"></i><span>Elettronica ed Elettrotecnica</span></a>
+        <a href="indirizzi/tecnico_grafica.html" class="mini-card-overlay"><i class="fa-solid fa-palette"></i><span>Grafica e Comunicazione</span></a>
+        <a href="indirizzi/tecnico_informatica.html" class="mini-card-overlay"><i class="fa-solid fa-code"></i><span>Informatica e Telecomunicazioni</span></a>
+        <a href="indirizzi/tecnico_meccanica.html" class="mini-card-overlay"><i class="fa-solid fa-gear"></i><span>Meccanica e Meccatronica</span></a>
+        <a href="indirizzi/tecnico_moda.html" class="mini-card-overlay"><i class="fa-solid fa-shirt"></i><span>Sistema Moda</span></a>
+        <a href="indirizzi/tecnico_trasporti.html" class="mini-card-overlay"><i class="fa-solid fa-plane"></i><span>Trasporti e Logistica</span></a>
+        <a href="indirizzi/tecnico_turismo.html" class="mini-card-overlay"><i class="fa-solid fa-earth-americas"></i><span>Turismo</span></a>
+    </div>
+</div>
 
         <section class="small-card card-map-active card-dynamic">
             <h3 style="color: var(--neon-green); font-size: 1.8rem; margin-top: 20px; text-transform: uppercase;">Mappa Tecnici</h3>
@@ -232,23 +456,6 @@
             </div>
             <p class="click-text">CLICCA UNA REGIONE</p>
         </section>
-    </div>
-</div>
-
-<div id="indirizziOverlay" onclick="if(event.target.id=='indirizziOverlay') closeIndirizzi()">
-    <div class="close-overlay" onclick="closeIndirizzi()">&times;</div>
-    <div class="overlay-content">
-        <a href="indirizzi/tecnico_afm.html" class="mini-card-overlay"><i class="fa-solid fa-chart-line"></i><span>Amministrazione Finanza e Marketing</span></a>
-        <a href="indirizzi/tecnico_agraria.html" class="mini-card-overlay"><i class="fa-solid fa-leaf"></i><span>Agraria e Agroindustria</span></a>
-        <a href="indirizzi/tecnico_chimica.html" class="mini-card-overlay"><i class="fa-solid fa-vial"></i><span>Chimica e Materiali</span></a>
-        <a href="indirizzi/tecnico_costruzione_ambiente.html" class="mini-card-overlay"><i class="fa-solid fa-compass-drafting"></i><span>Costruzioni Ambiente e Territorio</span></a>
-        <a href="indirizzi/tecnico_elettronica.html" class="mini-card-overlay"><i class="fa-solid fa-microchip"></i><span>Elettronica ed Elettrotecnica</span></a>
-        <a href="indirizzi/tecnico_grafica.html" class="mini-card-overlay"><i class="fa-solid fa-palette"></i><span>Grafica e Comunicazione</span></a>
-        <a href="indirizzi/tecnico_informatica.html" class="mini-card-overlay"><i class="fa-solid fa-code"></i><span>Informatica e Telecomunicazioni</span></a>
-        <a href="indirizzi/tecnico_meccanica.html" class="mini-card-overlay"><i class="fa-solid fa-gear"></i><span>Meccanica e Meccatronica</span></a>
-        <a href="indirizzi/tecnico_moda.html" class="mini-card-overlay"><i class="fa-solid fa-shirt"></i><span>Sistema Moda</span></a>
-        <a href="indirizzi/tecnico_trasporti.html" class="mini-card-overlay"><i class="fa-solid fa-plane"></i><span>Trasporti e Logistica</span></a>
-        <a href="indirizzi/tecnico_turismo.html" class="mini-card-overlay"><i class="fa-solid fa-earth-americas"></i><span>Turismo</span></a>
     </div>
 </div>
 
