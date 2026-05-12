@@ -8,9 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00d4ff; /* Azzurro Elettrico */
+            --primary: #00d4ff; 
             --primary-hover: #0099ff;
-            --bg: #000000; /* Nero Assoluto */
+            --bg: #000000; 
             --card-bg: rgba(15, 23, 42, 0.8);
             --text: #f8fafc;
             --input-bg: #0a0a0a;
@@ -26,27 +26,13 @@
             min-height: 100vh;
         }
 
-        .navbar {
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        .navbar { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
         .logo span { color: var(--primary); }
         .nav-links { list-style: none; margin: 0; padding: 0; }
         .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; opacity: 0.8; transition: 0.3s; }
-        .nav-links a:hover { opacity: 1; color: var(--primary); }
 
-        .auth-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-        }
-
+        .auth-container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 2rem; }
         .auth-card {
             background: var(--card-bg);
             backdrop-filter: blur(15px);
@@ -59,11 +45,8 @@
             text-align: center;
         }
 
-        h2 { font-size: 2rem; margin-bottom: 0.5rem; font-weight: 800; }
-        p { opacity: 0.6; margin-bottom: 2rem; font-size: 0.9rem; }
-
         .input-group { margin-bottom: 1.2rem; text-align: left; }
-        input {
+        input, select {
             width: 100%;
             padding: 0.9rem 1.2rem;
             background: var(--input-bg);
@@ -75,61 +58,23 @@
             transition: 0.3s;
         }
 
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-        }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 212, 255, 0.3); }
 
         .btn-primary {
-            width: 100%;
-            padding: 1rem;
-            background: var(--primary);
-            color: #000;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            width: 100%; padding: 1rem; background: var(--primary); color: #000;
+            border: none; border-radius: 12px; font-weight: 700; cursor: pointer;
+            transition: 0.3s; margin-top: 1rem; text-transform: uppercase;
         }
+        .btn-primary:hover { background: white; transform: translateY(-2px); }
 
-        .btn-primary:hover { background: white; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4); }
-
-        .divider {
-            margin: 1.5rem 0;
-            display: flex;
-            align-items: center;
-            opacity: 0.4;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
+        .divider { margin: 1.5rem 0; display: flex; align-items: center; opacity: 0.4; font-size: 0.8rem; }
         .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: white; margin: 0 10px; }
-
-        .btn-google {
-            width: 100%;
-            padding: 0.8rem;
-            background: #111;
-            color: white;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-google img { width: 18px; }
-        .btn-google:hover { background: #222; border-color: var(--primary); }
 
         .footer-text { margin-top: 1.5rem; font-size: 0.85rem; }
         .footer-text a { color: var(--primary); text-decoration: none; font-weight: 600; }
-        #status-msg { margin-top: 1rem; font-size: 0.9rem; }
+        
+        /* Stile per le etichette delle liste extra */
+        .extra-label { font-size: 0.8rem; color: var(--primary); margin-bottom: 5px; display: block; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -159,6 +104,85 @@
             <div class="input-group">
                 <input type="password" id="password" placeholder="Password (min. 6 caratteri)">
             </div>
+
+  <div class="input-group">
+    <label class="extra-label">Quanti anni hai?</label>
+    <select id="age">
+        <option value="" disabled selected>Seleziona la tua età...</option>
+        <script>
+            for (let i = 8; i <= 100; i++) {
+                document.write(`<option value="${i}">${i} anni</option>`);
+            }
+        </script>
+    </select>
+</div>
+
+<div id="section-medie" class="input-group" style="display: none;">
+    <label class="extra-label">Qual è la tua materia preferita?</label>
+    <select id="materia">
+        <option value="" disabled selected>Scegli una materia...</option>
+        <option value="Italiano">Italiano</option>
+        <option value="Matematica">Matematica</option>
+        <option value="Inglese">Inglese</option>
+        <option value="Storia">Storia</option>
+        <option value="Geografia">Geografia</option>
+        <option value="Scienze">Scienze</option>
+        <option value="Arte">Arte</option>
+        <option value="Musica">Musica</option>
+        <option value="Tecnologia">Tecnologia</option>
+        <option value="Educazione Fisica">Educazione Fisica</option>
+    </select>
+</div>
+
+<div id="section-superiori" class="input-group" style="display: none;">
+    <label class="extra-label">Che scuola frequenti / hai frequentato?</label>
+    <select id="indirizzo">
+        <option value="" disabled selected>Scorri e seleziona l'indirizzo...</option>
+        
+<optgroup label="Licei">
+        <option value="Liceo Artistico">Liceo Artistico</option>
+        <option value="Liceo Classico">Liceo Classico</option>
+        <option value="Liceo Economico Sociale">Liceo Economico Sociale</option>
+        <option value="Liceo Linguistico">Liceo Linguistico</option>
+        <option value="Liceo Musicale">Liceo Musicale</option>
+        <option value="Liceo Scientifico">Liceo Scientifico</option>
+        <option value="Liceo Scientifico - Scienze Applicate">Liceo Scienze Applicate</option>
+        <option value="Liceo Scienze Umane">Liceo Scienze Umane</option>
+        <option value="Liceo Sportivo">Liceo Sportivo</option>
+    </optgroup>
+
+    <optgroup label="Istituti Tecnici">
+        <option value="Tecnico AFM (Amministrazione Finanza Marketing)">Tecnico AFM</option>
+        <option value="Tecnico Agraria">Tecnico Agraria</option>
+        <option value="Tecnico Chimica">Tecnico Chimica</option>
+        <option value="Tecnico Costruzione Ambiente">Tecnico Costruzione Ambiente</option>
+        <option value="Tecnico Elettronica">Tecnico Elettronica</option>
+        <option value="Tecnico Grafica">Tecnico Grafica</option>
+        <option value="Tecnico Informatica">Tecnico Informatica</option>
+        <option value="Tecnico Meccanica">Tecnico Meccanica</option>
+        <option value="Tecnico Moda">Tecnico Moda</option>
+        <option value="Tecnico Trasporti">Tecnico Trasporti</option>
+        <option value="Tecnico Turismo">Tecnico Turismo</option>
+    </optgroup>
+
+    <optgroup label="Istituti Professionali">
+        <option value="Professionale Agricoltura">Professionale Agricoltura</option>
+        <option value="Professionale Alberghiero">Professionale Alberghiero</option>
+        <option value="Professionale Arti Sanitarie">Professionale Arti Sanitarie</option>
+        <option value="Professionale Gestione Acque">Professionale Gestione Acque</option>
+        <option value="Professionale Made in Italy">Professionale Made in Italy</option>
+        <option value="Professionale Manutenzione">Professionale Manutenzione</option>
+        <option value="Professionale Odontotecnico">Professionale Odontotecnico</option>
+        <option value="Professionale Ottico">Professionale Ottico</option>
+        <option value="Professionale Pesca Commerciale">Professionale Pesca Commerciale</option>
+        <option value="Professionale Servizi Commerciali">Professionale Servizi Commerciali</option>
+        <option value="Professionale Servizi Culturali">Professionale Servizi Culturali</option>
+    </optgroup>
+
+     <optgroup label="Altro"></optgroup>
+        <option value="Altro">Altro / Non elencato</option>
+    </select>
+</div>
             
             <button class="btn-primary" id="regBtn">REGISTRATI</button>
 
@@ -173,46 +197,83 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
-        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
-        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+ <script>
+    const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+    const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-        const REDIRECT_URL = 'https://shxlkinho.github.io/UPTOYOU/index.html';
+    const REDIRECT_URL = 'https://shxlkinho.github.io/UPTOYOU/index.html';
 
-        // GESTIONE AUTO-LOGIN DOPO CONFERMA EMAIL
-        // Se l'utente torna alla pagina con un token di conferma nell'URL,
-        // Supabase lo loggherà automaticamente e noi lo reindirizziamo.
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_IN') {
-                window.location.href = REDIRECT_URL;
+    // Gestione visibilità liste in base all'età
+    document.getElementById('age').addEventListener('change', function() {
+        const age = parseInt(this.value);
+        const medie = document.getElementById('section-medie');
+        const superiori = document.getElementById('section-superiori');
+        
+        medie.style.display = (age >= 8 && age < 14) ? 'block' : 'none';
+        superiori.style.display = (age >= 14 && age <= 100) ? 'block' : 'none';
+    });
+
+    // GESTIONE AUTO-LOGIN DOPO CONFERMA EMAIL
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN') {
+            window.location.href = REDIRECT_URL;
+        }
+    });
+
+// Registrazione Classica
+document.getElementById('regBtn').onclick = async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const fullname = document.getElementById('fullname').value;
+    const age = document.getElementById('age').value;
+    const msg = document.getElementById('status-msg');
+
+    // 1. Controllo campi base
+    if (!email || !password || !age) {
+        return msg.innerHTML = `<span style="color:#ff4b4b; font-weight:600;">Compila i campi obbligatori!</span>`;
+    }
+
+    // 2. LOGICA PERCORSO (Sistemata per essere riconosciuta dall'editor)
+    let percorsoSalvato = ""; 
+    
+    if (parseInt(age) < 14) {
+        percorsoSalvato = document.getElementById('materia').value;
+    } else {
+        percorsoSalvato = document.getElementById('indirizzo').value;
+    }
+
+    // 3. Controllo se ha effettivamente selezionato qualcosa dalla lista che è apparsa
+    if (!percorsoSalvato) {
+        return msg.innerHTML = `<span style="color:#ff4b4b; font-weight:600;">Seleziona la tua materia o il tuo indirizzo!</span>`;
+    }
+
+    // 4. Invio a Supabase
+    const { error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+            emailRedirectTo: REDIRECT_URL, 
+            data: { 
+                full_name: fullname,
+                eta: parseInt(age),
+                percorso_studi: percorsoSalvato
             }
-        });
+        }
+    });
 
-        // Registrazione Classica
-        document.getElementById('regBtn').onclick = async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const fullname = document.getElementById('fullname').value;
-            const msg = document.getElementById('status-msg');
+    if (error) {
+        msg.innerHTML = `<span style="color:#ff4b4b">${error.message}</span>`;
+    } else {
+        msg.innerHTML = `<span style="color:var(--primary)">Registrazione Effettuata!</span>`;
+        // Opzionale: pulisci i campi o reindirizza
+    }
+};
 
-            if(!email || !password) return msg.innerHTML = "Compila tutti i campi!";
-
-            const { error } = await supabaseClient.auth.signUp({
-                email,
-                password,
-                options: {
-                    emailRedirectTo: REDIRECT_URL, 
-                    data: { full_name: fullname }
-                }
-            });
-
-            if (error) {
-                msg.innerHTML = `<span style="color:#ff4b4b">${error.message}</span>`;
-            } else {
-                msg.innerHTML = `<span style="color:var(--primary)">Perfetto! Clicca sul link inviato alla tua mail.</span>`;
-            }
-        };
-    </script>
+    // Supporto tasto Invio per confermare
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter') document.getElementById('regBtn').click();
+    });
+</script>
 </body>
 </html>
