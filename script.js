@@ -88,6 +88,15 @@ async function updateNavbar(session) {
     const authContainer = document.getElementById('auth-nav-item');
     if (!authContainer) return;
 
+    // --- TROVA AUTOMATICAMENTE IL PERCORSO DELLA ROOT ---
+    // Prende l'ultimo script caricato nella pagina (che è questo file .js)
+    const scripts = document.getElementsByTagName('script');
+    const currentScriptSrc = scripts[scripts.length - 1].src;
+    
+    // Estrae la cartella principale eliminando il nome del file js dal percorso
+    const rootPath = currentScriptSrc.substring(0, currentScriptSrc.lastIndexOf('/') + 1);
+    // ---------------------------------------------------
+
     if (session) {
         const user = session.user;
         const displayName = user.user_metadata?.full_name || user.email.split('@')[0];
@@ -100,13 +109,13 @@ async function updateNavbar(session) {
             </div>
             <ul class="user-dropdown-menu">
                 <li>
-                    <a href="profilo.html">
+                    <a href="${rootPath}profilo.html">
                         <svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         Il mio Profilo
                     </a>
                 </li>
                 <li>
-                    <a href="settings.html">
+                    <a href="${rootPath}impostazioni.html">
                         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                         Impostazioni
                     </a>
@@ -121,14 +130,14 @@ async function updateNavbar(session) {
             </ul>
         `;
     } else {
-            // --- UTENTE NON LOGGATO ---
-            authContainer.className = "nav-auth-buttons";
-            authContainer.innerHTML = `
-                <a href="login.html" class="nav-box btn-login">Accedi</a>
-                <a href="register.html" class="nav-box btn-register">Registrati</a>
-            `;
-        }
+        // --- UTENTE NON LOGGATO ---
+        authContainer.className = "nav-auth-buttons";
+        authContainer.innerHTML = `
+            <a href="${rootPath}login.html" class="nav-box btn-login">Accedi</a>
+            <a href="${rootPath}register.html" class="nav-box btn-register">Registrati</a>
+        `;
     }
+}
 
     // Funzione per il Logout
     async function handleLogout() {
