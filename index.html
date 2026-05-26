@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -149,7 +150,9 @@
         color: var(--text-dim) !important;
         padding: 5px 0 !important;
     }
-        /* ============================================================
+} /* <-- FIX: Parentesi inserita correttamente per chiudere il media query mobile */
+
+/* ============================================================
    USER DROPDOWN - DESIGN MODERNO FINALE
    ============================================================ */
 
@@ -454,7 +457,6 @@
     </nav>
 </header>
 
-    <!-- HERO SECTION MODIFICATA -->
     <section id="home" class="hero">
         <div class="hero-content">
             <h1>Up to You</h1>
@@ -468,7 +470,6 @@
             </div>
         </div>
 
-        <!-- QUI C'E' LA CARD DEL TEST AL POSTO DELLO SLIDER -->
         <div class="hero-card-container">
             <a href="javascript:void(0)" class="card-custom card-test" onclick="showTest()" style="width: 100%; max-width: 500px;">
                 <span class="card-emoji" style="font-size: 4rem;">🧭</span>
@@ -481,8 +482,7 @@
         </div>
     </section>
 
-  <!-- SEZIONE RICERCA -->
-    <section class="search-section">
+  <section class="search-section">
         <h1 style="color: #ff00ff; margin-bottom: 20px;">Cerca la tua scuola</h1>
         
         <div class="search-box">
@@ -493,18 +493,15 @@
         <div id="debug">In attesa di digitazione...</div>
         <small style="color: #777; margin-top: 10px; font-size: 0.85rem; display: none;">* Scrivi il nome della scuola e clicca sulla lente per cercare.</small>
 
-        <!-- NUOVO PULSANTE FILTRI -->
         <button id="btn-apri-filtri" onclick="toggleFiltri()" style="margin-top: 25px; background: transparent; border: 2px solid #ff00ff; color: #ff00ff; padding: 12px 25px; border-radius: 20px; font-size: 1rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: 0.3s; font-weight: 600;">
             Fai la ricerca per filtri ⚙️
         </button>
 
-        <!-- IFRAME FILTRI NASCOSTO -->
         <div id="container-filtri" style="display: none; width: 100%; max-width: 900px; margin-top: 30px; height: 500px; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255, 0, 255, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             <iframe src="filtri.html" width="100%" height="100%" frameborder="0"></iframe>
         </div>
     </section>
 
-    <!-- SEZIONE CARDS AGGIORNATA -->
     <section class="section-divider">
         <div class="cards-grid">
             <a href="guidato.html" class="card-custom card-zona">
@@ -516,7 +513,6 @@
                 <div class="card-btn-action">Cerca Scuole</div>
             </a>
 
-            <!-- QUI C'E' LA NUOVA CARD LEZIONI AL POSTO DEL TEST -->
             <a href="sceltalezioni.html" class="card-custom card-lezioni">
                 <span class="card-emoji">🎓</span>
                 <div>
@@ -537,7 +533,6 @@
         </div>
     </section>
 
-    <!-- SEZIONE TEST (Nascosta di default, si apre cliccando la Card nella Hero) -->
     <section id="test-section" style="display: none;">
         <div class="test-header">
             <button onclick="closeTest()" class="close-btn">Chiudi Test &times;</button>
@@ -545,7 +540,6 @@
         <iframe src="test.html" width="100%" height="750px" frameborder="0"></iframe>
     </section>
 
-    <!-- ABOUT SECTION -->
     <section id="about" class="about-section">
         <h2>Chi Siamo?</h2>
         <p class="about-desc">
@@ -591,7 +585,6 @@
         </div>
     </footer>
 
-    <!-- WIDGET AI MANTENUTO INTACTO -->
     <div id="ai-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; font-family: sans-serif;">
         <button id="ai-open-btn" style="background: #8e44ad; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">🧠</button>
 
@@ -607,7 +600,6 @@
         </div>
     </div>
 
-    <!-- SCRIPT (Supabase e logica UI mantenuta intatta) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
     <script>
@@ -631,7 +623,7 @@
                 }
                 debug.innerText = "Cerco: " + val + "...";
                 try {
-                    const { data: scuole, error } = await supabaseClient
+                    const { data: schools, error } = await supabaseClient
                         .from('schools')
                         .select('id, DENOMINAZIONESCUOLA, DESCRIZIONECOMUNE')
                         .ilike('DENOMINAZIONESCUOLA', `%${val}%`)
@@ -639,9 +631,9 @@
 
                     if (error) { debug.innerText = "ERRORE: " + error.message; return; }
 
-                    if (scuole && scuole.length > 0) {
-                        debug.innerText = "Trovate " + scuole.length + " scuole";
-                        tendina.innerHTML = scuole.map(s => `
+                    if (schools && schools.length > 0) {
+                        debug.innerText = "Trovate " + schools.length + " scuole";
+                        tendina.innerHTML = schools.map(s => `
                             <div class="item-scuola" onclick="vaiAllaScuola('${s.id}')">
                                 <strong>${s.DENOMINAZIONESCUOLA}</strong>
                                 <small>📍 ${s.DESCRIZIONECOMUNE}</small>
@@ -650,7 +642,7 @@
                         tendina.style.display = 'block';
                     } else {
                         debug.innerText = "Nessun risultato.";
-                        tendina.innerHTML = '<div style="padding:15px; color:#666;">Nessuna scuola trovata</div>';
+                        tendina.innerHTML = '<div style="padding:15px; color:#666;">Nessuna scuola trouvata</div>';
                         tendina.style.display = 'block';
                     }
                 } catch (e) {
@@ -827,26 +819,12 @@ async function updateNavbar(session) {
         }
     }
 
-    // Ascolta i cambiamenti di stato (Login/Logout)
+    // Ascolta i cambiamenti di stato (Login/Logout) e Inizializzazione al caricamento
     supabaseClient.auth.onAuthStateChange((event, session) => {
         console.log("Auth Event:", event);
         updateNavbar(session);
     });
 
-    // Inizializzazione al caricamento della pagina
-    window.addEventListener('DOMContentLoaded', async () => {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        updateNavbar(session);
-    });
-
-
-    // Ascolta i cambiamenti di stato (Login/Logout)
-    supabaseClient.auth.onAuthStateChange((event, session) => {
-        console.log("Auth Event:", event);
-        updateNavbar(session);
-    });
-
-    // Inizializzazione al caricamento della pagina
     window.addEventListener('DOMContentLoaded', async () => {
         const { data: { session } } = await supabaseClient.auth.getSession();
         updateNavbar(session);
@@ -875,3 +853,5 @@ if (mobileMenuBtn && navLinksContainer) {
 }    </script>
 </body>
 </html>
+
+```
