@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <style>
+
         :root {
             --bg-dark: #080808;
             --bg-card: rgba(22, 22, 22, 0.6);
@@ -22,6 +23,132 @@
 
         body { background: var(--bg-dark); font-family: 'Poppins', sans-serif; color: var(--text-main); margin: 0; }
 
+/* ============================================================
+   STILI HAMBURGER MENU & RESPONSIVE NAVBAR
+   ============================================================ */
+
+/* Pulsante Hamburger - Nascosto su PC */
+.hamburger-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 2000; /* Superiore a tutto */
+    padding: 0;
+}
+
+.hamburger-toggle span {
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-main);
+    border-radius: 2px;
+    transition: var(--transition-smooth);
+}
+
+/* Animazione in "X" quando attivo */
+.hamburger-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.hamburger-toggle.active span:nth-child(2) { opacity: 0; }
+.hamburger-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* Schermi Mobile e Tablet (sotto i 968px) */
+@media (max-width: 968px) {
+    /* Forza la navbar a disporsi in riga e spingere gli elementi ai lati */
+    .navbar {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        padding: 15px 20px !important; /* Spazio interno per non appiccicare il logo ai bordi */
+        box-sizing: border-box !important;
+    }
+
+    /* Forza l'hamburger ad andare tutto a destra */
+    .hamburger-toggle {
+        display: flex !important;
+        margin-left: auto !important; 
+        position: relative !important;
+        z-index: 2000 !important;
+    }
+
+    /* Il menu laterale a comparsa */
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Nascosto a destra */
+        width: 75%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(25px);
+        border-left: 1px solid rgba(255, 255, 255, 0.05);
+        flex-direction: column;
+        align-items: flex-start !important;
+        justify-content: flex-start;
+        padding: 100px 30px 40px 30px !important;
+        gap: 24px !important;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 1900;
+        margin: 0;
+    }
+
+    .nav-links.active {
+        right: 0 !important; 
+    }
+
+    .nav-auth-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    .nav-auth-buttons a {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    
+   .nav-links .dropdown {
+        position: relative !important;
+        width: 100% !important;
+    }
+
+    /* Di base la tendina su mobile è nascosta */
+    .nav-links .dropdown-menu {
+        display: none !important; 
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        box-shadow: none !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        padding: 10px 0 10px 15px !important;
+        margin-top: 8px !important;
+        border-radius: 8px !important;
+        border: none !important;
+        border-left: 2px solid var(--accent) !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    /* Mostra la tendina SOLO quando si passa sopra con il dito/mouse sulla voce principale */
+    .nav-links .dropdown:hover .dropdown-menu,
+    .nav-links .dropdown:focus-within .dropdown-menu {
+        display: flex !important;
+    }
+
+    .nav-links .dropdown-menu li {
+        width: 100% !important;
+    }
+
+    .nav-links .dropdown-menu li a {
+        font-size: 0.95rem !important;
+        color: var(--text-dim) !important;
+        padding: 5px 0 !important;
+    }
         /* ============================================================
    USER DROPDOWN - DESIGN MODERNO FINALE
    ============================================================ */
@@ -295,7 +422,15 @@
                 UP<span>TOYOU</span>
             </a>
         </div>
-        <ul class="nav-links">
+
+	<button class="hamburger-toggle" id="mobile-menu-btn" aria-label="Apri menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+
+        <ul class="nav-links" id="nav-links-container">
             <li><a href="index.html">Home</a></li>
             <li class="dropdown">
                 <a href="#">Lezioni ▾</a>
@@ -474,7 +609,7 @@
 
     <!-- SCRIPT (Supabase e logica UI mantenuta intatta) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <scrpt src="script.js"></scrpt>
+    <script src="script.js"></script>
     <script>
         // Configurazione Supabase
         const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
@@ -716,6 +851,27 @@ async function updateNavbar(session) {
         const { data: { session } } = await supabaseClient.auth.getSession();
         updateNavbar(session);
     });
-    </script>
+
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const navLinksContainer = document.getElementById('nav-links-container');
+
+if (mobileMenuBtn && navLinksContainer) {
+    mobileMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mobileMenuBtn.classList.toggle('active');
+        navLinksContainer.classList.toggle('active');
+    });
+
+    // Chiude se clicchi fuori
+    document.addEventListener('click', (e) => {
+        if (navLinksContainer.classList.contains('active') && 
+            !navLinksContainer.contains(e.target) && 
+            !mobileMenuBtn.contains(e.target)) {
+            
+            mobileMenuBtn.classList.remove('active');
+            navLinksContainer.classList.remove('active');
+        }
+    });
+}    </script>
 </body>
 </html>
