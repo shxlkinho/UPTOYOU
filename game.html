@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Up To the Top</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #080808;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    canvas {
+      border: 2px solid #4facfe;
+      background: #111;
+    }
+    #score { font-size: 24px; margin-bottom: 10px; color: #4facfe; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <div id="score">Altezza: 0m</div>
+  <canvas id="jumpCanvas" width="350" height="500"></canvas>
+
+<script>
+const canvas = document.getElementById("jumpCanvas");
+const ctx = canvas.getContext("2d");
+const scoreEl = document.getElementById("score");
+
+let score = 0;
+let gameOver = false;
+
+// --- SPRITE GIOCATORE ---
+const ball = {
+  x: canvas.width / 2,
+  y: canvas.height - 100,
+  radius: 12,
+  vy: 0, // Velocità verticale
+  vx: 0, // Velocità orizzontale
+  gravity: 0.3,
+  jumpStrength: -9,
+  color: "#4facfe"
+};
+
+// --- SPRITE PIATTAFORME ---
+let platforms = [];
+const platformCount = 6;
+
+function initPlatforms() {
+  platforms = [];
+  // Piattaforma base sicura
+  platforms.push({ x: canvas.width / 2 - 30, y: canvas.height - 50, width: 60, height: 10 });
+  
+  for (let i = 1; i < platformCount; i++) {
+    platforms.push({
+      x: Math.random() * (canvas.width - 60),
+      y: canvas.height - (i * 85),
+      width: 60,
+      height: 10
+    });
+  }
+}
+
+// Controlli mouse/touch
+canvas.addEventListener("mousemove", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  ball.x = e.clientX - rect.left;
+});
+canvas.addEventListener("touchmove", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  ball.x = e.touches[0].clientX - rect.left;
+});
+
+function update() {
+  if (gameOver) return;
+
+  // Fisica gravità
+  ball.vy += ball.gravity;
+  ball.y += ball.vy;
+
+  // Se la palla sale oltre la metà dello schermo, sposta la telecamera (le piattaforme scendono)
+  if (ball.y < canvas.height / 2) {
+    let diff = canvas.height / 2 - ball.y;
+    ball.y = canvas.height / 2;
+    score += Math.floor(diff);
+    scoreEl.textContent = `Altezza: ${score}m`;
+
+    platforms.forEach(p => {
+      p.y += diff;
+      // Se una piattaforma esce dal basso, rigenerala in alto
+      if (p.y > canvas.height) {
+        p.y = 0;
+        p.x = Math.random() * (canvas.width - p.width);
+      }
+    });
+  }
+
+  // Controllo collisioni con le piattaforme (solo quando cade)
+  if (ball.vy > 0) {
+    platforms.forEach(p => {
+      if (
+        ball.x + ball.radius > p.x &&
+        ball.x - ball.radius < p.x + p.width &&
+        ball.y + ball.radius > p.y &&
+        ball.y - ball.radius < p.y + p.height
+      ) {
+        ball.vy = ball.jumpStrength; // Rimbalza!
+      }
+    });
+  }
+
+  // Game over se cade sul fondo
+  if (ball.y > canvas.height) {
+    gameOver = true;
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (gameOver) {
+    ctx.fillStyle = "#ff4f4f";
+    ctx.font = "30px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("HAI PERSO!", canvas.width / 2, canvas.height / 2);
+    ctx.font = "16px sans-serif";
+    ctx.fillStyle = "#fff";
+    ctx.fillText("Clicca per riprovare", canvas.width / 2, canvas.height / 2 + 40);
+    return;
+  }
+
+  // Disegna Giocatore (Palla con effetto scia minimale)
+  ctx.fillStyle = ball.color;
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Disegna Piattaforme (Neon verdi)
+  ctx.fillStyle = "#00ffcc";
+  platforms.forEach(p => {
+    ctx.fillRect(p.x, p.y, p.width, p.height);
+  });
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+canvas.addEventListener("click", () => {
+  if (gameOver) {
+    gameOver = false;
+    score = 0;
+    scoreEl.textContent = `Altezza: ${score}m`;
+    ball.y = canvas.height - 100;
+    ball.vy = 0;
+    initPlatforms();
+  }
+});
+
+initPlatforms();
+loop();
+</script>
+</body>
+</html>
