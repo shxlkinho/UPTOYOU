@@ -3,6 +3,7 @@
 <html lang="it">
 <head>
     <link rel="icon" type="image/png" href="icon.png">
+    <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Up to You - Orientamento Professionale</title>
@@ -849,7 +850,19 @@ if (mobileMenuBtn && navLinksContainer) {
             navLinksContainer.classList.remove('active');
         }
     });
-}    </script>
+} 
+
+/*APPLICAZIONE=============================================*/
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(reg => console.log('Web App configurata in locale con successo!', reg))
+        .catch(err => console.error('Errore di configurazione locale:', err));
+    });
+  }
+
+   </script>
 </body>
 </html>
 
