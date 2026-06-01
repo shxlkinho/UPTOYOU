@@ -2,172 +2,615 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-   <link rel="manifest" href="manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Up To the Top</title>
+  <title>Up To the Top - Neon Edition</title>
   <style>
     body {
       margin: 0;
-      background-color: #080808;
+      background-color: #050508;
       color: white;
-      font-family: sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      overflow: hidden;
+      user-select: none;
     }
+    #game-container { text-align: center; }
+    
+    #score-board {
+      display: flex;
+      justify-content: space-between;
+      width: 380px;
+      margin-bottom: 15px;
+    }
+    #score { font-size: 26px; color: #00f0ff; font-weight: bold; text-shadow: 0 0 10px #00f0ff; }
+    #gems-display { font-size: 26px; color: #ff00ff; font-weight: bold; text-shadow: 0 0 10px #ff00ff; }
+    
+    .canvas-container { position: relative; width: 380px; height: 550px; }
     canvas {
-      border: 2px solid #4facfe;
-      background: #111;
+      border: 3px solid #ff007f;
+      background: #0d0d13;
+      box-shadow: 0 0 20px #ff007f, inset 0 0 20px rgba(255, 0, 127, 0.2);
+      border-radius: 8px;
+      cursor: none;
+      position: absolute;
+      top: 0; left: 0;
     }
-    #score { font-size: 24px; margin-bottom: 10px; color: #4facfe; font-weight: bold; }
+
+    /* Overlay Interface */
+    #menu-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 380px; height: 550px;
+      background: rgba(13, 13, 19, 0.96);
+      border: 3px solid #ff007f;
+      box-sizing: border-box;
+      border-radius: 8px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Views */
+    .view-section {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%; height: 100%;
+      box-sizing: border-box;
+      padding: 20px 15px;
+    }
+    #main-menu-view { display: flex; justify-content: center; }
+    
+    h1 { color: #00f0ff; text-shadow: 0 0 15px #00f0ff; margin: 0 0 5px 0; font-size: 34px; }
+    .subtitle { color: #aaa; font-size: 14px; margin-bottom: 40px; }
+
+    /* Shop Grid System */
+    .shop-box {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .shop-title {
+      font-size: 13px; color: #00ffcc; font-weight: bold; text-shadow: 0 0 5px rgba(0,255,204,0.3);
+      margin: 0 0 10px 0; border-bottom: 1px solid #444; padding-bottom: 4px; text-align: left;
+    }
+    
+    .shelf-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-height: 140px;
+      overflow-y: auto;
+      padding: 5px;
+    }
+    .shelf-container::-webkit-scrollbar { width: 5px; }
+    .shelf-container::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+    .shelf-container::-webkit-scrollbar-thumb { background: #ff007f; border-radius: 3px; }
+
+    /* Cards */
+    .skin-card {
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid #333;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .skin-card:hover { transform: translateY(-3px); border-color: #00f0ff; box-shadow: 0 5px 15px rgba(0,240,255,0.3); }
+    .skin-card.owned { border-color: #ffcc00; }
+    .skin-card.selected { border-color: #ff00ff; box-shadow: 0 0 12px #ff00ff; background: rgba(255,0,255,0.1); }
+    
+    .card-preview {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 5px;
+    }
+    .card-price { font-size: 10px; color: #ccc; }
+    
+    /* Preview Modal Styles */
+    #preview-graphic {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 70px;
+      margin: 20px 0;
+      background: rgba(255,255,255,0.05);
+      border: 3px dashed #444;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: #ff007f; color: white; border: none; padding: 12px 50px;
+      font-size: 20px; font-weight: bold; border-radius: 25px; cursor: pointer;
+      box-shadow: 0 0 15px #ff007f; margin-bottom: 15px; transition: transform 0.2s;
+    }
+    .btn-primary:hover { transform: scale(1.05); }
+    
+    .btn-secondary {
+      background: transparent; color: #00f0ff; border: 2px solid #00f0ff; padding: 10px 45px;
+      font-size: 18px; font-weight: bold; border-radius: 25px; cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2); transition: all 0.2s; margin-bottom: 10px;
+    }
+    .btn-secondary:hover { background: rgba(0, 240, 255, 0.15); box-shadow: 0 0 15px #00f0ff; }
+    
+    .btn-action {
+      background: #ffcc00; color: black; border: none; padding: 10px 30px;
+      font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer;
+      margin-bottom: 15px; width: 200px; transition: 0.2s;
+    }
+    .btn-action:hover { transform: scale(1.05); box-shadow: 0 0 15px #ffcc00; }
+    .btn-action:disabled { background: #555; color: #888; cursor: not-allowed; box-shadow: none; transform: none; }
+
+    .instructions { margin-top: 15px; color: #aaa; font-size: 14px; }
   </style>
 </head>
 <body>
 
-  <div id="score">Altezza: 0m</div>
-  <canvas id="jumpCanvas" width="350" height="500"></canvas>
+  <div id="game-container">
+    <div id="score-board">
+      <div id="score">Altezza: 0m</div>
+      <div id="gems-display">💎: <span id="gems-count">0</span></div>
+    </div>
+    
+    <div class="canvas-container">
+      <canvas id="jumpCanvas" width="380" height="550"></canvas>
+      
+      <div id="menu-overlay">
+        
+        <div id="main-menu-view" class="view-section">
+          <h1>UP TO THE TOP</h1>
+          <div class="subtitle">Neon Jump Edition</div>
+          <button id="start-btn" class="btn-primary">GIOCA</button>
+          <button id="open-shop-btn" class="btn-secondary">NEGOZIO 🛒</button>
+        
+        </div>
+        
+        <div id="shop-view" class="view-section">
+          <h2 style="color: #ff00ff; text-shadow: 0 0 10px #ff00ff; margin: 0 0 8px 0;">NEON SHOP</h2>
+          <div style="font-size: 16px; color: #ffcc00; margin-bottom: 15px; font-weight: bold;">
+            Saldo: <span id="shop-gems">0</span> 💎
+          </div>
+          
+          <div class="shop-box" style="margin-bottom: 15px;">
+            <div class="shop-title">COLORI 🎨</div>
+            <div id="colors-grid" class="shelf-container"></div>
+          </div>
+          
+          <div class="shop-box" style="margin-bottom: 15px;">
+            <div class="shop-title">EMOJI SKINS 🎭</div>
+            <div id="shapes-grid" class="shelf-container"></div>
+          </div>
+          
+          <button id="back-menu-btn" class="btn-secondary" style="margin-top: auto; padding: 6px 30px; font-size: 15px;">INDIETRO</button>
+        </div>
+
+        <div id="preview-view" class="view-section" style="justify-content: center;">
+          <h2 id="preview-title" style="color: white; font-size: 26px; margin: 0;">Nome</h2>
+          
+          <div id="preview-graphic"></div>
+          
+          <div id="preview-price" style="font-size: 20px; font-weight: bold; color: #ffcc00; margin-bottom: 25px;">Prezzo: 0 💎</div>
+          
+          <button id="action-btn" class="btn-action">Compra</button>
+          <button id="back-shop-btn" class="btn-secondary" style="font-size: 16px; padding: 8px 30px;">Indietro</button>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="instructions">Muovi il mouse/dito per spostarti. Evita le spine rosse!</div>
+  </div>
 
 <script>
 const canvas = document.getElementById("jumpCanvas");
 const ctx = canvas.getContext("2d");
 const scoreEl = document.getElementById("score");
+const gemsCountEl = document.getElementById("gems-count");
+const shopGemsEl = document.getElementById("shop-gems");
+
+// Views & Buttons
+const menuOverlay = document.getElementById("menu-overlay");
+const mainMenuView = document.getElementById("main-menu-view");
+const shopView = document.getElementById("shop-view");
+const previewView = document.getElementById("preview-view");
+
+const startBtn = document.getElementById("start-btn");
+const openShopBtn = document.getElementById("open-shop-btn");
+const backMenuBtn = document.getElementById("back-menu-btn");
+const backShopBtn = document.getElementById("back-shop-btn");
+const actionBtn = document.getElementById("action-btn");
 
 let score = 0;
 let gameOver = false;
+let gameStarted = false;
+let platforms = [];
+let collectibles = [];
+let particles = [];
+const platformCount = 7;
 
-// --- SPRITE GIOCATORE ---
+// --- GESTIONE DEI DATI SALVATI ---
+let totalCollectibles = parseInt(localStorage.getItem('jump_total_collectibles')) || 0;
+let ownedColors = JSON.parse(localStorage.getItem('jump_owned_colors')) || ['#00f0ff'];
+let selectedColor = localStorage.getItem('jump_selected_color') || '#00f0ff';
+let ownedShapes = JSON.parse(localStorage.getItem('jump_owned_shapes')) || ['ball'];
+let selectedShape = localStorage.getItem('jump_selected_shape') || 'ball';
+
+// Variabile per tenere traccia dell'oggetto in anteprima
+let currentPreviewItem = null;
+let currentPreviewType = null; // 'color' o 'shape'
+
+// 15 Colori disponibili
+const colorsConfig = [
+  { id: "#00f0ff", name: "Cyan", color: "#00f0ff", price: 0 },
+  { id: "#ff007f", name: "Neon Rose", color: "#ff007f", price: 10 },
+  { id: "#39ff14", name: "Acid Lime", color: "#39ff14", price: 20 },
+  { id: "#9d00ff", name: "Purple", color: "#9d00ff", price: 30 },
+  { id: "#ffff00", name: "Yellow", color: "#ffff00", price: 40 },
+  { id: "#ff3333", name: "Red", color: "#ff3333", price: 50 },
+  { id: "#ffffff", name: "White", color: "#ffffff", price: 60 },
+  { id: "#0044ff", name: "Sapphire", color: "#0044ff", price: 70 },
+  { id: "#ffd700", name: "Gold", color: "#ffd700", price: 100 },
+  { id: "#ff8c00", name: "Orange", color: "#ff8c00", price: 120 },
+  { id: "#ff1493", name: "Deep Pink", color: "#ff1493", price: 150 },
+  { id: "#00ff7f", name: "Spring", color: "#00ff7f", price: 180 },
+  { id: "#8a2be2", name: "Violet", color: "#8a2be2", price: 200 },
+  { id: "#00ffff", name: "Aqua", color: "#00ffff", price: 250 },
+  { id: "#ff4500", name: "Fire", color: "#ff4500", price: 300 }
+];
+
+// 10 Emoji Skins
+const shapesConfig = [
+  { id: "ball", name: "Sfera Base", emoji: "⚫", price: 0 },
+  { id: "ghost", name: "Fantasma", emoji: "👻", price: 25 },
+  { id: "alien", name: "Alieno", emoji: "👽", price: 50 },
+  { id: "robot", name: "Robot", emoji: "🤖", price: 75 },
+  { id: "pumpkin", name: "Zucca", emoji: "🎃", price: 100 },
+  { id: "skull", name: "Teschio", emoji: "💀", price: 150 },
+  { id: "poop", name: "Cacca", emoji: "💩", price: 200 },
+  { id: "fire", name: "Fuoco", emoji: "🔥", price: 250 },
+  { id: "star", name: "Stella", emoji: "⭐", price: 400 },
+  { id: "diamond", name: "Diamante", emoji: "💎", price: 500 }
+];
+
+// --- FISICA DELLA PALLA ---
 const ball = {
-  x: canvas.width / 2,
-  y: canvas.height - 100,
-  radius: 12,
-  vy: 0, // Velocità verticale
-  vx: 0, // Velocità orizzontale
-  gravity: 0.3,
-  jumpStrength: -9,
-  color: "#4facfe"
+  x: canvas.width / 2, y: canvas.height - 75, radius: 12,
+  vy: 0, gravity: 0.42, jumpStrength: -11.5, superJumpStrength: -22, 
+  color: selectedColor, shape: selectedShape, trail: []
 };
 
-// --- SPRITE PIATTAFORME ---
-let platforms = [];
-const platformCount = 6;
+// --- LOGICA RENDER SHOP GRIDS ---
+function updateCurrencyDisplays() {
+  shopGemsEl.textContent = totalCollectibles;
+  gemsCountEl.textContent = totalCollectibles;
+}
 
-function initPlatforms() {
-  platforms = [];
-  // Piattaforma base sicura
-  platforms.push({ x: canvas.width / 2 - 30, y: canvas.height - 50, width: 60, height: 10 });
+function renderShop() {
+  updateCurrencyDisplays();
+
+  const colorsGrid = document.getElementById("colors-grid");
+  colorsGrid.innerHTML = "";
+  colorsConfig.forEach(item => {
+    const card = document.createElement("div");
+    
+    let stateClass = "";
+    if (selectedColor === item.id) stateClass = "selected";
+    else if (ownedColors.includes(item.id)) stateClass = "owned";
+    
+    card.className = `skin-card ${stateClass}`;
+    card.innerHTML = `
+      <div class="card-preview" style="background: ${item.color}; box-shadow: 0 0 10px ${item.color};"></div>
+      <div class="card-price">${ownedColors.includes(item.id) ? 'Sbloccato' : item.price + ' 💎'}</div>
+    `;
+    card.onclick = () => openPreview(item, 'color');
+    colorsGrid.appendChild(card);
+  });
+
+  const shapesGrid = document.getElementById("shapes-grid");
+  shapesGrid.innerHTML = "";
+  shapesConfig.forEach(item => {
+    const card = document.createElement("div");
+    
+    let stateClass = "";
+    if (selectedShape === item.id) stateClass = "selected";
+    else if (ownedShapes.includes(item.id)) stateClass = "owned";
+    
+    card.className = `skin-card ${stateClass}`;
+    card.innerHTML = `
+      <div class="card-preview">${item.emoji}</div>
+      <div class="card-price">${ownedShapes.includes(item.id) ? 'Sbloccato' : item.price + ' 💎'}</div>
+    `;
+    card.onclick = () => openPreview(item, 'shape');
+    shapesGrid.appendChild(card);
+  });
+}
+
+// --- LOGICA ANTEPRIMA E ACQUISTO ---
+function openPreview(item, type) {
+  currentPreviewItem = item;
+  currentPreviewType = type;
   
-  for (let i = 1; i < platformCount; i++) {
-    platforms.push({
-      x: Math.random() * (canvas.width - 60),
-      y: canvas.height - (i * 85),
-      width: 60,
-      height: 10
+  shopView.style.display = "none";
+  previewView.style.display = "flex";
+  
+  document.getElementById("preview-title").textContent = item.name;
+  
+  const graphic = document.getElementById("preview-graphic");
+  if (type === 'color') {
+    graphic.innerHTML = "";
+    graphic.style.background = item.color;
+    graphic.style.boxShadow = `0 0 30px ${item.color}`;
+  } else {
+    graphic.innerHTML = item.emoji;
+    graphic.style.background = "transparent";
+    graphic.style.boxShadow = "none";
+  }
+  
+  const priceEl = document.getElementById("preview-price");
+  actionBtn.disabled = false;
+  
+  let isOwned = type === 'color' ? ownedColors.includes(item.id) : ownedShapes.includes(item.id);
+  let isEquipped = type === 'color' ? selectedColor === item.id : selectedShape === item.id;
+
+  if (isEquipped) {
+    priceEl.textContent = "Equipaggiato";
+    priceEl.style.color = "#00ffcc";
+    actionBtn.textContent = "In Uso";
+    actionBtn.disabled = true;
+  } else if (isOwned) {
+    priceEl.textContent = "Sbloccato";
+    priceEl.style.color = "#fff";
+    actionBtn.textContent = "Usa / Equipaggia";
+  } else {
+    priceEl.textContent = `Prezzo: ${item.price} 💎`;
+    priceEl.style.color = "#ffcc00";
+    actionBtn.textContent = "Compra";
+    if (totalCollectibles < item.price) actionBtn.disabled = true;
+  }
+}
+
+actionBtn.onclick = () => {
+  if (!currentPreviewItem) return;
+  const item = currentPreviewItem;
+  
+  if (currentPreviewType === 'color') {
+    if (!ownedColors.includes(item.id)) {
+      if (totalCollectibles >= item.price) {
+        totalCollectibles -= item.price;
+        ownedColors.push(item.id);
+        localStorage.setItem('jump_total_collectibles', totalCollectibles);
+        localStorage.setItem('jump_owned_colors', JSON.stringify(ownedColors));
+      } else return;
+    }
+    selectedColor = item.id;
+    localStorage.setItem('jump_selected_color', item.id);
+    ball.color = item.id;
+  } 
+  else {
+    if (!ownedShapes.includes(item.id)) {
+      if (totalCollectibles >= item.price) {
+        totalCollectibles -= item.price;
+        ownedShapes.push(item.id);
+        localStorage.setItem('jump_total_collectibles', totalCollectibles);
+        localStorage.setItem('jump_owned_shapes', JSON.stringify(ownedShapes));
+      } else return;
+    }
+    selectedShape = item.id;
+    localStorage.setItem('jump_selected_shape', item.id);
+    ball.shape = item.id;
+  }
+  
+  openPreview(currentPreviewItem, currentPreviewType); // Ricarica lo stato
+  updateCurrencyDisplays();
+};
+
+backShopBtn.onclick = () => {
+  previewView.style.display = "none";
+  shopView.style.display = "flex";
+  renderShop(); // Aggiorna le card
+};
+
+// --- CHEAT CODE ---
+let keyBuffer = "";
+window.addEventListener("keydown", (e) => {
+  if (!gameStarted) {
+    keyBuffer += e.key.toUpperCase();
+    if (keyBuffer.length > 3) keyBuffer = keyBuffer.substring(keyBuffer.length - 3);
+    
+    if (keyBuffer === "UEP") {
+      totalCollectibles += 500;
+      localStorage.setItem('jump_total_collectibles', totalCollectibles);
+      updateCurrencyDisplays();
+      alert("CHEAT ATTIVATO: +500 Gemme! 💎");
+      keyBuffer = "";
+    }
+  }
+});
+
+// --- ENGINE GIOCO (Particelle, Update, Draw) ---
+function createParticles(x, y, color, count = 10) {
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: x, y: y, vx: (Math.random() - 0.5) * 6, vy: (Math.random() - 0.5) * 6,
+      radius: Math.random() * 3 + 1, alpha: 1, color: color
     });
   }
 }
 
-// Controlli mouse/touch
-canvas.addEventListener("mousemove", (e) => {
+function initPlatforms() {
+  platforms = []; collectibles = []; particles = [];
+  platforms.push({ x: canvas.width / 2 - 60, y: canvas.height - 50, width: 120, height: 12, type: 'normal' });
+  ball.x = canvas.width / 2; ball.y = canvas.height - 50 - ball.radius; ball.vy = 0; ball.trail = [];
+  for (let i = 1; i < platformCount; i++) generatePlatformAtY(canvas.height - (i * 85));
+}
+
+function generatePlatformAtY(yPosition) {
+  const width = 65;
+  if (Math.random() < 0.22) {
+    const spikyOnLeft = Math.random() < 0.5;
+    const xSpiky = spikyOnLeft ? Math.random() * (canvas.width/2 - width) : canvas.width/2 + Math.random() * (canvas.width/2 - width);
+    const xNormal = spikyOnLeft ? canvas.width/2 + Math.random() * (canvas.width/2 - width) : Math.random() * (canvas.width/2 - width);
+    platforms.push({ x: xSpiky, y: yPosition, width, height: 12, type: 'spiky' });
+    platforms.push({ x: xNormal, y: yPosition, width, height: 12, type: 'normal' });
+    if (Math.random() < 0.3) collectibles.push({ x: xNormal + width / 2, y: yPosition - 25, radius: 7, color: "#ff00ff", pulse: 0 });
+  } else {
+    let type = 'normal';
+    if (Math.random() > 0.95) type = 'spring';
+    const x = Math.random() * (canvas.width - width);
+    platforms.push({ x, y: yPosition, width, height: 12, type });
+    if (type === 'normal' && Math.random() < 0.3) collectibles.push({ x: x + width / 2, y: yPosition - 25, radius: 7, color: "#ff00ff", pulse: 0 });
+  }
+}
+
+function updateBallPosition(clientX) {
+  if (!gameStarted || gameOver) return;
   const rect = canvas.getBoundingClientRect();
-  ball.x = e.clientX - rect.left;
-});
-canvas.addEventListener("touchmove", (e) => {
-  const rect = canvas.getBoundingClientRect();
-  ball.x = e.touches[0].clientX - rect.left;
-});
+  ball.x += ((clientX - rect.left) - ball.x) * 0.35;
+}
+
+canvas.addEventListener("mousemove", (e) => updateBallPosition(e.clientX));
+canvas.addEventListener("touchmove", (e) => { if(e.touches.length > 0) updateBallPosition(e.touches[0].clientX); });
 
 function update() {
-  if (gameOver) return;
+  if (!gameStarted || gameOver) return;
+  ball.trail.push({ x: ball.x, y: ball.y });
+  if (ball.trail.length > 10) ball.trail.shift();
+  ball.vy += ball.gravity; ball.y += ball.vy;
+  if (ball.x < 0) ball.x = canvas.width;
+  if (ball.x > canvas.width) ball.x = 0;
 
-  // Fisica gravità
-  ball.vy += ball.gravity;
-  ball.y += ball.vy;
-
-  // Se la palla sale oltre la metà dello schermo, sposta la telecamera (le piattaforme scendono)
   if (ball.y < canvas.height / 2) {
     let diff = canvas.height / 2 - ball.y;
-    ball.y = canvas.height / 2;
-    score += Math.floor(diff);
-    scoreEl.textContent = `Altezza: ${score}m`;
-
+    ball.y = canvas.height / 2; score += Math.floor(diff); scoreEl.textContent = `Altezza: ${score}m`;
     platforms.forEach(p => {
       p.y += diff;
-      // Se una piattaforma esce dal basso, rigenerala in alto
       if (p.y > canvas.height) {
-        p.y = 0;
-        p.x = Math.random() * (canvas.width - p.width);
+        platforms = platforms.filter(item => item !== p);
+        generatePlatformAtY(Math.min(...platforms.map(plat => plat.y)) - 85);
       }
     });
+    collectibles.forEach(c => c.y += diff); collectibles = collectibles.filter(c => c.y <= canvas.height);
+    particles.forEach(p => p.y += diff);
   }
 
-  // Controllo collisioni con le piattaforme (solo quando cade)
   if (ball.vy > 0) {
     platforms.forEach(p => {
-      if (
-        ball.x + ball.radius > p.x &&
-        ball.x - ball.radius < p.x + p.width &&
-        ball.y + ball.radius > p.y &&
-        ball.y - ball.radius < p.y + p.height
-      ) {
-        ball.vy = ball.jumpStrength; // Rimbalza!
+      if (ball.x + ball.radius - 4 > p.x && ball.x - ball.radius + 4 < p.x + p.width &&
+          ball.y + ball.radius > p.y && ball.y - ball.radius < p.y + p.height) {
+        if (p.type === 'normal') { ball.vy = ball.jumpStrength; createParticles(ball.x, ball.y + ball.radius, "#00ffcc", 8); } 
+        else if (p.type === 'spring') { ball.vy = ball.superJumpStrength; createParticles(ball.x, ball.y + ball.radius, "#ffcc00", 20); } 
+        else if (p.type === 'spiky') { gameOver = true; createParticles(ball.x, ball.y, "#ff3333", 30); }
       }
     });
   }
 
-  // Game over se cade sul fondo
-  if (ball.y > canvas.height) {
-    gameOver = true;
-  }
+  collectibles.forEach((c, index) => {
+    if (Math.hypot(ball.x - c.x, ball.y - c.y) < ball.radius + c.radius) {
+      totalCollectibles++; localStorage.setItem('jump_total_collectibles', totalCollectibles);
+      gemsCountEl.textContent = totalCollectibles; shopGemsEl.textContent = totalCollectibles;
+      createParticles(c.x, c.y, "#ff00ff", 15); collectibles.splice(index, 1);
+    }
+  });
+
+  particles.forEach((p, index) => { p.x += p.vx; p.y += p.vy; p.alpha -= 0.02; if (p.alpha <= 0) particles.splice(index, 1); });
+  if (ball.y > canvas.height + 20) gameOver = true;
 }
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  if (gameOver) {
-    ctx.fillStyle = "#ff4f4f";
-    ctx.font = "30px sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("HAI PERSO!", canvas.width / 2, canvas.height / 2);
-    ctx.font = "16px sans-serif";
-    ctx.fillStyle = "#fff";
-    ctx.fillText("Clicca per riprovare", canvas.width / 2, canvas.height / 2 + 40);
-    return;
-  }
-
-  // Disegna Giocatore (Palla con effetto scia minimale)
-  ctx.fillStyle = ball.color;
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Disegna Piattaforme (Neon verdi)
-  ctx.fillStyle = "#00ffcc";
-  platforms.forEach(p => {
-    ctx.fillRect(p.x, p.y, p.width, p.height);
+  
+  ball.trail.forEach((t, index) => {
+    ctx.save(); ctx.globalAlpha = (index / ball.trail.length) * 0.35; ctx.fillStyle = ball.color;
+    ctx.beginPath(); ctx.arc(t.x, t.y, ball.radius * (index / ball.trail.length), 0, Math.PI * 2); ctx.fill(); ctx.restore();
   });
-}
 
-function loop() {
-  update();
-  draw();
-  requestAnimationFrame(loop);
-}
-
-canvas.addEventListener("click", () => {
-  if (gameOver) {
-    gameOver = false;
-    score = 0;
-    scoreEl.textContent = `Altezza: ${score}m`;
-    ball.y = canvas.height - 100;
-    ball.vy = 0;
-    initPlatforms();
+  if (!gameOver && gameStarted) {
+    ctx.save();
+    ctx.shadowBlur = 15; ctx.shadowColor = ball.color;
+    if (ball.shape === "ball") {
+      ctx.fillStyle = ball.color;
+      ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2); ctx.fill();
+    } else {
+      let shapeObj = shapesConfig.find(s => s.id === ball.shape);
+      if(shapeObj) {
+        ctx.font = (ball.radius * 2.2) + "px sans-serif";
+        ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.shadowBlur = 0;
+        ctx.fillText(shapeObj.emoji, ball.x, ball.y + 2);
+      }
+    }
+    ctx.restore();
   }
-});
 
-initPlatforms();
-loop();
+  platforms.forEach(p => {
+    ctx.save();
+    if (p.type === 'normal') {
+      ctx.shadowBlur = 10; ctx.shadowColor = "#00ffcc"; ctx.fillStyle = "#00ffcc"; ctx.fillRect(p.x, p.y, p.width, p.height);
+    } else if (p.type === 'spring') {
+      ctx.shadowBlur = 12; ctx.shadowColor = "#ffcc00"; ctx.fillStyle = "#ffcc00"; ctx.fillRect(p.x, p.y, p.width, p.height);
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(p.x + p.width/2 - 10, p.y - 6, 20, 6);
+    } else if (p.type === 'spiky') {
+      ctx.shadowBlur = 10; ctx.shadowColor = "#ff3333"; ctx.fillStyle = "#ff3333"; ctx.fillRect(p.x, p.y, p.width, p.height);
+      for (let sx = p.x; sx < p.x + p.width; sx += 13) {
+        ctx.beginPath(); ctx.moveTo(sx, p.y); ctx.lineTo(sx + 6.5, p.y - 8); ctx.lineTo(sx + 13, p.y); ctx.fill();
+      }
+    }
+    ctx.restore();
+  });
+
+  collectibles.forEach(c => {
+    c.pulse += 0.1; let cr = c.radius + Math.sin(c.pulse) * 1.5;
+    ctx.save(); ctx.shadowBlur = 12; ctx.shadowColor = "#ff00ff"; ctx.fillStyle = "#ff00ff";
+    ctx.beginPath(); ctx.moveTo(c.x, c.y - cr); ctx.lineTo(c.x + cr, c.y); ctx.lineTo(c.x, c.y + cr); ctx.lineTo(c.x - cr, c.y); ctx.fill(); ctx.restore();
+  });
+
+  particles.forEach(p => {
+    ctx.save(); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+  });
+
+  if (gameOver) {
+    ctx.save(); ctx.fillStyle = "rgba(13, 13, 19, 0.85)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.shadowBlur = 20; ctx.shadowColor = "#ff3333"; ctx.fillStyle = "#ff3333";
+    ctx.font = "bold 34px sans-serif"; ctx.textAlign = "center"; ctx.fillText("HAI PERSO!", canvas.width / 2, canvas.height / 2 - 20);
+    ctx.shadowBlur = 10; ctx.shadowColor = "#fff"; ctx.fillStyle = "#fff";
+    ctx.font = "bold 20px sans-serif"; ctx.fillText(`Punteggio: ${score}m`, canvas.width / 2, canvas.height / 2 + 25);
+    ctx.font = "15px sans-serif"; ctx.fillStyle = "#aaa"; ctx.fillText("Clicca per tornare al Menu", canvas.width / 2, canvas.height / 2 + 70);
+    ctx.restore();
+  }
+}
+
+function loop() { update(); draw(); requestAnimationFrame(loop); }
+
+// Navigation logic
+startBtn.onclick = () => {
+  menuOverlay.style.display = "none";
+  gameStarted = true; gameOver = false; score = 0; scoreEl.textContent = `Altezza: ${score}m`;
+  initPlatforms();
+};
+openShopBtn.onclick = () => { mainMenuView.style.display = "none"; shopView.style.display = "flex"; renderShop(); };
+backMenuBtn.onclick = () => { shopView.style.display = "none"; mainMenuView.style.display = "flex"; };
+canvas.onclick = () => {
+  if (gameOver) {
+    gameStarted = false; gameOver = false;
+    menuOverlay.style.display = "flex"; mainMenuView.style.display = "flex"; shopView.style.display = "none"; previewView.style.display = "none";
+    updateCurrencyDisplays();
+  }
+};
+
+updateCurrencyDisplays(); initPlatforms(); loop();
 </script>
 </body>
 </html>
