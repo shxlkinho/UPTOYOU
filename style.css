@@ -383,6 +383,11 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
     background: rgba(0, 0, 0, 0.65); 
     z-index: 2; 
 }
+@media (max-width: 968px) {
+    .hero-carousel-section {
+        display: none !important;
+    }
+}
 
 /* FORZIAMO LA SCRITTA E CONTENUTI SOPRA LE IMMAGINI (z-index alzato) */
 .hero-content, .hero-card-container { 
