@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Up to You - Orientamento Professionale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <style>
+
+        :root {
+            --bg-dark: #080808;
+            --bg-card: rgba(22, 22, 22, 0.6);
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --accent: #4facfe;
+            --accent-sec: #00f2fe;
+            --accent-orange: #ff6600;
+            --accent-green: #00ff80;
+            --transition-smooth: all 0.3s ease;
+        }
+
+        body { background: var(--bg-dark); font-family: 'Poppins', sans-serif; color: var(--text-main); margin: 0; }
+
+/* ============================================================
+   STILI HAMBURGER MENU & RESPONSIVE NAVBAR
+   ============================================================ */
+
+/* Pulsante Hamburger - Nascosto su PC */
+.hamburger-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 2000;
+    padding: 0;
+}
+
+.hamburger-toggle span {
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-main);
+    border-radius: 2px;
+    transition: var(--transition-smooth);
+}
+
+/* Animazione in "X" quando attivo */
+.hamburger-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.hamburger-toggle.active span:nth-child(2) { opacity: 0; }
+.hamburger-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* Schermi Mobile e Tablet (sotto i 968px) */
+@media (max-width: 968px) {
+    .navbar {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        padding: 15px 20px !important;
+        box-sizing: border-box !important;
+    }
+
+    .hamburger-toggle {
+        display: flex !important;
+        margin-left: auto !important; 
+        position: relative !important;
+        z-index: 2000 !important;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 75%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(25px);
+        border-left: 1px solid rgba(255, 255, 255, 0.05);
+        flex-direction: column;
+        align-items: flex-start !important;
+        justify-content: flex-start;
+        padding: 100px 30px 40px 30px !important;
+        gap: 24px !important;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 1900;
+        margin: 0;
+    }
+
+    .nav-links.active {
+        right: 0 !important; 
+    }
+
+    .nav-auth-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    .nav-auth-buttons a {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    
+   .nav-links .dropdown {
+        position: relative !important;
+        width: 100% !important;
+    }
+
+    .nav-links .dropdown-menu {
+        display: none !important; 
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        box-shadow: none !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        padding: 10px 0 10px 15px !important;
+        margin-top: 8px !important;
+        border-radius: 8px !important;
+        border: none !important;
+        border-left: 2px solid var(--accent) !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .nav-links .dropdown:hover .dropdown-menu,
+    .nav-links .dropdown:focus-within .dropdown-menu {
+        display: flex !important;
+    }
+
+    .nav-links .dropdown-menu li {
+        width: 100% !important;
+    }
+
+    .nav-links .dropdown-menu li a {
+        font-size: 0.95rem !important;
+        color: var(--text-dim) !important;
+        padding: 5px 0 !important;
+    }
+}
+
+/* ============================================================
+   USER DROPDOWN
+   ============================================================ */
+
+.user-menu-wrapper, 
+.user-dropdown-menu, 
+.user-dropdown-menu li {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-indent: 0 !important;
+}
+
+.user-menu-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.user-welcome-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 9px 16px;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s ease;
+}
+
+.user-welcome-box span {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px); 
+    right: 0;
+    min-width: 230px;
+    background: rgba(15, 15, 15, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 8px !important;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    z-index: 1100;
+}
+
+.user-dropdown-menu::before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: transparent;
+}
+
+.user-menu-wrapper:hover .user-dropdown-menu {
+    display: flex;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.user-dropdown-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    color: #ddd;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    transition: 0.2s ease;
+    cursor: pointer !important;
+    user-select: none;
+}
+
+.user-dropdown-menu li a:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.user-dropdown-menu li a svg {
+    width: 18px;
+    height: 18px;
+    stroke: #888;
+    fill: none;
+    stroke-width: 2;
+    transition: 0.2s;
+}
+
+.user-dropdown-menu li a:hover svg {
+    stroke: #fff;
+}
+
+.user-dropdown-menu li a.btn-logout,
+.user-dropdown-menu li a.btn-logout-item {
+    color: #ff4d4d !important;
+    font-weight: 600;
+    margin-top: 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 12px;
+    cursor: pointer !important;
+}
+
+.user-dropdown-menu li a.btn-logout svg,
+.user-dropdown-menu li a.btn-logout-item svg {
+    stroke: #ff4d4d !important;
+}
+
+.user-dropdown-menu li a.btn-logout:hover,
+.user-dropdown-menu li a.btn-logout-item:hover {
+    background: rgba(255, 77, 77, 0.08) !important;
+    color: #ff3333 !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+        /* RICERCA SCUOLE */
+        
+        .search-section {
+            padding: 100px 5% 50px 5%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            border-bottom: 2px solid #333;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .search-box:focus-within { border-bottom-color: #ff00ff; box-shadow: 0 10px 10px -10px rgba(255, 0, 255, 0.3); }
+
+        .search-box input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 15px 0;
+            outline: none;
+        }
+
+        .search-box .lente { font-size: 24px; cursor: pointer; padding: 10px; transition: 0.3s; }
+        .search-box .lente:hover { transform: scale(1.1); }
+
+        #tendina {
+            position: absolute; top: 100%; left: 0; right: 0; background: #111; border: 1px solid #333;
+            max-height: 400px; overflow-y: auto; z-index: 999; display: none; text-align: left;
+            border-radius: 0 0 10px 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .item-scuola { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; transition: 0.2s; }
+        .item-scuola:hover { background: #1a1a1a; border-left: 4px solid #ff00ff; }
+        .item-scuola strong { display: block; color: #fff; font-size: 16px; }
+        .item-scuola small { color: #888; font-size: 13px; }
+        #debug { color: #ff00ff; font-size: 12px; margin-top: 10px; }
+
+        /* ============================================================
+           NUOVA HERO SECTION CON CAROSELLO E CTA AZZURRA
+           ============================================================ */
+        .hero-carousel-section {
+            background-image: url('placeholder_dark_blurred_library.jpg'); /* Placeholder image of dark blurred library */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5%;
+            color: white;
+            position: relative;
+        }
+
+       .carousel-content {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative; /* Assicura che il contenitore segua i livelli */
+    z-index: 20; /* Forza il testo sopra l'overlay e le immagini */
+}
+
+        .carousel-content h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .carousel-content p {
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 50px;
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            right: 20px;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .carousel-arrow {
+            font-size: 3rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .carousel-arrow:hover { background: rgba(0,0,0,0.6); }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 50px;
+        }
+
+        .carousel-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+        }
+        .carousel-dot.active {
+            background: var(--accent);
+        }
+
+        .photo-grid-section {
+            padding: 50px 5%;
+            background: rgba(0,0,0,0.5);
+            margin-top: -100px; /* Overlap slightly with background image */
+            position: relative;
+            z-index: 5;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .photo-item:hover { transform: scale(1.05); }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .cta-bar-container {
+            width: 100%;
+            background: var(--accent);
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-top: 50px;
+        }
+        .cta-bar-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 5px 5px 0 0;
+        }
+
+        .cta-button {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cta-button:hover { background: rgba(255,255,255,0.1); }
+
+        /* Existing hero-content styles modified */
+        .hero { display: flex; align-items: center; min-height: 100vh; padding: 100px 5% 50px 5%; gap: 50px; }
+        .hero-content { flex: 1; text-align: left; padding-top: 50px; }
+        .hero-content h1 {
+            font-size: clamp(3rem, 8vw, 5rem); line-height: 1; margin-bottom: 15px;
+            background: linear-gradient(to right, var(--accent), var(--accent-sec));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;
+        }
+        .subtitle { font-size: 1.5rem; color: var(--accent); font-weight: 600; margin-bottom: 25px; letter-spacing: 1px; }
+        .description { font-size: 1.1rem; color: var(--text-dim); max-width: 550px; }
+
+        /* Contenitore per la Card del Test nella Hero */
+        .hero-card-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ============================================================
+           CARDS SECTION (STYLES CONDIVISI)
+           ============================================================ */
+        .section-divider { padding: 50px 5% 100px 5%; background: var(--bg-dark); }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+
+        .card-custom {
+            background: var(--bg-card); padding: 40px; border-radius: 24px; color: white;
+            text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.05); transition: var(--transition-smooth);
+            backdrop-filter: blur(10px);
+        }
+        .card-custom:hover { transform: translateY(-12px); border-color: var(--accent); }
+        .card-emoji { font-size: 3rem; margin-bottom: 20px; display: block; }
+        .card-custom h3 { font-size: 1.6rem; margin-bottom: 15px; color: var(--accent); }
+        .card-custom p { color: var(--text-dim); margin-bottom: 30px; font-size: 0.95rem; }
+
+        .card-btn-action {
+            background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px;
+            text-align: center; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
+        }
+        .card-custom:hover .card-btn-action { background: var(--accent); border-color: var(--accent); }
+
+        /* Card Test Arancione */
+        .card-test { border: 1px solid rgba(255, 102, 0, 0.3); box-shadow: 0 10px 40px rgba(255, 102, 0, 0.1); }
+        .card-test h3 { color: var(--accent-orange) !important; font-size: 2rem;}
+        .card-test p { font-size: 1.1rem; }
+        .card-test:hover { border-color: var(--accent-orange); box-shadow: 0 15px 50px rgba(255, 102, 0, 0.3); }
+        .card-test:hover .card-btn-action { background: var(--accent-orange) !important; border-color: var(--accent-orange) !important; color: white; }
+        .card-test .card-btn-action { border: 1px solid rgba(255, 102, 0, 0.4); color: var(--accent-orange); font-size: 1.1rem;}
+
+        /* Card Lezioni Verde Smeraldo */
+        .card-lezioni { border: 1px solid rgba(0, 255, 128, 0.2); }
+        .card-lezioni h3 { color: var(--accent-green) !important; }
+        .card-lezioni:hover { border-color: var(--accent-green); box-shadow: 0 10px 30px rgba(0, 255, 128, 0.2); }
+        .card-lezioni:hover .card-btn-action { background: var(--accent-green) !important; border-color: var(--accent-green) !important; color: #000; }
+        .card-lezioni .card-btn-action { border: 1px solid rgba(0, 255, 128, 0.4); color: var(--accent-green); }
+
+        /* ============================================================
+           VIDEO & TEST SECTION
+           ============================================================ */
+        .about-section { padding: 100px 5%; text-align: center; }
+        .about-desc { max-width: 800px; margin: 0 auto 50px; color: var(--text-dim); }
+        .video-container {
+            max-width: 900px; margin: 0 auto; border-radius: 30px; overflow: hidden;
+            box-shadow: 0 0 40px rgba(79, 172, 254, 0.2); aspect-ratio: 16/9; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .video-container iframe { width: 100%; height: 100%; border: none; }
+
+        #test-section { display: none; background: #000; padding: 20px 0; }
+        .test-header { text-align: right; padding: 0 5% 20px; }
+        .close-btn { background: var(--accent); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+
+        /* RESPONSIVE */
+        @media (max-width: 968px) {
+            .hero-carousel-section { background-position: left; padding-top: 80px;}
+            .photo-grid { grid-template-columns: 1fr; }
+            .hero { flex-direction: column; text-align: center; padding-top: 50px;}
+            .hero-content h1 { font-size: 2.8rem; }
+            .hero-card-container { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                UP<span>TOYOU</span>
+            </a>
+        </div>
+
+	<button class="hamburger-toggle" id="mobile-menu-btn" aria-label="Apri menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+
+        <ul class="nav-links" id="nav-links-container">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Lezioni ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Lezioni/elementari.html">Elementari</a></li>
+                    <li><a href="Lezioni/medie.html">Medie</a></li>
+                    <li><a href="Lezioni/superiori.html">Superiori</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Orientamento ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </li>
+            <li><a href="contact.html">Contatti</a></li>
+            <li><a href="#about">Chi Siamo</a></li>
+            <li id="auth-nav-item" class="nav-auth-container"></li>
+        </ul>
+    </nav>
+</header>
+<!-- ============================================================
+         NUOVA HERO SECTION CON CAROSELLO
+         ============================================================ -->
+    <section class="hero-carousel-section">
+        <!-- Le 4 immagini di sfondo. Ricordati di rinominare i tuoi file così! -->
+        <div class="carousel-bg active" style="background-image: url('carousel-studio.jpg');"></div>
+        <div class="carousel-bg" style="background-image: url('carousel-team.jpg');"></div>
+        <div class="carousel-bg" style="background-image: url('carousel-tech.jpg');"></div>
+        <div class="carousel-bg" style="background-image: url('carousel-futuro.jpg');"></div>
+
+        <!-- Overlay per scurire le immagini -->
+        <div class="carousel-dark-overlay"></div>
+
+        <div class="carousel-controls">
+            <div class="carousel-arrow" onclick="moveSlide(-1)">&lt;</div>
+            <div class="carousel-arrow" onclick="moveSlide(1)">&gt;</div>
+        </div>
+
+        <div class="carousel-content">
+            <!-- Slogan in azzurro -->
+            <h1 style="color: #4facfe;">Clear choices, bright future.</h1>
+            <p>Orientamento scolastico e lezioni personalizzate per studenti dalle medie alle superiori.</p>
+        </div>
+
+        <!-- I 4 puntini abbassati -->
+        <div class="carousel-dots">
+            <div class="carousel-dot active" onclick="setSlide(1)"></div>
+            <div class="carousel-dot" onclick="setSlide(2)"></div>
+            <div class="carousel-dot" onclick="setSlide(3)"></div>
+            <div class="carousel-dot" onclick="setSlide(4)"></div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         BARRA AZZURRA SOTTILE E BOTTONE
+         ============================================================ -->
+   <div class="linea-inizia-sottile">
+    <button class="btn-inizia-linea" onclick="scrollToHero()">
+        <span>inizia</span>
+    </button>
+</div>
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Up to You</h1>
+            <p class="subtitle">Clear choices, bright Future.</p>
+            <div class="description" style="color: #ffffff;">
+                <p>
+                    <strong>UpToYou</strong> è l'ecosistema di orientamento che ti accompagna dalle medie fino al mondo del lavoro. 
+                    Offriamo lezioni, recensioni autentiche e percorsi pensati per valorizzare il tuo potenziale.
+                </p>
+                <p>Costruisci oggi il tuo domani con i nostri strumenti digitali.</p>
+            </div>
+        </div>
+
+        <div class="hero-card-container">
+            <a href="javascript:void(0)" class="card-custom card-test" onclick="showTest()" style="width: 100%; max-width: 500px;">
+                <span class="card-emoji" style="font-size: 4rem;">🧭</span>
+                <div>
+                    <h3>Non sai cosa scegliere?</h3>
+                    <p>Mettiti alla prova con il nostro test attitudinale avanzato per scoprire i tuoi talenti nascosti e trovare la scuola su misura per te.</p>
+                </div>
+                <div class="card-btn-action">Fai il Test Ora</div>
+            </a>
+        </div>
+    </section>
+
+  <section class="search-section">
+        <h1 style="color: #ff00ff; margin-bottom: 20px;">Cerca la tua scuola</h1>
+        
+        <div class="search-box">
+            <input type="text" id="inputRicerca" placeholder="Scrivi il nome..." autocomplete="off">
+            <span class="lente">🔍</span>
+            <div id="tendina"></div>
+        </div>
+        <div id="debug">In attesa di digitazione...</div>
+        <small style="color: #777; margin-top: 10px; font-size: 0.85rem; display: none;">* Scrivi il nome della scuola e clicca sulla lente per cercare.</small>
+
+        <button id="btn-apri-filtri" onclick="toggleFiltri()" style="margin-top: 25px; background: transparent; border: 2px solid #ff00ff; color: #ff00ff; padding: 12px 25px; border-radius: 20px; font-size: 1rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: 0.3s; font-weight: 600;">
+            Fai la ricerca per filtri ⚙️
+        </button>
+
+        <div id="container-filtri" style="display: none; width: 100%; max-width: 900px; margin-top: 30px; height: 500px; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255, 0, 255, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <iframe src="filtri.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </section>
+
+    <section class="section-divider">
+        <div class="cards-grid">
+            <a href="guidato.html" class="card-custom card-zona">
+                <span class="card-emoji">📍</span>
+                <div>
+                    <h3>Macro Indirizzi di Studio</h3>
+                    <p>Esplora nel dettaglio l'offerta formativa italiana: scopri le differenze tra Licei, Istituti Tecnici e Professionali per capire quale percorso si adatta meglio ai tuoi obiettivi.</p>
+                </div>
+                <div class="card-btn-action">Cerca Scuole</div>
+            </a>
+
+            <a href="sceltalezioni.html" class="card-custom card-lezioni">
+                <span class="card-emoji">🎓</span>
+                <div>
+                    <h3>Scopri le Lezioni</h3>
+                    <p>Accedi a materiali didattici, ripetizioni e percorsi di studio personalizzati per potenziare le tue competenze.</p>
+                </div>
+                <div class="card-btn-action">Inizia a Studiare</div>
+            </a>
+
+            <a href="rapido.html" class="card-custom card-materie">
+                <span class="card-emoji">📚</span>
+                <div>
+                    <h3>Materie & Indirizzi</h3>
+                    <p>Scopri gli indirizzi scolastici più coerenti con le materie che ami di più studiare.</p>
+                </div>
+                <div class="card-btn-action">Trova Indirizzo</div>
+            </a>
+        </div>
+    </section>
+
+    <section id="test-section" style="display: none;">
+        <div class="test-header">
+            <button onclick="closeTest()" class="close-btn">Chiudi Test &times;</button>
+        </div>
+        <iframe src="test.html" width="100%" height="750px" frameborder="0"></iframe>
+    </section>
+
+    <section id="about" class="about-section">
+        <h2>Chi Siamo?</h2>
+        <p class="about-desc">
+            Siamo un team di educatori e tutor dedicati ad aiutare ogni studente a trovare la propria strada. 
+            Crediamo che la scelta della scuola sia il primo passo verso la felicità professionale.
+        </p>
+        <div class="video-container">
+            <iframe id="ytPlayer" src="https://www.youtube-nocookie.com/embed/moaY0MqJ0_M?rel=0" allowfullscreen></iframe>
+        </div>
+
+		<div class="game-btn-container">
+    <a href="game.html" class="btn-game btn-game-primary">
+        <span>🎮</span> Gioca a Game
+    </a>
+    <a href="car.html" class="btn-game btn-game-secondary">
+        <span>🏎️</span> Gioca a Car
+    </a>
+</div>
+    </section>
+
+        <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">UP<span>TOYOU</span></div>
+                <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Link Utili</h4>
+                <ul>
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Supporto</h4>
+                <ul>
+                    <li>Privacy Policy</li>
+                    <li>Termini di Servizio</li>
+                    <li><a href="contact.html">Contattaci</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contatti</h4>
+                <ul>
+                    <li>Email: info@uptoyou.it</li>
+                    <li>Roma, Italia</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <div id="ai-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; font-family: sans-serif;">
+        <button id="ai-open-btn" style="background: #8e44ad; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">🧠</button>
+
+        <div id="ai-window" style="display: none; width: 300px; height: 400px; background: white; border: 1px solid #ddd; border-radius: 15px; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: absolute; bottom: 80px; right: 0; overflow: hidden;">
+            <div style="background: #8e44ad; color: white; padding: 15px; font-weight: bold;">UpToYou Mentor AI</div>
+            <div id="ai-messages" style="flex: 1; padding: 10px; overflow-y: auto; font-size: 14px; color: #333; max-height: 280px; background: #fdfdfd;">
+                <p>Ciao! Sono il tuo orientatore. Di cosa hai paura o cosa ti incuriosisce della scelta della scuola?</p>
+            </div>
+            <div style="padding: 10px; border-top: 1px solid #eee; display: flex; background: white;">
+                <input type="text" id="ai-input" placeholder="Scrivi qui..." style="flex: 1; border: 1px solid #ddd; border-radius: 5px; padding: 8px; color: black; outline: none;">
+                <button id="ai-send" style="margin-left: 5px; background: #8e44ad; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer;">Invia</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Configurazione Supabase
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        // Ricerca Scuole
+        const input = document.getElementById('inputRicerca');
+        const tendina = document.getElementById('tendina');
+        const debug = document.getElementById('debug');
+
+        if (input) {
+            input.addEventListener('input', async () => {
+                const val = input.value.trim();
+                if (val.length < 2) {
+                    tendina.style.display = 'none';
+                    debug.innerText = "Scrivi almeno 2 lettere...";
+                    return;
+                }
+                debug.innerText = "Cerco: " + val + "...";
+                try {
+                    const { data: schools, error } = await supabaseClient
+                        .from('schools')
+                        .select('id, DENOMINAZIONESCUOLA, DESCRIZIONECOMUNE')
+                        .ilike('DENOMINAZIONESCUOLA', `%${val}%`)
+                        .limit(10);
+
+                    if (error) { debug.innerText = "ERRORE: " + error.message; return; }
+
+                    if (schools && schools.length > 0) {
+                        debug.innerText = "Trovate " + schools.length + " scuole";
+                        tendina.innerHTML = schools.map(s => `
+                            <div class="item-scuola" onclick="vaiAllaScuola('${s.id}')">
+                                <strong>${s.DENOMINAZIONESCUOLA}</strong>
+                                <small>📍 ${s.DESCRIZIONECOMUNE}</small>
+                            </div>
+                        `).join('');
+                        tendina.style.display = 'block';
+                    } else {
+                        debug.innerText = "Nessun risultato.";
+                        tendina.innerHTML = '<div style="padding:15px; color:#666;">Nessuna scuola trouvata</div>';
+                        tendina.style.display = 'block';
+                    }
+                } catch (e) {
+                    debug.innerText = "Errore di connessione.";
+                    console.error(e);
+                }
+            });
+        }
+
+
+function toggleFiltri() {
+            const container = document.getElementById('container-filtri');
+            const btn = document.getElementById('btn-apri-filtri');
+            if (container.style.display === 'none') {
+                container.style.display = 'block';
+                btn.innerHTML = 'Chiudi filtri ❌';
+                btn.style.background = '#ff00ff';
+                btn.style.color = '#fff';
+            } else {
+                container.style.display = 'none';
+                btn.innerHTML = 'Fai la ricerca per filtri ⚙️';
+                btn.style.background = 'transparent';
+                btn.style.color = '#ff00ff';
+            }
+        }
+        function vaiAllaScuola(id) { window.location.href = `scuola.html?id=${id}`; }
+
+        document.addEventListener('click', (e) => {
+            if (tendina && !e.target.closest('.search-box')) {
+                tendina.style.display = 'none';
+            }
+        });
+
+        // Gestione Test iframe
+        function showTest() {
+            document.getElementById('test-section').style.display = 'block';
+            document.getElementById('test-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        function closeTest() {
+            document.getElementById('test-section').style.display = 'none';
+        }
+
+        // Funzione per scorrere fino alla hero
+        function scrollToHero() {
+            document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+        }
+
+       // --- LOGICA AI MENTOR INTEGRATA ---
+const aiBtn = document.getElementById('ai-open-btn');
+const aiWindow = document.getElementById('ai-window');
+const aiMessages = document.getElementById('ai-messages');
+const aiInput = document.getElementById('ai-input');
+const aiSend = document.getElementById('ai-send');
+
+// Toggle apertura/chiusura finestra
+if(aiBtn && aiWindow) {
+    aiBtn.addEventListener('click', () => {
+        aiWindow.style.display = aiWindow.style.display === 'none' ? 'flex' : 'none';
+    });
+}
+
+// Funzione per inviare il messaggio
+async function sendAiMessage() {
+    const text = aiInput.value.trim();
+    if (!text) return;
+
+    appendAiMessage(text, 'user');
+    aiInput.value = "";
+
+    try {
+        const { data, error } = await supabaseClient.functions.invoke('AI-api', {
+            body: { message: text }
+        });
+
+        if (error) throw error;
+
+        if (data.candidates && data.candidates[0].content) {
+            const aiText = data.candidates[0].content.parts[0].text;
+            appendAiMessage(aiText, 'ai');
+        } else {
+            appendAiMessage("Scusa, ho avuto un problema tecnico. Riprova più tardi.", 'ai');
+        }
+    } catch (error) {
+        console.error("Errore AI:", error);
+        appendAiMessage("Errore di connessione con il Mentor.", 'ai');
+    }
+}
+
+// Funzione per visualizzare i messaggi nel widget
+function appendAiMessage(text, side) {
+    const p = document.createElement('p');
+    p.style.marginBottom = "10px";
+    p.style.padding = "8px";
+    p.style.borderRadius = "8px";
+    
+    if (side === 'user') {
+        p.style.background = "#e1bee7";
+        p.style.marginLeft = "20px";
+        p.style.color = "#000";
+        p.innerHTML = `<strong>Tu:</strong> ${text}`;
+    } else {
+        p.style.background = "#f0f0f0";
+        p.style.marginRight = "20px";
+        p.style.color = "#333";
+        p.innerHTML = `<strong>Mentor:</strong> ${text}`;
+    }
+    
+    aiMessages.appendChild(p);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+}
+
+// Listener per invio (Click o Tasto Invio)
+if(aiSend) aiSend.addEventListener('click', sendAiMessage);
+if(aiInput) aiInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendAiMessage();
+});
+
+// 3. LOGICA NAVBAR & AUTENTICAZIONE
+window.SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+window.SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+window.supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+async function updateNavbar(session) {
+    const authContainer = document.getElementById('auth-nav-item');
+    if (!authContainer) return;
+
+    if (session) {
+        const user = session.user;
+        const displayName = user.user_metadata?.full_name || user.email.split('@')[0];
+        
+        authContainer.className = "user-menu-wrapper";
+        authContainer.innerHTML = `
+            <div class="user-welcome-box">
+                Benvenuto, <span>${displayName}</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+            <ul class="user-dropdown-menu">
+                <li>
+                    <a href="profilo.html">
+                        <svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Il mio Profilo
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        Impostazioni
+                    </a>
+                </li>
+                <div class="menu-divider"></div>
+                <li>
+                    <a onclick="handleLogout()" class="btn-logout-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        `;
+    } else {
+            authContainer.className = "nav-auth-buttons";
+            authContainer.innerHTML = `
+                <a href="login.html" class="nav-box btn-login">Accedi</a>
+                <a href="register.html" class="nav-box btn-register">Registrati</a>
+            `;
+        }
+    }
+
+    // Funzione per il Logout
+    async function handleLogout() {
+        const { error } = await supabaseClient.auth.signOut();
+        if (error) {
+            alert("Errore durante il logout: " + error.message);
+        } else {
+            window.location.reload();
+        }
+    }
+
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+        console.log("Auth Event:", event);
+        updateNavbar(session);
+    });
+
+    window.addEventListener('DOMContentLoaded', async () => {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        updateNavbar(session);
+    });
+
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const navLinksContainer = document.getElementById('nav-links-container');
+
+if (mobileMenuBtn && navLinksContainer) {
+    mobileMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mobileMenuBtn.classList.toggle('active');
+        navLinksContainer.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (navLinksContainer.classList.contains('active') && 
+            !navLinksContainer.contains(e.target) && 
+            !mobileMenuBtn.contains(e.target)) {
+            
+            mobileMenuBtn.classList.remove('active');
+            navLinksContainer.classList.remove('active');
+        }
+    });
+} 
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(reg => console.log('Web App configurata in locale con successo!', reg))
+        .catch(err => console.error('Errore di configurazione locale:', err));
+    });
+  }
+
+
+let currentSlideIndex = 0;
+    const slides = document.querySelectorAll('.carousel-bg');
+    const dots = document.querySelectorAll('.carousel-dot');
+    let carouselTimer;
+
+    function showCarouselSlide(index) {
+        if (!slides.length) return;
+        
+        slides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        
+        if (index >= slides.length) currentSlideIndex = 0;
+        if (index < 0) currentSlideIndex = slides.length - 1;
+        
+        slides[currentSlideIndex].classList.add('active');
+        dots[currentSlideIndex].classList.add('active');
+    }
+
+    function moveSlide(step) {
+        currentSlideIndex += step;
+        showCarouselSlide(currentSlideIndex);
+        resetTimer();
+    }
+
+    function setSlide(index) {
+        currentSlideIndex = index - 1;
+        showCarouselSlide(currentSlideIndex);
+        resetTimer();
+    }
+
+    function resetTimer() {
+        clearInterval(carouselTimer);
+        carouselTimer = setInterval(() => { moveSlide(1); }, 5000); // Cambia ogni 5 secondi
+    }
+
+    // Inizializza al caricamento
+    document.addEventListener("DOMContentLoaded", () => {
+        if (slides.length > 0) {
+            showCarouselSlide(currentSlideIndex);
+            resetTimer();
+        }
+    });
+
+   </script>
+</body>
+</html>
