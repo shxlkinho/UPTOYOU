@@ -97,12 +97,9 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
 .footer-col ul li:hover { color: var(--accent); transform: translateX(5px); }
 .footer-bottom { text-align: center; color: var(--text-dim); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; font-size: 0.9rem; }
 
-
 /* ============================================================
    USER DROPDOWN - DESIGN MODERNO FINALE
    ============================================================ */
-
-/* Reset radicale: elimina pallini e spazi extra dello screen */
 .user-menu-wrapper, 
 .user-dropdown-menu, 
 .user-dropdown-menu li {
@@ -117,7 +114,6 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
     display: inline-block;
 }
 
-/* Trigger Box (Il tasto "Benvenuto...") */
 .user-welcome-box {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -137,7 +133,6 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
     font-weight: 700;
 }
 
-/* IL MENU (Contenitore Vetro) */
 .user-dropdown-menu {
     position: absolute;
     top: calc(100% + 8px); 
@@ -154,7 +149,6 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
     z-index: 1100;
 }
 
-/* PONTE INVISIBILE (Evita che il menu si chiuda muovendo il mouse) */
 .user-dropdown-menu::before {
     content: "";
     position: absolute;
@@ -170,7 +164,6 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
     animation: fadeIn 0.2s ease-out;
 }
 
-/* Stile Link Generali */
 .user-dropdown-menu li a {
     display: flex;
     align-items: center;
@@ -181,7 +174,7 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
     font-size: 0.9rem;
     border-radius: 10px;
     transition: 0.2s ease;
-    cursor: pointer !important; /* Manina sempre */
+    cursor: pointer !important;
     user-select: none;
 }
 
@@ -190,7 +183,6 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
     color: #fff;
 }
 
-/* Icone Monocromatiche Grigie */
 .user-dropdown-menu li a svg {
     width: 18px;
     height: 18px;
@@ -204,7 +196,6 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
     stroke: #fff;
 }
 
-/* LOGOUT - ROSSO E CURSORE MANINA */
 .user-dropdown-menu li a.btn-logout-item {
     color: #ff4d4d !important; 
     font-weight: 600;
@@ -231,8 +222,6 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
 /* ============================================================
    STILI HAMBURGER MENU & RESPONSIVE NAVBAR
    ============================================================ */
-
-/* Pulsante Hamburger - Nascosto su Desktop */
 .hamburger-toggle {
     display: none;
     flex-direction: column;
@@ -254,12 +243,10 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
     transition: all 0.3s ease;
 }
 
-/* Animazione in "X" quando attivo */
 .hamburger-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
 .hamburger-toggle.active span:nth-child(2) { opacity: 0; }
 .hamburger-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-/* Schermi Mobile e Tablet (sotto i 968px) */
 @media (max-width: 968px) {
     .navbar {
         display: flex !important;
@@ -278,11 +265,10 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
         z-index: 2000 !important;
     }
 
-    /* Il menu laterale a comparsa */
     .nav-links {
         position: fixed !important;
         top: 0 !important;
-        right: -100% !important; /* Nascosto a destra */
+        right: -100% !important;
         width: 75% !important;
         max-width: 300px !important;
         height: 100vh !important;
@@ -321,7 +307,6 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
         width: 100% !important;
     }
 
-    /* Di base la tendina su mobile è nascosta */
     .nav-links .dropdown-menu {
         display: none !important; 
         position: relative !important;
@@ -338,7 +323,6 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
         gap: 12px !important;
     }
 
-    /* Mostra la tendina SOLO quando si passa sopra con il dito/mouse sulla voce principale */
     .nav-links .dropdown:hover .dropdown-menu,
     .nav-links .dropdown:focus-within .dropdown-menu {
         display: flex !important;
@@ -354,3 +338,151 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
         padding: 5px 0 !important;
     }
 }
+
+/* ============================================================
+   STILI CAROSELLO MODIFICATI (PARALLAX, CENTRATURA E LIVELLI)
+   ============================================================ */
+.hero-carousel-section {
+    position: relative;
+    overflow: hidden;
+    background: none !important;
+    min-height: 63vh; /* Cambia 100vh con 80vh o 85vh per farlo più corto */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 5%;
+}
+
+/* Sfondo con Effetto Parallax */
+.carousel-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* <-- ATTIVA IL PARALLAX SOLO CHIUSO QUI */
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 1; 
+}
+
+.carousel-bg.active {
+    opacity: 1;
+}
+
+/* Overlay scuro per leggere perfettamente la scritta */
+.carousel-dark-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65); 
+    z-index: 2; 
+}
+
+/* FORZIAMO LA SCRITTA E CONTENUTI SOPRA LE IMMAGINI (z-index alzato) */
+.hero-content, .hero-card-container { 
+    z-index: 20 !important; 
+    position: relative !important; 
+}
+
+/* PUNTINI DI NAVIGAZIONE PERFETTAMENTE CENTRATI IN BASSO */
+.carousel-dots {
+    position: absolute;
+    bottom: 30px; 
+    left: 50%;
+    transform: translateX(-50%); /* <-- Questo li centra al millimetro */
+    display: flex;
+    gap: 12px;
+    z-index: 30;
+}
+
+.carousel-dot {
+    width: 12px; 
+    height: 12px;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.carousel-dot.active, .carousel-dot:hover { 
+    background-color: #4facfe; 
+}
+
+/* ============================================================
+   PULSANTE INIZIA MIGLIORATO CON FRECCIA CENTRATA IN BASSO
+   ============================================================ */
+.linea-inizia-sottile {
+    background-color: var(--bg-dark); /* Sfondo coerente con la pagina */
+    padding: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.btn-inizia-linea {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 12px 35px;
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    /* Impila la scritta e la freccia verticalmente al centro */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
+/* Effetto Hover sul Bottone */
+.btn-inizia-linea:hover { 
+    background: var(--accent); 
+    border-color: var(--accent);
+    color: #000;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
+}
+
+/* Forza la freccia sotto ad essere centrata e distanziata bene */
+.btn-inizia-linea span.freccia {
+    font-size: 1.3rem;
+    line-height: 0.8;
+    margin-top: 2px;
+}
+/* ============================================================
+   LA TUA LINEA BLU (MOLTO PIÙ SOTTILE)
+   ============================================================ */
+.linea-inizia-sottile {
+    background-color: #55aaff; /* Azzurro della tua foto */
+    height: 15px; /* <-- Ecco il segreto per farla sottile */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.btn-inizia-linea {
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 2px 15px;
+    border-radius: 15px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-inizia-linea:hover { background: white; color: #55aaff; }
