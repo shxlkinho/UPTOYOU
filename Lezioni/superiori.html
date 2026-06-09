@@ -3,159 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Superiori - Up to You</title>
-    <link rel="stylesheet" href="../style.css">
+    <title>UpToYou - Sezione in Sviluppo</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        /* STESSO CSS DELLA PAGINA ELEMENTARI */
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #0d0d0d;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .classi-section {
-            flex: 1;
-            padding: 120px 20px 80px;
-            max-width: 1300px;
+        /* ============================================================
+           STILI SPECIFICI PER LA PAGINA WORK IN PROGRESS
+           ============================================================ */
+        
+        .wip-page-wrapper {
+            padding: 140px 5% 80px 5%; /* Spazio per la navbar fissa */
+            max-width: 800px;
             margin: 0 auto;
-            text-align: center;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .intro-p {
-            color: #aaa;
-            margin-bottom: 50px;
-            font-size: 1.1rem;
-        }
-
-        .info-container {
-            display: flex; /* Cambiato da grid a flex */
-            flex-wrap: wrap; /* Permette di andare a capo */
-            justify-content: center; /* Centra gli elementi nell'ultima riga */
-            gap: 25px;
-            width: 100%;
-        }
-
-        .info-card {
-            background: #161616;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            min-height: 60vh;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wip-container {
+            text-align: center;
+            background: var(--bg-card);
+            padding: 50px 40px;
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
             overflow: hidden;
-            text-align: left;
-            /* Definiamo la larghezza per simulare le 3 colonne */
-            width: calc(33.333% - 17px);
-            min-width: 300px; /* Evita che diventino troppo strette */
         }
 
-        .card-image {
-            width: 100%;
-            height: 180px;
-            overflow: hidden;
+        /* Effetto di luce sfumata sullo sfondo del pannello */
+        .wip-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 0, 255, 0.05) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-            .card-image img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: 0.5s;
-                filter: brightness(0.6);
-            }
-
-        .info-card:hover .card-image img {
-            transform: scale(1.1);
-            filter: brightness(1);
+        .wip-icon {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: pulseGlow 2s infinite ease-in-out;
         }
 
-        .card-content {
-            padding: 20px;
+        .wip-container h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ff00ff, var(--accent)); /* Gradiente Magenta-Azzurro */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: -1px;
         }
 
-        .info-card h3 {
-            color: #4facfe;
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-        }
-
-        .info-card p {
-            color: #ccc;
-            font-size: 0.9rem;
-            line-height: 1.4;
+        .wip-container h2 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
             margin-bottom: 15px;
         }
 
-        .info-card ul {
-            list-style: none;
-            padding: 0;
+        .wip-container p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 35px auto;
+            line-height: 1.6;
         }
 
-            .info-card ul li {
-                margin-bottom: 8px;
-                color: #eee;
-                font-size: 0.85rem;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-                .info-card ul li::before {
-                    content: "✓";
-                    color: #00c6ff;
-                    font-weight: bold;
-                }
-
-        .card-btn {
+        /* Barra di progresso estetica */
+        .progress-bar-container {
             width: 100%;
-            padding: 15px;
-            border: none;
-            background: rgba(255, 255, 255, 0.03);
+            max-width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 0 auto 40px auto;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            width: 65%;
+            height: 100%;
+            background: linear-gradient(to right, #ff00ff, var(--accent));
+            border-radius: 10px;
+            animation: progressAnimation 2.5s infinite ease-in-out;
+        }
+
+        .back-home-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff00ff, #8e44ad);
             color: white;
-            font-weight: 700;
-            text-transform: uppercase;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+            font-size: 1.05rem;
+            text-decoration: none;
             cursor: pointer;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
             transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.3);
         }
 
-        .info-card:hover {
-            transform: translateY(-10px);
-            border-color: #4facfe;
-            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.2);
+        .back-home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 0, 255, 0.5);
+            color: white;
         }
 
-            .info-card:hover .card-btn {
-                background: linear-gradient(to right, #4facfe, #00c6ff);
-            }
-
-        @media (max-width: 1100px) {
-            .info-card {
-                width: calc(50% - 25px); /* Su tablet ne mette 2 per riga */
-            }
+        /* Animazioni */
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 0, 255, 0.2)); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 25px rgba(79, 172, 254, 0.6)); }
         }
 
-        @media (max-width: 850px) {
-            .info-container {
-                flex-direction: column;
-            }
+        @keyframes progressAnimation {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(150%); }
+        }
 
-            .info-card {
-                width: 100%; /* Su mobile torna a colonna singola */
-            }
+        @media (max-width: 480px) {
+            .wip-container { padding: 35px 20px; }
         }
     </style>
 </head>
@@ -163,122 +143,53 @@
 
     <header>
         <nav class="navbar">
-            <div class="logo"><a href="../index.html" style="text-decoration:none; color:inherit;">UP<span>TOYOU</span></a></div>
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    UP<span>TOYOU</span>
+                </a>
+            </div>
+
             <button class="hamburger-toggle" id="mobile-menu-btn" aria-label="Apri menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
 
-
-        <ul class="nav-links" id="nav-links-container">
-                <li><a href="../index.html">Home</a></li>
+            <ul class="nav-links" id="nav-links-container">
+                <li><a href="index.html">Home</a></li>
                 <li class="dropdown">
                     <a href="#">Lezioni ▾</a>
                     <ul class="dropdown-menu">
-                        <li><a href="elementari.html">Elementari</a></li>
-                        <li><a href="medie.html">Medie</a></li>
-                        <li><a href="superiori.html">Superiori</a></li>
+                        <li><a href="Lezioni/elementari.html">Elementari</a></li>
+                        <li><a href="Lezioni/medie.html">Medie</a></li>
+                        <li><a href="Lezioni/superiori.html">Superiori</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#">Orientamento ▾</a>
                     <ul class="dropdown-menu">
-                        <li><a href="../rapido.html">Orientamento Rapido</a></li>
-                        <li><a href="../guidato.html">Orientamento Guidato</a></li>
+                        <li><a href="guidato.html">Orientamento Guidato</a></li>
+                        <li><a href="rapido.html">Orientamento Rapido</a></li>
                     </ul>
                 </li>
-                <li><a href="../contact.html">Contatti</a></li>
+                <li><a href="contact.html">Contatti</a></li>
                 <li id="auth-nav-item" class="nav-auth-container"></li>
             </ul>
         </nav>
     </header>
 
-    <main class="classi-section">
-        <h1>Scuola Superiore</h1>
-        <p class="intro-p">Scopri il tuo percorso e costruisci le competenze per il tuo futuro.</p>
-
-        <div class="info-container">
-            <div class="info-card">
-                <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800" alt="Primo Anno">
-                </div>
-                <div class="card-content">
-                    <h3>Classe Prima 🚀</h3>
-                    <p>L'anno dell'accoglienza e del nuovo metodo di studio superiore.</p>
-                    <ul>
-                        <li>Consolidamento basi</li>
-                        <li>Organizzazione studio</li>
-                        <li>Socializzazione gruppo classe</li>
-                    </ul>
-                </div>
-                <button class="card-btn">Esplora</button>
+    <main class="wip-page-wrapper">
+        <div class="wip-container">
+            <span class="wip-icon">🚀</span>
+            <h1>Work in Progress</h1>
+            <h2>Stiamo costruendo qualcosa di grande!</h2>
+            <p>I nostri sviluppatori e la community sono al lavoro per mappare e configurare al meglio questa sezione. Manca poco: stiamo ottimizzando l'esperienza per darti strumenti di orientamento ancora più precisi ed efficaci.</p>
+            
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill"></div>
             </div>
 
-            <div class="info-card">
-                <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=800" alt="Secondo Anno">
-                </div>
-                <div class="card-content">
-                    <h3>Classe Seconda 🎯</h3>
-                    <p>Conferma della scelta e preparazione al triennio di indirizzo.</p>
-                    <ul>
-                        <li>Potenziamento materie</li>
-                        <li>Consapevolezza dell'indirizzo</li>
-                        <li>Verso il triennio</li>
-                    </ul>
-                </div>
-                <button class="card-btn">Esplora</button>
-            </div>
-
-            <div class="info-card">
-                <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800" alt="Terzo Anno">
-                </div>
-                <div class="card-content">
-                    <h3>Classe Terza 📐</h3>
-                    <p>L'inizio del triennio: si entra nel vivo delle materie specifiche.</p>
-                    <ul>
-                        <li>Materie caratterizzanti</li>
-                        <li>Inizio percorsi PCTO</li>
-                        <li>Metodologie avanzate</li>
-                    </ul>
-                </div>
-                <button class="card-btn">Esplora</button>
-            </div>
-
-            <div class="info-card">
-                <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800" alt="Quarto Anno">
-                </div>
-                <div class="card-content">
-                    <h3>Classe Quarta 🏛️</h3>
-                    <p>Approfondimento critico e costruzione del profilo professionale.</p>
-                    <ul>
-                        <li>Analisi interdisciplinare</li>
-                        <li>Esperienze sul campo</li>
-                        <li>Verso L'Esame di Stato</li>
-                    </ul>
-                </div>
-                <button class="card-btn">Esplora</button>
-            </div>
-
-            <div class="info-card">
-                <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1525921429624-479b6a26d84d?q=80&w=800" alt="Quinto Anno">
-                </div>
-                <div class="card-content">
-                    <h3>Classe Quinta 🎓</h3>
-                    <p>L'anno della Maturità e del salto verso l'Università o il Lavoro.</p>
-                    <ul>
-                        <li>Preparazione Esame di Stato</li>
-                        <li>Orientamento post-diploma</li>
-                        <li>Portfolio finale</li>
-                    </ul>
-                </div>
-                <button class="card-btn">Esplora</button>
-            </div>
-
+            <a href="index.html" class="back-home-btn">Torna alla Home</a>
         </div>
     </main>
 
@@ -291,8 +202,8 @@
             <div class="footer-col">
                 <h4>Link Utili</h4>
                 <ul>
-                    <li><a href="../guidato.html">Orientamento Guidato</a></li>
-                    <li><a href="../rapido.html">Orientamento Rapido</a></li>
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -300,7 +211,7 @@
                 <ul>
                     <li>Privacy Policy</li>
                     <li>Termini di Servizio</li>
-                    <li><a href="../contact.html">Contattaci</a></li>
+                    <li><a href="contact.html">Contattaci</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -313,14 +224,104 @@
         </div>
         <div class="footer-bottom">
             <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
-            <p>Designed with Excellence</p>
         </div>
     </footer>
 
-</body>
-    <!-- 1. Libreria Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <div id="ai-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; font-family: sans-serif;">
+        <button id="ai-open-btn" style="background: #8e44ad; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">🧠</button>
 
-<!-- 2. Il tuo nuovo file logica (assicurati che il percorso sia giusto) -->
-<script src="../script.js"></script>
+        <div id="ai-window" style="display: none; width: 300px; height: 400px; background: white; border: 1px solid #ddd; border-radius: 15px; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: absolute; bottom: 80px; right: 0; overflow: hidden;">
+            <div style="background: #8e44ad; color: white; padding: 15px; font-weight: bold;">UpToYou Mentor AI</div>
+            <div id="ai-messages" style="flex: 1; padding: 10px; overflow-y: auto; font-size: 14px; color: #333; max-height: 280px; background: #fdfdfd;">
+                <p>Ciao! Sono il tuo orientatore. Hai dubbi sul funzionamento della piattaforma?</p>
+            </div>
+            <div style="padding: 10px; border-top: 1px solid #eee; display: flex; background: white;">
+                <input type="text" id="ai-input" placeholder="Scrivi qui..." style="flex: 1; border: 1px solid #ddd; border-radius: 5px; padding: 8px; color: black; outline: none;">
+                <button id="ai-send" style="margin-left: 5px; background: #8e44ad; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer;">Invia</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURAZIONE DI SUPABASE
+        // ==========================================
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        
+        const supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
+
+        // ==========================================
+        // LOGICA NAVBAR (Login, Hamburger, Auth)
+        // ==========================================
+        async function updateNavbar(session) {
+            const authContainer = document.getElementById('auth-nav-item');
+            if (!authContainer) return;
+
+            if (session) {
+                const user = session.user;
+                const displayName = user.user_metadata?.full_name || user.email.split('@')[0];
+                
+                authContainer.className = "user-menu-wrapper";
+                authContainer.innerHTML = `
+                    <div class="user-welcome-box">
+                        Benvenuto, <span>${displayName}</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    </div>
+                    <ul class="user-dropdown-menu">
+                        <li><a href="profilo.html"><svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Il mio Profilo</a></li>
+                        <li><a href="settings.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Impostazioni</a></li>
+                        <div class="menu-divider"></div>
+                        <li><a onclick="handleLogout()" class="btn-logout-item"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a></li>
+                    </ul>
+                `;
+            } else {
+                authContainer.className = "nav-auth-buttons";
+                authContainer.innerHTML = `
+                    <a href="login.html" class="nav-box btn-login">Accedi</a>
+                    <a href="register.html" class="nav-box btn-register">Registrati</a>
+                `;
+            }
+        }
+
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            window.location.reload();
+        }
+
+        supabaseClient.auth.onAuthStateChange((event, session) => updateNavbar(session));
+        
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navLinksContainer = document.getElementById('nav-links-container');
+        if (mobileMenuBtn && navLinksContainer) {
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mobileMenuBtn.classList.toggle('active');
+                navLinksContainer.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                if (navLinksContainer.classList.contains('active') && !navLinksContainer.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    mobileMenuBtn.classList.remove('active');
+                    navLinksContainer.classList.remove('active');
+                }
+            });
+        }
+
+        // ==========================================
+        // INIT & AI WIDGET
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            updateNavbar(session);
+        });
+
+        const aiBtn = document.getElementById('ai-open-btn');
+        const aiWindow = document.getElementById('ai-window');
+        if(aiBtn && aiWindow) {
+            aiBtn.addEventListener('click', () => {
+                aiWindow.style.display = aiWindow.style.display === 'none' ? 'flex' : 'none';
+            });
+        }
+    </script>
+</body>
 </html>
