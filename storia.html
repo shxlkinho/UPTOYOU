@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UpToYou - La Nostra Storia</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        /* ============================================================
+           STILI ESCLUSIVI PER LA PAGINA STORIA (Design Cyber-Storytelling)
+           ============================================================ */
+        
+        .story-page-wrapper {
+            padding: 140px 5% 80px 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section Story */
+        .story-hero {
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .story-hero h1 {
+            font-size: clamp(2.8rem, 6vw, 4.8rem);
+            line-height: 1.1;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 30%, var(--text-dim) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+
+        .story-hero h1 span {
+            background: linear-gradient(to right, #ff00ff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .story-hero p.subtitle {
+            font-size: 1.3rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Il Manifesto / Vision */
+        .manifesto-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 24px;
+            margin-bottom: 80px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .manifesto-box::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            font-size: 8rem;
+            color: rgba(255, 0, 255, 0.15);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .manifesto-box p {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #fff;
+            font-style: italic;
+        }
+
+        /* Timeline Interattiva / Visuale */
+        .timeline {
+            position: relative;
+            margin: 60px 0;
+            padding-left: 30px;
+            border-left: 3px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 60px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 5px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+            transition: 0.3s;
+        }
+
+        .timeline-item.highlight::before {
+            background: #ff00ff;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+
+        .timeline-date {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .timeline-item.highlight .timeline-date {
+            color: #ff00ff;
+        }
+
+        .timeline-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .timeline-content {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Griglia dei Valori */
+        .values-section {
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        .values-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            color: #fff;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .value-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 35px 25px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(79, 172, 254, 0.3);
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.05);
+        }
+
+        .value-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .value-card h3 {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .value-card p {
+            color: var(--text-dim);
+            font-size: 0.98rem;
+            line-height: 1.6;
+        }
+
+        /* CTA Finale */
+        .story-cta {
+            text-align: center;
+            margin-top: 100px;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.05), rgba(79, 172, 254, 0.05));
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .story-cta h2 {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .story-cta p {
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            font-size: 1.1rem;
+        }
+
+        .story-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff00ff, var(--accent));
+            color: white;
+            padding: 15px 35px;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(79, 172, 254, 0.3);
+            transition: 0.3s;
+        }
+
+        .story-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 0, 255, 0.4);
+            color: white;
+        }
+
+        @media(max-width: 768px) {
+            .manifesto-box { padding: 25px; }
+            .manifesto-box p { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    UP<span>TOYOU</span>
+                </a>
+            </div>
+
+            <button class="hamburger-toggle" id="mobile-menu-btn" aria-label="Apri menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-links" id="nav-links-container">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Lezioni ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="Lezioni/elementari.html">Elementari</a></li>
+                        <li><a href="Lezioni/medie.html">Medie</a></li>
+                        <li><a href="Lezioni/superiori.html">Superiori</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Orientamento ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="guidato.html">Orientamento Guidato</a></li>
+                        <li><a href="rapido.html">Orientamento Rapido</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contatti</a></li>
+                <li id="auth-nav-item" class="nav-auth-container"></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="story-page-wrapper">
+        
+        <section class="story-hero">
+            <p class="subtitle">Chi Siamo</p>
+            <h1>Niente Burocrazia.<br>Solo la Realizzazione di <span>UpToYou</span></h1>
+        </section>
+
+        <section class="manifesto-box">
+            <p>Siamo cresciuti sentendoci dire che per scegliere il nostro futuro bastava un opuscolo cartaceo o un test a crocette standardizzato fatto nell'ora di supplenza alle superiori. Risultato? Università sbagliate, talenti sprecati e ragazzi disorientati. Abbiamo capito che l'unico modo per capire davvero una strada è chiederlo a chi la sta già percorrendo. UpToYou è nato da qui: per azzerare il caos e rimettere il futuro nelle mani degli studenti.</p>
+        </section>
+
+        <section class="timeline">
+            
+            <div class="timeline-item">
+                <div class="timeline-date">La Scintilla</div>
+                <div class="timeline-title">Il test inutile e la frustrazione</div>
+                <div class="timeline-content">
+                    Tutto ha inizio in un'aula informatica delle superiori durante l'anno del diploma. Davanti all'ennesimo test di orientamento antiquato che suggeriva professioni fuori dal mondo, nasce l'idea: perché non esiste un posto dove gli studenti possono confrontarsi sui veri programmi d'esame, raccogliere le tracce reali della Maturità e recensire onestamente i metodi dei professori?
+                </div>
+            </div>
+
+            <div class="timeline-item highlight">
+                <div class="timeline-date">La prima riga di codice</div>
+                <div class="timeline-title">Dall'idea al Prototipo Dark</div>
+                <div class="timeline-content">
+                    Notti insonni passate a scrivere linee di codice, configurare database su Supabase e studiare l'interfaccia perfetta. Niente design noiosi e ministeriali: volevamo una web app moderna, veloce, accessibile da mobile (PWA) e con un look vicino alla cultura digitale dei giovani d'oggi. Nasce l'ossatura di UpToYou.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Oggi e Domani</div>
+                <div class="timeline-title">La Community prende il controllo</div>
+                <div class="timeline-content">
+                    UpToYou ha smesso di essere il progetto isolato di uno sviluppatore ed è diventato un ecosistema aperto. Dalla scuola elementare fino ai test universitari e all'archivio della Maturità, la piattaforma vive e cresce solo grazie alle informazioni inserite, verificate e condivise ogni giorno dai ragazzi di tutta Italia. 
+                </div>
+            </div>
+
+        </section>
+
+        <section class="values-section">
+            <h2>I pilastri su cui abbiamo costruito tutto</h2>
+            <div class="values-grid">
+                
+                <div class="value-card">
+                    <span class="value-icon">📢</span>
+                    <h3>Pari a Pari (Peer-to-Peer)</h3>
+                    <p>Nessun filtro accademico o linguaggio incomprensibile. I consigli arrivano direttamente da studenti che hanno affrontato le tue stesse identiche difficoltà un mese o un anno prima di te.</p>
+                </div>
+
+                <div class="value-card">
+                    <span class="value-icon">⚡</span>
+                    <h3>Trasparenza Totale</h3>
+                    <p>Crediamo nelle recensioni oneste e costruttive. Sapere come spiega un professore o la reale difficoltà di una traccia d'esame è un diritto di ogni studente per prepararsi al meglio.</p>
+                </div>
+
+                <div class="value-card">
+                    <span class="value-icon">🤝</span>
+                    <h3>Nessun Profitto, Solo Utilità</h3>
+                    <p>UpToYou è una piattaforma libera, nata per essere democratica e accessibile a tutti, dalle elementari all'università, senza pubblicità invasive o paywall.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="story-cta">
+            <h2>Questa storia la scriviamo insieme</h2>
+            <p>UpToYou funziona bene solo se ognuno di noi lascia un piccolo pezzo della propria esperienza. Condividi una traccia, valuta un corso o aiuta una matricola.</p>
+            <a href="index.html" class="story-btn">Inizia a Contribuire</a>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">UP<span>TOYOU</span></div>
+                <p>La piattaforma leader nell'orientamento scolastico e professionale per le nuove generazioni.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Link Utili</h4>
+                <ul>
+                    <li><a href="guidato.html">Orientamento Guidato</a></li>
+                    <li><a href="rapido.html">Orientamento Rapido</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Supporto</h4>
+                <ul>
+                    <li>Privacy Policy</li>
+                    <li>Termini di Servizio</li>
+                    <li><a href="contact.html">Contattaci</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contatti</h4>
+                <ul>
+                    <li>Email: info@uptoyou.it</li>
+                    <li>Roma, Italia</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Up to You. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <div id="ai-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; font-family: sans-serif;">
+        <button id="ai-open-btn" style="background: #8e44ad; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">🧠</button>
+
+        <div id="ai-window" style="display: none; width: 300px; height: 400px; background: white; border: 1px solid #ddd; border-radius: 15px; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: absolute; bottom: 80px; right: 0; overflow: hidden;">
+            <div style="background: #8e44ad; color: white; padding: 15px; font-weight: bold;">UpToYou Mentor AI</div>
+            <div id="ai-messages" style="flex: 1; padding: 10px; overflow-y: auto; font-size: 14px; color: #333; max-height: 280px; background: #fdfdfd;">
+                <p>Ciao! Sono il tuo orientatore. Hai dubbi sul funzionamento della piattaforma?</p>
+            </div>
+            <div style="padding: 10px; border-top: 1px solid #eee; display: flex; background: white;">
+                <input type="text" id="ai-input" placeholder="Scrivi qui..." style="flex: 1; border: 1px solid #ddd; border-radius: 5px; padding: 8px; color: black; outline: none;">
+                <button id="ai-send" style="margin-left: 5px; background: #8e44ad; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer;">Invia</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURAZIONE DI SUPABASE
+        // ==========================================
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        
+        const supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
+
+        // ==========================================
+        // LOGICA NAVBAR (Login, Hamburger, Auth)
+        // ==========================================
+        async function updateNavbar(session) {
+            const authContainer = document.getElementById('auth-nav-item');
+            if (!authContainer) return;
+
+            if (session) {
+                const user = session.user;
+                const displayName = user.user_metadata?.full_name || user.email.split('@')[0];
+                
+                authContainer.className = "user-menu-wrapper";
+                authContainer.innerHTML = `
+                    <div class="user-welcome-box">
+                        Benvenuto, <span>${displayName}</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    </div>
+                    <ul class="user-dropdown-menu">
+                        <li><a href="profilo.html"><svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Il mio Profilo</a></li>
+                        <li><a href="settings.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Impostazioni</a></li>
+                        <div class="menu-divider"></div>
+                        <li><a onclick="handleLogout()" class="btn-logout-item"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a></li>
+                    </ul>
+                `;
+            } else {
+                authContainer.className = "nav-auth-buttons";
+                authContainer.innerHTML = `
+                    <a href="login.html" class="nav-box btn-login">Accedi</a>
+                    <a href="register.html" class="nav-box btn-register">Registrati</a>
+                `;
+            }
+        }
+
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            window.location.reload();
+        }
+
+        supabaseClient.auth.onAuthStateChange((event, session) => updateNavbar(session));
+        
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navLinksContainer = document.getElementById('nav-links-container');
+        if (mobileMenuBtn && navLinksContainer) {
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mobileMenuBtn.classList.toggle('active');
+                navLinksContainer.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                if (navLinksContainer.classList.contains('active') && !navLinksContainer.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    mobileMenuBtn.classList.remove('active');
+                    navLinksContainer.classList.remove('active');
+                }
+            });
+        }
+
+        // ==========================================
+        // INIT & AI WIDGET
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            updateNavbar(session);
+        });
+
+        const aiBtn = document.getElementById('ai-open-btn');
+        const aiWindow = document.getElementById('ai-window');
+        if(aiBtn && aiWindow) {
+            aiBtn.addEventListener('click', () => {
+                aiWindow.style.display = aiWindow.style.display === 'none' ? 'flex' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
