@@ -219,6 +219,55 @@ footer { background: #050505; border-top: 1px solid rgba(255,255,255,0.05); padd
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Container per centrare il pulsante nella pagina */
+.story-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 40px 0; /* Regola lo spazio sopra e sotto il pulsante */
+    overflow: hidden; /* Evita la comparsa della barra di scorrimento orizzontale durante l'animazione */
+}
+
+/* Stile del Pulsante in linea con il Dark/Neon Theme di UpToYou */
+.slide-story-btn {
+    display: inline-block;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #ff00ff, #8e44ad); /* Gradiente Magenta-Viola coerente con la pagina */
+    color: white;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 50px; /* Pulsante arrotondato moderno */
+    box-shadow: 0 5px 15px rgba(255, 0, 255, 0.3);
+    white-space: nowrap;
+    
+    /* Configurazione dell'animazione Slide */
+    animation: slideInFromLeft 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Effetto Hover quando passi il mouse sopra */
+.slide-story-btn:hover {
+    transform: scale(1.05) !important; /* Mantiene la centralità ingrandendolo leggermente */
+    box-shadow: 0 8px 25px rgba(255, 0, 255, 0.5);
+}
+
+/* Definizione dei Keyframes dell'animazione da Sinistra a Centro */
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100vw); /* Parte completamente fuori dallo schermo a sinistra */
+        opacity: 0;
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0); /* Si ferma esattamente al centro grazie al flex container genitore */
+    }
+}
+
 /* ============================================================
    STILI HAMBURGER MENU & RESPONSIVE NAVBAR
    ============================================================ */
