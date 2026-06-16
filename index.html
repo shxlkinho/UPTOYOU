@@ -273,7 +273,7 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-        /* RICERCA SCUOLE */
+        /* RICERCA SCUOLE E BOTTONI */
         
         .search-section {
             padding: 100px 5% 50px 5%;
@@ -320,11 +320,37 @@
         .item-scuola small { color: #888; font-size: 13px; }
         #debug { color: #ff00ff; font-size: 12px; margin-top: 10px; }
 
+        /* Stile per il bottone Scuola Mancante */
+        .btn-mancante {
+            background: transparent;
+            border: 2px solid #ff4d4d;
+            color: #ff4d4d;
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        .btn-mancante:hover {
+            background: rgba(255, 77, 77, 0.1) !important;
+        }
+        
+        .form-scuola-input {
+            width: 100%; padding: 10px; background: #111; border: 1px solid #444; 
+            border-radius: 8px; color: white; margin-top: 5px; box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        .form-scuola-input:focus {
+            outline: none; border-color: #ff4d4d; box-shadow: 0 0 5px rgba(255, 77, 77, 0.3);
+        }
+
         /* ============================================================
            NUOVA HERO SECTION CON CAROSELLO E CTA AZZURRA
            ============================================================ */
         .hero-carousel-section {
-            background-image: url('placeholder_dark_blurred_library.jpg'); /* Placeholder image of dark blurred library */
+            background-image: url('placeholder_dark_blurred_library.jpg'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -341,8 +367,8 @@
     text-align: center;
     max-width: 900px;
     margin: 0 auto;
-    position: relative; /* Assicura che il contenitore segua i livelli */
-    z-index: 20; /* Forza il testo sopra l'overlay e le immagini */
+    position: relative; 
+    z-index: 20; 
 }
 
         .carousel-content h1 {
@@ -404,7 +430,7 @@
         .photo-grid-section {
             padding: 50px 5%;
             background: rgba(0,0,0,0.5);
-            margin-top: -100px; /* Overlap slightly with background image */
+            margin-top: -100px; 
             position: relative;
             z-index: 5;
         }
@@ -609,13 +635,11 @@
          NUOVA HERO SECTION CON CAROSELLO
          ============================================================ -->
     <section class="hero-carousel-section">
-        <!-- Le 4 immagini di sfondo. Ricordati di rinominare i tuoi file così! -->
         <div class="carousel-bg active" style="background-image: url('carousel-studio.jpg');"></div>
         <div class="carousel-bg" style="background-image: url('carousel-team.jpg');"></div>
         <div class="carousel-bg" style="background-image: url('carousel-tech.jpg');"></div>
         <div class="carousel-bg" style="background-image: url('carousel-futuro.jpg');"></div>
 
-        <!-- Overlay per scurire le immagini -->
         <div class="carousel-dark-overlay"></div>
 
         <div class="carousel-controls">
@@ -624,12 +648,10 @@
         </div>
 
         <div class="carousel-content">
-            <!-- Slogan in azzurro -->
             <h1 style="color: #4facfe;">Clear choices, bright future.</h1>
             <p>Orientamento scolastico e lezioni personalizzate per studenti dalle medie alle superiori.</p>
         </div>
 
-        <!-- I 4 puntini abbassati -->
         <div class="carousel-dots">
             <div class="carousel-dot active" onclick="setSlide(1)"></div>
             <div class="carousel-dot" onclick="setSlide(2)"></div>
@@ -638,9 +660,6 @@
         </div>
     </section>
 
-    <!-- ============================================================
-         BARRA AZZURRA SOTTILE E BOTTONE
-         ============================================================ -->
    <div class="linea-inizia-sottile">
     <button class="btn-inizia-linea" onclick="scrollToHero()">
         <span>inizia</span>
@@ -682,12 +701,47 @@
         <div id="debug">In attesa di digitazione...</div>
         <small style="color: #777; margin-top: 10px; font-size: 0.85rem; display: none;">* Scrivi il nome della scuola e clicca sulla lente per cercare.</small>
 
-        <button id="btn-apri-filtri" onclick="toggleFiltri()" style="margin-top: 25px; background: transparent; border: 2px solid #ff00ff; color: #ff00ff; padding: 12px 25px; border-radius: 20px; font-size: 1rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: 0.3s; font-weight: 600;">
-            Fai la ricerca per filtri ⚙️
-        </button>
+        <!-- CONTENITORE PULSANTI (FILTRI + SCUOLA MANCANTE) -->
+        <div style="display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap; justify-content: center;">
+            <button id="btn-apri-filtri" onclick="toggleFiltri()" style="background: transparent; border: 2px solid #ff00ff; color: #ff00ff; padding: 12px 25px; border-radius: 20px; font-size: 1rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: 0.3s; font-weight: 600;">
+                Fai la ricerca per filtri ⚙️
+            </button>
+            <button id="btn-scuola-mancante" class="btn-mancante" onclick="toggleScuolaMancante()">
+                Scuola Mancante ⚠️
+            </button>
+        </div>
 
+        <!-- IFRAME FILTRI -->
         <div id="container-filtri" style="display: none; width: 100%; max-width: 900px; margin-top: 30px; height: 500px; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255, 0, 255, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             <iframe src="filtri.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+
+        <!-- FORUM SCUOLA MANCANTE -->
+        <div id="container-scuola-mancante" style="display: none; width: 100%; max-width: 600px; margin-top: 30px; background: rgba(22, 22, 22, 0.8); padding: 30px; border-radius: 20px; border: 1px solid rgba(255, 77, 77, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: left; backdrop-filter: blur(10px);">
+            <h3 style="color: #ff4d4d; margin-bottom: 10px; text-align: center;">Non trovi la tua scuola?</h3>
+            <p style="color: #ccc; font-size: 0.9rem; margin-bottom: 25px; text-align: center;">Aiutaci a migliorare il database di UpToYou. Inviaci i dati e noi la aggiungeremo!</p>
+            
+            <form id="form-scuola-mancante" onsubmit="inviaSegnalazioneScuola(event)">
+                <div style="margin-bottom: 15px;">
+                    <label style="color: white; font-size: 0.9rem;">Nome Scuola *</label>
+                    <input type="text" id="sm-nome" class="form-scuola-input" required placeholder="Es. Liceo Scientifico Galilei">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="color: white; font-size: 0.9rem;">Regione *</label>
+                    <input type="text" id="sm-regione" class="form-scuola-input" required placeholder="Es. Lazio">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="color: white; font-size: 0.9rem;">Provincia *</label>
+                    <input type="text" id="sm-provincia" class="form-scuola-input" required placeholder="Es. Roma">
+                </div>
+                <div style="margin-bottom: 25px;">
+                    <label style="color: white; font-size: 0.9rem;">Comune *</label>
+                    <input type="text" id="sm-comune" class="form-scuola-input" required placeholder="Es. Tivoli">
+                </div>
+                <button type="submit" style="width: 100%; background: #ff4d4d; color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; cursor: pointer; font-weight: bold; transition: 0.3s;">
+                    Invia Segnalazione 🚀
+                </button>
+            </form>
         </div>
     </section>
 
@@ -795,7 +849,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // Configurazione Supabase
-       // Configurazione Supabase
         const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
         const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
@@ -818,8 +871,6 @@
                 debug.innerText = "Cerco: " + val + "...";
                 
                 try {
-                    // --- MODIFICA QUI ---
-                    // Utilizziamo .or() per cercare sia per nome scuola che per comune
                     const { data: schools, error } = await supabaseClient
                         .from('schools')
                         .select('id, DENOMINAZIONESCUOLA, DESCRIZIONECOMUNE')
@@ -842,7 +893,6 @@
                         tendina.style.display = 'block';
                     } else {
                         debug.innerText = "Nessun risultato.";
-                        // Ho corretto un piccolo refuso ("trouvata" -> "trovata")
                         tendina.innerHTML = '<div style="padding:15px; color:#666;">Nessuna scuola trovata</div>';
                         tendina.style.display = 'block';
                     }
@@ -852,21 +902,92 @@
                 }
             });
         }
-function toggleFiltri() {
-            const container = document.getElementById('container-filtri');
-            const btn = document.getElementById('btn-apri-filtri');
-            if (container.style.display === 'none') {
-                container.style.display = 'block';
-                btn.innerHTML = 'Chiudi filtri ❌';
-                btn.style.background = '#ff00ff';
-                btn.style.color = '#fff';
+
+        // --- GESTIONE SCHEDE FILTRI E MANCANTE ---
+        function toggleFiltri() {
+            const containerFiltri = document.getElementById('container-filtri');
+            const btnFiltri = document.getElementById('btn-apri-filtri');
+            const containerMancante = document.getElementById('container-scuola-mancante');
+            const btnMancante = document.getElementById('btn-scuola-mancante');
+
+            // Chiudi "Scuola Mancante" se è aperta
+            if (containerMancante.style.display === 'block') {
+                containerMancante.style.display = 'none';
+                btnMancante.innerHTML = 'Scuola Mancante ⚠️';
+                btnMancante.style.background = 'transparent';
+                btnMancante.style.color = '#ff4d4d';
+            }
+
+            if (containerFiltri.style.display === 'none') {
+                containerFiltri.style.display = 'block';
+                btnFiltri.innerHTML = 'Chiudi filtri ❌';
+                btnFiltri.style.background = '#ff00ff';
+                btnFiltri.style.color = '#fff';
             } else {
-                container.style.display = 'none';
-                btn.innerHTML = 'Fai la ricerca per filtri ⚙️';
-                btn.style.background = 'transparent';
-                btn.style.color = '#ff00ff';
+                containerFiltri.style.display = 'none';
+                btnFiltri.innerHTML = 'Fai la ricerca per filtri ⚙️';
+                btnFiltri.style.background = 'transparent';
+                btnFiltri.style.color = '#ff00ff';
             }
         }
+
+        function toggleScuolaMancante() {
+            const containerMancante = document.getElementById('container-scuola-mancante');
+            const btnMancante = document.getElementById('btn-scuola-mancante');
+            const containerFiltri = document.getElementById('container-filtri');
+            const btnFiltri = document.getElementById('btn-apri-filtri');
+
+            // Chiudi "Filtri" se sono aperti
+            if (containerFiltri.style.display === 'block') {
+                containerFiltri.style.display = 'none';
+                btnFiltri.innerHTML = 'Fai la ricerca per filtri ⚙️';
+                btnFiltri.style.background = 'transparent';
+                btnFiltri.style.color = '#ff00ff';
+            }
+
+            if (containerMancante.style.display === 'none') {
+                containerMancante.style.display = 'block';
+                btnMancante.innerHTML = 'Chiudi Segnalazione ❌';
+                btnMancante.style.background = '#ff4d4d';
+                btnMancante.style.color = '#fff';
+            } else {
+                containerMancante.style.display = 'none';
+                btnMancante.innerHTML = 'Scuola Mancante ⚠️';
+                btnMancante.style.background = 'transparent';
+                btnMancante.style.color = '#ff4d4d';
+            }
+        }
+
+        function inviaSegnalazioneScuola(event) {
+            event.preventDefault(); // Evita il ricaricamento della pagina
+            
+            const nome = document.getElementById('sm-nome').value;
+            const regione = document.getElementById('sm-regione').value;
+            const provincia = document.getElementById('sm-provincia').value;
+            const comune = document.getElementById('sm-comune').value;
+
+            // Formatta oggetto e corpo della mail
+            const subject = encodeURIComponent("Segnalazione Scuola Mancante - UpToYou");
+            const body = encodeURIComponent(
+                "Ciao Team UpToYou,\n\n" +
+                "Vi segnalo una scuola mancante nel database. Ecco i dati da inserire:\n\n" +
+                "- Nome Scuola: " + nome + "\n" +
+                "- Regione: " + regione + "\n" +
+                "- Provincia: " + provincia + "\n" +
+                "- Comune: " + comune + "\n\n" +
+                "Grazie!"
+            );
+
+            // Apre l'app di posta (Gmail, Apple Mail, ecc.) precompilata
+            window.location.href = `mailto:info.uptoyou.team@gmail.com?subject=${subject}&body=${body}`;
+            
+            // Svuota il modulo e chiude la finestra dopo 1 secondo per pulizia
+            setTimeout(() => {
+                document.getElementById('form-scuola-mancante').reset();
+                toggleScuolaMancante();
+            }, 1000);
+        }
+
         function vaiAllaScuola(id) { window.location.href = `scuola.html?id=${id}`; }
 
         document.addEventListener('click', (e) => {
