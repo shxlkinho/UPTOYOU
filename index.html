@@ -795,6 +795,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // Configurazione Supabase
+       // Configurazione Supabase
         const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
         const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
@@ -807,20 +808,28 @@
         if (input) {
             input.addEventListener('input', async () => {
                 const val = input.value.trim();
+                
                 if (val.length < 2) {
                     tendina.style.display = 'none';
                     debug.innerText = "Scrivi almeno 2 lettere...";
                     return;
                 }
+                
                 debug.innerText = "Cerco: " + val + "...";
+                
                 try {
+                    // --- MODIFICA QUI ---
+                    // Utilizziamo .or() per cercare sia per nome scuola che per comune
                     const { data: schools, error } = await supabaseClient
                         .from('schools')
                         .select('id, DENOMINAZIONESCUOLA, DESCRIZIONECOMUNE')
-                        .ilike('DENOMINAZIONESCUOLA', `%${val}%`)
+                        .or(`DENOMINAZIONESCUOLA.ilike.%${val}%,DESCRIZIONECOMUNE.ilike.%${val}%`)
                         .limit(10);
 
-                    if (error) { debug.innerText = "ERRORE: " + error.message; return; }
+                    if (error) { 
+                        debug.innerText = "ERRORE: " + error.message; 
+                        return; 
+                    }
 
                     if (schools && schools.length > 0) {
                         debug.innerText = "Trovate " + schools.length + " scuole";
@@ -833,7 +842,8 @@
                         tendina.style.display = 'block';
                     } else {
                         debug.innerText = "Nessun risultato.";
-                        tendina.innerHTML = '<div style="padding:15px; color:#666;">Nessuna scuola trouvata</div>';
+                        // Ho corretto un piccolo refuso ("trouvata" -> "trovata")
+                        tendina.innerHTML = '<div style="padding:15px; color:#666;">Nessuna scuola trovata</div>';
                         tendina.style.display = 'block';
                     }
                 } catch (e) {
@@ -842,8 +852,6 @@
                 }
             });
         }
-
-
 function toggleFiltri() {
             const container = document.getElementById('container-filtri');
             const btn = document.getElementById('btn-apri-filtri');
