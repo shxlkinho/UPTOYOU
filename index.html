@@ -560,11 +560,37 @@
         .card-test .card-btn-action { border: 1px solid rgba(255, 102, 0, 0.4); color: var(--accent-orange); font-size: 1.1rem;}
 
         /* Card Lezioni Verde Smeraldo */
-        .card-lezioni { border: 1px solid rgba(0, 255, 128, 0.2); }
-        .card-lezioni h3 { color: var(--accent-green) !important; }
-        .card-lezioni:hover { border-color: var(--accent-green); box-shadow: 0 10px 30px rgba(0, 255, 128, 0.2); }
-        .card-lezioni:hover .card-btn-action { background: var(--accent-green) !important; border-color: var(--accent-green) !important; color: #000; }
-        .card-lezioni .card-btn-action { border: 1px solid rgba(0, 255, 128, 0.4); color: var(--accent-green); }
+       :root {
+    --accent-pink: #ff008c;
+}
+
+.card-lezioni { 
+    border: 1px solid rgba(255, 0, 140, 0.25);
+    transition: all 0.25s ease;
+}
+
+.card-lezioni h3 { 
+    color: var(--accent-pink) !important; 
+    text-shadow: none; /* niente glow */
+}
+
+.card-lezioni:hover { 
+    border-color: var(--accent-pink); 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* ombra neutra, non colorata */
+}
+
+.card-lezioni .card-btn-action { 
+    border: 1px solid rgba(255, 0, 140, 0.5); 
+    color: var(--accent-pink);
+    transition: all 0.25s ease;
+}
+
+.card-lezioni:hover .card-btn-action { 
+    background: var(--accent-pink) !important; 
+    border-color: var(--accent-pink) !important; 
+    color: #ffffff; /* testo bianco */
+    box-shadow: none; /* niente glow */
+}
 
         /* ============================================================
            VIDEO & TEST SECTION
