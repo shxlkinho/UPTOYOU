@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <link rel="icon" type="image/png" href="icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Up to You - Trova i tuoi Libri di Testo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #080808;
+            --bg-card: rgba(22, 22, 22, 0.6);
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --accent: #4facfe;
+            --accent-sec: #00f2fe;
+            --accent-pink: #ff00ff;
+            --transition-smooth: all 0.3s ease;
+        }
+
+        body { 
+            background: var(--bg-dark); 
+            font-family: 'Poppins', sans-serif; 
+            color: var(--text-main); 
+            margin: 0; 
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 5% 80px 5%;
+            text-align: center;
+        }
+
+        h1.page-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            background: linear-gradient(to right, var(--accent), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        p.page-subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        /* WIZARD PANELS & DROPDOWNS */
+        .step-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        select, input {
+            background: #111;
+            color: white;
+            border: 1px solid #333;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        select:focus, select:active {
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+        }
+
+        select:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* SCHOOL LIST VIEW */
+        .schools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .school-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .school-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            background: rgba(79, 172, 254, 0.05);
+        }
+
+        .school-item h4 {
+            margin: 0 0 8px 0;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .school-item p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        /* STATE MESSAGES */
+        .status-message {
+            color: var(--accent);
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        /* BOOKS TABLE DESIGN */
+        .books-container {
+            margin-top: 40px;
+            overflow-x: auto;
+            text-align: left;
+        }
+
+        .books-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .books-table th {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 16px;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .books-table td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.95rem;
+            color: #eee;
+        }
+
+        .books-table tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-buy { background: rgba(0, 255, 128, 0.15); color: #00ff80; }
+        .badge-no { background: rgba(255, 77, 77, 0.15); color: #ff4d4d; }
+
+        .btn-amazon {
+            background: #ff9900;
+            color: #000;
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+            transition: 0.2s;
+        }
+        .btn-amazon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 12px rgba(255, 153, 0, 0.4);
+        }
+
+        /* STILE PER HEADER SCUOLA SELEZIONATA + BOTTONE INDIETRO */
+        .scuola-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 15px;
+        }
+        .btn-back-schools {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid #333;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            width: auto !important;
+            white-space: nowrap;
+        }
+        .btn-back-schools:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    UP<span>TOYOU</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Lezioni ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="Lezioni/elementari.html">Elementari</a></li>
+                        <li><a href="Lezioni/medie.html">Medie</a></li>
+                        <li><a href="Lezioni/superiori.html">Superiori</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Orientamento ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="guidato.html">Orientamento Guidato</a></li>
+                        <li><a href="rapido.html">Orientamento Rapido</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contatti</a></li>
+                <li><a href="#about">Chi Siamo</a></li>
+                <li id="auth-nav-item" class="nav-auth-container"></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <h1 class="page-title">I tuoi libri in un Click</h1>
+        <p class="page-subtitle">Seleziona la tua scuola, classe e scopri subito i testi adottati per il nuovo anno scolastico.</p>
+
+        <div class="step-card">
+            <h3 style="margin-top:0; color: var(--accent-pink); text-align: left;">1. Dove studi?</h3>
+            <div class="dropdown-grid">
+                <select id="regioneSelect">
+                    <option value="">Scegli Regione...</option>
+                </select>
+                <select id="provinciaSelect" disabled>
+                    <option value="">Scegli Provincia...</option>
+                </select>
+                <select id="comuneSelect" disabled>
+                    <option value="">Scegli Comune...</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="step-card" id="classe-panel" style="display: none; border-color: var(--accent);">
+            <div class="scuola-header-flex">
+                <p id="scuola-selezionata-label" style="text-align:left; font-size:0.9rem; color:var(--text-dim); font-weight:600; margin:0;"></p>
+                <button id="btn-torna-scuole" class="btn-back-schools">↩️ Torna alla lista scuole</button>
+            </div>
+            <h3 style="margin-top:0; color: var(--accent); text-align: left;">2. Classe e Sezione</h3>
+            <div class="dropdown-grid" style="grid-template-columns: 1fr 1fr;">
+                <select id="classeSelect">
+                    <option value="">Quale anno frequenti?</option>
+                    <option value="1">1° Anno</option>
+                    <option value="2">2° Anno</option>
+                    <option value="3">3° Anno</option>
+                    <option value="4">4° Anno</option>
+                    <option value="5">5° Anno</option>
+                </select>
+                <select id="sezioneSelect" disabled>
+                    <option value="">Scegli Sezione...</option>
+                </select>
+            </div>
+            <button id="btn-cerca-libri" style="margin-top: 20px; background: var(--accent); border: none; color: black; padding: 12px 30px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; width: 100%;">
+                Mostra la lista dei Libri 📚
+            </button>
+        </div>
+
+        <div id="status-box" class="status-message"></div>
+        <div id="scuole-container" class="schools-grid"></div>
+        
+        <div id="risultati-libri" class="books-container" style="display: none;">
+            <table class="books-table">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Titolo / Editore</th>
+                        <th>Prezzo</th>
+                        <th>Da Acquistare?</th>
+                        <th>Acquista</th>
+                    </tr>
+                </thead>
+                <tbody id="libri-tbody"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const databaseTerritoriale = {
+            "ABRUZZO": ["CHIETI", "L'AQUILA", "PESCARA", "TERAMO"],
+            "BASILICATA": ["MATERA", "POTENZA"],
+            "CALABRIA": ["CATANZARO", "COSENZA", "CROTONE", "REGGIO CALABRIA", "VIBO VALENTIA"],
+            "CAMPANIA": ["AVELLINO", "BENEVENTO", "CASERTA", "NAPOLI", "SALERNO"],
+            "EMILIA-ROMAGNA": ["BOLOGNA", "FERRARA", "FORLI' CESENA", "MODENA", "PARMA", "PIACENZA", "RAVENNA", "REGGIO EMILIA", "RIMINI"],
+            "FRIULI-VENEZIA GIULIA": ["GORIZIA", "PORDENONE", "TRIESTE", "UDINE"],
+            "LAZIO": ["FROSINONE", "LATINA", "RIETI", "ROMA", "VITERBO"],
+            "LIGURIA": ["GENOVA", "IMPERIA", "LA SPEZIA", "SAVONA"],
+            "LOMBARDIA": ["BERGAMO", "BRESCIA", "COMO", "CREMONA", "LECCO", "LODI", "MANTOVA", "MILANO", "MONZA E DELLA BRIANZA", "PAVIA", "SONDRIO", "VARESE"],
+            "MARCHE": ["ANCONA", "ASCOLI PICENO", "FERMO", "MACERATA", "PESARO E URBINO"],
+            "MOLISE": ["CAMPOBASSO", "ISERNIA"],
+            "PIEMONTE": ["ALESSANDRIA", "ASTI", "BIELLA", "CUNEO", "NOVARA", "TORINO", "VERBANO-CUSIO-OSSOLA", "VERCELLI"],
+            "PUGLIA": ["BARI", "BARLETTA-ANDRIA-TRANI", "BRINDISI", "FOGGIA", "LECCE", "TARANTO"],
+            "SARDEGNA": ["CAGLIARI", "NUORO", "ORISTANO", "SASSARI", "SUD SARDEGNA"],
+            "SICILIA": ["AGRIGENTO", "CALTANISSETTA", "CATANIA", "ENNA", "MESSINA", "PALERMO", "RAGUSA", "SIRACUSA", "TRAPANI"],
+            "TOSCANA": ["AREZZO", "FIRENZE", "GROSSETO", "LIVORNO", "LUCCA", "MASSA CARRARA", "PISA", "PISTOIA", "PRATO", "SIENA"],
+            "TRENTINO-ALTO ADIGE": ["BOLZANO", "TRENTO"],
+            "UMBRIA": ["PERUGIA", "TERNI"],
+            "VALLE D'AOSTA": ["AOSTA"],
+            "VENETO": ["BELLUNO", "PADOVA", "ROVIGO", "TREVISO", "VENEZIA", "VERONA", "VICENZA"]
+        };
+
+        const SB_URL = 'https://ccvaevbvnqkfgoarutwx.supabase.co';
+        const SB_KEY = 'sb_publishable_uXuSLaEAjNJwWJVJ3ywSDw_SB6YbMMo';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        const regSel = document.getElementById('regioneSelect');
+        const provSel = document.getElementById('provinciaSelect');
+        const comSel = document.getElementById('comuneSelect');
+        const classeSel = document.getElementById('classeSelect');
+        const sezioneSel = document.getElementById('sezioneSelect');
+        const scuoleContainer = document.getElementById('scuole-container');
+        const classePanel = document.getElementById('classe-panel');
+        const statusBox = document.getElementById('status-box');
+        
+        let codiceScuolaSelezionato = ""; 
+        let nomeScuolaSelezionata = "";
+
+        window.onload = () => {
+            Object.keys(databaseTerritoriale).sort().forEach(r => regSel.add(new Option(r, r)));
+        };
+
+        regSel.onchange = () => {
+            provSel.innerHTML = '<option value="">Scegli Provincia...</option>';
+            comSel.innerHTML = '<option value="">Scegli Comune...</option>';
+            provSel.disabled = !regSel.value;
+            comSel.disabled = true;
+            resetFormulari();
+            if (regSel.value) {
+                databaseTerritoriale[regSel.value].sort().forEach(p => provSel.add(new Option(p, p)));
+            }
+        };
+
+        provSel.onchange = async () => {
+            const prov = provSel.value;
+            comSel.innerHTML = '<option value="">Caricamento comuni...</option>';
+            comSel.disabled = true;
+            resetFormulari();
+            if (!prov) return;
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('Tutte_Scuole')
+                    .select('DESCRIZIONECOMUNE')
+                    .eq('PROVINCIA', prov)
+                    .order('DESCRIZIONECOMUNE', { ascending: true });
+
+                if (error) throw error;
+
+                const comuniUnici = [...new Set(data.map(item => item.DESCRIZIONECOMUNE))];
+                comSel.innerHTML = '<option value="">Scegli o digita Comune...</option>';
+                comuniUnici.forEach(c => comSel.add(new Option(c, c)));
+                comSel.disabled = false;
+                
+                caricaScuole();
+            } catch (err) {
+                statusBox.innerText = "Errore caricamento comuni: " + err.message;
+            }
+        };
+
+        comSel.onchange = () => caricaScuole();
+
+        async function caricaScuole() {
+            const prov = provSel.value;
+            const comune = comSel.value;
+            if (!prov) return;
+
+            scuoleContainer.innerHTML = '';
+            scuoleContainer.style.display = 'grid'; // Assicura che la griglia sia visibile
+            classePanel.style.display = 'none';
+            document.getElementById('risultati-libri').style.display = 'none';
+            statusBox.innerText = "Ricerca scuole in corso...";
+
+            try {
+                let query = supabaseClient
+                    .from('Tutte_Scuole')
+                    .select('CODICESCUOLA, DENOMINAZIONESCUOLA, DESCRIZIONECOMUNE, INDIRIZZOSCUOLA')
+                    .eq('PROVINCIA', prov);
+
+                if (comune) {
+                    query = query.eq('DESCRIZIONECOMUNE', comune);
+                }
+
+                const { data: scuole, error } = await query.order('DENOMINAZIONESCUOLA', { ascending: true });
+
+                if (error) throw error;
+
+                if (scuole.length === 0) {
+                    statusBox.innerText = "Nessuna scuola trovato in questa zona.";
+                    return;
+                }
+
+                statusBox.innerText = `Trovate ${scuole.length} scuole. Clicca sulla tua:`;
+                scuoleContainer.innerHTML = schoolsListTemplate(scuole);
+
+            } catch (err) {
+                statusBox.innerText = "Errore nel caricamento delle scuole: " + err.message;
+            }
+        }
+
+        function schoolsListTemplate(scuole) {
+            // Salviamo l'elenco corrente in memoria globale per recuperare i nomi in modo sicuro
+            window.listaScuoleCorrenti = scuole;
+
+            return scuole.map(s => `
+                <div class="school-item" onclick="selezionaScuola('${s.CODICESCUOLA}')">
+                    <h4>${s.DENOMINAZIONESCUOLA}</h4>
+                    <p>📍 ${s.DESCRIZIONECOMUNE} - ${s.INDIRIZZOSCUOLA || 'Indirizzo N/D'}</p>
+                    <small style="color:var(--accent-pink); font-size:11px;">Codice: ${s.CODICESCUOLA}</small>
+                </div>
+            `).join('');
+        }
+
+        window.selezionaScuola = (codice) => {
+            codiceScuolaSelezionato = codice;
+            
+            // Cerchiamo la scuola dentro l'array salvato in memoria in modo nativo e sicuro
+            const scuolaTrovata = window.listaScuoleCorrenti ? window.listaScuoleCorrenti.find(s => s.CODICESCUOLA === codice) : null;
+            nomeScuolaSelezionata = scuolaTrovata ? scuolaTrovata.DENOMINAZIONESCUOLA : "Scuola Selezionata";
+            
+            document.getElementById('scuola-selezionata-label').innerText = `Scuola: ${nomeScuolaSelezionata} (${codice})`;
+            
+            // Nascondiamo temporaneamente la lista invece di svuotarla (così possiamo tornare indietro)
+            scuoleContainer.style.display = 'none'; 
+            statusBox.innerText = "";
+            
+            classeSel.value = "";
+            sezioneSel.innerHTML = '<option value="">Scegli Sezione...</option>';
+            sezioneSel.disabled = true;
+
+            classePanel.style.display = 'block';
+            classePanel.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // Gestione del pulsante per tornare alla lista delle scuole
+        document.getElementById('btn-torna-scuole').onclick = () => {
+            classePanel.style.display = 'none';
+            document.getElementById('risultati-libri').style.display = 'none';
+            
+            // Rindichiamo la griglia delle scuole precedentemente cercate
+            scuoleContainer.style.display = 'grid';
+            statusBox.innerText = `Seleziona una scuola tra le ${window.listaScuoleCorrenti ? window.listaScuoleCorrenti.length : 0} trovate:`;
+            scuoleContainer.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // Caricamento dinamico delle Sezioni reali presenti nella tabella 'book'
+        classeSel.onchange = async () => {
+            const anno = classeSel.value;
+            sezioneSel.innerHTML = '<option value="">Caricamento sezioni...</option>';
+            sezioneSel.disabled = true;
+
+            if (!anno) {
+                sezioneSel.innerHTML = '<option value="">Prima scegli l\'anno...</option>';
+                return;
+            }
+
+            try {
+                statusBox.innerText = "Recupero sezioni disponibili...";
+                const { data, error } = await supabaseClient
+                    .from('book')
+                    .select('SEZIONEANNO')
+                    .eq('CODICESCUOLA', codiceScuolaSelezionato)
+                    .eq('ANNOCORSO', parseInt(anno, 10));
+
+                if (error) throw error;
+
+                // Estrazione di valori unici e puliti delle sezioni
+                const sezioniUniche = [...new Set(data.map(item => item.SEZIONEANNO))].filter(Boolean).sort();
+
+                if (sezioniUniche.length === 0) {
+                    sezioneSel.innerHTML = '<option value="">Nessuna sezione registrata</option>';
+                    statusBox.innerText = "Nessuna sezione trovata nel DB per questo anno.";
+                } else {
+                    sezioneSel.innerHTML = '<option value="">Scegli Sezione...</option>';
+                    sezioniUniche.forEach(s => sezioneSel.add(new Option(`Sezione ${s}`, s)));
+                    sezioneSel.disabled = false;
+                    statusBox.innerText = "";
+                }
+            } catch (err) {
+                statusBox.innerText = "Errore nel caricamento delle sezioni: " + err.message;
+            }
+        };
+
+        document.getElementById('btn-cerca-libri').onclick = async () => {
+            const anno = classeSel.value;
+            const sezione = sezioneSel.value;
+            const tbody = document.getElementById('libri-tbody');
+            const tableContainer = document.getElementById('risultati-libri');
+
+            if (!anno || !sezione) {
+                alert("Per favore, seleziona sia l'anno del corso che la sezione dalle tendine.");
+                return;
+            }
+
+            tableContainer.style.display = 'none';
+            statusBox.innerText = "Recupero elenco libri in corso...";
+
+            try {
+                const { data: libri, error } = await supabaseClient
+                    .from('book')
+                    .select('*')
+                    .eq('CODICESCUOLA', codiceScuolaSelezionato)
+                    .eq('ANNOCORSO', parseInt(anno, 10))
+                    .eq('SEZIONEANNO', sezione);
+
+                if (error) throw error;
+
+                if (libri.length === 0) {
+                    statusBox.innerText = `Nessun libro trovato per la classe ${anno}° ${sezione}.`;
+                    return;
+                }
+
+                statusBox.innerText = `Ecco i libri adottati per la classe ${anno}° ${sezione}!`;
+                tbody.innerHTML = booksTableTemplate(libri);
+                tableContainer.style.display = 'block';
+
+            } catch (err) {
+                statusBox.innerText = "Errore nel caricamento dei libri: " + err.message;
+            }
+        };
+
+        function booksTableTemplate(libri) {
+            return libri.map(b => {
+                const acquistoBadge = b.DAACQUIST === 'Si' ? 
+                    `<span class="badge badge-buy">Sì</span>` : `<span class="badge badge-no">No</span>`;
+                
+                const linkAmazon = `https://www.amazon.it/s?k=${b.CODICEISBN}&tag=IL_TUO_TAG_AFFILIAZIONE-21`;
+
+                return `
+                    <tr>
+                        <td style="font-weight:600; color:var(--accent-sec);">${b.DISCIPLINA}</td>
+                        <td>
+                            <strong style="display:block; color:#fff;">${b.TITOLO}</strong>
+                            <small style="color:var(--text-dim);">${b.AUTORI} | Editore: ${b.EDITORE}</small><br>
+                            <small style="color:#777; font-size:11px;">ISBN: ${b.CODICEISBN}</small>
+                        </td>
+                        <td style="font-weight:600;">€ ${b.PREZZO}</td>
+                        <td>${acquistoBadge}</td>
+                        <td>
+                            <a href="${linkAmazon}" target="_blank" class="btn-amazon">Compra su Amazon 🛒</a>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetFormulari() {
+            scuoleContainer.innerHTML = "";
+            scuoleContainer.style.display = 'grid';
+            classePanel.style.display = 'none';
+            document.getElementById('risultati-libri').style.display = 'none';
+            statusBox.innerText = "";
+            classeSel.value = "";
+            sezioneSel.innerHTML = '<option value="">Scegli Sezione...</option>';
+            sezioneSel.disabled = true;
+        }
+    </script>
+</body>
+</html>
